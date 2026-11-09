@@ -8,7 +8,7 @@
 ## 一、这个系统每天自动做什么
 
 ```
-每 6 小时（watchdog 常驻循环）
+每天 09:00（watchdog 常驻循环）
   ├─ [采集] 20+ 个信息源并发抓取 → 归一化 Item（一手博客 / 榜单 / RSS / X / 国内搜索 / 羊毛）
   ├─ [清洗] URL 规范化去重 + 标题 Jaccard>0.72 合并同事件跨源
   ├─ [翻译] 非中文条目（一手/榜单/广泛）翻成简体中文，按 hash 缓存，失败保留原文
@@ -125,7 +125,7 @@ Get_Information/
 - 健康面板：11 源全部 fails=0
 - 日志：`logs/run.log` 每轮 `exit=0`
 
-**怎么确认系统活着**：打开网站看右上角"生成于"时间是否在 6 小时内；或 `tail logs\watchdog.log` 看最近的 tick（中文显示乱码属正常）。
+**怎么确认系统活着**：打开网站看右上角"生成于"时间是否在 24 小时内（每天 9 点生成）；或 `tail logs\watchdog.log` 看最近的 tick（中文显示乱码属正常）。
 
 ---
 
@@ -195,7 +195,7 @@ D:\Anaconda\python.exe run.py
 :: 2. 网站
 curl -s -o nul -w "%{http_code}" http://localhost:8123/    :: 应输出 200
 
-:: 3. 循环节拍（应看到最近的 tick，且间隔约 6 小时）
+:: 3. 循环节拍（应看到最近的 tick，且间隔约 24 小时（每天 9 点））
 type logs\watchdog.log
 
 :: 4. 双榜单快照存在

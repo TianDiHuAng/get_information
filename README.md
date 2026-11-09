@@ -31,7 +31,7 @@ python run.py
 python serve.py        # http://localhost:8123
 ```
 
-定时：`watchdog.bat`（Windows）按 03:00 / 09:00 / 15:00 / 21:00 跑，9 点那轮发日报。
+定时：`watchdog.bat`（Windows）每天 09:00 跑一次，并发送日报。
 
 ## 配置说明
 

@@ -78,7 +78,7 @@ HN/GitHub/榜单 ─┤
 Google News/GDELT ┘
 ```
 
-定时：Windows 任务计划程序 / GitHub Actions / 云服务器 cron，每 1~6 小时跑一次 `python run.py`。
+定时：Windows 任务计划程序 / GitHub Actions / 云服务器 cron，每天跑一次 `python run.py`。
 
 ## 七、覆盖率不是终点
 

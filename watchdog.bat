@@ -1,5 +1,5 @@
 @echo off
-rem Resident watchdog: collection runs at fixed slots 03:00 / 09:00 / 15:00 / 21:00.
+rem Resident watchdog: collection runs ONCE a day at 09:00 (and sends the daily email).
 rem NOTE: keep this file ASCII-only - cmd parses .bat in ANSI (GBK) codepage.
 setlocal
 cd /d D:\\AI\\project\\Get_Information
