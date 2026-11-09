@@ -13,6 +13,7 @@ from datetime import datetime
 from email.header import Header
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from email.utils import formataddr
 from pathlib import Path
 
 import yaml
@@ -77,6 +78,47 @@ def _ai_from_md(md: str) -> str | None:
     return seg or None
 
 
+def _set_from(msg, conf: dict) -> None:
+    name = str(conf.get("from_name") or "").strip()
+    msg["From"] = formataddr((name, conf["user"])) if name else conf["user"]
+    reply_to = str(conf.get("reply_to") or "").strip()
+    if reply_to:
+        msg["Reply-To"] = reply_to
+
+
+def _deliver(conf: dict, to: list[str], msg) -> str:
+    """用主配置发送；认证/连接失败时自动退回 fallback。返回实际发件账号。"""
+    ctx = ssl.create_default_context()
+
+    def _try(c: dict) -> None:
+        mode = c.get("smtp_mode") or ("ssl" if int(c["smtp_port"]) == 465 else "starttls")
+        if mode == "ssl":
+            s = smtplib.SMTP_SSL(c["smtp_host"], int(c["smtp_port"]), context=ctx, timeout=30)
+        else:
+            s = smtplib.SMTP(c["smtp_host"], int(c["smtp_port"]), timeout=30)
+            s.starttls(context=ctx)
+        with s:
+            s.login(c["user"], c["auth_code"])
+            s.sendmail(c["user"], to, msg.as_string())
+
+    try:
+        _try(conf)
+        return conf["user"]
+    except Exception as e:
+        fb = conf.get("fallback") or {}
+        if not (fb.get("user") and fb.get("auth_code")):
+            raise
+        print(f"  [mail] 主发件失败（{type(e).__name__}: {e}），改用备用 {fb['user']}")
+        try:
+            del msg["From"]
+            del msg["Reply-To"]
+        except Exception:
+            pass
+        msg["From"] = fb["user"]
+        _try({**conf, **fb})
+        return fb["user"]
+
+
 def send(digest_path: Path, stats: dict, payload: dict | None = None,
          force: bool = False, lmarena: dict | None = None,
          aa: dict | None = None) -> str:
@@ -86,8 +128,13 @@ def send(digest_path: Path, stats: dict, payload: dict | None = None,
     force=True 用于测试重发，绕过"每天一封"去重。
     """
     conf = _conf()
-    if not conf["user"] or not conf["auth_code"]:
-        return "未配置（auth_code 留空），跳过"
+    if not (conf["user"] and conf["auth_code"]):
+        fb = conf.get("fallback") or {}
+        if fb.get("user") and fb.get("auth_code"):
+            conf = {**conf, "user": fb["user"], "auth_code": fb["auth_code"],
+                    "smtp_host": fb["smtp_host"], "smtp_port": fb["smtp_port"], "fallback": None}
+        else:
+            return "未配置（auth_code 留空），跳过"
     to = conf["to"] or [conf["user"]]
     today = datetime.now().strftime("%Y-%m-%d")
     after_hour = int(conf.get("send_after_hour") or 0)
@@ -108,23 +155,26 @@ def send(digest_path: Path, stats: dict, payload: dict | None = None,
     else:
         msg = MIMEText(md, "plain", "utf-8")
     msg["Subject"] = Header(f"情报日报 {today} · {stats.get('raw', 0)} 条", "utf-8")
-    msg["From"] = conf["user"]
+    _set_from(msg, conf)
     msg["To"] = ", ".join(to)
 
     ctx = ssl.create_default_context()
-    with smtplib.SMTP_SSL(conf["smtp_host"], conf["smtp_port"], context=ctx, timeout=30) as s:
-        s.login(conf["user"], conf["auth_code"])
-        s.sendmail(conf["user"], to, msg.as_string())
+    sender = _deliver(conf, to, msg)
     if not force:
         _mark_sent(today)
-    return f"已发送给 {', '.join(to)}（HTML 排版）" if payload else f"已发送给 {', '.join(to)}"
+    return f"已发送给 {', '.join(to)}（{sender} 发出）"
 
 
 def send_custom(subject: str, text: str, html: str | None = None) -> str:
     """发送任意内容（如 arXiv 周报），不做"每天一封"去重。"""
     conf = _conf()
-    if not conf["user"] or not conf["auth_code"]:
-        return "未配置（auth_code 留空），跳过"
+    if not (conf["user"] and conf["auth_code"]):
+        fb = conf.get("fallback") or {}
+        if fb.get("user") and fb.get("auth_code"):
+            conf = {**conf, "user": fb["user"], "auth_code": fb["auth_code"],
+                    "smtp_host": fb["smtp_host"], "smtp_port": fb["smtp_port"], "fallback": None}
+        else:
+            return "未配置（auth_code 留空），跳过"
     to = conf["to"] or [conf["user"]]
     if html:
         msg = MIMEMultipart("alternative")
@@ -133,11 +183,9 @@ def send_custom(subject: str, text: str, html: str | None = None) -> str:
     else:
         msg = MIMEText(text, "plain", "utf-8")
     msg["Subject"] = Header(subject, "utf-8")
-    msg["From"] = conf["user"]
+    _set_from(msg, conf)
     msg["To"] = ", ".join(to)
 
     ctx = ssl.create_default_context()
-    with smtplib.SMTP_SSL(conf["smtp_host"], conf["smtp_port"], context=ctx, timeout=30) as s:
-        s.login(conf["user"], conf["auth_code"])
-        s.sendmail(conf["user"], to, msg.as_string())
-    return f"已发送给 {', '.join(to)}"
+    sender = _deliver(conf, to, msg)
+    return f"已发送给 {', '.join(to)}（{sender} 发出）"

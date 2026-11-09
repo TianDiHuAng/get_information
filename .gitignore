@@ -22,3 +22,7 @@ venv/
 Thumbs.db
 .idea/
 .vscode/
+
+# ===== 本地工具/调研产物 =====
+.zcode/
+research/
