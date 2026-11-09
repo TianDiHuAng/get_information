@@ -92,7 +92,7 @@ Get_Information/
 | wb_proxy 网关 `127.0.0.1:8788/v1` | AI 导读 + 全站英译中（glm-5.3-flash，无需鉴权） | ✅ 正常（偶尔排队，90s 超时自动退回原文/结构化简报） | 日报少导读、英文条目保持英文，不影响采集 |
 | fxtwitter 公开镜像 `api.fxtwitter.com` | X 时间线（免费，无需 token） | ✅ 走代理可用 | X 源为空，其余照常 |
 | 微博/知乎 Cookie（config/cookies.yaml） | 国内热榜 | ✅ 已写入（2026-11-08 实测可抓） | 对应源自动禁用，其余照常 |
-| 阿里企业邮箱 `clientvip@zhuwyai.me`（587 STARTTLS） | 日报主发件（显示名「信息雷达」，Reply-To postmaster） | ✅ 实测可发 | 自动退回 QQ 备用通道 |
+| 邮件发件（阿里企业邮箱 SMTP，587 STARTTLS） | 日报主发件（显示名「信息雷达」） | ✅ 实测可发 | 自动退回 QQ 备用通道 |
 | AA 免费 key（config/aa.yaml） | AA 智能指数快照 | ✅ 实测拉取成功（1000 次/天额度） | AA 区块消失，LMArena 照常 |
 | GitHub 匿名 API | 新项目榜 | ✅（60 次/时限流，够用） | GitHub 源失败 |
 | Anaconda Python `D:\Anaconda\python.exe` | 全部脚本（3.11.7，pandas/pyyaml/bs4/requests 已装） | ✅ | — |
