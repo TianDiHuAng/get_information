@@ -1,0 +1,20 @@
+# 额外信息源（RSS/Atom）。加源只改这里，不用动代码。
+# region: overseas=国外 / domestic=国内
+# layer:  primary=一手（官方博客/研究）  broad=广谱
+# proxy:  true=必须走本机代理（墙外且直连不通）
+
+feeds:
+  # —— 国外 · 一线实验室/研究者 ——
+  - {id: deepmind_blog, name: DeepMind 博客, url: "https://deepmind.google/blog/rss.xml", region: overseas, layer: primary, limit: 5, proxy: false}
+  - {id: msr_blog, name: 微软研究院, url: "https://www.microsoft.com/en-us/research/feed/", region: overseas, layer: primary, limit: 5, proxy: false}
+  - {id: google_research, name: Google Research, url: "https://research.google/blog/rss/", region: overseas, layer: primary, limit: 5, proxy: true}
+  - {id: simonw, name: Simon Willison, url: "https://simonwillison.net/atom/everything/", region: overseas, layer: primary, limit: 6, proxy: false}
+  - {id: lilianweng, name: Lil'Log, url: "https://lilianweng.github.io/index.xml", region: overseas, layer: primary, limit: 3, proxy: false}
+  - {id: interconnects, name: Interconnects, url: "https://www.interconnects.ai/feed", region: overseas, layer: primary, limit: 4, proxy: false}
+  - {id: oneusefulthing, name: One Useful Thing, url: "https://www.oneusefulthing.org/feed", region: overseas, layer: primary, limit: 4, proxy: false}
+  - {id: aheadofai, name: Ahead of AI, url: "https://magazine.sebastianraschka.com/feed", region: overseas, layer: primary, limit: 3, proxy: false}
+  - {id: latent_space, name: Latent Space, url: "https://www.latent.space/feed", region: overseas, layer: primary, limit: 4, proxy: false}
+  - {id: gradient, name: The Gradient, url: "https://thegradient.pub/rss/", region: overseas, layer: primary, limit: 3, proxy: false}
+
+  # —— 国内 · 科技媒体 / 羊毛 ——
+  - {id: ithome, name: IT之家, url: "https://www.ithome.com/rss/", region: domestic, layer: broad, limit: 12, proxy: false}

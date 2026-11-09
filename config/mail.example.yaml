@@ -1,0 +1,8 @@
+# 复制为 config/mail.yaml 后填写。切勿提交真实密码/授权码。
+user: "your-sender@example.com"
+auth_code: ""
+to: ["your-inbox@example.com"]
+smtp_host: "smtp.example.com"
+smtp_port: 465
+daily: true
+send_after_hour: 9

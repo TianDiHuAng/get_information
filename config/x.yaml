@@ -1,0 +1,70 @@
+# X / Twitter 采集配置
+# 走 fxtwitter 的公开镜像接口（免费、无需 token），按账号抓最近推文。
+# 只推"没推过"的推文（data/x_seen.json 记账），所以不会重复。
+
+enabled: true
+use_proxy: true          # 走本机 socks5h://127.0.0.1:10808
+
+users:                   # 想盯谁就改这里，不要带 @
+  - karpathy
+  - swyx
+  - sama
+  - ylecun
+  - AndrewYNg
+  - demishassabis
+  - _akhaliq
+  - osanseviero
+  - DrJimFan
+  - goodside
+  - minchoi
+  - rowancheung
+  - ai_for_success
+  - vista8
+  - dotey
+
+per_user: 8              # 每个账号最多取几条
+window_hours: 26         # 只取最近 26 小时（覆盖一天 + 余量）
+min_likes: 10            # 低于这个点赞数不要，过滤掉"never""哈哈"这类口水
+exclude_replies: true    # 不要回复别人的推文（没上下文，读不懂）
+min_chars: 40            # 正文少于 40 字（不含链接）不要，短句没信息量
+include_reposts: false   # false=只要本人原创；true=转推也收（标题会标 🔁 @原作者）
+
+# 关键词搜索（fxtwitter /2/search，免费）：补上"名单以外"的羊毛/技巧/方案
+# 注意：接口对"没有结果"的查询直接回 404，所以用单字/短词更稳
+searches:
+  - 提示词
+  - 开源
+  - 教程
+  - 额度
+  - 免费
+search_per_query: 20     # 每个词取多少条原始结果
+search_min_likes: 3      # 搜索结果噪声大，点赞门槛比时间线高一点
+search_window_hours: 72  # 只取最近 3 天（搜索页没有时间过滤，只能本地截）
+search_max_items: 25     # 一轮最多收多少条搜索结果（按点赞排序）
+search_queries_per_run: 2  # 每轮只搜 2 个词（接口限流，一天 4 轮轮换覆盖 8 个词）
+
+# Apify 关键词搜索（$0.0001/条，≈$0.1/千条）。有 token 时优先用它，
+# 上面的免费 fxtwitter 搜索自动退居备胎。
+apify:
+  enabled: true
+  max_items_per_query: 15
+  max_items_total: 40
+  window_hours: 48       # 只要最近 2 天
+  min_likes: 0
+  min_chars: 20
+  sort: Latest
+  queries_per_run: 4     # 每轮跑 4 条，8 条矩阵两轮轮换完（防限流）
+  # 中文圈高精准搜索矩阵（高级运算符：lang:zh / min_faves / -filter:replies）
+  queries:
+    # 1) GitHub 轰动开源项目
+    - "github.com (AI OR 大模型 OR 开源 OR 仓库 OR 部署) min_faves:10 lang:zh -filter:replies -filter:retweets"
+    - "(开源项目 OR 推荐开源 OR github星标 OR 始皇 OR 框架) (AI OR 智能体 OR agent) lang:zh -filter:replies -filter:retweets"
+    # 2) 羊毛 / 免费额度
+    - "(AI OR 大模型 OR 模型) (免费 OR 赠送 OR 白嫖 OR 羊毛 OR 额度 OR 体验金 OR 注册送) lang:zh min_faves:5 -filter:replies -filter:retweets"
+    - "(API Key OR 免费额度 OR 赠送 API) (Claude OR GPT OR 满血版 OR 满血) lang:zh -filter:replies -filter:retweets"
+    # 3) 便宜 Token / 中转站 / 降价
+    - "(API OR token OR 中转 OR 聚合 OR 渠道) (便宜 OR 降价 OR 稳定 OR 额度) lang:zh -filter:replies -filter:retweets"
+    - "(API 代理 OR 中转站 OR 转发) (gpt-4o OR claude OR 便宜) lang:zh -filter:replies -filter:retweets"
+    # 4) 独立开发 / AIGC 案例
+    - "(独立开发 OR 独立开发者 OR AI 创作 OR 副业 OR 工作流) (上线 OR 开源 OR 教程 OR 自动化) lang:zh min_faves:10 -filter:replies -filter:retweets"
+    - "(BuiltWithAI OR 独立产品 OR 搞钱) (AI OR 模型) lang:zh -filter:replies -filter:retweets"

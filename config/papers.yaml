@@ -1,0 +1,36 @@
+# arXiv 周报配置
+# 主题：AI 制药（小分子 / 大分子 / 蛋白 / 环肽生成模型）
+# 只推「没推过」的论文（data/papers_seen.json 记账）。
+
+enabled: true
+lookback_days: 8         # 回看窗口：配合分页，停机几天也能补回来
+page_size: 200           # arXiv 单页条数
+max_pages: 8             # 每个主题最多翻几页（防止跑飞）
+send_weekday: 0          # 0=周一 … 6=周日
+send_hour: 7             # 当天几点之后可以发（错过会在下一次运行补发）
+
+topics:
+  # AI for Drug Discovery：小分子 / 大分子 / 蛋白 / 环肽生成模型
+  # 用 query 直接写完整表达式：基础词 OR（生成模型家族 AND 分子语境）。
+  # 生成模型家族含 diffusion / flow matching / score-based / autoregressive /
+  # VAE / GAN / normalizing flow / generative model —— 不限扩散。
+  - name: AI 制药
+    limit: 35
+    categories: [cs.LG, cs.AI, q-bio.BM, q-bio.QM]
+    query: >-
+      (cat:cs.LG OR cat:cs.AI OR cat:q-bio.BM OR cat:q-bio.QM) AND (
+        abs:"drug discovery" OR abs:"small molecule" OR abs:"molecule generation"
+        OR abs:"molecular generation" OR abs:"de novo design" OR abs:"protein design"
+        OR abs:"protein generation" OR abs:"protein language model" OR abs:"antibody design"
+        OR abs:antibody OR abs:peptide OR abs:"cyclic peptide" OR abs:ligand
+        OR abs:"binding affinity" OR abs:ADMET OR abs:PROTAC OR abs:docking
+        OR abs:"virtual screening" OR abs:mRNA
+        OR (
+          (
+            abs:diffusion OR abs:"flow matching" OR abs:"score-based" OR abs:autoregressive
+            OR abs:VAE OR abs:"variational autoencoder" OR abs:GAN OR abs:"generative adversarial"
+            OR abs:"normalizing flow" OR abs:"generative model" OR abs:"generative models"
+          )
+          AND (abs:molecule OR abs:molecular OR abs:protein OR abs:peptide OR abs:drug OR abs:ligand OR abs:conformer OR abs:docking)
+        )
+      )

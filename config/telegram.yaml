@@ -1,0 +1,13 @@
+# Telegram 公开频道（t.me/s/<channel> 预览页，无需登录）
+# 频道来源：TGrpg/awesome-telegram（1239 个公开频道，每天更新）
+# 归属：按用户口径，Telegram 一律算「国外」（平台来源优先于内容语言）
+
+channels:
+  - {name: lpttech, region: overseas}          # AI中文社区（3.5 万）
+  - {name: ai_news_cn, region: overseas}       # ChatGPT / AI 新闻聚合（2.3 万）
+  - {name: sharecentre, region: overseas}      # AI一线（1.6 万）
+  - {name: rollerrolling, region: overseas}    # Roller | Agent Swarms 中文社区（8.5 千）
+  - {name: kdnuggets, region: overseas}        # KDnuggets（英文 AI/DS，2.3 万）
+
+limit: 8              # 每个频道每轮最多取几"新"条（已推过的不会重复）
+use_proxy: true

@@ -1,0 +1,24 @@
+# 国内热榜的取数方式
+# mode: search = 按关键词搜索（推荐，科技含量高）
+#       hot    = 抓全网热搜（社会新闻多，靠词表过滤）
+# keywords 同时用于微博和知乎；per_keyword = 每个词取多少条
+
+weibo:
+  mode: search
+  per_keyword: 3
+  keywords:
+    - AI
+    - 大模型
+    - 人工智能
+    - 芯片
+    - 机器人
+
+zhihu:
+  mode: search
+  per_keyword: 3
+  keywords:
+    - AI
+    - 大模型
+    - 人工智能
+    - 芯片
+    - 机器人
