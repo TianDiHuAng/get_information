@@ -31,7 +31,7 @@ MENU = {
     "内容": (("/", "精选"), ("/all.html", "全部动态"), ("/hot.html", "热点榜"),
              ("/daily.html", "日报"), ("/weekly.html", "周报"), ("/topics.html", "主题"),
              ("/starred.html", "收藏")),
-    "模型": (("/monthly.html", "月报"), ("/timeline.html", "时间线"),
+    "模型": (("/free-tokens.html", "Token 羊毛"), ("/monthly.html", "月报"), ("/timeline.html", "时间线"),
              ("/board.html", "运行看板")),
     "更多": (("/agent.html", "Agent 接入"), ("/about.html", "关于"),
              ("/feedback.html", "反馈"), ("/changelog.html", "更新日志"),
@@ -75,26 +75,26 @@ a{color:inherit;text-decoration:none}
 a:hover{color:var(--accent)}
 .wrap{position:relative;z-index:1;max-width:var(--w);margin:0 auto;padding:0 18px 90px}
 
-/* —— 顶栏（两级） —— */
-.top{position:sticky;top:0;z-index:30;background:rgba(10,10,11,.86);
-     backdrop-filter:blur(14px) saturate(140%);border-bottom:1px solid var(--line)}
-.top .in{max-width:var(--w);margin:0 auto;padding:10px 18px;display:flex;align-items:center;gap:14px}
-.brand{font-family:var(--serif);font-size:20px;font-weight:700;letter-spacing:.04em;
-       background:linear-gradient(92deg,#fff,var(--accent) 78%);-webkit-background-clip:text;
-       background-clip:text;color:transparent;white-space:nowrap}
-.navlinks{display:flex;gap:16px;margin-left:auto;align-items:center;overflow:auto;scrollbar-width:none}
-.navlinks::-webkit-scrollbar{display:none}
-.navlinks a{font-size:14px;color:var(--ink2);white-space:nowrap}
-.navlinks a.on{color:var(--ink);position:relative}
-.navlinks a.on::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;
-                      background:var(--accent);border-radius:2px}
-.subnav{max-width:var(--w);margin:0 auto;padding:0 18px 9px;display:flex;gap:18px;
-        font-size:12px;color:var(--ink3);overflow:auto;scrollbar-width:none}
-.subnav::-webkit-scrollbar{display:none}
-.subnav b{color:var(--ink3);font-weight:500;margin-right:6px}
-.subnav a{white-space:nowrap}
-.subnav span{display:flex;align-items:center}
-
+/* —— 左侧导航栏 + 右侧内容（桌面） —— */
+.shell{display:grid;grid-template-columns:216px minmax(0,1fr);min-height:100vh}
+.side{position:sticky;top:0;height:100vh;overflow:auto;padding:24px 16px 24px 20px;
+      border-right:1px solid var(--line);scrollbar-width:none}
+.side::-webkit-scrollbar{display:none}
+.side .brand{display:block;margin:0 0 26px;font-size:22px}
+.side h4{margin:22px 0 8px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+         color:var(--ink3);font-weight:600}
+.side a{display:block;padding:6px 10px;border-radius:8px;font-size:14px;color:var(--ink2)}
+.side a:hover{background:var(--bg2);color:var(--ink)}
+.side a.on{background:rgba(232,176,75,.12);color:var(--accent);font-weight:600}
+.side .foot{margin-top:26px;padding-top:16px;border-top:1px solid var(--line);
+            font-size:12px;color:var(--ink3)}
+.wrap{max-width:none;margin:0;padding:0 34px 90px;justify-self:center;width:100%;
+      max-width:calc(var(--w) + 68px)}
+@media(max-width:900px){
+  .shell{grid-template-columns:1fr}
+  .side{display:none}
+  .wrap{padding:0 18px 80px;max-width:none}
+}
 /* —— 页头 —— */
 h1.title{font-family:var(--serif);font-size:40px;line-height:1.15;margin:34px 0 18px;
          letter-spacing:-.01em;font-weight:600}
@@ -224,21 +224,17 @@ def esc(text: Any) -> str:
 
 
 def nav_html(active: str = "/") -> str:
-    """两级顶栏：第一行主导航，第二行分组菜单。"""
-    links = []
-    for href, label in NAV:
-        cls = ' class="on"' if href == active else ""
-        links.append(f'<a href="{href}"{cls}>{label}</a>')
-    links.append('<a href="/starred.html">我的</a>')
-    top = (f'<div class="top"><div class="in">'
-           f'<a class="brand" href="/">{BRAND}</a>'
-           f'<nav class="navlinks">{"".join(links)}</nav></div>')
-    groups = []
+    """左侧导航栏：品牌 + 内容 / 模型 / 更多 三组 + 底部小字。手机上隐藏。"""
+    blocks = []
     for name, items in MENU.items():
-        inner = " ".join(f'<a href="{href}">{label}</a>' for href, label in items)
-        groups.append(f'<span><b>{name}</b>{inner}</span>')
-    top += f'<div class="subnav">{"".join(groups)}</div></div>'
-    return top
+        links = []
+        for href, label in items:
+            cls = ' class="on"' if href == active else ""
+            links.append(f'<a href="{href}"{cls}>{label}</a>')
+        blocks.append(f"<h4>{name}</h4>" + "".join(links))
+    foot = "每天 09:00 更新<br>内容与评分均在本机生成"
+    return (f'<aside class="side"><a class="brand" href="/">{BRAND}</a>'
+            + "".join(blocks) + f'<div class="foot">{foot}</div></aside>')
 
 
 def bottom_nav(active: str = "/") -> str:
@@ -280,6 +276,16 @@ def og_tags(title: str, description: str = "") -> str:
     ])
 
 
+def toptabs(active: str = "/") -> str:
+    """内容区顶部的横向 tab（桌面也保留，和左侧栏是两套入口）。"""
+    links = []
+    for href, label in NAV:
+        cls = ' class="on"' if href == active else ""
+        links.append(f'<a href="{href}"{cls}>{label}</a>')
+    links.append('<a href="/starred.html">我的</a>')
+    return f'<div class="navlinks">{"".join(links)}</div>'
+
+
 def page(title: str, body: str, *, active: str = "/", lead: str = "",
          subtitle: str = "", own_heading: bool = False) -> str:
     head = "" if own_heading else f'<h1 class="title">{esc(title)}</h1>'
@@ -288,7 +294,7 @@ def page(title: str, body: str, *, active: str = "/", lead: str = "",
             f'<meta name="viewport" content="width=device-width,initial-scale=1">'
             f'<title>{esc(subtitle or title)}</title>'
             f'{og_tags(title, lead)}<style>{CSS}</style></head><body>'
-            f'{nav_html(active)}<div class="wrap">{head}{lead_html}{body}{footer_html()}</div>'
+            f'<div class="shell">{nav_html(active)}<div class="wrap">{toptabs(active)}{head}{lead_html}{body}{footer_html()}</div></div>'
             f'{bottom_nav(active)}</body></html>')
 
 

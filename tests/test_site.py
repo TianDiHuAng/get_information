@@ -28,7 +28,7 @@ def test_md_escapes_html():
 
 def test_theme_page_has_nav_and_bottom_nav():
     doc = theme.page("标题", "<p>x</p>", active="/all.html", lead="引子")
-    assert 'class="top"' in doc and 'class="bnav"' in doc
+    assert 'class="side"' in doc and 'class="bnav"' in doc
     assert "Z-Bit" in doc and 'class="brand"' in doc
     assert "<style>" in doc
 
