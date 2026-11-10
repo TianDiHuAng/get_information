@@ -141,7 +141,9 @@ button{font-family:inherit}
   .side::-webkit-scrollbar{display:none}
   .side .brand{display:flex;align-items:center;justify-content:center;width:44px;height:44px;
                margin-bottom:12px;color:var(--accent)}
-  .side .mark{font:700 15px/1 var(--font-sans);letter-spacing:.02em}
+  .side .mark{font:800 18px/1 var(--font-sans);letter-spacing:-.02em;color:var(--accent)}
+  .side .mark .full{display:none}
+  .side .mark .short{display:inline}
   .side .sec-title{display:none}
   .side .grp{display:flex;flex-direction:column;gap:4px;width:100%}
   .side a.item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
@@ -155,6 +157,9 @@ button{font-family:inherit}
 @media(min-width:941px){
   .side{width:var(--side-w);align-items:stretch;padding:24px 12px 14px}
   .side .brand{justify-content:flex-start;height:50px;padding:0 4px;margin-bottom:16px;color:var(--ink)}
+  .side .mark{font-size:22px;color:var(--ink);letter-spacing:-.01em}
+  .side .mark .full{display:inline}
+  .side .mark .short{display:none}
   .side .sec-title{display:block;padding:14px 10px 4px;font-size:11px;color:var(--ink-4)}
   .side .grp{gap:4px}
   .side a.item{flex-direction:row;align-items:center;justify-content:flex-start;gap:10px;
@@ -371,7 +376,8 @@ def nav_html(active: str = "/") -> str:
             '<button class="themebtn" type="button" id="themebtn">◐ 跟随系统</button>'
             '</div>')
     return (f'<aside class="side"><a class="brand" href="/" aria-label="{BRAND} 首页">'
-            f'<span class="mark">{BRAND}</span></a>{"".join(blocks)}{foot}</aside>')
+            f'<span class="mark"><span class="short">Z</span>'
+            f'<span class="full">{BRAND}</span></span></a>{"".join(blocks)}{foot}</aside>')
 
 
 def bottom_nav(active: str = "/") -> str:
