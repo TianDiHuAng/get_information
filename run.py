@@ -22,7 +22,7 @@ from pathlib import Path
 sys.stdout.reconfigure(encoding="utf-8", errors="replace", line_buffering=True)
 
 from collector import (alerts, board, breaking, events, export, offline, rating, report, share,
-                       state, store, structure, timeline, topics)
+                       site, state, store, structure, timeline, topics)
 from collector import pushmail
 from collector.archive import save as save_archive
 from collector.digest import build as build_digest
@@ -252,6 +252,18 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True,
               f" · 月报: {rm['monthly']['events']} 件")
     except Exception as e:
         print(f"      周报月报生成失败: {type(e).__name__}: {e}")
+    _done(stage)
+
+    # 整站页面：日报/周报/月报的翻阅页、事件页、搜索页（仿 AIHOT 的站点结构）
+    stage = _stage("site", day)
+    try:
+        sp = site.build(payload, ROOT / "site")
+        payload["stats"]["site"] = sp
+        print(f"      站点: {sp.get('pages', 0)} 个页面"
+              f"（日报 {sp.get('daily', {}).get('issues', 0)} 期"
+              f" · 事件 {sp.get('events', {}).get('events', 0)} 个）")
+    except Exception as e:
+        print(f"      站点页面生成失败: {type(e).__name__}: {e}")
     _done(stage)
 
     # 周一发周报、每月 1 号发月报：不然它们只躺在 data/ 里没人看

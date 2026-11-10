@@ -56,6 +56,10 @@ def render(payload: dict, out_path: Path, history: list[dict] | None = None,
     share_info = stats.get("share") or {}
     og_html = og_tags(f"信息雷达 · {stats['generated_at'][:10]}",
                       share_info.get("lead") or "每天一份 AI 情报日报：五轴评分、事件聚簇、规则编排")
+    # 全站导航：主题 / 事件 / 日报 / 周报 / 月报 / 时间线 / 搜索 / 看板
+    from .site import nav_html
+
+    nav = nav_html("/")
     chips = []
     for s in registry:
         if s["enabled"]:
@@ -198,6 +202,14 @@ def render(payload: dict, out_path: Path, history: list[dict] | None = None,
 <link rel="alternate" type="application/json" title="结构化数据" href="/api/v1/latest.json">
 <style>
   :root {{ color-scheme: dark; }}
+  /* 全站导航条：与 collector/site.py 生成的页面保持一致 */
+  .nav {{ display:flex; flex-wrap:wrap; gap:14px; align-items:center;
+          padding:11px 20px; border-bottom:1px solid #1f2a37;
+          background:#0d131bf2; position:sticky; top:0; z-index:10; }}
+  .nav .brand {{ font-weight:700; color:#e6edf3; margin-right:8px; }}
+  .nav a {{ font-size:13px; color:#9fb0c0; text-decoration:none; }}
+  .nav a:hover {{ color:#7dd3fc; }}
+  .nav a.on {{ color:#7dd3fc; font-weight:600; }}
   * {{ box-sizing: border-box; }}
   body {{ margin:0; background:#0b0f14; color:#e6edf3;
          font:15px/1.6 -apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; }}
@@ -279,6 +291,7 @@ def render(payload: dict, out_path: Path, history: list[dict] | None = None,
 </style>
 </head>
 <body>
+{nav}
 <div class="wrap">
   <header>
     <h1>信息雷达</h1>
