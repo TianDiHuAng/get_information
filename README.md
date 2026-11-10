@@ -51,10 +51,15 @@ cp config/aa.example.yaml      config/aa.yaml
 # 3) 跑一轮
 python run.py            # 完整一轮（含 LLM 评分）
 python run.py --skip-rate  # 跳过 LLM 评分：断网或只想调样式时用
+python run.py --no-mail    # 不发日报邮件（首次试跑推荐）
+python run.py --fresh      # 忽略断点状态，强制重新抓取
 
 # 4) 看站点
 python serve.py        # http://localhost:8123
 ```
+
+**断点续跑**：抓取完成后会写 `data/state-<日期>.json`。中途失败重跑时会跳过抓取与补正文，
+直接接上后面的阶段（模型调用有回执保护，重跑不花钱）。状态超过 12 小时自动作废，跑完即删。
 
 定时：`watchdog.bat`（Windows）每天 09:00 跑一次，并发送日报。
 
