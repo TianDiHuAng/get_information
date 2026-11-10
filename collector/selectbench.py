@@ -144,6 +144,41 @@ def candidates(day: str | None = None, limit: int = 300) -> list[dict[str, Any]]
     return rows
 
 
+def row_for_item(item: dict[str, Any], split: str = "development",
+                 stratum: str = "") -> dict[str, Any]:
+    """对外暴露的一行格式（make_gold 也用它，保证两种入口写出的文件一模一样）。"""
+    return _row_for(item, split=split, stratum=stratum)
+
+
+def stratified_sample(items: list[dict[str, Any]], per_stratum: int = 8,
+                      band: tuple[float, float] = (40.0, 90.0)) -> list[dict[str, Any]]:
+    """按分类分层抽样，每层最多 `per_stratum` 条，层内优先取门槛附近的难例。
+
+    为什么要分层：只按分数挑难例，会让"发布类"样本占满 —— 那样分层统计没有意义，
+    某些分类（论文、教程、羊毛）一条样本都没有，改这些类的提示词时毫无依据。
+    """
+    groups: dict[str, list[tuple[float, dict[str, Any]]]] = {}
+    for it in items:
+        score = (it.get("extra") or {}).get("score")
+        if score is None and (it.get("attention") or {}).get("score") is None:
+            continue
+        value = float((it.get("attention") or {}).get("score") or score or 0)
+        stratum = (it.get("structure") or {}).get("category") or "未分层"
+        groups.setdefault(stratum, []).append((value, it))
+
+    picked: list[dict[str, Any]] = []
+    for stratum in sorted(groups):
+        pool = groups[stratum]
+        inside = [x for x in pool if band[0] <= x[0] <= band[1]]
+        outside = [x for x in pool if not (band[0] <= x[0] <= band[1])]
+        # 难例优先；不够再用同层的其它样本补，保证每层都有代表
+        inside.sort(key=lambda x: abs(x[0] - (band[0] + band[1]) / 2))
+        outside.sort(key=lambda x: -x[0])
+        chosen = (inside + outside)[:per_stratum]
+        picked.extend(it for _s, it in chosen)
+    return picked
+
+
 def label(item_id: int, decision: str, split: str = "development",
           stratum: str = "") -> dict[str, Any]:
     """给一条打标并落盘。`decision` 必须是 select / reject / either。

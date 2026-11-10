@@ -225,3 +225,29 @@ def test_admin_tab_renders_buttons(tmpdb, gold_file):
     assert 'data-label=' in doc and 'data-decision="reject"' in doc
     assert "/api/gold" in doc
     assert "已标" in doc
+
+
+def test_stratified_sample_covers_every_stratum():
+    """每个分类都要有样本 —— 只按分数挑会让发布类占满。"""
+    items = []
+    for i, (cat, score) in enumerate([("model_release", 80), ("research_paper", 50),
+                                      ("tutorial_explainer", 30), ("deal", 60)]):
+        items.append({"title": f"t{i}", "structure": {"category": cat},
+                      "extra": {"score": score}, "attention": {}})
+    picked = selectbench.stratified_sample(items, per_stratum=1)
+    cats = {p["structure"]["category"] for p in picked}
+    assert cats == {"model_release", "research_paper", "tutorial_explainer", "deal"}
+
+
+def test_stratified_sample_respects_cap_and_prefers_band():
+    items = [{"title": f"n{i}", "structure": {"category": "noise"},
+              "extra": {"score": 95 if i == 0 else 50 + i}, "attention": {}} for i in range(6)]
+    picked = selectbench.stratified_sample(items, per_stratum=2, band=(40, 90))
+    assert len(picked) == 2
+    # 层内优先门槛附近的（50、51），而不是 95 那条离得很远的
+    assert all(40 <= p["extra"]["score"] <= 90 for p in picked)
+
+
+def test_stratified_sample_skips_items_without_scores():
+    items = [{"title": "a", "structure": {"category": "x"}, "extra": {}, "attention": {}}]
+    assert selectbench.stratified_sample(items) == []
