@@ -10,13 +10,10 @@ from urllib.parse import parse_qsl, urlencode, urlparse, urlunparse
 
 import yaml
 
+from .identity import bigrams, canonical_url, item_identity, jaccard, title_key  # noqa: F401  (对外保持原名字)
 from .model import Item
 from .sources import REGISTRY, build_fetchers, region_of
 
-DROP_PARAMS = {
-    "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content",
-    "spm", "from", "share_token", "ref", "ref_src", "fbclid", "gclid",
-}
 TOPICS_PATH = Path(__file__).parent.parent / "config" / "topics.yaml"
 
 

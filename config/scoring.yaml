@@ -1,0 +1,62 @@
+# 注意力评分：口径与门槛
+#
+# 吸收自 AIHOT 的 industry/selection.ts + industry/prompts/selection-score.md，
+# 但做了一处改进：**模型只给五轴分数与内容类型，权重在代码里合成**。
+#   好处一：模型不做算术，不会因为「11 分算成 12」毁掉一条结果；
+#   好处二：调口味只要改这张表，不用重写提示词、也不会让历史回执全部失效。
+#
+# 五轴各 0–10 整数，每行权重和 = 10，所以加权结果天然是 0–100。
+
+enabled: true
+
+# 预筛：先挡掉明显无关的，省掉一半评分调用（BLOCK 直接出局）
+prefilter: true
+
+# 独立打分次数：两次之和 ≥ 2 × 门槛才入选，展示平均分。
+# 用两倍调用换稳定性，比调温度划算（AIHOT 同样用 2）。
+score_calls: 2
+
+# 内容类型 → 五轴权重（sig 实质份量 / nov 信息增量 / cred 证据强度 / reson 共振面 / act 可用性）
+weights:
+  model_release:      {sig: 3, nov: 2, cred: 2, reson: 2, act: 1}
+  product_launch:     {sig: 2, nov: 2, cred: 1, reson: 2, act: 3}
+  tool_or_prompt:     {sig: 1, nov: 2, cred: 1, reson: 2, act: 4}
+  research_paper:     {sig: 5, nov: 3, cred: 1, reson: 0, act: 1}
+  industry_event:     {sig: 3, nov: 1, cred: 2, reson: 4, act: 0}
+  opinion_analysis:   {sig: 1, nov: 3, cred: 1, reson: 4, act: 1}
+  tutorial_explainer: {sig: 1, nov: 1, cred: 1, reson: 3, act: 4}
+  deal:               {sig: 1, nov: 1, cred: 2, reson: 3, act: 3}
+
+# 信源分层 → 入选门槛（平均分）。官方一手低一些，媒体与社媒高一些。
+# 这组数是起始值，**必须用你自己的金标重新校准**（tools/eval_selection.py）。
+thresholds:
+  primary: 58   # 官方博客/实验室/arXiv 一手
+  rank: 66      # HN / GitHub / 头条 / B站 榜单
+  broad: 68     # 36氪 / IT之家 / 少数派
+  search: 74    # Google News 搜索
+  social: 76    # 微博 / 知乎 / X / Telegram
+
+# 单个信源的覆盖（比分层更细；只抬不降）
+sources:
+  # x: 78
+  # weibo: 80
+
+# 平均分高于它的未入选条目，也按精选的写法写（标题+摘要+理由）
+understand_floor: 50
+# 「全部动态」只出平均分不低于它的条目；0 = 全出
+browse_floor: 40
+
+# 单次评分喂给模型的最大字符数（标题+摘要+正文片段）
+max_chars: 3000
+# 每轮最多评多少条（0 = 全部）。设了上限就按老分从高到低取，先评最像新闻的。
+max_items: 0
+# 并发调用数（本地网关一般 4 就够；云端可以开到 8）
+max_workers: 4
+# 只有标题、没有任何摘要时的证据上限：材料再少，cred 不能超过这个数
+title_only_cred_cap: 4
+
+# 排序分 = attention × w + 老分 × w
+# 判断为主，时效/热度/层权重只做轻微修正（老分保留在 extra.legacy_score）
+blend:
+  attention: 0.8
+  legacy: 0.2

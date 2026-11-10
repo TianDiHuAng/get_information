@@ -22,6 +22,7 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 W, H = 1080, 1440
 
 PAPER = (242, 239, 232)
@@ -250,23 +251,30 @@ def make(base_fig: Path | None, out: Path, title: str, sub: str, kicker: str, fo
 
         note_font = _font(FONT_HAND, 44)
         note = "重点在这"
-        nx, ny = cx + framed.width - 130, cy + framed.height - 26
+        nx, ny = cx + 26, cy + framed.height + 18
         ad.text((nx, ny), note, font=note_font, fill=RED + (235,))
         # 从批注指向圈的一条手绘弧线
         arc = []
         for i in range(24):
             t = i / 23.0
             arc.append((
-                nx - 10 - t * (nx - 10 - (ex + rx + 6)) * 0.92,
-                ny + 6 + math.sin(t * math.pi) * -46,
+                nx + 90 + t * max(20, (ex - rx - 30) - (nx + 90)),
+                ny - 8 - math.sin(t * math.pi) * 40,
             ))
         ad.line(arc, fill=RED + (200,), width=4, joint="curve")
         img.alpha_composite(ann)
 
+    # 握笔的手（从右下伸入，笔尖落在图上）
+    try:
+        from hand_art import paste_hand
+        paste_hand(img, (W - 430, H - 640), angle=-18, scale=0.74)
+    except Exception as e:
+        print('hand skipped:', e)
+
     # 页脚
     d = ImageDraw.Draw(img)
     fk = _font(FONT_HAND2, 30)
-    d.text((88, 96), kicker, font=fk, fill=(150, 110, 60, 255))
+    d.text((88, 96), kicker.replace(" ", "  "), font=fk, fill=(150, 110, 60, 255))
     ff = _font(FONT_SANS, 24)
     d.text((88, H - 108), footer_left, font=ff, fill=(140, 136, 128, 255))
     tw = d.textlength(footer_right, font=ff)
