@@ -565,7 +565,51 @@ AIHOT 的站是"一个公开读取层，多个出口"，页面大致是
 **验收**：284 个测试全绿（新增 8 个：开关持久化、停用后不再被抓、试抓不入库、
 超时与未知源的处理）。
 
-### P21 收尾（下一步）
+### P30（本轮已完成）换成你行业的整套机制
+
+读 `docs/customize.md`（15KB，八节）后照做。它的核心不是"改哪几个值"，而是
+**把"换行业"变成换一套配置，且让"改了一半"能被检查出来**。
+
+**已经实现的**
+
+| 它的一节 | 这里的对应 | 状态 |
+|---|---|---|
+| 1 站名与文案 | `config/industry.yaml`（name/tagline/description/edition/pack） | ✅ |
+| 2 分类标签主题 | `config/taxonomy.yaml` + `config/topics.yaml`（行业包可覆盖） | ✅ |
+| 3 信源 | `tier` / `participation_mode` / `site_fulltext` / `syndicate_fulltext` / `owner_entity_id`；`config/sources.yaml` 逐源覆盖；`isolated` 不参与抓取 | ✅ |
+| 4 精选标准 | `config/prompts/*.md`（原有，行业包可覆盖） | ✅ |
+| 5 门槛与校准 | `config/industry.yaml` 的 `tiers` + `tools/eval_selection.py` | ✅ |
+| 6 品牌 | 站名读配置；分享图已有 | ✅ |
+| 7 页面文案 | `collector/site.py` 的 `_ABOUT/_TERMS/_PRIVACY` | ⚠️ 模板，上线前要改 |
+| 8 模型 | `config/llm.yaml` | ✅ |
+| 附带 | `site/public/` 四个固定文件 + sitemap | ✅ 本轮补 |
+
+**两个新模块**
+
+- `collector/industry.py`：行业包（`industry/<slug>/` 覆盖 `config/`）+ `validate()`
+- `collector/wording.py`：改用词。四条安全边界 —— 数字变了 / 变空 / 模型失败 / 词表为空，
+  全部保留原文；词表空着**一次都不调用**
+
+**`validate()` 能抓的九类问题**（都不会崩溃，但会让页面悄悄变空）：
+
+`prompt.category`（分类改了提示词没同步）、`prompt.missing`、`taxonomy.dup`、
+`topic.tag`、`topic.entity`、`source.owner`、`threshold.drift`、
+`threshold.uncalibrated`（换了行业却沿用 AI 门槛）、`wording.regex`
+
+**实测**：建 `demo` 包并切过去，`check` 立刻报出 4 个分类没进提示词 ——
+这正是换行业时最容易犯、最难自己发现的错。
+
+**还没实现的（它的细节，我没做）**
+
+- `PUBLIC_CATEGORIES`（对外合并分类）、`SITE.interfaceVersion` 版本演进策略
+- `NAV.hidden`（隐藏导航但地址仍可达）
+- `ACCESS.ratePerMinute`（限流说明与实际一致）
+- `topics.json` 的三分组（company / field / genre）
+- `IDENTITY_LEXICON` / `PUBLISHER_DOMAINS` / `IDENTITY_CONTEXT_ALIASES`（防张冠李戴的完整词典）
+- 报头字 nameplates 生成、og-fonts 缺字回退链
+- 按步骤切模型（`site/models.ts` 那一套）
+
+### P31 收尾（下一步）
 
 ---
 
