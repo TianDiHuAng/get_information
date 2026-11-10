@@ -1,15 +1,16 @@
-"""整站页面：仿 AIHOT 的网站结构，把已经算好的东西都摊开来。
+"""整站页面：对齐 AIHOT 的信息架构，视觉换成本项目的纸感风格。
 
-AIHOT 的站是"一个公开读取层，多个出口"，页面大致是：
-精选 / 全部 / 热门(事件) / 主题 / 日报 / 周报 / 月报 / 事件页 / 搜索。
+AIHOT 的公开站是这些模块（按 `apps/web/app/routes.ts`）：
+精选 / 全部动态 / 文章页 / 原文 / 热门 / 事件页 / 日报(列表·详情·归档) /
+周报 / 月报 / 主题(列表·详情·分页) / 关于 / 条款 / 隐私 / 更新日志 /
+反馈 / 更多 / 收藏 / 给 Agent 用。
 
-我们之前只有首页 + 主题 + 时间线 + 看板 —— 数据和接口都在，但没人能点进去看。
-这个模块补齐剩下的：日报（按期）、周报月报、事件榜与事件页、搜索页，以及一条统一导航。
+这里逐个对上，另外加上本项目的四块：时间线、运行看板、离线版、纯前端搜索。
 
-三条原则：
-1. **只读已有结果**，不在这里重新判断、不调模型；
-2. 每页自带样式与导航，不依赖外部资源（`python -m http.server` 也能看）；
-3. 任何一页失败不影响其他页 —— 整站生成是"尽力而为"，不是全有或全无。
+约定：
+- 页面只读已有结果，不调模型；
+- 每页自带样式（`theme.py`），不依赖外部资源；
+- 任何一页失败只影响它自己。
 """
 
 from __future__ import annotations
@@ -22,65 +23,17 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from . import edition, report, store, timeline
+from . import store, theme
 
 ROOT = Path(__file__).parent.parent
 SITE = ROOT / "site"
 DATA = ROOT / "data"
 
-NAV = (
-    ("/", "今日"),
-    ("/topics.html", "主题"),
-    ("/events.html", "事件"),
-    ("/daily.html", "日报"),
-    ("/weekly.html", "周报"),
-    ("/monthly.html", "月报"),
-    ("/timeline.html", "时间线"),
-    ("/search.html", "搜索"),
-    ("/board.html", "看板"),
-)
-
-_CSS = """
-:root { color-scheme: dark; }
-* { box-sizing: border-box; }
-body { margin:0; background:#0b0f14; color:#e6edf3;
-       font:15px/1.7 -apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; }
-a { color:#7dd3fc; text-decoration:none; }
-a:hover { text-decoration:underline; }
-.nav { display:flex; flex-wrap:wrap; gap:14px; align-items:center;
-       padding:12px 20px; border-bottom:1px solid #1f2a37; background:#0d131b;
-       position:sticky; top:0; z-index:10; }
-.nav .brand { font-weight:700; color:#e6edf3; margin-right:8px; }
-.nav a { font-size:13px; color:#9fb0c0; }
-.nav a.on { color:#7dd3fc; font-weight:600; }
-.wrap { max-width:900px; margin:0 auto; padding:26px 20px 70px; }
-h1 { font-size:21px; margin:0 0 4px; }
-.sub { color:#6b7785; font-size:12px; margin-bottom:24px; }
-h2 { font-size:15px; color:#b7c3d0; margin:30px 0 12px; padding-bottom:7px;
-     border-bottom:1px solid #1f2a37; }
-ol, ul { padding-left:20px; margin:0; }
-li { margin:8px 0; }
-.meta { color:#6b7785; font-size:12px; margin-left:6px; }
-.sum { color:#9fb0c0; font-size:13px; margin:2px 0 0; }
-.muted { color:#6b7785; }
-.card { border:1px solid #1f2a37; border-radius:10px; padding:13px 15px; background:#0f151d;
-        margin-bottom:12px; }
-.card h3 { font-size:15px; margin:0 0 6px; }
-.tag { display:inline-block; border:1px solid #22303d; background:#16202b; color:#9fb0c0;
-       border-radius:999px; padding:1px 9px; font-size:11px; margin:2px 5px 2px 0; }
-.kv { color:#6b7785; font-size:12px; }
-blockquote { margin:10px 0; padding:8px 14px; border-left:3px solid #1f2a37; color:#9fb0c0; }
-table { width:100%; border-collapse:collapse; font-size:13px; }
-th, td { text-align:left; padding:5px 8px; border-bottom:1px solid #18212b; }
-th { color:#6b7785; font-weight:500; }
-input[type=search] { width:100%; padding:10px 12px; font-size:15px; border-radius:8px;
-                     border:1px solid #22303d; background:#0f151d; color:#e6edf3; }
-footer { margin-top:40px; color:#4b5563; font-size:11px; }
-"""
-
+PAGE_SIZE = 20           # 全部动态：每页多少条
+HOT_LIMIT = 40           # 热门：多少个事件
 
 # --------------------------------------------------------------------------- #
-# Markdown → HTML（只支持我们自己的日报用到的语法）
+# Markdown → HTML（只支持日报/周报用到的语法）
 # --------------------------------------------------------------------------- #
 
 _INLINE = (
@@ -88,19 +41,13 @@ _INLINE = (
     (re.compile(r"\*\*([^*]+)\*\*"), r"<strong>\1</strong>"),
     (re.compile(r"`([^`]+)`"), r"<code>\1</code>"),
 )
-# 有序列表的 "12. " 前缀（Python 3.11 的 f-string 里不能写反斜杠，所以提到外面）
 ORDERED = re.compile(r"^\d+\.\s")
 
 
 def md_to_html(text: str) -> str:
-    """把日报/周报的 Markdown 转成 HTML。
-
-    刻意只支持我们实际用到的几种语法（标题、列表、引用、表格不需要），
-    引第三方 Markdown 库会把一件小事变成一个依赖。
-    """
+    """把日报/周报的 Markdown 转成 HTML。刻意只支持实际用到的语法。"""
     out: list[str] = []
-    in_ul = False
-    in_ol = False
+    in_ul = in_ol = False
 
     def close_lists() -> None:
         nonlocal in_ul, in_ol
@@ -112,7 +59,7 @@ def md_to_html(text: str) -> str:
             in_ol = False
 
     def inline(s: str) -> str:
-        s = html.escape(s)
+        s = theme.esc(s)
         for pattern, repl in _INLINE:
             s = pattern.sub(repl, s)
         return s
@@ -133,23 +80,21 @@ def md_to_html(text: str) -> str:
             out.append(f"<h3>{inline(line[4:])}</h3>")
         elif line.startswith("> "):
             close_lists()
-            out.append(f"<blockquote>{inline(line[2:])}</blockquote>")
-        elif re.match(r"^\d+\.\s", line):
+            out.append(f'<p class="muted">{inline(line[2:])}</p>')
+        elif ORDERED.match(line):
             if not in_ol:
                 close_lists()
-                out.append("<ol>")
+                out.append('<ol class="list">')
                 in_ol = True
             out.append("<li>" + inline(ORDERED.sub("", line)) + "</li>")
         elif line.startswith("- "):
             if not in_ul:
                 close_lists()
-                out.append("<ul>")
+                out.append('<ul class="list">')
                 in_ul = True
             out.append(f"<li>{inline(line[2:])}</li>")
-        elif line.startswith("   ") and (in_ul or in_ol):
-            # 缩进续行：并到上一条里
-            if out:
-                out[-1] = out[-1][:-5] + " " + inline(line.strip()) + "</li>"
+        elif line.startswith("   ") and (in_ul or in_ol) and out:
+            out[-1] = out[-1][: -len("</li>")] + " " + inline(line.strip()) + "</li>"
         elif line.strip() == "---":
             close_lists()
             out.append("<hr>")
@@ -161,73 +106,250 @@ def md_to_html(text: str) -> str:
 
 
 # --------------------------------------------------------------------------- #
-# 页面骨架
+# 公共片段
 # --------------------------------------------------------------------------- #
 
-def _esc(text: Any) -> str:
-    return html.escape(str(text or ""))
+def _write(path: Path, doc: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(doc, encoding="utf-8")
 
 
-def nav_html(active: str) -> str:
-    links = []
-    for href, label in NAV:
-        cls = ' class="on"' if href == active else ""
-        links.append(f'<a href="{href}"{cls}>{label}</a>')
-    return f'<div class="nav"><span class="brand">信息雷达</span>{"".join(links)}</div>'
+def _axes(att: dict[str, Any]) -> str:
+    axes = att.get("axes") or {}
+    if not axes:
+        return ""
+    cells = []
+    for key, label in (("sig", "份量"), ("nov", "增量"), ("cred", "证据"),
+                       ("reson", "共鸣"), ("act", "可用")):
+        value = float(axes.get(key) or 0)
+        cells.append(f'<div class="axis"><div class="bar"><i style="width:{value * 10:.0f}%"></i></div>'
+                     f'{label} {value:g}</div>')
+    return f'<div class="axes">{"".join(cells)}</div>'
 
 
-def shell(title: str, body: str, *, active: str = "", sub: str = "") -> str:
-    sub_html = f'<div class="sub">{sub}</div>' if sub else ""
-    return (f'<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">'
-            f'<meta name="viewport" content="width=device-width,initial-scale=1">'
-            f'<title>{_esc(title)}</title><style>{_CSS}</style></head><body>'
-            f'{nav_html(active)}<div class="wrap"><h1>{_esc(title)}</h1>{sub_html}{body}'
-            f'<footer>只读生成，不调模型。数据来自每日采集与评分结果。</footer>'
-            f'</div></body></html>')
+def _score_block(att: dict[str, Any]) -> str:
+    if not att.get("available"):
+        return ""
+    score = att.get("score")
+    thr = att.get("threshold")
+    reason = theme.esc(att.get("reason") or "")
+    return (f'<div class="row" style="margin-top:10px;">'
+            f'<span class="score">{theme.esc(score)}<small> / 门槛 {theme.esc(thr)}</small></span>'
+            f'<span class="badge">{theme.esc(att.get("itype") or "")}</span>'
+            f'</div>{_axes(att)}'
+            + (f'<div class="reason">{reason}</div>' if reason else ""))
+
+
+_FB_JS = """
+<script>
+document.addEventListener('click', function (e) {
+  var el = e.target.closest('.fb');
+  if (!el) return;
+  e.preventDefault(); e.stopPropagation();
+  var url = el.dataset.url, kind = el.dataset.kind;
+  fetch('/api/feedback', {method:'POST', headers:{'content-type':'application/json'},
+    body: JSON.stringify({url:url, kind:kind})})
+    .then(function(r){return r.json()}).then(function(j){
+      if (!j.ok) return;
+      el.parentNode.querySelectorAll('.fb').forEach(function(b){b.classList.remove('on')});
+      el.classList.add('on');
+    }).catch(function(){});
+});
+</script>"""
+
+
+def _fb_buttons(url: str) -> str:
+    u = theme.esc(url)
+    return (f'<span class="fb" data-url="{u}" data-kind="up" title="有用：以后多推这类">👍</span>'
+            f'<span class="fb" data-url="{u}" data-kind="down" title="没用：以后少推这类">👎</span>'
+            f'<span class="fb" data-star="{u}" title="收藏到本机">☆</span>')
+
+
+_STAR_JS = """
+<script>
+(function(){
+  var key='radar.starred';
+  function load(){try{return JSON.parse(localStorage.getItem(key)||'[]')}catch(e){return []}}
+  function save(v){try{localStorage.setItem(key,JSON.stringify(v))}catch(e){}}
+  document.addEventListener('click', function(e){
+    var el=e.target.closest('[data-star]'); if(!el) return;
+    e.preventDefault(); e.stopPropagation();
+    var url=el.dataset.star;
+    var list=load(), i=list.indexOf(url);
+    if(i<0){list.push(url); el.textContent='★'; el.classList.add('on');}
+    else{list.splice(i,1); el.textContent='☆'; el.classList.remove('on');}
+    save(list);
+  });
+  var list=load();
+  if(list.length){document.querySelectorAll('[data-star]').forEach(function(el){
+    if(list.indexOf(el.dataset.star)>=0){el.textContent='★'; el.classList.add('on');}});}
+})();
+</script>"""
+
+
+# --------------------------------------------------------------------------- #
+# 精选之外的三条主列表
+# --------------------------------------------------------------------------- #
+
+def build_all(day: str | None = None, site_root: Path | None = None) -> dict[str, Any]:
+    """`/all.html` + `/all/<n>.html`：当天全部条目，带分页。"""
+    root = site_root or SITE
+    rows = store.all_items(day)
+    pages = max(1, (len(rows) + PAGE_SIZE - 1) // PAGE_SIZE)
+    written = 0
+    for page in range(1, pages + 1):
+        chunk = rows[(page - 1) * PAGE_SIZE: page * PAGE_SIZE]
+        cards = []
+        for it in chunk:
+            att = it.get("attention") or {}
+            cats = (it.get("structure") or {}).get("category")
+            badge = f'<span class="badge">{theme.esc(cats)}</span>' if cats else ""
+            crowd = ""
+            if int(it.get("event_size") or 0) > 1:
+                crowd = f'<span class="badge hot">{it["event_size"]} 篇</span>'
+            score = f'<span>{theme.esc(att.get("score"))}</span>' if att.get("available") else ""
+            cards.append(
+                f'<div class="card"><h3><a href="/items/{it["id"]}.html">{theme.esc(it["title"])}</a></h3>'
+                f'<div class="row">{theme.esc(it["source"])}<span class="dot"></span>'
+                f'{theme.esc((it.get("published") or "")[:10])}{badge}{crowd}{score}</div>'
+                f'<div class="sum">{theme.esc(" ".join(str(it.get("summary") or "").split())[:150])}</div>'
+                f'</div>')
+        pager = []
+        if page > 1:
+            prev = "/all.html" if page == 2 else f"/all/{page - 1}.html"
+            pager.append(f'<a href="{prev}">← 上一页</a>')
+        if page < pages:
+            pager.append(f'<a href="/all/{page + 1}.html">下一页 →</a>')
+        body = ("".join(cards) or '<p class="muted">今天还没有条目。</p>') + \
+               (f'<div class="row" style="justify-content:space-between;margin-top:18px;">'
+                f'{"".join(pager)}</div>' if pager else "")
+        target = root / "all.html" if page == 1 else root / "all" / f"{page}.html"
+        _write(target, theme.page(
+            "全部动态", body, active="/all.html",
+            lead=f'今天 <b>{len(rows)}</b> 条 · 第 {page}/{pages} 页 · 按排序分从高到低'))
+        written += 1
+    return {"file": str(root / "all.html"), "items": len(rows), "pages": written}
+
+
+def build_hot(day: str | None = None, site_root: Path | None = None) -> dict[str, Any]:
+    """`/hot.html`：按事件热度排的榜（不是按文章数）。"""
+    root = site_root or SITE
+    try:
+        rows = store.event_dump(days=14, day=day)
+        heat = store.latest_heat()
+    except Exception as e:
+        _write(root / "hot.html", theme.page("热门事件", f'<p class="muted">暂不可用：{theme.esc(e)}</p>',
+                                             active="/hot.html"))
+        return {"file": str(root / "hot.html"), "events": 0, "error": str(e)}
+
+    buckets: dict[int, dict[str, Any]] = {}
+    for row in rows:
+        eid = row.get("event_id")
+        if eid is None:
+            continue
+        b = buckets.setdefault(int(eid), {"id": int(eid), "title": row.get("event_title") or "",
+                                          "first": row.get("first_at") or "", "sources": set()})
+        b["sources"].add(row.get("source") or "")
+    ranked = sorted(buckets.values(),
+                    key=lambda b: (-(heat.get(b["id"], 0.0)), -len(b["sources"]), b["first"]))
+    ranked = ranked[:HOT_LIMIT]
+
+    items = []
+    for i, b in enumerate(ranked, 1):
+        h = heat.get(b["id"], 0.0)
+        items.append(
+            f'<div class="card"><div class="row"><span class="score">{i:02d}</span>'
+            f'<span>热度 {h:g}</span><span class="dot"></span>'
+            f'<span>{len(b["sources"])} 家</span></div>'
+            f'<h3><a href="/events/{b["id"]}.html">{theme.esc(b["title"])}</a></h3></div>')
+    _write(root / "hot.html", theme.page(
+        "热门事件", "".join(items) or '<p class="muted">还没有可以排的事件。</p>',
+        active="/hot.html", lead="按事件热度排序：48 小时窗口、每个独立来源算一次、24 小时减半"))
+    return {"file": str(root / "hot.html"), "events": len(ranked)}
+
+
+def build_items(day: str | None = None, site_root: Path | None = None) -> dict[str, Any]:
+    """`/items/<id>.html`：单条详情（评分理由 + 正文 + 同事件其他报道）。"""
+    root = site_root or SITE
+    rows = store.all_items(day)
+    written = 0
+    for it in rows:
+        detail = store.item_detail(int(it["id"]))
+        if not detail:
+            continue
+        att = detail.get("attention") or {}
+        st = detail.get("structure") or {}
+        tags = "".join(f'<span class="tag">{theme.esc(t)}</span>' for t in (st.get("tags") or []))
+        subjects = "".join(f'<span class="tag">{theme.esc(s)}</span>' for s in (st.get("subjects") or []))
+        body = detail.get("body") or ""
+        body_html = ""
+        if body:
+            paras = [p for p in body.split("\n") if p.strip()]
+            body_html = ('<h2>正文摘录</h2>' +
+                         "".join(f"<p>{theme.esc(p)}</p>" for p in paras[:20]))
+
+        sib = ""
+        if detail.get("siblings") and len(detail["siblings"]) > 1:
+            lis = "".join(
+                f'<li><a href="{theme.esc(s["url"])}" target="_blank" rel="noopener">'
+                f'{theme.esc(s["title"])}</a><span class="muted small"> · {theme.esc(s["source"])}</span></li>'
+                for s in detail["siblings"] if int(s["id"]) != int(detail["id"]))
+            if lis:
+                sib = (f'<h2>同一件事的其他报道 <small>'
+                       f'<a href="/events/{detail["event_id"]}.html">事件页 →</a></small></h2>'
+                       f'<ul class="list">{lis}</ul>')
+
+        inner = (
+            f'<div class="row">{theme.esc(detail["source"])}<span class="dot"></span>'
+            f'{theme.esc((detail.get("published") or "")[:10])}'
+            f'<span class="badge">{theme.esc(detail.get("layer") or "")}</span>'
+            f'{_fb_buttons(detail.get("url") or "")}</div>'
+            + (f'<p class="sum">{theme.esc(detail.get("summary") or "")}</p>'
+               if detail.get("summary") else "")
+            + (f'<div style="margin-top:8px;">{tags}{subjects}</div>' if tags or subjects else "")
+            + _score_block(att)
+            + f'<p class="small" style="margin-top:14px;">'
+              f'<a href="{theme.esc(detail["url"])}" target="_blank" rel="noopener">阅读原文 →</a></p>'
+            + body_html + sib)
+        _write(root / "items" / f'{detail["id"]}.html', theme.page(
+            detail["title"], inner, active="/all.html",
+            lead=f'<a href="/all.html">← 全部动态</a>'))
+        written += 1
+    return {"dir": str(root / "items"), "items": written}
 
 
 # --------------------------------------------------------------------------- #
 # 日报 / 周报 / 月报
 # --------------------------------------------------------------------------- #
 
-def _issues(prefix: str, folder: Path | None = None) -> list[Path]:
-    # 用模块级 DATA 的当前值（而不是定义时的默认值），测试和换目录才生效
-    base = folder or DATA
-    return sorted(base.glob(f"{prefix}-*.md"), reverse=True)
+def _issues(prefix: str) -> list[Path]:
+    return sorted((DATA).glob(f"{prefix}-*.md"), reverse=True)
 
 
 def build_issue_index(kind: str, *, site_root: Path | None = None) -> dict[str, Any]:
-    """`/daily.html` / `/weekly.html` / `/monthly.html`：期号列表。"""
     root = site_root or SITE
-    files = _issues({"daily": "digest", "weekly": "weekly", "monthly": "monthly"}[kind])
+    prefix = {"daily": "digest", "weekly": "weekly", "monthly": "monthly"}[kind]
     label = {"daily": "日报", "weekly": "周报", "monthly": "月报"}[kind]
-    rows = []
-    for path in files:
-        day = path.stem.split("-", 1)[1]
-        size = path.stat().st_size // 1024
-        rows.append(
-            f'<div class="card"><h3><a href="/{kind}/{_esc(day)}.html">{_esc(day)} · {label}</a></h3>'
-            f'<div class="kv">{size} KB</div></div>')
-    body = "".join(rows) or '<p class="muted">还没有出刊记录。跑一次 python run.py 就会生成。</p>'
-    out = root / f"{kind}.html"
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(shell(f"信息雷达 · {label}", body, active=f"/{kind}.html",
-                         sub=f"共 {len(files)} 期"), encoding="utf-8")
-
+    files = _issues(prefix)
+    cards = "".join(
+        f'<div class="card"><h3><a href="/{kind}/{theme.esc(p.stem.split("-", 1)[1])}.html">'
+        f'{theme.esc(p.stem.split("-", 1)[1])}</a></h3>'
+        f'<div class="row">{p.stat().st_size // 1024} KB</div></div>' for p in files)
+    _write(root / f"{kind}.html", theme.page(
+        label, cards or '<p class="muted">还没有出刊记录。跑一次 <code>python run.py</code> 就会生成。</p>',
+        active=f"/{kind}.html", lead=f'共 {len(files)} 期 · 按日期倒序'))
     written = 1
-    for path in files:
-        day = path.stem.split("-", 1)[1]
-        target = root / kind / f"{day}.html"
-        target.parent.mkdir(parents=True, exist_ok=True)
+    for p in files:
+        day = p.stem.split("-", 1)[1]
         try:
-            md = path.read_text(encoding="utf-8")
+            md = p.read_text(encoding="utf-8")
         except OSError:
             continue
-        target.write_text(shell(f"{label} · {day}", md_to_html(md), active=f"/{kind}.html",
-                                sub=f'<a href="/{kind}.html">← 全部{label}</a>'),
-                          encoding="utf-8")
+        _write(root / kind / f"{day}.html", theme.page(
+            f"{label} · {day}", md_to_html(md), active=f"/{kind}.html",
+            lead=f'<a href="/{kind}.html">← 全部{label}</a>'))
         written += 1
-    return {"file": str(out), "issues": len(files), "pages": written}
+    return {"file": str(root / f"{kind}.html"), "issues": len(files), "pages": written}
 
 
 # --------------------------------------------------------------------------- #
@@ -235,53 +357,42 @@ def build_issue_index(kind: str, *, site_root: Path | None = None) -> dict[str, 
 # --------------------------------------------------------------------------- #
 
 def _event_rows() -> list[dict[str, Any]]:
-    """事件 + 成员数/来源数。用 event_dump 一次拿全，避免 N+1 查询。"""
     try:
-        rows = store.event_dump(days=120)
+        return store.event_dump(days=120)
     except Exception:
         return []
+
+
+def build_events(site_root: Path | None = None) -> dict[str, Any]:
+    root = site_root or SITE
+    rows = _event_rows()
     buckets: dict[int, dict[str, Any]] = {}
     for row in rows:
         eid = row.get("event_id")
         if eid is None:
             continue
-        bucket = buckets.setdefault(int(eid), {
-            "id": int(eid), "title": row.get("event_title") or "",
-            "first_at": row.get("first_at") or "", "last_at": row.get("last_at") or "",
-            "members": [],
-        })
-        bucket["members"].append({
-            "title": row.get("item_title") or "", "url": row.get("url") or "",
-            "source": row.get("source") or "", "layer": row.get("layer") or "",
-            "published": row.get("published") or "",
-        })
-    for bucket in buckets.values():
-        bucket["sources"] = len({m["source"] for m in bucket["members"] if m["source"]})
-        bucket["layer"] = "primary" if any(m["layer"] == "primary" for m in bucket["members"]) else "rank"
-    return sorted(buckets.values(), key=lambda b: (-b["sources"], b["first_at"]), reverse=False)
+        b = buckets.setdefault(int(eid), {"id": int(eid), "title": row.get("event_title") or "",
+                                          "first": row.get("first_at") or "", "members": []})
+        b["members"].append({"title": row.get("item_title") or "", "url": row.get("url") or "",
+                             "source": row.get("source") or "", "layer": row.get("layer") or "",
+                             "published": row.get("published") or ""})
+    events = sorted(buckets.values(), key=lambda b: (-len(b["members"]), b["first"]))
 
-
-def build_events(site_root: Path | None = None) -> dict[str, Any]:
-    root = site_root or SITE
-    events = _event_rows()
-
-    cards = []
-    for ev in events:
-        cards.append(
-            f'<div class="card"><h3><a href="/events/{ev["id"]}.html">{_esc(ev["title"])}</a></h3>'
-            f'<div class="kv">{_esc(ev["first_at"][:10])} · {len(ev["members"])} 篇 · '
-            f'{ev["sources"]} 家</div></div>')
-    out = root / "events.html"
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(shell("信息雷达 · 事件", "".join(cards) or '<p class="muted">还没有聚合出事件。</p>',
-                         active="/events.html", sub=f"共 {len(events)} 个事件"),
-                   encoding="utf-8")
+    cards = "".join(
+        f'<div class="card"><h3><a href="/events/{e["id"]}.html">{theme.esc(e["title"])}</a></h3>'
+        f'<div class="row">{theme.esc(e["first"][:10])}<span class="dot"></span>'
+        f'{len(e["members"])} 篇<span class="dot"></span>'
+        f'{len({m["source"] for m in e["members"]})} 家</div></div>' for e in events)
+    _write(root / "events.html", theme.page(
+        "事件", cards or '<p class="muted">还没有聚合出事件。</p>', active="/events.html",
+        lead=f'共 {len(events)} 个事件 · 同一件事的多篇报道收在一起'))
 
     written = 1
-    for ev in events:
+    for e in events:
         groups: dict[str, list[dict[str, Any]]] = defaultdict(list)
-        for m in ev["members"]:
-            key = "官方" if m["layer"] == "primary" else ("媒体" if m["layer"] in ("rank", "broad", "search") else "社区")
+        for m in e["members"]:
+            key = "官方" if m["layer"] == "primary" else (
+                "媒体" if m["layer"] in ("rank", "broad", "search") else "社区")
             groups[key].append(m)
         blocks = []
         for name in ("官方", "媒体", "社区"):
@@ -289,83 +400,220 @@ def build_events(site_root: Path | None = None) -> dict[str, Any]:
             if not items:
                 continue
             lis = "".join(
-                f'<li><a href="{_esc(m["url"])}" target="_blank" rel="noopener">{_esc(m["title"])}</a>'
-                f'<span class="meta">{_esc(m["source"])} · {_esc(m["published"][:10])}</span></li>'
-                for m in items)
-            blocks.append(f"<h2>{name}（{len(items)}）</h2><ul>{lis}</ul>")
-        target = root / "events" / f"{ev['id']}.html"
-        target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_text(shell(ev["title"], "".join(blocks), active="/events.html",
-                                sub=f'{_esc(ev["first_at"][:10])} · {len(ev["members"])} 篇报道 · '
-                                    f'<a href="/events.html">← 全部事件</a>'),
-                          encoding="utf-8")
+                f'<li><a href="{theme.esc(m["url"])}" target="_blank" rel="noopener">'
+                f'{theme.esc(m["title"])}</a>'
+                f'<span class="muted small"> · {theme.esc(m["source"])} · '
+                f'{theme.esc(m["published"][:10])}</span></li>' for m in items)
+            blocks.append(f"<h2>{name} <small>{len(items)} 篇</small></h2><ul class=\"list\">{lis}</ul>")
+        _write(root / "events" / f'{e["id"]}.html', theme.page(
+            e["title"], "".join(blocks), active="/events.html",
+            lead=f'{theme.esc(e["first"][:10])} · {len(e["members"])} 篇报道 · '
+                 f'<a href="/events.html">← 全部事件</a>'))
         written += 1
-    return {"file": str(out), "events": len(events), "pages": written}
+    return {"file": str(root / "events.html"), "events": len(events), "pages": written}
 
 
 # --------------------------------------------------------------------------- #
-# 搜索页
+# 搜索
 # --------------------------------------------------------------------------- #
 
-def build_search(payload: dict[str, Any], site_root: Path | None = None) -> dict[str, Any]:
-    """客户端搜索：把当天的条目嵌进页面，不依赖接口（离线也能用）。"""
+def build_search(day: str | None = None, site_root: Path | None = None) -> dict[str, Any]:
     root = site_root or SITE
-    rows = []
-    for it in payload.get("items") or []:
-        extra = it.get("extra") or {}
-        st = extra.get("structure") or {}
-        rows.append({
-            "t": it.get("title") or "",
-            "u": it.get("url") or "",
-            "s": it.get("source") or "",
-            "d": (it.get("published") or "")[:10],
-            "c": st.get("category") or "",
-            "x": " ".join(str(it.get("summary") or "").split())[:160],
-        })
-    data = json.dumps(rows, ensure_ascii=False).replace("</", "<\\/")
+    rows = store.all_items(day)
+    data = json.dumps([{
+        "t": it.get("title") or "", "u": it.get("url") or "", "i": it.get("id"),
+        "s": it.get("source") or "", "d": (it.get("published") or "")[:10],
+        "c": (it.get("structure") or {}).get("category") or "",
+        "x": " ".join(str(it.get("summary") or "").split())[:160],
+    } for it in rows], ensure_ascii=False).replace("</", "<\\/")
+
     body = (
-        '<p class="muted" style="margin-bottom:10px;">在今天的 '
-        f'{len(rows)} 条里搜标题与摘要（纯前端，不联网）。</p>'
-        '<input type="search" id="q" placeholder="输入关键词，例如「模型」「开源」「芯片」" autofocus>'
-        '<div id="out" style="margin-top:16px;"></div>'
+        '<input type="search" id="q" placeholder="搜标题、摘要、分类…" autofocus '
+        'style="width:100%;padding:12px 14px;font-size:16px;border:1px solid var(--rule);'
+        'border-radius:10px;background:var(--card);color:var(--ink)">'
+        '<div id="out" style="margin-top:18px;"></div>'
         f'<script>const DATA={data};'
         "const q=document.getElementById('q'),out=document.getElementById('out');"
-        "function esc(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}"
-        "function run(){const k=q.value.trim().toLowerCase();out.innerHTML='';"
-        "if(!k){out.innerHTML='<p class=\"muted\">今天共 '+DATA.length+' 条。</p>';return;}"
-        "const hit=DATA.filter(d=>(d.t+' '+d.x+' '+d.c).toLowerCase().includes(k));"
-        "out.innerHTML='<p class=\"muted\">命中 '+hit.length+' 条</p>'+hit.map(d=>"
-        "'<div class=\"card\"><h3><a href=\"'+esc(d.u)+'\" target=\"_blank\" rel=\"noopener\">'+esc(d.t)"
-        "+'</a></h3><div class=\"kv\">'+esc(d.s)+' · '+esc(d.d)+'</div>"
-        "+(d.x?'<p class=\"sum\">'+esc(d.x)+'</p>':'')+'</div>').join('');}"
+        "const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));"
+        "function run(){const k=q.value.trim().toLowerCase();"
+        "const hit=k?DATA.filter(d=>(d.t+' '+d.x+' '+d.c).toLowerCase().includes(k)):DATA.slice(0,30);"
+        "out.innerHTML='<p class=\"muted small\">'+(k?'命中 '+hit.length+' 条':'今天 '+DATA.length+' 条，先看 30 条')+'</p>'+"
+        "hit.map(d=>'<div class=\"card\"><h3><a href=\"/items/'+d.i+'.html\">'+esc(d.t)+'</a></h3>"
+        "+'<div class=\"row\">'+esc(d.s)+' · '+esc(d.d)+(d.c?' · '+esc(d.c):'')+'</div>"
+        "+(d.x?'<div class=\"sum\">'+esc(d.x)+'</div>':'')+'</div>').join('');}"
         "q.addEventListener('input',run);run();</script>")
-    out = root / "search.html"
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(shell("信息雷达 · 搜索", body, active="/search.html",
-                         sub="今天采集到的全部条目"), encoding="utf-8")
-    return {"file": str(out), "items": len(rows)}
+    _write(root / "search.html", theme.page("搜索", body, active="/search.html",
+                                            lead=f"在今天 {len(rows)} 条里搜（纯前端，离线可用）"))
+    return {"file": str(root / "search.html"), "items": len(rows)}
+
+
+# --------------------------------------------------------------------------- #
+# 静态页与"更多"
+# --------------------------------------------------------------------------- #
+
+_ABOUT = """
+<p>这是一个跑在本机的 AI 情报站。它每天从二十多个信源抓一次，去重、补正文、
+用模型按五个维度打分、把同一件事的多篇报道聚成一个事件，再按规则编成日报、
+周报和月报。</p>
+<h2>它和普通聚合站的区别</h2>
+<ul class="list">
+  <li><b>有判断，不是只排序</b>：每条都有五轴分与入选门槛，分数旁边写着理由。</li>
+  <li><b>按事件，不按文章</b>：同一件事只出一条代表稿，热度按独立来源算。</li>
+  <li><b>能校准</b>：可以用自己的金标样本算准确率、扫门槛，改提示词不靠感觉。</li>
+  <li><b>给机器也留了出口</b>：RSS、JSON、llms.txt，同一个读取层，同样的内容。</li>
+</ul>
+<h2>它不做什么</h2>
+<ul class="list">
+  <li>不转载全文，只留摘要与原文链接（全文是否展示由信源许可决定）。</li>
+  <li>不追踪读者：收藏与阅读偏好只存在你自己的浏览器里。</li>
+</ul>
+"""
+
+_TERMS = """
+<p class="muted">下面是模板文字，上线前请按你的实际情况改写。</p>
+<h2>内容来源</h2><p>本站内容来自公开信源，版权归原作者与发布方所有。本站只做摘要与链接，
+不主张对原文的任何权利。</p>
+<h2>使用</h2><p>你可以自由阅读、订阅与分享链接。批量抓取本站页面请改用 RSS 或 JSON 接口，
+并遵守合理的请求频率。</p>
+<h2>免责</h2><p>摘要由模型生成，可能有误。涉及事实判断请以原文为准。</p>
+"""
+
+_PRIVACY = """
+<p class="muted">下面是模板文字，上线前请按你的实际情况改写。</p>
+<h2>本站收集什么</h2><p>没有账号，不收集个人信息，不使用第三方统计脚本。</p>
+<h2>存在你浏览器里的东西</h2>
+<p>收藏（<code>localStorage</code>）和点赞/踩的临时状态只存在你的浏览器里，不会上传。
+点赞/踩会写进本机的 SQLite，用来微调你自己的排序。</p>
+<h2>日志</h2><p>抓取日志留在本机 <code>logs/</code>，不外发。</p>
+"""
+
+
+def build_static(site_root: Path | None = None) -> dict[str, Any]:
+    root = site_root or SITE
+    pages = {
+        "about": ("关于", _ABOUT, "每天一份自己去判断的日报"),
+        "terms": ("使用条款", _TERMS, "内容来源、使用方式与免责"),
+        "privacy": ("隐私", _PRIVACY, "不追踪、不统计、不外发"),
+    }
+    for slug, (title, body, lead) in pages.items():
+        _write(root / f"{slug}.html", theme.page(title, body, active="", lead=lead))
+
+    # 更新日志：从 git 不方便读，这里用固定文案 + 版本表
+    changelog = """
+<h2>最近的改动</h2>
+<ul class="list">
+  <li><b>站点</b>：补齐「全部动态 / 热门 / 文章页 / 日报 / 周报 / 月报 / 事件页 / 搜索」，
+      换成纸感配色，手机加了底栏。</li>
+  <li><b>判断</b>：五轴评分 + 双次打分 + 分信源门槛；理由随分数一起展示。</li>
+  <li><b>聚簇</b>：向量/文字召回 + 四类关系判定 + 低置信度复核；事件页并列三种说法。</li>
+  <li><b>成本</b>：付费请求走回执，同输入不重复计费；有每日预算与备用模型。</li>
+  <li><b>运维</b>：断点续跑、信源健康、缺期与失败率告警。</li>
+</ul>
+"""
+    _write(root / "changelog.html", theme.page("更新日志", changelog, active="",
+                                               lead="这个站自己是怎么长出来的"))
+
+    agent = """
+<p>同一个读取层，五个出口。选一个适合你的：</p>
+<h2>订阅</h2>
+<ul class="list">
+  <li><a href="/feed.xml">今日要闻 RSS</a></li>
+  <li><a href="/feed-all.xml">全部动态 RSS</a></li>
+  <li><a href="/llms.txt">llms.txt</a> —— 给大模型看的站点说明</li>
+</ul>
+<h2>接口</h2>
+<ul class="list">
+  <li><code>GET /api/v1/latest.json</code> —— 当天条目，含五轴分、理由、结构化与事件归属</li>
+  <li><code>POST /api/feedback</code> —— <code>{"url":"…","kind":"up|down"}</code>，给一条打分</li>
+  <li><code>GET /api/prefs</code> —— 当前学到的偏好权重（调试用）</li>
+</ul>
+<h2>给 Agent 的提示</h2>
+<pre class="card flat small" style="overflow:auto;">读 /llms.txt 了解这个站；
+要最新内容用 /api/v1/latest.json（结构化，带分数与理由）；
+要订阅用 /feed.xml；不要抓 HTML 页面，接口更稳定。</pre>
+"""
+    _write(root / "agent.html", theme.page("给 Agent 用", agent, active="",
+                                           lead="RSS / JSON / llms.txt，同一个读取层"))
+
+    starred = """
+<p>收藏存在你自己的浏览器里（<code>localStorage</code>），不上传、不同步。</p>
+<div id="list"><p class="muted">还没有收藏。在任意条目上点 ☆ 就会出现在这里。</p></div>
+<script>
+(function(){
+  var key='radar.starred';
+  var list=[];try{list=JSON.parse(localStorage.getItem(key)||'[]')}catch(e){}
+  var box=document.getElementById('list');
+  if(!list.length) return;
+  box.innerHTML='<ul class="list">'+list.map(function(u){
+    return '<li><a href="'+u.replace(/"/g,'&quot;')+'" target="_blank" rel="noopener">'+u.replace(/</g,'&lt;')+'</a></li>';
+  }).join('')+'</ul><p class="muted small">清空：<a href="#" onclick="localStorage.removeItem(\\'radar.starred\\');location.reload();return false;">移除全部</a></p>';
+})();
+</script>
+"""
+    _write(root / "starred.html", theme.page("我的收藏", starred, active="",
+                                             lead="只存在本机浏览器"))
+
+    feedback = """
+<p>每条卡片右下角的 👍 / 👎，就是反馈入口。点一下会写进本机数据库，
+下一轮生成时按「分类 / 标签 / 主体」微调排序。</p>
+<h2>它怎么影响排序</h2>
+<ul class="list">
+  <li>动作有权重：👍 +1、👎 −1.2、点开原文 +0.25（在 <code>config/prefs.yaml</code> 里改）</li>
+  <li>按词累计，取平均；同一个词至少 3 次证据才参与</li>
+  <li>只微调排序（默认 ±8%），<b>不动入选门槛</b> —— 免得日报只剩你本来就爱看的</li>
+</ul>
+<h2>现在学到了什么</h2>
+<div id="prefs"><p class="muted">读取中…</p></div>
+<script>
+fetch('/api/prefs').then(r=>r.json()).then(function(j){
+  var box=document.getElementById('prefs');
+  if(!j.ok){box.innerHTML='<p class="muted">接口不可用（需要用 python serve.py 起站）。</p>';return;}
+  var keys=Object.keys(j.top||{});
+  box.innerHTML = keys.length
+    ? '<p class="muted small">共 '+j.terms+' 个词有证据，前 '+keys.length+' 个：</p><div>'+
+      keys.map(k=>'<span class="tag">'+k+' '+(j.top[k]>0?'+':'')+j.top[k]+'</span>').join('')+'</div>'
+    : '<p class="muted">还没有足够的证据。多点几次 👍/👎 就来了。</p>';
+}).catch(function(){document.getElementById('prefs').innerHTML='<p class="muted">接口不可用。</p>'});
+</script>
+"""
+    _write(root / "feedback.html", theme.page("反馈", feedback, active="",
+                                              lead="点一下就记，不用登录"))
+
+    more_links = "".join(f'<li><a href="{href}">{label}</a></li>' for href, label in theme.MORE)
+    _write(root / "more.html", theme.page(
+        "更多", f'<ul class="list">{more_links}</ul>', active="",
+        lead="所有页面与出口"))
+    return {"pages": 7}
 
 
 # --------------------------------------------------------------------------- #
 # 一把生成
 # --------------------------------------------------------------------------- #
 
-def build(payload: dict[str, Any], site_root: Path | None = None) -> dict[str, Any]:
-    """生成所有页面。任何一页失败都只影响它自己。"""
+def build(payload: dict[str, Any] | None = None, site_root: Path | None = None,
+          day: str | None = None) -> dict[str, Any]:
+    """生成全部页面。任何一页失败只影响它自己。"""
     root = site_root or SITE
     stats: dict[str, Any] = {}
-    for kind in ("daily", "weekly", "monthly"):
+    jobs = {
+        "all": lambda: build_all(day, root),
+        "hot": lambda: build_hot(day, root),
+        "items": lambda: build_items(day, root),
+        "events": lambda: build_events(root),
+        "search": lambda: build_search(day, root),
+        "static": lambda: build_static(root),
+        "daily": lambda: build_issue_index("daily", site_root=root),
+        "weekly": lambda: build_issue_index("weekly", site_root=root),
+        "monthly": lambda: build_issue_index("monthly", site_root=root),
+    }
+    for name, job in jobs.items():
         try:
-            stats[kind] = build_issue_index(kind, site_root=root)
+            stats[name] = job()
         except Exception as e:
-            stats[kind] = {"error": f"{type(e).__name__}: {e}"}
-    try:
-        stats["events"] = build_events(root)
-    except Exception as e:
-        stats["events"] = {"error": f"{type(e).__name__}: {e}"}
-    try:
-        stats["search"] = build_search(payload, root)
-    except Exception as e:
-        stats["search"] = {"error": f"{type(e).__name__}: {e}"}
-    stats["pages"] = sum(int(v.get("pages") or 1) for v in stats.values() if isinstance(v, dict))
+            stats[name] = {"error": f"{type(e).__name__}: {e}"}
+    total = 0
+    for v in stats.values():
+        if isinstance(v, dict):
+            total += int(v.get("pages") or v.get("items") or v.get("events") or 1)
+    stats["pages"] = total
     return stats

@@ -24,6 +24,7 @@ sys.stdout.reconfigure(encoding="utf-8", errors="replace", line_buffering=True)
 from collector import (alerts, board, breaking, events, export, offline, rating, report, share,
                        site, state, store, structure, timeline, topics)
 from collector import pushmail
+from collector.identity import item_identity
 from collector.archive import save as save_archive
 from collector.digest import build as build_digest
 from collector.digest import picked as digest_picked
@@ -143,6 +144,13 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True,
     # 评分 / 结构 / 事件都要往 Item.extra 上写，到这里才算完 —— 转 dict 交给下游
     stage = _stage("translate", day)
     payload["items"] = [i.to_dict() for i in payload["items"]]
+    # 给每条挂上库内 id：首页卡片要指向站内的 /items/<id>.html（和 AIHOT 一致）
+    try:
+        ids = store.ids_for([item_identity(it["url"]) for it in payload["items"]])
+        for it in payload["items"]:
+            it["extra"]["db_id"] = ids.get(item_identity(it["url"]))
+    except Exception as e:
+        print(f"      站点 id 映射失败（卡片将指向原文）: {type(e).__name__}: {e}")
     payload["stats"]["translate"] = translate_items(payload["items"])
     _done(stage)
 
@@ -254,14 +262,14 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True,
         print(f"      周报月报生成失败: {type(e).__name__}: {e}")
     _done(stage)
 
-    # 整站页面：日报/周报/月报的翻阅页、事件页、搜索页（仿 AIHOT 的站点结构）
+    # 整站页面：精选之外的全部模块（全部动态/热门/文章页/日报/周报/月报/事件/搜索/静态页）
     stage = _stage("site", day)
     try:
-        sp = site.build(payload, ROOT / "site")
+        sp = site.build(payload, ROOT / "site", day)
         payload["stats"]["site"] = sp
         print(f"      站点: {sp.get('pages', 0)} 个页面"
-              f"（日报 {sp.get('daily', {}).get('issues', 0)} 期"
-              f" · 事件 {sp.get('events', {}).get('events', 0)} 个）")
+              f"（全部 {sp.get('all', {}).get('items', 0)} 条 / 文章 {sp.get('items', {}).get('items', 0)} 篇"
+              f" / 热门 {sp.get('hot', {}).get('events', 0)} 个事件）")
     except Exception as e:
         print(f"      站点页面生成失败: {type(e).__name__}: {e}")
     _done(stage)

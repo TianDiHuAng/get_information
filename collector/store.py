@@ -1105,6 +1105,89 @@ def backfill_attention(day: str | None = None) -> int:
     return fixed
 
 
+def item_detail(item_id: int) -> dict[str, Any] | None:
+    """一条条目的完整视图：本身 + 结构化 + 事件归属。文章页用。"""
+    with db() as conn:
+        row = conn.execute(
+            """SELECT id, identity, source, layer, region, lang, title, url, summary,
+                      author, published, heat, extra, first_seen, revision
+               FROM items WHERE id = ?""",
+            (item_id,),
+        ).fetchone()
+        if not row:
+            return None
+        item = dict(row)
+        try:
+            extra = json.loads(item.pop("extra") or "{}")
+        except Exception:
+            extra = {}
+        item["attention"] = extra.get("attention") or {}
+        item["structure"] = extra.get("structure") or {}
+        item["body"] = extra.get("body") or ""
+        item["event_sources"] = extra.get("event_sources")
+        item["event_size"] = extra.get("event_size")
+
+        # 事件归属以 event_items 表为准（extra 里的 event_id 可能还没回写）
+        row_e = conn.execute(
+            "SELECT event_id FROM event_items WHERE item_id = ? ORDER BY decided_at DESC LIMIT 1",
+            (item_id,),
+        ).fetchone()
+        item["event_id"] = int(row_e["event_id"]) if row_e else extra.get("event_id")
+
+        if item["event_id"]:
+            rows = conn.execute(
+                """SELECT i.id, i.title, i.url, i.source, i.layer, i.published
+                   FROM event_items ei JOIN items i ON i.id = ei.item_id
+                   WHERE ei.event_id = ? ORDER BY i.published""",
+                (item["event_id"],),
+            ).fetchall()
+            item["siblings"] = [dict(r) for r in rows]
+        else:
+            item["siblings"] = []
+    return item
+
+
+def all_items(day: str | None = None, limit: int = 2000) -> list[dict[str, Any]]:
+    """当天见过的全部条目，按排序分从高到低（"全部动态"与分页用）。"""
+    day = day or today_str()
+    with db() as conn:
+        rows = conn.execute(
+            """SELECT i.id, i.source, i.layer, i.region, i.title, i.url, i.summary,
+                      i.published, i.extra, d.score
+               FROM item_days d JOIN items i ON i.id = d.item_id
+               WHERE d.day = ?
+               ORDER BY coalesce(d.score, 0) DESC, i.published DESC
+               LIMIT ?""",
+            (day, limit),
+        ).fetchall()
+    out = []
+    for row in rows:
+        item = dict(row)
+        try:
+            extra = json.loads(item.pop("extra") or "{}")
+        except Exception:
+            extra = {}
+        item["attention"] = extra.get("attention") or {}
+        item["structure"] = extra.get("structure") or {}
+        item["event_id"] = extra.get("event_id")
+        item["event_size"] = extra.get("event_size")
+        item["event_sources"] = extra.get("event_sources")
+        item["deal"] = bool(extra.get("deal"))
+        out.append(item)
+    return out
+
+
+def latest_heat() -> dict[int, float]:
+    """每个事件的最新热度。热门页排序用。"""
+    with db() as conn:
+        rows = conn.execute(
+            """SELECT h.event_id, h.heat FROM event_heat h
+               JOIN (SELECT event_id, max(computed_at) AS t FROM event_heat GROUP BY event_id) m
+                 ON m.event_id = h.event_id AND m.t = h.computed_at"""
+        ).fetchall()
+    return {int(r["event_id"]): float(r["heat"]) for r in rows}
+
+
 # --------------------------------------------------------------------------- #
 # 概览
 # --------------------------------------------------------------------------- #

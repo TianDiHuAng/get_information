@@ -186,6 +186,11 @@ def _bars(rows: list[dict[str, Any]], label_key: str, value_key: str = "n") -> s
     return "".join(out)
 
 
+def _override():
+    from .theme import override_css
+    return override_css()
+
+
 def render(data: dict[str, Any]) -> str:
     from .share import og_tags
 
@@ -255,7 +260,7 @@ li.err {{ color:#f87171; }}
 table {{ width:100%; border-collapse:collapse; font-size:12px; }}
 th,td {{ text-align:left; padding:5px 8px; border-bottom:1px solid #18212b; }}
 th {{ color:#6b7785; font-weight:500; }}
-</style></head><body><div class="wrap">
+</style><style>{_override()}</style></head><body>{_nav()}<div class="wrap">
 <h1>信息雷达 · 看板</h1>
 <div class="sub">{data['day']} · 生成于 {data['generated_at']} · <a href="/">回到今日要闻</a></div>
 
@@ -310,6 +315,11 @@ th {{ color:#6b7785; font-weight:500; }}
 本页由 collector/board.py 生成，不读写业务数据；反馈与设置请改 config/*.yaml。
 </div>
 </div></body></html>"""
+
+
+def _nav():
+    from .theme import bottom_nav, nav_html
+    return nav_html("/board.html") + bottom_nav("/board.html")
 
 
 def build(payload: dict[str, Any], site_root: Path | None = None) -> dict[str, Any]:

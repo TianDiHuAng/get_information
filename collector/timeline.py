@@ -118,6 +118,11 @@ def compute(rows: Iterable[dict[str, Any]]) -> dict[str, Any]:
 # 渲染
 # --------------------------------------------------------------------------- #
 
+def _override():
+    from .theme import override_css
+    return override_css()
+
+
 def render(data: dict[str, Any]) -> str:
     from .share import og_tags
 
@@ -182,7 +187,7 @@ ul {{ margin:0; padding-left:16px; }}
 li {{ font-size:12px; margin:3px 0; }}
 .src {{ color:#4b5563; margin-left:6px; }}
 .muted {{ color:#6b7785; }}
-</style></head><body><div class="wrap">
+</style><style>{_override()}</style></head><body>{_nav()}<div class="wrap">
 <h1>信息雷达 · 时间线</h1>
 <div class="sub">近 {len(months)} 个月 · {monthly['events']} 个事件 ·
 <a href="/">今日要闻</a> · <a href="/board.html">运行看板</a></div>
@@ -198,6 +203,11 @@ li {{ font-size:12px; margin:3px 0; }}
 只读数据库生成；叙事分组按信源层级（官方一手 / 媒体 / 社区），不代表哪边更可信。
 </div>
 </div></body></html>"""
+
+
+def _nav():
+    from .theme import bottom_nav, nav_html
+    return nav_html("/timeline.html") + bottom_nav("/timeline.html")
 
 
 def build(site_root: Path | None = None, days: int = 120) -> dict[str, Any]:

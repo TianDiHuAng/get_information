@@ -57,9 +57,11 @@ def render(payload: dict, out_path: Path, history: list[dict] | None = None,
     og_html = og_tags(f"信息雷达 · {stats['generated_at'][:10]}",
                       share_info.get("lead") or "每天一份 AI 情报日报：五轴评分、事件聚簇、规则编排")
     # 全站导航：主题 / 事件 / 日报 / 周报 / 月报 / 时间线 / 搜索 / 看板
-    from .site import nav_html
+    from .theme import bottom_nav, nav_html
 
-    nav = nav_html("/")
+    nav = nav_html("/") + bottom_nav("/")
+    from .theme import override_css as _ovr
+    theme_override = _ovr()
     chips = []
     for s in registry:
         if s["enabled"]:
@@ -98,12 +100,14 @@ def render(payload: dict, out_path: Path, history: list[dict] | None = None,
         tag_html = "".join(f'<span class="tag">{html.escape(t)}</span>' for t in tags)
         heat = _fmt_heat(it.get("heat"))
         heat_html = f'<span class="heat">🔥 {heat}</span>' if heat else ""
+        _db = (it.get("extra") or {}).get("db_id")
+        card_href = f"/items/{_db}.html" if _db else it["url"]
         summary = html.escape(it.get("summary") or "")
         _orig = it["extra"].get("title_original")
         tip_html = f' title="{html.escape(_orig, quote=True)}"' if _orig else ""
         cards_by_region.setdefault(it.get("region", "overseas"), []).append(
             f"""
-      <a class="card" data-region="{it.get('region', 'overseas')}" data-deal="{1 if it['extra'].get('deal') else 0}" data-layer="{layer}" data-topic="{1 if it['extra'].get('topic') else 0}" data-source="{html.escape(it['source'])}" href="{html.escape(it['url'])}" target="_blank" rel="noopener"{tip_html}>
+      <a class="card" data-region="{it.get('region', 'overseas')}" data-deal="{1 if it['extra'].get('deal') else 0}" data-layer="{layer}" data-topic="{1 if it['extra'].get('topic') else 0}" data-source="{html.escape(it['source'])}" href="{card_href}" target="_blank" rel="noopener"{tip_html}>
         <div class="bar" style="background:{color}"></div>
         <div class="body">
           <div class="meta">
@@ -184,7 +188,7 @@ def render(payload: dict, out_path: Path, history: list[dict] | None = None,
     hero = []
     for i, it in enumerate(hero_pool, 1):
         hero.append(
-            f'<a class="hero-item" href="{html.escape(it["url"])}" target="_blank" rel="noopener">'
+            f'<a class="hero-item" href="{("/items/%s.html" % it["extra"]["db_id"]) if it["extra"].get("db_id") else html.escape(it["url"])}" target="_blank" rel="noopener">'
             f'<span class="num">{i:02d}</span>'
             f'<span class="ht">{html.escape(it["title"])}</span>'
             f'<span class="hs">{html.escape(SOURCE_CN.get(it["source"], it["source"]))}</span></a>'
@@ -289,6 +293,7 @@ def render(payload: dict, out_path: Path, history: list[dict] | None = None,
   footer {{ margin-top:40px; color:#4b5563; font-size:12px; }}
   @media (max-width:520px) {{ .grid {{ grid-template-columns:1fr; }} }}
 </style>
+<style>{theme_override}</style>
 </head>
 <body>
 {nav}

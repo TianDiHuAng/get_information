@@ -126,6 +126,16 @@ def _timeline(day: str | None) -> str:
             f"<tbody>{body}</tbody></table>")
 
 
+def _override():
+    from .theme import override_css
+    return override_css()
+
+
+def _nav():
+    from .theme import bottom_nav, nav_html
+    return nav_html("") + bottom_nav("")
+
+
 def build(payload: dict[str, Any], site_root: Path | None = None,
           day: str | None = None) -> dict[str, Any]:
     """生成 `site/offline.html`。任何一块失败都只影响那一块。"""
@@ -136,7 +146,7 @@ def build(payload: dict[str, Any], site_root: Path | None = None,
     doc = f"""<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>信息雷达 · 离线版 {_esc(day)}</title>
-<style>{_CSS}</style></head><body><div class="wrap">
+<style>{_CSS}{_override()}</style></head><body>{_nav()}<div class="wrap">
 <h1>信息雷达 · 离线版</h1>
 <div class="sub">{_esc(day)} · {len(payload.get('items') or [])} 条 ·
 {_esc(stats.get('sources_ok') or 0)} 个源 · 生成于 {_esc(generated[:19].replace('T', ' '))}</div>
