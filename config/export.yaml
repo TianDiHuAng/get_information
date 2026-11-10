@@ -1,0 +1,16 @@
+# 多出口：RSS / JSON API / llms.txt
+#
+# 现在是"给人看的静态页 + 邮件"。缺的是给机器读的入口：
+# RSS 阅读器要能订阅、Agent 要能直接读懂这个站在讲什么。
+# 这三类文件都是渲染时顺手生成的，成本接近零。
+
+# 站点根地址（写进 RSS 的 <link> 与 llms.txt）。换域名时改这里。
+base_url: "http://localhost:8123"
+
+# 每个 feed 最多多少条
+feed_items: 50
+# JSON API 最多多少条
+api_items: 200
+
+# 目录 feed：按结构化分类各出一份（结构里没有分类的归到 other）
+category_feeds: true

@@ -18,7 +18,7 @@ from pathlib import Path
 
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
-from collector import alerts, events, rating, store, structure
+from collector import alerts, events, export, rating, store, structure
 from collector.archive import save as save_archive
 from collector.digest import build as build_digest
 from collector.digest import picked as digest_picked
@@ -128,6 +128,17 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True) -> None:
     out = render(payload, ROOT / "site" / "index.html", history=load_history(7),
                  lmarena=lmarena, aa=aa)
     arch = save_archive(payload, out, ROOT, datetime.now().strftime("%Y-%m-%d"))
+    _done(stage)
+
+    # 多出口：RSS / JSON / llms.txt（都从同一份 payload 生成，不重新判断）
+    stage = _stage("export", day)
+    try:
+        ex = export.build(payload, ROOT / "site")
+        payload["stats"]["export"] = ex
+        print(f"      出口: {len(ex.get('files') or [])} 个文件"
+              f"（feed {ex.get('feeds', 0)} 个 · API · llms.txt）")
+    except Exception as e:
+        print(f"      出口生成失败: {type(e).__name__}: {e}")
     _done(stage)
 
     stage = _stage("digest", day)

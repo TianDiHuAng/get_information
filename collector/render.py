@@ -183,6 +183,9 @@ def render(payload: dict, out_path: Path, history: list[dict] | None = None,
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>信息雷达 · {stats['generated_at'][:16]}</title>
+<link rel="alternate" type="application/rss+xml" title="信息雷达 · 今日要闻" href="/feed.xml">
+<link rel="alternate" type="application/rss+xml" title="信息雷达 · 全部动态" href="/feed-all.xml">
+<link rel="alternate" type="application/json" title="结构化数据" href="/api/v1/latest.json">
 <style>
   :root {{ color-scheme: dark; }}
   * {{ box-sizing: border-box; }}
