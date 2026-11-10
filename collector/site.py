@@ -281,7 +281,11 @@ def build_items(day: str | None = None, site_root: Path | None = None) -> dict[s
         st = detail.get("structure") or {}
         tags = "".join(f'<span class="tag">{theme.esc(t)}</span>' for t in (st.get("tags") or []))
         subjects = "".join(f'<span class="tag">{theme.esc(s)}</span>' for s in (st.get("subjects") or []))
-        body = detail.get("body") or ""
+        # 合规：站内是否展示正文由信源的 site_fulltext 决定，默认关（只给摘要与原文链接）
+        from .sources import source_meta
+
+        allow_fulltext = bool(source_meta(detail.get("source") or "").get("site_fulltext"))
+        body = (detail.get("body") or "") if allow_fulltext else ""
         body_html = ""
         if body:
             paras = [p for p in body.split("\n") if p.strip()]

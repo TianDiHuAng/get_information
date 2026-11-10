@@ -1,0 +1,15 @@
+# 当前行业。切换行业包就改 pack；留空表示直接用 config/ 下的文件。
+name: Z-Bit
+tagline: 今日 AI 热点与大模型动态精选
+description: 每天一份 AI 情报日报：五轴评分、事件聚簇、规则编排
+locale: zh-CN
+pack: 
+edition:
+  daily: 09:00
+  weekly: 周一
+  monthly: 1 日
+tiers:
+  T1: 58
+  T1_5: 66
+  T2: 68
+browse_floor: 40

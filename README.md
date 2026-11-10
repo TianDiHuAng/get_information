@@ -163,6 +163,30 @@ feed.xml · feed-all.xml · feed/category/*.xml · api/v1/latest.json · llms.tx
 
 改门槛、预算、提示词仍然改 `config/*.yaml`，下一轮自动生效。
 
+## 换成你的行业
+
+这个站默认是「AI 行业」。换成别的行业**不用改代码**，改 `industry/` 下的一套配置就行：
+
+```bash
+python tools/customize.py new legal --name "法律热点"   # 建行业包骨架
+python tools/customize.py use legal                      # 切过去
+python tools/customize.py check                          # 体检：找出所有"改了一半"的地方
+```
+
+行业包由这几部分组成（`industry/<slug>/` 覆盖 `config/` 同名文件，原来的始终保留）：
+
+| 文件 | 管什么 |
+|---|---|
+| `taxonomy.yaml` | 分类、标签、实体（公司/机构）、免核对词 |
+| `topics.yaml` | 主题页目录 |
+| `wording.yaml` | 改用词：读者不用的行话、营销词（空表 = 零调用） |
+| `prompts/*.md` | 判断标准：预筛、五维评分、结构化、事件归组 |
+| `config/industry.yaml` | 站名、slogan、出刊时间、三档门槛 |
+| `config/sources.yaml` | 信源分级（T1/T1_5/T2）与参与方式（editorial/hot_signal/isolated） |
+
+完整步骤见 **[docs/customize.md](docs/customize.md)**，包括门槛怎么重新校准、
+哪些字段上线后不能改、`check` 每条告警是什么意思。
+
 ## 配置说明
 
 | 文件 | 作用 |

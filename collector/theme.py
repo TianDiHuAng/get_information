@@ -16,8 +16,18 @@ from __future__ import annotations
 import html
 from typing import Any
 
-BRAND = "Z-Bit"
-TAGLINE = "今日 AI 热点与大模型动态精选"
+def _brand() -> tuple[str, str]:
+    """站名与 slogan 从行业配置读 —— 换行业不该改代码。"""
+    try:
+        from . import industry
+
+        conf = industry.settings()
+        return str(conf.get("name") or "Z-Bit"), str(conf.get("tagline") or "")
+    except Exception:
+        return "Z-Bit", ""
+
+
+BRAND, TAGLINE = _brand()
 
 # 侧栏分组（对齐它的 SECTIONS：内容 / 模型 / 更多）
 SECTIONS = (

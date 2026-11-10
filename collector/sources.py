@@ -843,6 +843,9 @@ def build_fetchers() -> list[tuple[str, callable]]:
     for s in REGISTRY:
         if not s["enabled"]:
             continue
+        # isolated：抓了但不进任何公开页面（内部观察用）
+        if str(s.get("participation_mode") or "") == "isolated":
+            continue
         sid = s["id"]
         if sid == "x":
             fetchers.append((sid, _x_fetch_all))
@@ -906,3 +909,58 @@ def build_fetchers() -> list[tuple[str, callable]]:
             )
         )
     return fetchers
+
+# ---------------------------------------------------------------- 分级与参与方式
+#
+# 对齐 AIHOT 的信源字段（docs/customize.md 第 3 节）：
+#   tier                 T1 官方一手 / T1_5 官方账号 / T2 媒体与个人 / EXCLUDE_MP 不参与精选
+#   participation_mode   editorial 进精选与全部；hot_signal 只作热度证据；isolated 不进任何公开页
+#   site_fulltext        站内能不能展示正文（**默认关**，只给摘要与原文链接）
+#   syndicate_fulltext   全文 RSS 能不能带正文（只在 site_fulltext 也开时生效）
+#   owner_entity_id      属于哪家公司；同一家的多个源在热度里只算一个参与方
+#
+# 默认值按 layer 推导，单个源可在 config/sources.yaml 里覆盖。
+
+_LAYER_TIER = {"primary": "T1", "rank": "T1_5", "broad": "T2", "search": "T2", "social": "T2"}
+_LAYER_MODE = {"primary": "editorial", "broad": "editorial",
+               "rank": "hot_signal", "search": "hot_signal", "social": "hot_signal"}
+
+
+def _source_overrides() -> dict[str, dict]:
+    """config/sources.yaml 里的逐源覆盖（可选）。格式：sources: [{id: x, tier: T1, ...}]"""
+    try:
+        import yaml
+
+        path = Path(__file__).parent.parent / "config" / "sources.yaml"
+        if not path.exists():
+            return {}
+        data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+        return {str(r["id"]): r for r in (data.get("sources") or [])
+                if isinstance(r, dict) and r.get("id")}
+    except Exception:
+        return {}
+
+
+def _decorate_sources() -> None:
+    overrides = _source_overrides()
+    for src in REGISTRY:
+        src.setdefault("tier", _LAYER_TIER.get(src.get("layer"), "T2"))
+        src.setdefault("participation_mode", _LAYER_MODE.get(src.get("layer"), "editorial"))
+        src.setdefault("site_fulltext", False)
+        src.setdefault("syndicate_fulltext", False)
+        src.setdefault("owner_entity_id", None)
+        patch = overrides.get(str(src.get("id"))) or {}
+        for key, value in patch.items():
+            if key != "id":
+                src[key] = value
+
+
+_decorate_sources()
+
+
+def source_meta(source_id: str) -> dict:
+    """取一个源的分级信息（页脚、条目页、热度都用这个）。"""
+    for src in REGISTRY:
+        if src.get("id") == source_id:
+            return src
+    return {}
