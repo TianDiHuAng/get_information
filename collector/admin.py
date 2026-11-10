@@ -206,6 +206,59 @@ def llm_table(day: str | None = None) -> list[dict[str, Any]]:
 
 
 # --------------------------------------------------------------------------- #
+# 信源操作（供 serve.py 的两个受保护接口调用）
+# --------------------------------------------------------------------------- #
+
+def toggle_source(source: str, enabled: bool) -> dict[str, Any]:
+    """停用/启用。只写 SQLite 的开关列，不动代码里的源定义。"""
+    if not source:
+        return {"ok": False, "error": "missing source"}
+    try:
+        store.set_source_enabled(str(source), bool(enabled))
+    except Exception as e:
+        return {"ok": False, "error": f"{type(e).__name__}: {e}"}
+    return {"ok": True, "source": source, "enabled": bool(enabled)}
+
+
+def preview_source(source: str, *, timeout: float = 25.0, limit: int = 8) -> dict[str, Any]:
+    """试抓一个源：真的跑一次它的抓取器，但**不入库**。
+
+    慢的源（X 的 Apify 要跑多条查询）会超时 —— 那就如实返回超时，别让页面一直等。
+    """
+    import time
+    from concurrent.futures import ThreadPoolExecutor, TimeoutError as FutureTimeout
+
+    from . import sources as src
+
+    if not source:
+        return {"ok": False, "error": "missing source"}
+    fetchers = dict(src.build_fetchers())
+    fn = fetchers.get(str(source))
+    if fn is None:
+        return {"ok": False, "error": f"没有这个源，或者它已被停用: {source}"}
+
+    started = time.time()
+    pool = ThreadPoolExecutor(max_workers=1)
+    try:
+        future = pool.submit(fn)
+        items = future.result(timeout=timeout)
+    except FutureTimeout:
+        pool.shutdown(wait=False, cancel_futures=True)
+        return {"ok": False, "error": f"超时（>{int(timeout)}s），这个源比较慢，稍后再试"}
+    except Exception as e:
+        pool.shutdown(wait=False, cancel_futures=True)
+        return {"ok": False, "error": f"{type(e).__name__}: {e}"}
+    pool.shutdown(wait=False)
+
+    rows = [{"title": (getattr(it, "title", "") or "")[:80],
+             "url": getattr(it, "url", "") or "",
+             "published": getattr(it, "published", "") or "",
+             "source": getattr(it, "source", "") or ""} for it in (items or [])]
+    return {"ok": True, "source": source, "count": len(rows),
+            "seconds": round(time.time() - started, 1), "items": rows[:limit]}
+
+
+# --------------------------------------------------------------------------- #
 # 渲染
 # --------------------------------------------------------------------------- #
 
@@ -249,16 +302,72 @@ def _run_section(day: str) -> str:
 def _source_section() -> str:
     rows = sources()
     if not rows:
-        return '<p class="muted">还没有信源健康记录。</p>'
-    body = "".join(
-        f'<tr><td>{theme.esc(r["source"])}</td>'
-        f'<td class="num">{r.get("last_count") or 0}</td>'
-        f'<td class="num">{_pill(str(r.get("fails") or 0), "err" if (r.get("fails") or 0) >= 3 else "")}</td>'
-        f'<td class="muted small">{theme.esc(r.get("last_ok") or "—")}</td>'
-        f'<td class="muted small">{theme.esc((r.get("last_error") or "")[:60])}</td></tr>'
-        for r in rows)
-    return (f'<div class="scroll"><table><thead><tr><th>信源</th><th>本轮条数</th>'
-            f'<th>连续失败</th><th>最近成功</th><th>最近错误</th></tr></thead><tbody>{body}</tbody></table></div>')
+        return ('<p class="muted">还没有信源健康记录。跑一次 <code>python run.py</code> 就有了。</p>'
+                '<p class="muted small">新增信源仍然改 <code>config/feeds.yaml</code> 或 '
+                '<code>collector/sources.py</code> 的 REGISTRY。</p>')
+    body_rows = []
+    for r in rows:
+        name = theme.esc(r["source"])
+        enabled = int(r.get("enabled", 1)) != 0
+        fails = int(r.get("fails") or 0)
+        badge = _pill("已停用", "err") if not enabled else ""
+        toggle = (f'<button class="fb" data-toggle="{name}" data-enable="{0 if enabled else 1}">'
+                  f'{"停用" if enabled else "启用"}</button>')
+        preview = f'<button class="fb" data-preview="{name}">试抓</button>'
+        body_rows.append(
+            f'<tr><td>{name} {badge}</td>'
+            f'<td class="num">{r.get("last_count") or 0}</td>'
+            f'<td class="num">{_pill(str(fails), "err" if fails >= 3 else "")}</td>'
+            f'<td class="muted small">{theme.esc((r.get("last_ok") or "—")[:19])}</td>'
+            f'<td class="muted small">{theme.esc((r.get("last_error") or "")[:40])}</td>'
+            f'<td>{toggle} {preview}</td></tr>')
+    table = (f'<div class="scroll"><table><thead><tr><th>信源</th><th>本轮条数</th>'
+             f'<th>连续失败</th><th>最近成功</th><th>最近错误</th><th>操作</th>'
+             f'</tr></thead><tbody>{"".join(body_rows)}</tbody></table></div>')
+    return (table +
+            '<h2>试抓结果</h2><div id="preview"><p class="muted">点某一行的「试抓」看这个源现在能抓到什么'
+            '（不会入库；慢的源可能超时）。</p></div>'
+            '<p class="muted small">停用的源会在下一轮抓取时跳过。新增信源仍然改 '
+            '<code>config/feeds.yaml</code>。</p>' + _SOURCE_JS)
+
+
+_SOURCE_JS = """
+<script>
+function el(tag, cls, text){var e=document.createElement(tag); if(cls)e.className=cls;
+  if(text!==undefined)e.textContent=text; return e;}
+async function post(path, body){
+  var r = await fetch(path, {method:'POST', headers:{'content-type':'application/json'},
+                             body: JSON.stringify(body)});
+  return r.json();
+}
+document.addEventListener('click', async function(e){
+  var t = e.target.closest('[data-toggle]');
+  if (t){
+    t.disabled = true;
+    var want = t.dataset.enable === '1';
+    var j = await post('/api/source/toggle', {source:t.dataset.toggle, enabled:want});
+    t.disabled = false;
+    if (j.ok) { location.reload(); } else { alert(j.error || '失败'); }
+    return;
+  }
+  var p = e.target.closest('[data-preview]');
+  if (p){
+    var box = document.getElementById('preview');
+    box.innerHTML = '<p class="muted">正在抓取 ' + p.dataset.preview + ' …</p>';
+    var j = await post('/api/source/preview', {source:p.dataset.preview});
+    if (!j.ok){ box.innerHTML = '<p class="muted">失败：' + (j.error||'') + '</p>'; return; }
+    var rows = (j.items||[]).map(function(it){
+      var li = el('li'); var a = el('a', null, it.title || '(无标题)');
+      a.href = it.url || '#'; a.target = '_blank'; a.rel = 'noopener';
+      li.appendChild(a);
+      if (it.published) li.appendChild(el('span','muted small',' · ' + it.published.slice(0,10)));
+      return li.outerHTML;
+    }).join('');
+    box.innerHTML = '<p class="muted small">' + (j.count||0) + ' 条，用时 ' + (j.seconds||0) +
+      's（前 ' + (j.items||[]).length + ' 条）</p><ul class="list">' + rows + '</ul>';
+  }
+});
+</script>"""
 
 
 def _tabs(base: str, items: tuple, current: str) -> str:

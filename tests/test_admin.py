@@ -118,6 +118,62 @@ def test_render_all_tabs_do_not_crash(tmpdb):
         assert "后台" in doc
 
 
+def test_toggle_source_persists(tmpdb):
+    store.save_source_health({"arxiv": {"fails": 0, "last_count": 12}})
+    assert "arxiv" not in store.disabled_sources()
+
+    result = admin.toggle_source("arxiv", False)
+    assert result["ok"] is True
+    assert "arxiv" in store.disabled_sources()
+    # 健康记录不能被开关操作清掉
+    row = [r for r in store.source_rows() if r["source"] == "arxiv"][0]
+    assert row["last_count"] == 12 and row["enabled"] == 0
+
+    admin.toggle_source("arxiv", True)
+    assert "arxiv" not in store.disabled_sources()
+
+
+def test_toggle_rejects_empty_source(tmpdb):
+    assert admin.toggle_source("", True)["ok"] is False
+
+
+def test_preview_runs_the_fetcher_without_saving(tmpdb, monkeypatch):
+    from collector.model import Item
+
+    item = Item(source="arxiv", title="一篇预览论文", url="https://arxiv.org/abs/1",
+                published="2026-11-10T00:00:00+08:00")
+    monkeypatch.setattr("collector.sources.build_fetchers",
+                        lambda: [("arxiv", lambda: [item])])
+    out = admin.preview_source("arxiv")
+    assert out["ok"] and out["count"] == 1
+    assert out["items"][0]["title"] == "一篇预览论文"
+    # 不入库
+    assert store.summary()["items"] == 0
+
+
+def test_preview_handles_timeout(monkeypatch):
+    import time
+
+    monkeypatch.setattr("collector.sources.build_fetchers",
+                        lambda: [("slow", lambda: time.sleep(3) or [])])
+    out = admin.preview_source("slow", timeout=0.2)
+    assert out["ok"] is False and "超时" in out["error"]
+
+
+def test_preview_unknown_source(tmpdb, monkeypatch):
+    monkeypatch.setattr("collector.sources.build_fetchers", lambda: [])
+    out = admin.preview_source("nope")
+    assert out["ok"] is False and "没有这个源" in out["error"]
+
+
+def test_sources_tab_has_toggle_and_preview_buttons(tmpdb):
+    store.save_source_health({"arxiv": {"fails": 0, "last_count": 12}})
+    doc = admin.render(tab="sources")
+    assert 'data-toggle="arxiv"' in doc
+    assert 'data-preview="arxiv"' in doc
+    assert "/api/source/toggle" in doc
+
+
 def test_build_writes_static_copy(tmpdb, tmp_path):
     out = admin.build(tmp_path)
     from pathlib import Path

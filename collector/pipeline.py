@@ -93,6 +93,15 @@ REPEAT_WINDOW_DAYS = 7
 
 def fetch_all(max_workers: int = 8) -> tuple[list[Item], list[dict], dict, set[str]]:
     fetchers = build_fetchers()
+    # 后台停用的源跳过（不停用代码里的定义，只停用这一次抓取）
+    try:
+        disabled = store.disabled_sources()
+    except Exception:
+        disabled = set()
+    skipped = [sid for sid, _ in fetchers if sid in disabled]
+    if skipped:
+        fetchers = [(sid, fn) for sid, fn in fetchers if sid not in disabled]
+        print(f"      跳过 {len(skipped)} 个已停用的源: {', '.join(skipped)}")
     items: list[Item] = []
     errors: list[dict] = []
     counts: dict[str, int] = {}

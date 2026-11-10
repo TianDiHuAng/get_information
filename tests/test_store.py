@@ -73,6 +73,25 @@ def test_backfill_attention_merges_scores_into_extra(tmpdb):
     assert store.backfill_attention() == 0
 
 
+def test_disabled_source_is_skipped_by_fetch(monkeypatch, tmpdb):
+    """后台停用的源不该再被抓（不停用代码里的定义，只停用这一次抓取）。"""
+    from collector import pipeline
+
+    calls = []
+    monkeypatch.setattr(pipeline, "build_fetchers",
+                        lambda: [("a", lambda: calls.append("a") or []),
+                                 ("b", lambda: calls.append("b") or [])])
+    store.set_source_enabled("a", False)
+    pipeline.fetch_all(max_workers=2)
+    assert calls == ["b"]
+
+
+def test_source_rows_carry_enabled_flag(tmpdb):
+    store.set_source_enabled("arxiv", False)
+    row = [r for r in store.source_rows() if r["source"] == "arxiv"][0]
+    assert row["enabled"] == 0
+
+
 def test_pair_dump_carries_body_for_evaluation(tmpdb):
     """归组评测要拿正文，否则评的是一个比线上更差的分布。"""
     import json as _json

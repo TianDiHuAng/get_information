@@ -84,6 +84,8 @@ class Handler(SimpleHTTPRequestHandler):
         path = urlparse(self.path).path.rstrip("/") or "/"
         if path == "/admin/login":
             return self._admin_login()
+        if path in ("/api/source/toggle", "/api/source/preview"):
+            return self._source_action(path)
         if path != "/api/feedback":
             return self._json({"ok": False, "error": "not found"}, 404)
         try:
@@ -159,6 +161,27 @@ class Handler(SimpleHTTPRequestHandler):
         self.send_header("set-cookie",
                          f"{COOKIE}={token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=604800")
         self.end_headers()
+
+    def _source_action(self, path: str) -> None:
+        """停用/启用、试抓 —— 两个都要求后台登录，且只动本机状态。"""
+        if not self._authed():
+            return self._json({"ok": False, "error": "unauthorized"}, 401)
+        from collector import admin
+
+        try:
+            length = int(self.headers.get("content-length") or 0)
+            if length <= 0 or length > MAX_BODY:
+                raise ValueError("bad body size")
+            body = json.loads(self.rfile.read(length).decode("utf-8") or "{}")
+        except Exception as e:
+            return self._json({"ok": False, "error": f"bad request: {e}"}, 400)
+
+        source = str(body.get("source") or "")
+        if path.endswith("/toggle"):
+            result = admin.toggle_source(source, bool(body.get("enabled")))
+        else:
+            result = admin.preview_source(source)
+        self._json(result, 200 if result.get("ok") else 400)
 
     def _admin(self, parsed) -> None:
         if not self._authed():

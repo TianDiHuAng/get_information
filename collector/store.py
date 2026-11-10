@@ -234,6 +234,11 @@ MIGRATIONS: list[str] = [
         PRIMARY KEY (identity, kind)
     );
     """,
+    # v7 —— 信源开关：后台可以停用某个源，而不用改代码
+    """
+    ALTER TABLE sources ADD COLUMN enabled INTEGER NOT NULL DEFAULT 1;
+    ALTER TABLE sources ADD COLUMN note TEXT;
+    """,
 ]
 
 
@@ -542,6 +547,28 @@ def save_source_health(health: dict[str, dict[str, Any]]) -> None:
                 for src, info in health.items()
             ],
         )
+
+
+def set_source_enabled(source: str, enabled: bool, note: str | None = None) -> None:
+    """停用/启用一个信源。只动开关，不碰已有的健康记录。"""
+    ts = now_str()
+    with db() as conn:
+        conn.execute(
+            """INSERT INTO sources (source, fails, enabled, note, updated_at)
+               VALUES (?, 0, ?, ?, ?)
+               ON CONFLICT(source) DO UPDATE SET
+                 enabled = excluded.enabled,
+                 note = coalesce(excluded.note, sources.note),
+                 updated_at = excluded.updated_at""",
+            (source, 1 if enabled else 0, note, ts),
+        )
+
+
+def disabled_sources() -> set[str]:
+    """被后台停用的信源 id。抓取时跳过它们。"""
+    with db() as conn:
+        rows = conn.execute("SELECT source FROM sources WHERE enabled = 0").fetchall()
+    return {r["source"] for r in rows}
 
 
 def source_rows() -> list[dict[str, Any]]:
