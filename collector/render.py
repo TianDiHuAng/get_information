@@ -50,6 +50,12 @@ def render(payload: dict, out_path: Path, history: list[dict] | None = None,
     from .health import status_of
 
     health = stats.get("health") or {}
+    # 转发预览：og:image 指向 /og.png（share.py 每次跑都会重画）
+    from .share import og_tags
+
+    share_info = stats.get("share") or {}
+    og_html = og_tags(f"信息雷达 · {stats['generated_at'][:10]}",
+                      share_info.get("lead") or "每天一份 AI 情报日报：五轴评分、事件聚簇、规则编排")
     chips = []
     for s in registry:
         if s["enabled"]:
@@ -186,6 +192,7 @@ def render(payload: dict, out_path: Path, history: list[dict] | None = None,
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>信息雷达 · {stats['generated_at'][:16]}</title>
+{og_html}
 <link rel="alternate" type="application/rss+xml" title="信息雷达 · 今日要闻" href="/feed.xml">
 <link rel="alternate" type="application/rss+xml" title="信息雷达 · 全部动态" href="/feed-all.xml">
 <link rel="alternate" type="application/json" title="结构化数据" href="/api/v1/latest.json">

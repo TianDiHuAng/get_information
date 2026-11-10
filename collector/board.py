@@ -187,6 +187,8 @@ def _bars(rows: list[dict[str, Any]], label_key: str, value_key: str = "n") -> s
 
 
 def render(data: dict[str, Any]) -> str:
+    from .share import og_tags
+
     a = data["attention"]
     hist = data["histogram_attention"]
     d = data["discourse"]
@@ -223,6 +225,7 @@ def render(data: dict[str, Any]) -> str:
     return f"""<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>信息雷达 · 看板 {data['day']}</title>
+{og_tags(f"信息雷达 · 看板 {data['day']}", "源健康、评分分布、模型成本、官方与国内舆论场")}
 <style>
 :root {{ color-scheme: dark; }}
 * {{ box-sizing: border-box; }}

@@ -106,9 +106,12 @@ ul.list li { margin:6px 0; }
 
 
 def _page(title: str, sub: str, body: str) -> str:
+    from .share import og_tags
+
+    desc = re.sub(r"<[^>]+>", " ", sub)
     return (f'<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">'
             f'<meta name="viewport" content="width=device-width,initial-scale=1">'
-            f'<title>{html.escape(title)}</title><style>{_CSS}</style></head><body><div class="wrap">'
+            f'<title>{html.escape(title)}</title>{og_tags(title, desc)}<style>{_CSS}</style></head><body><div class="wrap">'
             f'<h1>{html.escape(title)}</h1><div class="sub">{sub}</div>{body}'
             f'<div class="muted" style="font-size:11px;margin-top:30px;">'
             f'只读数据库生成；分类与标签来自结构化抽取（config/prompts/structure.md）。</div>'

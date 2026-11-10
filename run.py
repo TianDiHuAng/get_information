@@ -18,8 +18,9 @@ from pathlib import Path
 
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
-from collector import (alerts, board, breaking, events, export, rating, report, state, store,
-                       structure, timeline, topics)
+from collector import (alerts, board, breaking, events, export, rating, report, share, state,
+                       store, structure, timeline, topics)
+from collector import pushmail
 from collector.archive import save as save_archive
 from collector.digest import build as build_digest
 from collector.digest import picked as digest_picked
@@ -133,6 +134,15 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True,
     payload["stats"]["translate"] = translate_items(payload["items"])
     _done(stage)
 
+    # 分享图：给邮件/RSS 转发用的预览图（不调模型）
+    try:
+        payload["stats"]["share"] = share.build(payload, ROOT / "site")
+        sh = payload["stats"]["share"]
+        if sh.get("file"):
+            print(f"      分享图: {Path(sh['file']).name}（{sh['bytes'] // 1024} KB）")
+    except Exception as e:
+        print(f"      分享图生成失败: {type(e).__name__}: {e}")
+
     payload["stats"]["health"] = update_health(payload["stats"])
     try:
         store.save_source_health(payload["stats"]["health"])
@@ -208,6 +218,27 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True,
     except Exception as e:
         print(f"      周报月报生成失败: {type(e).__name__}: {e}")
     _done(stage)
+
+    # 周一发周报、每月 1 号发月报：不然它们只躺在 data/ 里没人看
+    try:
+        today = datetime.now()
+        due = []
+        if today.weekday() == 0:
+            due.append(("weekly", "周报"))
+        if today.day == 1:
+            due.append(("monthly", "月报"))
+        for kind, label in due:
+            info = (payload["stats"].get("reports") or {}).get(kind) or {}
+            path = Path(info.get("file") or "")
+            if not path.is_file():
+                continue
+            if not send_mail_enabled:
+                print(f"      {label}: 已生成（--no-mail，未发送）")
+                continue
+            subject = f"[信息雷达] {label} · {info['range'][0]} ~ {info['range'][1]}"
+            print(f"      {label}推送: {pushmail.send_text(subject, path.read_text(encoding='utf-8'))}")
+    except Exception as e:
+        print(f"      周报月报推送失败: {type(e).__name__}: {e}")
 
     stage = _stage("digest", day)
     digest = build_digest(payload, lmarena=lmarena, aa=aa)

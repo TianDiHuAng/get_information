@@ -119,6 +119,8 @@ def compute(rows: Iterable[dict[str, Any]]) -> dict[str, Any]:
 # --------------------------------------------------------------------------- #
 
 def render(data: dict[str, Any]) -> str:
+    from .share import og_tags
+
     monthly = data["monthly"]
     months = monthly["months"]
     rows_html = []
@@ -154,6 +156,7 @@ def render(data: dict[str, Any]) -> str:
     return f"""<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>信息雷达 · 时间线</title>
+{og_tags("信息雷达 · 时间线", "主体×月份跨度，以及同一件事在官方/媒体/社区三种渠道下的说法")}
 <style>
 :root {{ color-scheme: dark; }}
 * {{ box-sizing: border-box; }}
