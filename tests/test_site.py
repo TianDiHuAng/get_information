@@ -128,9 +128,22 @@ def test_search_embeds_items(tmpdb, tmp_path):
 
 def test_static_pages_exist(tmp_path):
     out = site.build_static(tmp_path)
-    for slug in ("about", "terms", "privacy", "agent", "starred", "feedback", "more"):
+    # about 单独由 collector/about.py 生成（带 canvas 示意图），不在这里
+    for slug in ("terms", "privacy", "agent", "starred", "feedback", "more"):
         assert (tmp_path / f"{slug}.html").exists(), slug
-    assert out["pages"] == 7
+    assert out["pages"] == 6
+
+
+def test_about_page_has_river_and_real_numbers(tmpdb, tmp_path):
+    from collector import about
+
+    out = about.build(tmp_path)
+    doc = (tmp_path / "about.html").read_text(encoding="utf-8")
+    assert 'id="river"' in doc
+    assert "window.__RIVER__" in doc
+    for word in ("采集", "收录", "精选", "成刊"):
+        assert word in doc
+    assert out["counts"]["sources"] > 0
 
 
 def test_issue_pages_from_markdown(tmp_path, monkeypatch):

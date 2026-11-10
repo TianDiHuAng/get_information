@@ -1,4 +1,4 @@
-"""整站页面：对齐 AIHOT 的信息架构，视觉换成本项目的纸感风格。
+﻿"""整站页面：对齐 AIHOT 的信息架构，视觉换成本项目的纸感风格。
 
 AIHOT 的公开站是这些模块（按 `apps/web/app/routes.ts`）：
 精选 / 全部动态 / 文章页 / 原文 / 热门 / 事件页 / 日报(列表·详情·归档) /
@@ -495,7 +495,7 @@ _PRIVACY = """
 def build_static(site_root: Path | None = None) -> dict[str, Any]:
     root = site_root or SITE
     pages = {
-        "about": ("关于", _ABOUT, "每天一份自己去判断的日报"),
+        # about 由 collector/about.py 生成（带 canvas 示意图），这里不再覆盖
         "terms": ("使用条款", _TERMS, "内容来源、使用方式与免责"),
         "privacy": ("隐私", _PRIVACY, "不追踪、不统计、不外发"),
     }
@@ -587,7 +587,7 @@ fetch('/api/prefs').then(r=>r.json()).then(function(j){
     _write(root / "more.html", theme.page(
         "更多", f'<ul class="list">{more_links}</ul>', active="",
         lead="所有页面与出口"))
-    return {"pages": 7}
+    return {"pages": 6}
 
 
 # --------------------------------------------------------------------------- #
@@ -899,6 +899,12 @@ def build_deals(day: str | None = None, site_root: Path | None = None,
 # 一把生成
 # --------------------------------------------------------------------------- #
 
+def _build_about(root: Path) -> dict[str, Any]:
+    from . import about as about_page
+
+    return about_page.build(root)
+
+
 def build(payload: dict[str, Any] | None = None, site_root: Path | None = None,
           day: str | None = None) -> dict[str, Any]:
     """生成全部页面。任何一页失败只影响它自己。"""
@@ -914,6 +920,7 @@ def build(payload: dict[str, Any] | None = None, site_root: Path | None = None,
         "events": lambda: build_events(root),
         "search": lambda: build_search(day, root),
         "static": lambda: build_static(root),
+        "about": lambda: _build_about(root),
         "daily": lambda: build_issue_index("daily", site_root=root),
         "weekly": lambda: build_issue_index("weekly", site_root=root),
         "monthly": lambda: build_issue_index("monthly", site_root=root),

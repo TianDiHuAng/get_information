@@ -55,6 +55,23 @@ def _session() -> requests.Session:
 # 配置
 # --------------------------------------------------------------------------- #
 
+def model_for(task: str) -> str | None:
+    """这一步该用哪个模型。`steps` 里配了就用它，否则用默认模型。
+
+    为什么按步骤分：评分要判断力（贵模型），翻译只要听话（便宜模型），
+    改用词是机械活。一个模型跑全部，要么贵，要么糙。
+    """
+    try:
+        conf = yaml.safe_load(CONFIG_PATH.read_text(encoding="utf-8")) or {}
+    except Exception:
+        conf = {}
+    steps = conf.get("steps") or {}
+    picked = str(steps.get(task) or "").strip()
+    if picked:
+        return picked
+    return os.environ.get("OPENAI_MODEL") or str(conf.get("model") or "") or None
+
+
 def settings() -> dict[str, Any]:
     """环境变量优先，其次 config/llm.yaml。缺失时返回空 key（调用方应当降级）。"""
     conf: dict[str, Any] = {}
@@ -266,7 +283,7 @@ def call_json(task: str, prompt_version: str, system: str, user: str, *,
     conf = settings()
     if not conf["api_key"] or not conf["model"]:
         return None
-    model = model or conf["model"]
+    model = model or model_for(task) or conf["model"]
     temperature = conf["temperature"] if temperature is None else temperature
     key = _receipt_key(task, model, prompt_version,
                        f"{system}\x00{user}\x00{temperature}\x00{max_tokens}\x00{variant or ''}")
@@ -344,7 +361,7 @@ def call_text(task: str, prompt_version: str, system: str, user: str, *,
     conf = settings()
     if not conf["api_key"] or not conf["model"]:
         return None
-    model = model or conf["model"]
+    model = model or model_for(task) or conf["model"]
     temperature = conf["temperature"] if temperature is None else temperature
     key = _receipt_key(task, model, prompt_version, f"{system}\x00{user}\x00{temperature}\x00{max_tokens}")
 
