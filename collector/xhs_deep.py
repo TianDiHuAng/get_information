@@ -248,6 +248,17 @@ def fix_field_one(text: str, limit: int, chat, llm: dict) -> str:
     return val
 
 
+def _paper_ref(it: dict) -> str:
+    """给出一行可搜索的原文引用：arxiv.org/abs/xxxx 或 arXiv:xxxx。"""
+    url = str(it.get("url") or "").strip()
+    pid = str(it.get("id") or "").strip()
+    if url.startswith("http"):
+        return url.split("://", 1)[1]
+    if pid:
+        return f"arXiv:{pid}"
+    return ""
+
+
 def assemble(facts: dict, endpoint: dict, others: list[dict], cover: list[str], tags: list[str],
              titles: list[str], scale: float = 1.0) -> dict:
     """按固定骨架拼正文；每段有字数预算，保证结构完整且不超长。"""
@@ -268,6 +279,10 @@ def assemble(facts: dict, endpoint: dict, others: list[dict], cover: list[str], 
     if facts.get("meaning"):
         body.append(f"💡 对做药的人意味着什么\n{_fit(facts['meaning'], B['meaning'])}")
 
+    lead_ref = _paper_ref(endpoint.get("_lead") or {})
+    if lead_ref:
+        body.append(f"📎 原文：{lead_ref}")
+
     if others:
         rows = ["📌 顺带记两篇"]
         for it in others:
@@ -276,7 +291,9 @@ def assemble(facts: dict, endpoint: dict, others: list[dict], cover: list[str], 
             zh = re.search(r"[\u4e00-\u9fff]", raw) is not None
             s = (raw.split("。")[0] if zh else raw.split(". ")[0]).strip()
             s = _fit(s, B["other_sum"], allow_ellipsis=True)
-            rows.append(f"· {t}\n  {s}" if s else f"· {t}")
+            ref = _paper_ref(it)
+            head = f"· {t}｜{ref}" if ref else f"· {t}"
+            rows.append(f"{head}\n  {s}" if s else head)
         body.append("\n".join(rows))
 
     tail = _fit(endpoint.get("ending") or "", B["ending"])

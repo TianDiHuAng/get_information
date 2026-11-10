@@ -44,6 +44,7 @@ def main() -> None:
 
     facts = xhs_deep.condense(facts, _chat, llm)
     shell = xhs_shell.build_shell(_chat, llm, cfg, lead["title"], facts) or {}
+    shell["_lead"] = lead
     raw_titles = shell.get("titles") or [lead["title"][:18]]
     lim = int(cfg["title_rules"]["max_chars"])
     titles = []
