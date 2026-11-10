@@ -795,6 +795,87 @@ def build_leaderboard(site_root: Path | None = None) -> dict[str, Any]:
     return {"file": str(root / "leaderboard.html"), "sections": len(sections)}
 
 
+DEAL_WORDS = ("免费", "赠送", "白嫖", "羊毛", "额度", "体验金", "注册送", "试用",
+              "优惠", "折扣", "降价", "限免", "free", "trial", "credit")
+
+
+def build_deals(day: str | None = None, site_root: Path | None = None,
+                days: int = 14) -> dict[str, Any]:
+    """`/free-tokens.html`：Token 羊毛 / 免费额度。
+
+    口径：`deals` 源抓到的，或标题摘要里带"免费/额度/赠送"这类词的。
+    不额外判断"真能不能白嫖"——那要看原文，页面只负责把人送到原文。
+    """
+    root = site_root or SITE
+    day = day or store.today_str()
+    rows: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for d in range(days):
+        try:
+            day_str = store.shift_day(day, -d) if d else day
+        except Exception:
+            day_str = day
+        try:
+            batch = store.all_items(day_str, limit=800)
+        except Exception:
+            batch = []
+        for it in batch:
+            # 只认 deals 源或已打标的条目：上游的查询词已经在做关键词过滤，
+            # 这里再用"免费/试用"撒网会混进"免费开源声明""存储试用会"这类噪音。
+            is_deal = (it.get("source") == "deals" or bool(it.get("deal")))
+            if not is_deal:
+                continue
+            key = it.get("url") or str(it.get("id"))
+            if key in seen:
+                continue
+            seen.add(key)
+            rows.append(it)
+        if d >= 2 and rows:
+            break
+
+    rows.sort(key=lambda r: str(r.get("published") or ""), reverse=True)
+    cards = []
+    for it in rows[:60]:
+        tags = []
+        text = f'{it.get("title") or ""}{it.get("summary") or ""}'
+        if "免费" in text or "free" in text.lower():
+            tags.append("免费")
+        if "额度" in text or "credit" in text.lower():
+            tags.append("额度")
+        if "降价" in text or "折扣" in text or "优惠" in text:
+            tags.append("降价")
+        if "注册" in text:
+            tags.append("注册送")
+        tag_html = "".join(f'<span class="tag">{t}</span>' for t in dict.fromkeys(tags))
+        cards.append(
+            f'<li class="item" data-id="{it.get("id")}">'
+            f'<div class="time">{theme.esc((it.get("published") or "")[11:16] or "--:--")}</div>'
+            f'<div><div class="src"><span>{theme.esc(it.get("source"))}</span>'
+            f'<span class="dot"></span><span>{theme.esc((it.get("published") or "")[5:10])}</span>'
+            f'</div><h3><a href="{theme.esc(it.get("url"))}" target="_blank" rel="noopener">'
+            f'{theme.esc(it.get("title"))}</a></h3>'
+            + (f'<p class="sum">{theme.esc(" ".join(str(it.get("summary") or "").split())[:160])}</p>'
+               if it.get("summary") else "")
+            + (f'<div style="margin-top:8px;">{tag_html}</div>' if tag_html else "")
+            + '</div></li>')
+
+    body = ('<h1 class="title">Token 羊毛'
+            f'<small>近 {days} 天 · {len(rows)} 条</small></h1>'
+            '<p class="lead">免费额度、赠送、降价。点标题去原文核对，'
+            '能不能用、还剩多少以原文为准。</p>'
+            + (f'<ol class="feed">{"".join(cards)}</ol>' if cards
+               else '<p class="muted">这几天没抓到羊毛。可以停掉某个源再试，'
+                    '或者缩小关键词。</p>')
+            + '<p class="muted small" style="margin-top:18px;">'
+              '口径：只收 deals 源与已打标的条目 —— 上游用「免费 / 额度 / 白嫖 / 注册送」等词搜索，'
+              '这里不再二次撒网。'
+              '页面只做归集，不判断真伪。</p>')
+    _write(root / "free-tokens.html",
+           theme.page(f"Token 羊毛 · {theme.BRAND}", body, active="/free-tokens.html",
+                      subtitle=f"Token 羊毛 · {theme.BRAND}", own_heading=True))
+    return {"file": str(root / "free-tokens.html"), "items": len(rows)}
+
+
 # --------------------------------------------------------------------------- #
 # 一把生成
 # --------------------------------------------------------------------------- #
@@ -807,6 +888,7 @@ def build(payload: dict[str, Any] | None = None, site_root: Path | None = None,
     jobs = {
         "home": lambda: build_home(day, root),
         "leaderboard": lambda: build_leaderboard(root),
+        "deals": lambda: build_deals(day, root),
         "all": lambda: build_all(day, root),
         "hot": lambda: build_hot(day, root),
         "items": lambda: build_items(day, root),
