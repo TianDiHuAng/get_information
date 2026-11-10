@@ -1,0 +1,93 @@
+# 行业词表：分类、标签、实体（公司/产品）
+#
+# 三个用途：
+# 1. `structure.md` 提示词用它约束模型的输出（分类只能是这 8 个，标签只能从词表里挑）；
+# 2. 主题页/标签页按它聚合；
+# 3. `grounding` 用它判断"模型写的名字是不是原文没提过的"（防张冠李戴）。
+#
+# 上线后改 key 会让历史数据对不上，所以 key 定下就别动，改 label 和描述没关系。
+
+categories:
+  model_release:      {label: 模型发布, desc: 新模型或大版本更新、价格与可用性变化}
+  product_launch:     {label: 产品上线, desc: 新产品、工具或重大功能上线}
+  tool_or_prompt:     {label: 工具与方法, desc: 可直接复用的方法、Prompt、Skill、工作流}
+  research_paper:     {label: 论文研究, desc: 论文、技术报告、实验结果}
+  industry_event:     {label: 行业动态, desc: 融资、收购、监管、诉讼、人事、合作}
+  opinion_analysis:   {label: 观点解读, desc: 观点、行业判断、复盘、访谈}
+  tutorial_explainer: {label: 教程评测, desc: 教程、科普、上手体验、评测}
+  deal:               {label: 羊毛福利, desc: 免费额度、限免、优惠、赠金、开放权重}
+
+# 标签词表（模型只能从这里挑；没合适的就不打）
+tags:
+  - 多模态
+  - 智能体
+  - 长上下文
+  - 开源
+  - 开放权重
+  - 推理
+  - 训练
+  - 微调
+  - 蒸馏
+  - 量化
+  - 算力
+  - 芯片
+  - 数据中心
+  - 机器人
+  - 具身智能
+  - 自动驾驶
+  - 文生图
+  - 文生视频
+  - 语音
+  - RAG
+  - 评测榜单
+  - 安全对齐
+  - 编程
+  - 医疗
+  - 教育
+  - 金融
+  - 法律
+  - 企业应用
+  - 价格
+  - 隐私合规
+
+# 实体表：id → 名称 + 别名（别名用于识别同一家公司的不同写法）
+# grounding 会认为"这些名字出现在标题里、但原文没提"是可疑的
+entities:
+  anthropic:   {name: Anthropic,      aliases: [克劳德, Claude]}
+  openai:      {name: OpenAI,         aliases: [GPT, ChatGPT]}
+  google:      {name: Google,         aliases: [谷歌, DeepMind, 深度思维, Gemini, TPU]}
+  meta:        {name: Meta,           aliases: [脸书, Facebook, Llama]}
+  microsoft:   {name: Microsoft,      aliases: [微软, Azure, Copilot]}
+  nvidia:      {name: NVIDIA,         aliases: [英伟达, 黄仁勋, GB200, H200]}
+  amazon:      {name: Amazon,         aliases: [亚马逊, AWS, Bedrock]}
+  apple:       {name: Apple,          aliases: [苹果]}
+  xai:         {name: xAI,            aliases: [Grok, 马斯克, Musk]}
+  mistral:     {name: Mistral,        aliases: []}
+  huggingface: {name: Hugging Face,   aliases: [HF]}
+  deepseek:    {name: DeepSeek,       aliases: [深度求索]}
+  moonshot:    {name: 月之暗面,        aliases: [Moonshot, Kimi]}
+  zhipu:       {name: 智谱,           aliases: [智谱AI, GLM, Z.ai]}
+  minimax:     {name: MiniMax,        aliases: [稀宇]}
+  stepfun:     {name: 阶跃星辰,        aliases: [StepFun, 阶跃]}
+  sensetime:   {name: 商汤,           aliases: [SenseTime]}
+  iflytek:     {name: 科大讯飞,        aliases: [讯飞, 星火]}
+  alibaba:     {name: 阿里,           aliases: [阿里巴巴, Alibaba, 通义, Qwen, 千问, 阿里云]}
+  tencent:     {name: 腾讯,           aliases: [Tencent, 混元, Hunyuan]}
+  bytedance:   {name: 字节,           aliases: [字节跳动, ByteDance, 豆包, Doubao, 即梦]}
+  baidu:       {name: 百度,           aliases: [Baidu, 文心, 千帆]}
+  huawei:      {name: 华为,           aliases: [Huawei, 昇腾, 盘古]}
+  xiaomi:      {name: 小米,           aliases: [Xiaomi, MiMo]}
+  tsmc:        {name: 台积电,          aliases: [TSMC]}
+  amd:         {name: AMD,            aliases: [超威]}
+  intel:       {name: Intel,          aliases: [英特尔]}
+  unitree:     {name: 宇树,           aliases: [Unitree]}
+  zhipu_ai:    {name: 智谱清言,        aliases: []}
+
+# grounding 的豁免词：通用技术词、站内常用词。它们不构成"张冠李戴"的证据。
+# 注意：**不要**把实体名（OpenAI / Anthropic…）写进这里 —— 它们正是要被检查的对象。
+plain_terms:
+  [AI, AGI, API, SDK, LLM, LLMs, GPU, CPU, TPU, NPU, RAG, MCP, CLI, JSON, HTTP, URL,
+   Token, token, tokens, Prompt, prompt, Agent, agent, Benchmark, benchmark,
+   模型, 大模型, 开源, 论文, 榜单, 发布会, 融资, 估值, 智能体, 多模态, 推理, 训练,
+   微调, 算力, 芯片, 机器人, 具身智能, 上下文, 价格, 免费, 开放, 上线, 评测,
+   arXiv, GitHub, AIHOT, Get_Information]

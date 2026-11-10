@@ -12,6 +12,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import re
 from urllib.parse import parse_qsl, urlencode, urlparse, urlunparse
 
@@ -90,3 +91,13 @@ def jaccard(a: set[str], b: set[str]) -> float:
 
 def title_similar(a: str, b: str) -> float:
     return jaccard(bigrams(a), bigrams(b))
+
+
+def content_fingerprint(title: str, summary: str = "") -> str:
+    """内容指纹：同一篇文章改了标题/摘要，指纹会变，用来判断"是不是新修订"。
+
+    为什么不用 URL 或标题：转载常常换标题、换入口；而同一入口的内容也会被更新
+    （媒体补一句、官方改价格）。前者靠 `item_identity`，后者靠这个指纹。
+    """
+    raw = f"{title_key(title)}|{title_key((summary or '')[:400])}"
+    return hashlib.sha1(raw.encode("utf-8")).hexdigest()[:16]

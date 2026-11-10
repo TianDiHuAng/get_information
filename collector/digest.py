@@ -6,12 +6,10 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
-import os
 from datetime import datetime
 from pathlib import Path
-
-import yaml
 
 SOURCE_LABEL = {
     "smolai": "smol.ai AINews",
@@ -26,27 +24,6 @@ SOURCE_LABEL = {
     "sspai": "少数派",
     "google_news": "Google News",
 }
-
-LLM_CONFIG_PATH = Path(__file__).parent.parent / "config" / "llm.yaml"
-
-
-def _llm_conf() -> dict:
-    """环境变量优先，其次 config/llm.yaml（免设环境变量的场景）。"""
-    conf: dict = {}
-    if LLM_CONFIG_PATH.exists():
-        try:
-            conf = yaml.safe_load(LLM_CONFIG_PATH.read_text(encoding="utf-8")) or {}
-        except Exception:
-            conf = {}
-    return {
-        "api_key": os.environ.get("OPENAI_API_KEY") or str(conf.get("api_key") or ""),
-        "base_url": (
-            os.environ.get("OPENAI_BASE_URL") or str(conf.get("base_url") or "")
-        ).rstrip("/")
-        or "https://api.openai.com/v1",
-        "model": os.environ.get("OPENAI_MODEL") or str(conf.get("model") or "gpt-4o-mini"),
-    }
-
 
 def _pick(items: list[dict], n: int, per_source: int = 2, skip_repeat: bool = True) -> list[dict]:
     """按分数取前 n 条，但同一来源最多 per_source 条，避免刷屏。
@@ -309,40 +286,42 @@ def email_html(payload: dict, ai_text: str | None, lmarena: dict | None = None,
 </div>"""
 
 
-def llm_digest(payload: dict) -> str | None:
-    conf = _llm_conf()
-    key = conf["api_key"]
-    if not key:
-        return None
-    import requests
+_LEAD_SYSTEM = (
+    "你是科技情报编辑。根据给定的条目写一份中文简报：开头 2 句总结今天最值得注意的趋势，"
+    "然后分 3~5 个要点，每个要点说清发生了什么、为什么重要。\n"
+    "硬性要求：\n"
+    "- 只使用给定条目里出现过的事实、公司名和数字，**不要补充任何条目里没有的信息**；\n"
+    "- 不要写“据我所知”“业内普遍认为”这类没有依据的话；\n"
+    "- 直接输出正文，不要大标题，不要结尾语，不要写日期。"
+)
 
-    base = conf["base_url"]
-    model = conf["model"]
+
+def llm_digest(payload: dict) -> str | None:
+    """AI 导读：走统一回执层（缓存/预算/重试），并用 grounding 挡掉编造的名字与数字。"""
+    from . import grounding, llm
+
+    if not llm.available():
+        return None
     top = _pick(payload["items"], 20)
+    if not top:
+        return None
     bullets = "\n".join(
         f"- [{i['source']}] {i['title']} :: {(i.get('summary') or '')[:150]}" for i in top
     )
-    prompt = (
-        f"今天是 {datetime.now().strftime('%Y 年 %m 月 %d 日')}。"
-        "你是科技情报编辑。下面是从多个一手/榜单源抓到的条目。"
-        "请用中文写一份 400 字以内的简报：开头 2 句总结今天最值得注意的趋势，"
-        "然后分 3~5 个要点，每个要点说清发生了什么、为什么重要。"
-        "不要编造事实，只基于给定条目。直接输出正文，不要加大标题、结尾语，不要写日期。\n\n"
-        f"{bullets}"
-    )
-    try:
-        r = requests.post(
-            f"{base}/chat/completions",
-            headers={"Authorization": f"Bearer {key}"},
-            json={"model": model, "messages": [{"role": "user", "content": prompt}], "temperature": 0.3},
-            timeout=90,
-        )
-        r.raise_for_status()
-        text = r.json()["choices"][0]["message"]["content"].strip()
-        return text  # 原文；标题由调用方决定（MD 加 "## AI 导读"，邮件加蓝框）
-    except Exception as e:
-        print(f"  [digest] LLM 失败，退回结构化简报: {e}")
+    corpus = "\n".join(f"{i['title']} {i.get('summary') or ''}" for i in top)
+    version = hashlib.sha1(_LEAD_SYSTEM.encode("utf-8")).hexdigest()[:8]
+    user = f"今天是 {datetime.now().strftime('%Y 年 %m 月 %d 日')}。以下是今天抓到的条目：\n\n{bullets}"
+
+    text = llm.call_text("digest-lead", version, _LEAD_SYSTEM, user,
+                         temperature=0.3, max_tokens=800)
+    if not text:
         return None
+
+    verdict = grounding.check(text, corpus, skip=list(SOURCE_LABEL.values()))
+    if not verdict["ok"]:
+        print(f"  [digest] 导读里出现原文没有的名字/数字，整段丢弃: {verdict['unsupported'][:5]}")
+        return None
+    return text
 
 
 def build(payload: dict, lmarena: dict | None = None, aa: dict | None = None) -> Path:

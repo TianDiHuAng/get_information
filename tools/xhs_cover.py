@@ -15,6 +15,7 @@ import argparse
 import json
 import math
 import random
+import re
 import sys
 from pathlib import Path
 
@@ -41,6 +42,31 @@ def _font(path: str, size: int) -> ImageFont.FreeTypeFont:
         except Exception:
             continue
     return ImageFont.load_default()
+
+
+
+_TOKEN = re.compile(r"[A-Za-z0-9][A-Za-z0-9.\-+]*|\\s+|.")
+
+
+def wrap_tokens(text: str, font, max_w: int) -> list[str]:
+    """按语义 token 换行：英文/数字整体不拆，中文逐字可断。"""
+    d = ImageDraw.Draw(Image.new("RGB", (10, 10)))
+    tokens = _TOKEN.findall(text)
+    lines, cur = [], ""
+    for tok in tokens:
+        if tok.strip() == "":
+            if cur:
+                lines.append(cur)
+                cur = ""
+            continue
+        if d.textlength(cur + tok, font=font) > max_w and cur:
+            lines.append(cur)
+            cur = tok
+        else:
+            cur += tok
+    if cur:
+        lines.append(cur)
+    return lines or [text]
 
 
 def paper_base() -> Image.Image:
@@ -149,17 +175,7 @@ def underlined_text(base: Image.Image, text: str, font, xy, fill, rnd, jitter=0.
 def draw_headline(img: Image.Image, text: str, top: int, size: int, color, rnd) -> int:
     """手写体主标题（自动换行），返回占用高度。"""
     font = _font(FONT_HAND, size)
-    measure = ImageDraw.Draw(img)
-    max_w = W - 176
-    lines, cur = [], ""
-    for ch in text:
-        if measure.textlength(cur + ch, font=font) > max_w and cur:
-            lines.append(cur)
-            cur = ch
-        else:
-            cur += ch
-    if cur:
-        lines.append(cur)
+    lines = wrap_tokens(text, font, W - 176)
 
     layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     d = ImageDraw.Draw(layer)
@@ -191,7 +207,7 @@ def scribble_underline(img: Image.Image, y: int, x0: int, x1: int, color, rnd, w
     img.alpha_composite(layer)
 
 
-def make(base_fig: Path | None, out: Path, title: str, sub: str, kicker: str, footer_left: str, footer_right: str, with_hand: bool = False):
+def make(base_fig: Path | None, out: Path, title: str, sub: str, kicker: str, footer_left: str, footer_right: str, with_hand: bool = False, fig_caption: str = "", arxiv_id: str = ""):
     rnd = random.Random(11)
     img = paper_base().convert("RGBA")
 
@@ -219,18 +235,10 @@ def make(base_fig: Path | None, out: Path, title: str, sub: str, kicker: str, fo
     plain_title = "".join(plain_parts)
 
     # 先算换行，再在字底下铺荧光笔
-    font_h = _font(FONT_HAND, 112)
+    font_h = _font(FONT_HAND, 104)
     meas = ImageDraw.Draw(img)
     max_w = W - 176
-    lines, cur = [], ""
-    for ch in plain_title:
-        if meas.textlength(cur + ch, font=font_h) > max_w and cur:
-            lines.append(cur)
-            cur = ch
-        else:
-            cur += ch
-    if cur:
-        lines.append(cur)
+    lines = wrap_tokens(plain_title, font_h, max_w)
 
     if not hl_ranges and plain_title:
         # 没标记时自动高亮前 4 个字（通常是主语）
@@ -242,7 +250,7 @@ def make(base_fig: Path | None, out: Path, title: str, sub: str, kicker: str, fo
         yy = top_text
         for line in lines:
             x = 88
-            for ch_i, ch in enumerate(line):
+            for ch_i, ch in enumerate(line.replace(" ", "")):
                 global_i = idx0 + ch_i
                 tw = meas.textlength(ch, font=font_h)
                 if any(a <= global_i < b for a, b in hl_ranges):
@@ -257,10 +265,10 @@ def make(base_fig: Path | None, out: Path, title: str, sub: str, kicker: str, fo
                     md.polygon(pts, fill=(247, 214, 96, 150))
                 x += tw + 2
             idx0 += len(line)
-            yy += int(112 * 1.28)
+            yy += int(104 * 1.3)
         img.alpha_composite(marker)
 
-    used = draw_headline(img, plain_title, top_text, 112, INK + (255,), rnd)
+    used = draw_headline(img, plain_title, top_text, 104, INK + (255,), rnd)
     scribble_underline(img, top_text + used + 26, 92, 92 + min(660, int(used * 3.4)), RED + (235,), rnd)
 
     y_sub = top_text + used + 74
@@ -308,34 +316,16 @@ def make(base_fig: Path | None, out: Path, title: str, sub: str, kicker: str, fo
             tape = tape.rotate(ang, resample=Image.BICUBIC, expand=True)
             img.alpha_composite(tape, (tx, cy - 26))
 
-        # 老师圈重点：一段不完全闭合的红色手绘椭圆 + 箭头批注
-        ann = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-        ad = ImageDraw.Draw(ann)
-        ex = int(cx + framed.width * 0.30)
-        ey = int(cy + framed.height * 0.46)
-        rx, ry = 150, 96
-        pts = []
-        start = rnd.uniform(0.4, 0.9)
-        for i in range(64):
-            t = start + i / 64.0 * 2 * math.pi * 0.93
-            pts.append((ex + rx * math.cos(t) * rnd.uniform(0.96, 1.05),
-                        ey + ry * math.sin(t) * rnd.uniform(0.94, 1.06)))
-        ad.line(pts, fill=RED + (215,), width=6, joint="curve")
-
-        note_font = _font(FONT_HAND, 44)
-        note = "重点在这"
-        nx, ny = cx + 26, cy + framed.height + 18
-        ad.text((nx, ny), note, font=note_font, fill=RED + (235,))
-        # 从批注指向圈的一条手绘弧线
-        arc = []
-        for i in range(24):
-            t = i / 23.0
-            arc.append((
-                nx + 90 + t * max(20, (ex - rx - 30) - (nx + 90)),
-                ny - 8 - math.sin(t * math.pi) * 40,
-            ))
-        ad.line(arc, fill=RED + (200,), width=4, joint="curve")
-        img.alpha_composite(ann)
+        # 图注：用论文自己的 caption（有出处，不编造）
+        if fig_caption:
+            capf = _font(FONT_SANS, 22)
+            cd = ImageDraw.Draw(img)
+            cap = fig_caption[:58] + ("…" if len(fig_caption) > 58 else "")
+            cd.text((cx + 6, cy + framed.height + 29), cap, font=capf, fill=(146, 142, 134, 255))
+            if arxiv_id:
+                tag = f"arXiv:{arxiv_id}"
+                tw2 = cd.textlength(tag, font=capf)
+                cd.text((W - 94 - tw2, cy + framed.height + 29), tag, font=capf, fill=(150, 110, 60, 255))
 
     # 握笔的手（从右下伸入，笔尖落在图上）
     if with_hand:
@@ -389,6 +379,8 @@ def latest_context() -> dict:
         "title": cover[0] if cover else "",
         "sub": "\n".join(cover[1:3]),
         "fig": Path(figs[0]["path"]) if figs else None,
+        "fig_caption": (figs[0].get("caption", "") if figs else ""),
+        "arxiv_id": pid,
         "date": post.get("date", ""),
     }
 
@@ -409,7 +401,8 @@ def main() -> None:
     date = ctx.get("date", "")
     out = Path(a.out) if a.out else ROOT / "data" / "xhs" / "cover-hand.png"
 
-    p = make(fig, out, title, sub, "AI × DRUG DISCOVERY", "信息雷达 · arXiv 精读", date, with_hand=a.hand)
+    p = make(fig, out, title, sub, "AI × DRUG DISCOVERY", "信息雷达 · arXiv 精读", date,
+             with_hand=a.hand, fig_caption=ctx.get("fig_caption", ""), arxiv_id=ctx.get("arxiv_id", ""))
     print(p)
 
 

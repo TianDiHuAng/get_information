@@ -24,7 +24,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any, Iterable, Iterator
 
-from .identity import item_identity
+from .identity import content_fingerprint, item_identity
 
 DB_PATH = Path(__file__).parent.parent / "data" / "radar.db"
 
@@ -166,6 +166,27 @@ MIGRATIONS: list[str] = [
         PRIMARY KEY (event_id, computed_at)
     );
     """,
+    # v3 —— 内容指纹与修订号、结构化抽取结果
+    """
+    ALTER TABLE items ADD COLUMN fingerprint TEXT;
+    ALTER TABLE items ADD COLUMN revision INTEGER NOT NULL DEFAULT 1;
+
+    CREATE TABLE IF NOT EXISTS structures (
+        id             INTEGER PRIMARY KEY,
+        item_id        INTEGER NOT NULL REFERENCES items(id) ON DELETE CASCADE,
+        day            TEXT NOT NULL,
+        category       TEXT,
+        tags           TEXT,
+        subjects       TEXT,
+        scope          TEXT,
+        fact           TEXT,
+        model          TEXT,
+        prompt_version TEXT,
+        created_at     TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_structures_item     ON structures(item_id, day);
+    CREATE INDEX IF NOT EXISTS idx_structures_category ON structures(category);
+    """,
 ]
 
 
@@ -226,18 +247,21 @@ def migrate(path: Path | str | None = None) -> int:
 def _item_row(it: Any, day: str) -> tuple:
     extra = dict(getattr(it, "extra", None) or {})
     extra.pop("_raw", None)
+    title = (it.title or "").strip()
+    summary = (getattr(it, "summary", "") or "").strip()
     return (
         item_identity(it.url),
         it.source,
         getattr(it, "layer", None),
         getattr(it, "region", None),
         getattr(it, "lang", None),
-        (it.title or "").strip(),
+        title,
         it.url,
-        (getattr(it, "summary", "") or "").strip(),
+        summary,
         getattr(it, "author", "") or "",
         getattr(it, "published", "") or "",
         getattr(it, "heat", None),
+        content_fingerprint(title, summary),
         day,
         day,
         json.dumps(extra, ensure_ascii=False),
@@ -245,30 +269,35 @@ def _item_row(it: Any, day: str) -> tuple:
 
 
 def upsert_items(items: Iterable[Any], day: str | None = None) -> dict[str, Any]:
-    """写入本轮条目，返回 `{new: set, seen: set, ids: dict}`。
+    """写入本轮条目，返回 `{new, seen, revised, ids}`。
 
-    `new` 是今天第一次见到的身份；`seen` 是库里已存在的（跨天重复的来源）。
+    - `new`：今天第一次见到的身份；
+    - `seen`：库里已存在的（跨天重复的来源）；
+    - `revised`：同一身份但**内容指纹变了**（媒体补了内容/改了标题）→ 修订号 +1，值得重新判定。
     """
     day = day or today_str()
     items = list(items)
     rows = [_item_row(it, day) for it in items]
     if not rows:
-        return {"new": set(), "seen": set(), "ids": {}}
+        return {"new": set(), "seen": set(), "revised": set(), "ids": {}}
 
     identities = [r[0] for r in rows]
+    fingerprints = {r[0]: r[11] for r in rows}
+    existing_fp: dict[str, str | None] = {}
     with db() as conn:
-        existing = set()
         for start in range(0, len(identities), 400):
             chunk = identities[start : start + 400]
             marks = ",".join("?" * len(chunk))
-            existing.update(r["identity"] for r in conn.execute(
-                f"SELECT identity FROM items WHERE identity IN ({marks})", chunk))
+            for r in conn.execute(
+                f"SELECT identity, fingerprint FROM items WHERE identity IN ({marks})", chunk
+            ):
+                existing_fp[r["identity"]] = r["fingerprint"]
 
         conn.executemany(
             """
             INSERT INTO items (identity, source, layer, region, lang, title, url, summary,
-                               author, published, heat, first_seen, last_seen, extra)
-            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                               author, published, heat, fingerprint, first_seen, last_seen, extra)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
             ON CONFLICT(identity) DO UPDATE SET
                 last_seen = excluded.last_seen,
                 title     = CASE WHEN length(excluded.title) > length(items.title)
@@ -278,6 +307,11 @@ def upsert_items(items: Iterable[Any], day: str | None = None) -> dict[str, Any]
                 published = CASE WHEN items.published = '' THEN excluded.published
                                  ELSE items.published END,
                 heat      = coalesce(max(items.heat, excluded.heat), excluded.heat),
+                revision  = CASE WHEN items.fingerprint IS NOT NULL
+                                  AND excluded.fingerprint IS NOT NULL
+                                  AND items.fingerprint <> excluded.fingerprint
+                                 THEN items.revision + 1 ELSE items.revision END,
+                fingerprint = excluded.fingerprint,
                 extra     = excluded.extra
             """,
             rows,
@@ -303,7 +337,13 @@ def upsert_items(items: Iterable[Any], day: str | None = None) -> dict[str, Any]
             day_rows,
         )
 
-    return {"new": set(identities) - existing, "seen": set(identities) & existing, "ids": id_map}
+    existing = set(existing_fp)
+    revised = {
+        ident for ident, fp in fingerprints.items()
+        if ident in existing_fp and existing_fp[ident] and fp and existing_fp[ident] != fp
+    }
+    return {"new": set(identities) - existing, "seen": set(identities) & existing,
+            "revised": revised, "ids": id_map}
 
 
 def recently_reported(days: int = 7, day: str | None = None) -> set[str]:
@@ -617,6 +657,47 @@ def previous_heat(event_id: int, hours: int = 6) -> float | None:
             (event_id, since),
         ).fetchone()
     return row["heat"] if row else None
+
+
+# --------------------------------------------------------------------------- #
+# 结构化抽取
+# --------------------------------------------------------------------------- #
+
+def save_structures(rows: list[dict[str, Any]], day: str | None = None) -> None:
+    """写结构化结果。rows: item_id/category/tags/subjects/scope/fact/model/prompt_version。"""
+    if not rows:
+        return
+    day = day or today_str()
+    ts = now_str()
+    with db() as conn:
+        conn.executemany(
+            """INSERT INTO structures (item_id, day, category, tags, subjects, scope, fact,
+                                       model, prompt_version, created_at)
+               VALUES (?,?,?,?,?,?,?,?,?,?)""",
+            [
+                (
+                    r["item_id"], day, r.get("category"),
+                    json.dumps(r.get("tags") or [], ensure_ascii=False),
+                    json.dumps(r.get("subjects") or [], ensure_ascii=False),
+                    r.get("scope"),
+                    json.dumps(r.get("fact") or {}, ensure_ascii=False),
+                    r.get("model"), r.get("prompt_version"), ts,
+                )
+                for r in rows
+            ],
+        )
+
+
+def structure_rows(day: str | None = None, category: str | None = None) -> list[dict[str, Any]]:
+    day = day or today_str()
+    sql = ("SELECT s.*, i.title, i.url, i.source FROM structures s "
+           "JOIN items i ON i.id = s.item_id WHERE s.day = ?")
+    args: list[Any] = [day]
+    if category:
+        sql += " AND s.category = ?"
+        args.append(category)
+    with db() as conn:
+        return [dict(r) for r in conn.execute(sql + " ORDER BY s.id DESC", args).fetchall()]
 
 
 # --------------------------------------------------------------------------- #

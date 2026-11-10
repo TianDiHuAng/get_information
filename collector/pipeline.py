@@ -219,12 +219,17 @@ def run() -> dict:
         counted = store.upsert_items(items, store.today_str())
         recent = store.recently_reported(REPEAT_WINDOW_DAYS)
         repeats = 0
+        revised = 0
         for it in items:
             ident = item_identity(it.url)
             it.extra["new_today"] = ident in counted["new"]
             it.extra["repeat"] = ident in recent
+            it.extra["revised"] = ident in counted.get("revised", set())
             repeats += 1 if it.extra["repeat"] else 0
+            revised += 1 if it.extra["revised"] else 0
         store_note = f"，新增 {len(counted['new'])} 条，已报过 {repeats} 条"
+        if revised:
+            store_note += f"，内容更新 {revised} 条"
     except Exception as e:  # 存储层不可用不能拖垮采集
         print(f"      存储层跳过: {type(e).__name__}: {e}")
     print(f"      落库{store_note}")

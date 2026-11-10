@@ -41,6 +41,18 @@ def test_upsert_prefers_longer_title_and_summary(tmpdb):
     assert row["summary"] == "有摘要了"
 
 
+def test_fingerprint_change_bumps_revision(tmpdb):
+    """同一入口的内容被更新（补了摘要）→ 修订号 +1，值得重新判定。"""
+    store.upsert_items([mk("https://a.com/1", title="原标题", summary="")])
+    first = store.upsert_items([mk("https://a.com/1", title="原标题", summary="")])
+    assert first["revised"] == set(), "内容没变不该算修订"
+
+    second = store.upsert_items([mk("https://a.com/1", title="原标题", summary="媒体补充了价格细节")])
+    assert item_identity("https://a.com/1") in second["revised"]
+    with store.db() as conn:
+        assert conn.execute("SELECT revision FROM items").fetchone()["revision"] == 2
+
+
 def test_reported_items_are_suppressed_then_expire(tmpdb):
     items = [mk("https://a.com/1"), mk("https://a.com/2")]
     store.upsert_items(items, day="2026-11-10")

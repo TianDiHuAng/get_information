@@ -18,7 +18,7 @@ from pathlib import Path
 
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
-from collector import events, rating, store
+from collector import events, rating, store, structure
 from collector.archive import save as save_archive
 from collector.digest import build as build_digest
 from collector.digest import picked as digest_picked
@@ -82,6 +82,19 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True) -> None:
     payload["stats"]["translate"] = translate_items(payload["items"])
     _done(stage)
 
+    # 结构化：分类 / 标签 / 主体 / 是不是一条具体新闻（喂主题页、事件、防幻觉）
+    if skip_rate:
+        payload["stats"]["structure"] = {"skipped": "cli"}
+    else:
+        stage = _stage("structure", day)
+        try:
+            payload["stats"]["structure"] = structure.structure_items(payload["items"], day=day)
+        except Exception as e:
+            payload["stats"]["structure"] = {"error": f"{type(e).__name__}: {e}"}
+            _done(stage, "error", str(e))
+            stage = None
+        _done(stage)
+
     # 事件聚簇：同一件事的多篇报道收成一个事件，日报只出代表稿
     if skip_rate:
         payload["stats"]["events"] = {"skipped": "cli"}
@@ -144,6 +157,13 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True) -> None:
         print(f"      事件: {ev['events']} 个（合并 {ev['merged']} 条 / "
               f"多篇事件 {ev.get('clusters', 0)} 个）· 判定 {ev.get('pairs_judged', 0)} 对"
               f"（新增 {ev.get('pairs_new', 0)}）")
+
+    st = payload["stats"].get("structure") or {}
+    if st.get("structured"):
+        cats = st.get("categories") or {}
+        top = "、".join(f"{k}×{v}" for k, v in sorted(cats.items(), key=lambda kv: -kv[1])[:3])
+        print(f"      结构: {st['structured']} 条（{top}）· "
+              f"综合稿 {str((st.get('scopes') or {}).get('composite', 0))} 条")
 
     if send_mail_enabled:
         try:
