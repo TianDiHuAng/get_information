@@ -6,6 +6,8 @@
 3. 内容诊断的筛选口径（过门槛 / 预筛拦截 / 评分失败）不能互相串。
 """
 
+import json
+
 import pytest
 
 from collector import admin, store
@@ -116,6 +118,79 @@ def test_render_all_tabs_do_not_crash(tmpdb):
         doc = admin.render(tab=tab)
         assert doc.startswith("<!doctype html>")
         assert "后台" in doc
+
+
+def _write_report(tmp_path, name="selection-20261110.json") -> str:
+    folder = tmp_path / "data" / "eval"
+    folder.mkdir(parents=True, exist_ok=True)
+    report = {
+        "meta": {"split": "development", "n": 3},
+        "models": {
+            "m-a": {
+                "summary": {"valid": 3, "labelled": 3, "accuracy": 0.667, "coverage": 1.0,
+                            "complete_accuracy": 0.667, "f1": 0.8},
+                "perStratum": {"release": {"accuracy": 1.0, "valid": 1},
+                               "noise": {"accuracy": 0.5, "valid": 2}},
+                "cases": [
+                    {"case_id": "c1", "gold": True, "predicted": True, "avg": 80, "stratum": "release"},
+                    {"case_id": "c2", "gold": False, "predicted": True, "avg": 62, "stratum": "noise"},
+                    {"case_id": "c3", "gold": False, "predicted": False, "avg": 30, "stratum": "noise"},
+                ],
+            },
+            "m-b": {
+                "summary": {"valid": 3, "labelled": 3, "accuracy": 1.0, "coverage": 1.0,
+                            "complete_accuracy": 1.0, "f1": 1.0},
+                "perStratum": {"release": {"accuracy": 1.0, "valid": 1},
+                               "noise": {"accuracy": 1.0, "valid": 2}},
+                "cases": [
+                    {"case_id": "c1", "gold": True, "predicted": True, "avg": 85, "stratum": "release"},
+                    {"case_id": "c2", "gold": False, "predicted": False, "avg": 40, "stratum": "noise"},
+                    {"case_id": "c3", "gold": False, "predicted": False, "avg": 35, "stratum": "noise"},
+                ],
+            },
+        },
+    }
+    (folder / name).write_text(json.dumps(report, ensure_ascii=False), encoding="utf-8")
+    return name
+
+
+@pytest.fixture
+def eval_report(tmp_path, monkeypatch):
+    monkeypatch.setattr(admin, "DATA", tmp_path / "data")
+    return _write_report(tmp_path)
+
+
+def test_eval_tab_lists_reports(eval_report):
+    doc = admin.render(tab="evals")
+    assert "selection-20261110.json" in doc
+    assert "最好的模型" in doc
+
+
+def test_eval_report_shows_models_and_cases(eval_report):
+    doc = admin.render(tab="evals", report=eval_report)
+    assert "m-a" in doc and "m-b" in doc
+    assert "各模型" in doc and "按分层看准确率" in doc
+    assert 'data-case="c1"' in doc and 'data-case="c2"' in doc
+
+
+def test_eval_report_filters_wrong_cases(eval_report):
+    wrong = admin.render(tab="evals", report=eval_report, outcome="wrong")
+    assert 'data-case="c2"' in wrong      # m-a 把 c2 判错了
+    right_only = admin.render(tab="evals", report=eval_report, outcome="right", stratum="noise")
+    assert 'data-case="c3"' in right_only and 'data-case="c1"' not in right_only
+
+
+def test_eval_report_disagree_filter(eval_report):
+    doc = admin.render(tab="evals", report=eval_report, disagree=True)
+    assert 'data-case="c2"' in doc        # 两个模型判断不同
+    assert "只看分歧" in doc
+
+
+def test_load_report_rejects_path_traversal(eval_report):
+    assert admin.load_report("../secret.json") is None
+    assert admin.load_report("sub/secret.json") is None
+    assert admin.load_report("nope.json") is None
+    assert admin.load_report("selection-20261110.json") is not None
 
 
 def test_toggle_source_persists(tmpdb):

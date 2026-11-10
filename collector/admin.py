@@ -485,23 +485,203 @@ document.addEventListener('click', async function(e){
 </script>"""
 
 
-def _eval_section() -> str:
-    rows = evaluations()
-    if not rows:
-        return ('<p class="muted">还没有评测报告。跑 <code>python tools/make_gold.py</code> '
-                '标注后用 <code>tools/eval_selection.py</code> 生成。</p>')
-    body = "".join(
-        f'<tr><td class="mono">{theme.esc(r["file"])}</td>'
-        f'<td>{_pill(r["kind"])}</td><td class="muted small">{theme.esc(r.get("model") or "")}</td>'
-        f'<td class="num">{r.get("total")}</td>'
-        f'<td class="num">{(r.get("accuracy") or 0):.1%}</td>'
-        f'<td class="num">{(r.get("coverage") or 0):.1%}</td>'
-        f'<td class="num">{(r.get("complete_accuracy") or 0):.1%}</td>'
-        f'<td class="num">{(r.get("f1") or 0):.3f}</td></tr>'
-        for r in rows)
-    return (f'<div class="scroll"><table><thead><tr><th>报告</th><th>类型</th><th>模型</th>'
-            f'<th>样本</th><th>准确率</th><th>覆盖率</th><th>完整准确率</th><th>F1</th>'
-            f'</tr></thead><tbody>{body}</tbody></table></div>')
+def eval_files() -> list[Path]:
+    folder = DATA / "eval"
+    if not folder.exists():
+        return []
+    return sorted((p for p in folder.glob("*.json") if p.is_file()),
+                  key=lambda p: p.stat().st_mtime, reverse=True)
+
+
+def _normalise_report(data: dict[str, Any]) -> dict[str, Any]:
+    """兼容旧格式报告：`{model, report, sweep, results}` → `{meta, models}`。
+
+    报告格式改过一版，老文件不该因此变得读不了。
+    """
+    if isinstance(data.get("models"), dict) and data["models"]:
+        return data
+    name = str(data.get("model") or "default")
+    cases = data.get("results") or []
+    for case in cases:
+        case.setdefault("stratum", "未分层")
+        case.setdefault("split", data.get("split") or "all")
+    return {
+        "meta": {"split": data.get("split") or "all", "n": data.get("report", {}).get("total"),
+                 "generatedAt": data.get("generated_at"), "legacy": True},
+        "models": {name: {
+            "summary": data.get("report") or {},
+            "sweep": data.get("sweep") or [],
+            "perStratum": {},
+            "cases": cases,
+        }},
+    }
+
+
+def load_report(name: str) -> dict[str, Any] | None:
+    """按文件名读一份评测报告。只接受 `data/eval/` 下的普通文件名（不认路径）。"""
+    if not name or "/" in name or "\\" in name or ".." in name:
+        return None
+    target = DATA / "eval" / name
+    if not target.is_file():
+        return None
+    try:
+        return _normalise_report(json.loads(target.read_text(encoding="utf-8")))
+    except Exception:
+        return None
+
+
+def _case_outcome(case: dict[str, Any]) -> str:
+    if case.get("predicted") is None:
+        return "failed"
+    return "right" if bool(case.get("predicted")) == bool(case.get("gold")) else "wrong"
+
+
+def _eval_section(report: str | None = None, model: str | None = None,
+                  outcome: str = "all", stratum: str = "all",
+                  disagree: bool = False) -> str:
+    files = eval_files()
+    if not files:
+        return ('<p class="muted">还没有评测报告。跑 <code>python tools/eval_selection.py --enrich</code> '
+                '生成。</p><p class="muted small">标注入口在「标注」标签。</p>')
+
+    # —— 一、报告列表 —— #
+    rows = []
+    for path in files[:12]:
+        data = {}
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+        meta = data.get("meta") or {}
+        models = data.get("models") or {}
+        best = ""
+        best_f1 = -1.0
+        for name, rep in models.items():
+            f1 = float(((rep.get("summary") or {}).get("f1")) or 0)
+            if f1 > best_f1:
+                best, best_f1 = name, f1
+        active = ' class="on"' if report == path.name else ""
+        rows.append(
+            f'<tr><td><a href="/admin.html?tab=evals&report={theme.esc(path.name)}"{active}>'
+            f'{theme.esc(path.name)}</a></td>'
+            f'<td>{theme.esc(meta.get("split") or "all")}</td>'
+            f'<td class="num">{meta.get("n") or "—"}</td>'
+            f'<td class="muted small">{theme.esc(best)}</td>'
+            f'<td class="num">{best_f1:.3f}</td></tr>')
+    listing = ('<div class="scroll"><table><thead><tr><th>报告</th><th>划分</th>'
+               '<th>样本</th><th>最好的模型</th><th>F1</th></tr></thead>'
+               f'<tbody>{"".join(rows)}</tbody></table></div>')
+
+    detail = load_report(report) if report else None
+    if detail is None:
+        return (listing + '<h2>怎么读</h2><p class="muted small">点上面的文件名打开：'
+                '按模型并排看准确率与覆盖率，再按「对 / 错 / 失败 / 分歧 / 分层」'
+                '逐条看模型给了什么理由。</p>')
+
+    models = detail.get("models") or {}
+    meta = detail.get("meta") or {}
+    if not models:
+        return listing + '<p class="muted">这份报告里没有模型数据。</p>'
+
+    # —— 二、指标：按模型并排 —— #
+    summary_rows = []
+    for name, rep in models.items():
+        s = rep.get("summary") or {}
+        summary_rows.append(
+            f'<tr><td>{theme.esc(name)}</td>'
+            f'<td class="num">{s.get("valid")}/{s.get("labelled")}</td>'
+            f'<td class="num">{(s.get("accuracy") or 0):.1%}</td>'
+            f'<td class="num">{(s.get("coverage") or 0):.1%}</td>'
+            f'<td class="num">{(s.get("complete_accuracy") or 0):.1%}</td>'
+            f'<td class="num">{(s.get("f1") or 0):.3f}</td></tr>')
+    summary = ('<h2>各模型 <small>只算答出来的 / 覆盖率 / 失败也算错 / F1</small></h2>'
+               '<div class="scroll"><table><thead><tr><th>模型</th><th>有效</th>'
+               '<th>准确率</th><th>覆盖率</th><th>完整准确率</th><th>F1</th></tr></thead>'
+               f'<tbody>{"".join(summary_rows)}</tbody></table></div>')
+
+    # —— 三、分层 —— #
+    strata_names = sorted({k for rep in models.values() for k in (rep.get("perStratum") or {})})
+    if len(strata_names) > 1:
+        head = "".join(f"<th>{theme.esc(x)}</th>" for x in strata_names)
+        body = []
+        for name, rep in models.items():
+            cells = []
+            for label in strata_names:
+                s = (rep.get("perStratum") or {}).get(label) or {}
+                cells.append(f'<td class="num">{(s.get("accuracy") or 0):.1%}'
+                             f'<span class="muted small"> /{s.get("valid") or 0}</span></td>')
+            body.append(f'<tr><td>{theme.esc(name)}</td>{"".join(cells)}</tr>')
+        summary += (f'<h2>按分层看准确率 <small>括号里是样本数</small></h2>'
+                    f'<div class="scroll"><table><thead><tr><th>模型</th>{head}</tr></thead>'
+                    f'<tbody>{"".join(body)}</tbody></table></div>')
+
+    # —— 四、逐条对照（可筛） —— #
+    names = list(models)
+    by_case: dict[str, dict[str, dict[str, Any]]] = {}
+    for name in names:
+        for case in (models[name].get("cases") or []):
+            by_case.setdefault(case.get("case_id") or "", {})[name] = case
+
+    def disagrees(per_model: dict[str, dict[str, Any]]) -> bool:
+        preds = {(c.get("predicted")) for c in per_model.values() if c.get("predicted") is not None}
+        return len(preds) > 1
+
+    case_rows = []
+    for case_id, per_model in by_case.items():
+        if disagree and not disagrees(per_model):
+            continue
+        if stratum != "all":
+            labels = {(c.get("stratum") or "未分层") for c in per_model.values()}
+            if stratum not in labels:
+                continue
+        if outcome != "all":
+            outs = {_case_outcome(c) for c in per_model.values()}
+            if outcome not in outs:
+                continue
+        cells = []
+        for name in names:
+            case = per_model.get(name)
+            if not case:
+                cells.append('<td class="muted">—</td>')
+                continue
+            mark = {"right": "✓", "wrong": "✗", "failed": "·"}[_case_outcome(case)]
+            cls = "ok" if _case_outcome(case) == "right" else (
+                "err" if _case_outcome(case) == "wrong" else "")
+            score = case.get("avg")
+            cells.append(f'<td>{_pill(mark, cls)}'
+                         f'<span class="muted small"> {score if score is not None else "—"}</span></td>')
+        first = next(iter(per_model.values()))
+        gold = "选" if first.get("gold") else "不选"
+        case_rows.append(
+            f'<tr data-case="{theme.esc(case_id)}"><td class="mono small">{theme.esc(case_id)}</td>'
+            f'<td class="num">{gold}</td>{"".join(cells)}'
+            f'<td class="muted small">{theme.esc(first.get("stratum") or "")}'
+            f'{" · " + theme.esc(str(first.get("reason"))[:40]) if first.get("reason") else ""}</td></tr>')
+
+    filters = _tabs("/admin.html?tab=evals&report=" + (report or "") + "&outcome=",
+                    (("all", "全部"), ("wrong", "判错"), ("right", "判对"),
+                     ("failed", "失败")), outcome)
+    extra = []
+    if disagree:
+        extra.append(f'<a class="fb on" href="/admin.html?tab=evals&report={theme.esc(report)}">只看分歧</a>')
+    else:
+        extra.append(f'<a class="fb" href="/admin.html?tab=evals&report={theme.esc(report)}&disagree=1">只看分歧</a>')
+    for label in strata_names:
+        cls = "fb on" if stratum == label else "fb"
+        extra.append(f'<a class="{cls}" href="/admin.html?tab=evals&report={theme.esc(report)}'
+                     f'&stratum={theme.esc(label)}">{theme.esc(label)}</a>')
+
+    table = (f'<h2>逐条 <small>{len(case_rows)} 条</small></h2>'
+             f'{filters}<p>{"".join(extra)}</p>'
+             '<div class="scroll"><table><thead><tr><th>case</th><th>金标</th>'
+             + "".join(f"<th>{theme.esc(n)}</th>" for n in names) +
+             '<th>分层 / 理由</th></tr></thead>'
+             f'<tbody>{"".join(case_rows) or "<tr><td colspan=9 class=muted>这个筛选下没有样本</td></tr>"}'
+             '</tbody></table></div>')
+
+    return (listing + summary + table +
+            '<p class="muted small">✓ 判对 · ✗ 判错 · · 没答出来（失败）。'
+            '分数是两次打分的平均。</p>')
 
 
 def _llm_section(day: str) -> str:
@@ -556,7 +736,8 @@ def _alert_section() -> str:
 
 
 def render(day: str | None = None, tab: str = "runs", only: str = "all",
-           split: str = "development") -> str:
+           split: str = "development", report: str | None = None, model: str | None = None,
+           outcome: str = "all", stratum: str = "all", disagree: bool = False) -> str:
     day = day or store.today_str()
     tabs = _tabs("/admin.html?tab=",
                  (("runs", "运行"), ("sources", "信源"), ("content", "内容诊断"),
@@ -567,7 +748,7 @@ def render(day: str | None = None, tab: str = "runs", only: str = "all",
         "sources": _source_section,
         "content": lambda: _content_section(day, only),
         "better": lambda: _better_section(day, split),
-        "evals": _eval_section,
+        "evals": lambda: _eval_section(report, model, outcome, stratum, disagree),
         "llm": lambda: _llm_section(day),
         "config": _config_section,
         "alerts": _alert_section,

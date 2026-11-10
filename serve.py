@@ -215,8 +215,15 @@ class Handler(SimpleHTTPRequestHandler):
         tab = (query.get("tab") or ["runs"])[0]
         only = (query.get("only") or ["all"])[0]
         split = (query.get("split") or ["development"])[0]
+        report = (query.get("report") or [None])[0]
+        model = (query.get("model") or [None])[0]
+        outcome = (query.get("outcome") or ["all"])[0]
+        stratum = (query.get("stratum") or ["all"])[0]
+        disagree = bool(query.get("disagree"))
         try:
-            doc = admin.render(tab=tab, only=only, split=split)
+            doc = admin.render(tab=tab, only=only, split=split, report=report,
+                               model=model, outcome=outcome, stratum=stratum,
+                               disagree=disagree)
         except Exception as e:
             doc = f"<pre>后台渲染失败：{e}</pre>"
         self._html(doc)
