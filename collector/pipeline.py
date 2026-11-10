@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 
 import yaml
 
-from . import store
+from . import extract, store
 from .identity import bigrams, canonical_url, item_identity, jaccard, title_key  # noqa: F401  (对外保持原名字)
 from .model import Item
 from .sources import REGISTRY, build_fetchers, region_of
@@ -210,6 +210,19 @@ def run() -> dict:
     items = score(items)
     print(f"[3/4] 去重后 {len(items)} 条")
 
+    # 补正文与发布日期：评分与结构化都靠它。
+    # 先打分是为了挑出"够格"的条目再抓，抓完用新日期重算一次（纯 CPU，很便宜）。
+    extract_stats: dict = {}
+    try:
+        extract_stats = extract.enrich_items(items)
+        if extract_stats.get("body") or extract_stats.get("date"):
+            items = score(items)
+        print(f"      正文: 抓 {extract_stats.get('fetch', 0)} 篇"
+              f"（正文 {extract_stats.get('body', 0)} / 日期 {extract_stats.get('date', 0)}"
+              f" / 失败 {extract_stats.get('failed', 0)}）")
+    except Exception as e:
+        print(f"      正文提取跳过: {type(e).__name__}: {e}")
+
     # 落库 + 跨天已报抑制。
     # 这一段以前不存在，代价是站点列表里 41–43% 是昨天的同位条目；
     # 现在每条都记 first_seen / last_seen，并把「最近 N 天已进过日报」标出来。
@@ -245,6 +258,7 @@ def run() -> dict:
         "proxy_ok": proxy_ok,
         "by_layer": {},
         "by_region": {},
+        "extract": extract_stats,
         "new_today": sum(1 for i in items if i.extra.get("new_today")),
         "repeats": sum(1 for i in items if i.extra.get("repeat")),
     }

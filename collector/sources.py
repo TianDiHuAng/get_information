@@ -22,6 +22,7 @@ from bs4 import BeautifulSoup
 from . import xfeed
 from . import apify_x
 from . import agentcases
+from . import extract as extract_mod
 from .model import Item
 from .net import get_json, get_text
 
@@ -466,6 +467,11 @@ def weibo_search(keywords: list[str] | None = None, per_keyword: int | None = No
         texts = re.findall(r'<p[^>]*node-type="feed_list_content"[^>]*>(.*?)</p>', page, re.S)
         links = re.findall(r'href="(//weibo\.com/\d+/[A-Za-z0-9]+)"', page)
         mids = re.findall(r'\bmid="(\d{10,})"', page)
+        # 搜索结果卡片里有「今天 09:12」「11-09」这类时间；条数与正文对齐时才用，
+        # 对不上就留空 —— 宁可没有日期，也不要给一条错的时间。
+        stamps = [re.sub(r"<[^>]+>", " ", s).strip()
+                  for s in re.findall(r'<div class="from[^"]*"[^>]*>(.*?)</div>', page, re.S)]
+        aligned = len(stamps) == len(texts)
         for idx, raw in enumerate(texts):
             if got >= limit:
                 break
@@ -489,6 +495,7 @@ def weibo_search(keywords: list[str] | None = None, per_keyword: int | None = No
                     title=text[:70],
                     url=url,
                     summary=text[:200],
+                    published=extract_mod.parse_relative_date(stamps[idx]) or "" if aligned else "",
                     lang="zh",
                     extra={"keyword": kw},
                 )
@@ -545,6 +552,15 @@ def zhihu_search(keywords: list[str] | None = None, per_keyword: int | None = No
             if href in seen:
                 continue
             seen.add(href)
+            # search_v3 的 created_time 是秒级时间戳；之前被丢掉了，
+            # 导致知乎条目全部"无发布时间"，在评分里被当成 48 小时前的老料。
+            created = obj.get("created_time") or obj.get("updated_time")
+            published = ""
+            if created:
+                try:
+                    published = _iso(datetime.fromtimestamp(int(created), tz=timezone.utc))
+                except Exception:
+                    published = ""
             out.append(
                 Item(
                     source="zhihu",
@@ -554,6 +570,7 @@ def zhihu_search(keywords: list[str] | None = None, per_keyword: int | None = No
                     url=href or "https://www.zhihu.com/hot",
                     summary=_clean(str(obj.get("excerpt") or ""))[:200],
                     heat=float(obj.get("voteup_count") or 0),
+                    published=published,
                     lang="zh",
                     extra={"keyword": kw},
                 )
