@@ -79,9 +79,19 @@ python serve.py        # http://localhost:8123
 
 ```bash
 python tools/make_gold.py --n 120        # 从今天的 items.json 挑难例，生成 data/gold.jsonl
-# 手工把每行 gold.decision 改成 select / reject / either
-python tools/eval_selection.py --enrich  # 出准确率/覆盖率/门槛扫描，逐条结果在 data/eval/
+# 或者在后台「标注」标签里点按钮标（写同一个文件）
+python tools/eval_selection.py --enrich --split development   # 调提示词时只看开发集
+python tools/eval_selection.py --enrich --split holdout       # 改完用留出集验收
+python tools/eval_selection.py --enrich --models a,b          # 多模型并排比较
+```
 
+金标每行带三组字段：`material`（喂模型的材料）、`sourceFacts`（tier / 一手 / 语言，决定门槛）、
+`samplingContext`（开发集或留出集、分层，决定怎么拆错例），外加 `gold.decision`。
+**留出集只在最后用一次** —— 反复看同一批样本调提示词，会把它调成只会做这几道题。
+
+另外还有归组评测（关系判断）：
+
+```bash
 python tools/make_relation_gold.py       # 从已判过的关系对里挑样本，生成 data/relation-gold.jsonl
 # 手工把 gold.relation 改成 SAME_OCCURRENCE / SAME_STORY / UNRELATED / ROUNDUP
 python tools/eval_relations.py           # 出 4×4 混淆表、每类 F1、置信度门槛曲线
