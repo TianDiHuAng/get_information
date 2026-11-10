@@ -109,21 +109,32 @@ python tools/eval_relations.py           # 出 4×4 混淆表、每类 F1、置�
 
 ## 站点结构
 
+结构对齐 AIHOT 的公开站（`精选 / 全部 / 热门 / 文章页 / 事件页 / 日报 / 周报 / 月报 / 主题 / 搜索 / 关于 / 条款 / 隐私 / 更新日志 / Agent`），
+视觉是本项目自己的「纸感编辑风」（暖纸底 + 衬线标题 + 琥珀强调，跟随系统深色模式）。
+
 ```
-/               今日（精选 + 反馈按钮 + 筛选）
-/topics.html    主题总览 + /topics/<分类或标签>.html
-/events.html    事件榜 + /events/<id>.html（官方 / 媒体 / 社区 三种说法并列）
-/daily.html     日报期号 + /daily/<日期>.html
-/weekly.html    周报 + /weekly/<日期>.html
-/monthly.html   月报 + /monthly/<日期>.html
-/timeline.html  主体 × 月份跨度
-/search.html    纯前端搜索（当天条目全嵌在页面里）
-/board.html     运行看板
-/archive/       历史归档
-feed.xml · feed-all.xml · feed/category/*.xml · api/v1/latest.json · llms.txt · og.png · offline.html
+/                精选（卡片点进站内文章页）
+/all.html        全部动态，20 条一页，/all/2.html …
+/hot.html        热门：按事件热度排
+/items/<id>.html 文章页：评分理由 + 五轴 + 正文摘录 + 同事件其他报道 + 👍/👎/☆
+/events.html     事件榜 + /events/<id>.html（官方 / 媒体 / 社区 三种说法并列）
+/daily.html      日报期号 + /daily/<日期>.html
+/weekly.html     周报 + /weekly/<日期>.html
+/monthly.html    月报 + /monthly/<日期>.html
+/topics.html     主题总览 + /topics/<分类或标签>.html
+/timeline.html   主体 × 月份跨度
+/search.html     纯前端搜索（当天条目全嵌在页面里）
+/board.html      运行看板
+/agent.html      给 Agent 用：RSS / JSON / llms.txt 的接入说明
+/starred.html    我的收藏（localStorage，只在本机）
+/feedback.html   反馈机制说明 + 当前学到的权重
+/about.html /terms.html /privacy.html /changelog.html /more.html
+/offline.html    单文件离线归档（断网可看）
+/archive/        历史归档
+feed.xml · feed-all.xml · feed/category/*.xml · api/v1/latest.json · llms.txt · og.png
 ```
 
-顶部导航贯通所有页面；每个页面都自带样式，不依赖外部资源。
+顶部导航贯通全部页面，手机端有固定底栏。每个页面都自带样式，不依赖外部资源。
 
 ## 配置说明
 
