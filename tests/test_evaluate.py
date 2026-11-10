@@ -105,6 +105,56 @@ def test_sample_ignores_items_without_score():
     assert [i["url"] for i in picked] == ["b"]
 
 
+# --------------------------------------------------------------------------- #
+# 归组评测
+# --------------------------------------------------------------------------- #
+
+def rel(gold, predicted, confidence=0.9, case="c"):
+    return {"case_id": case, "gold": gold, "predicted": predicted, "confidence": confidence}
+
+
+def test_relation_matrix_counts_cells():
+    rows = [rel("SAME_OCCURRENCE", "SAME_OCCURRENCE"),
+            rel("SAME_OCCURRENCE", "SAME_STORY"),
+            rel("UNRELATED", "UNRELATED")]
+    got = evaluate.relation_matrix(rows)
+    assert got["matrix"]["SAME_OCCURRENCE"]["SAME_OCCURRENCE"] == 1
+    assert got["matrix"]["SAME_OCCURRENCE"]["SAME_STORY"] == 1
+    assert got["matrix"]["UNRELATED"]["UNRELATED"] == 1
+    assert got["valid"] == 3 and got["accuracy"] == pytest.approx(2 / 3, abs=1e-4)
+
+
+def test_relation_failed_calls_hurt_coverage_not_accuracy():
+    rows = [rel("UNRELATED", "UNRELATED")] + [rel("UNRELATED", None) for _ in range(3)]
+    got = evaluate.relation_matrix(rows)
+    assert got["accuracy"] == 1.0
+    assert got["coverage"] == pytest.approx(0.25)
+    assert got["complete_accuracy"] == pytest.approx(0.25)
+
+
+def test_relation_macro_f1_only_over_present_classes():
+    rows = [rel("UNRELATED", "UNRELATED"), rel("UNRELATED", "UNRELATED")]
+    got = evaluate.relation_matrix(rows)
+    assert got["macro_f1"] == pytest.approx(1.0)
+    assert got["per_class"]["SAME_STORY"]["support"] == 0
+
+
+def test_merge_sweep_separates_confidence():
+    rows = [
+        rel("SAME_OCCURRENCE", "SAME_OCCURRENCE", 0.95),
+        rel("UNRELATED", "SAME_OCCURRENCE", 0.6),   # 低置信度误合并
+    ]
+    sweep = evaluate.merge_sweep(rows, lo=0.5, hi=0.95, step=0.05)
+    low = next(r for r in sweep if r["threshold"] == 0.5)
+    high = next(r for r in sweep if r["threshold"] == 0.95)
+    assert low["merged"] == 2 and low["precision"] == pytest.approx(0.5)
+    assert high["merged"] == 1 and high["precision"] == pytest.approx(1.0)
+
+
+def test_merge_sweep_empty():
+    assert evaluate.merge_sweep([]) == []
+
+
 def test_gold_line_shape_is_stable():
     line = evaluate.gold_line("case-001", {"title": "t", "url": "u", "source": "s",
                                            "extra": {"score": 66}})

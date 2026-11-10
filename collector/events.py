@@ -142,6 +142,9 @@ def _view_item(it: Any) -> dict[str, Any]:
         "identity": item_identity(getattr(it, "url", "") or ""),
         "title": getattr(it, "title", "") or "",
         "summary": getattr(it, "summary", "") or "",
+        # 正文一起带上：只有标题和一句摘要时，模型分不清"发布"和"发布后的评测"，
+        # 会把同一件事的后续判成 UNRELATED（实测踩过）。
+        "body": (getattr(it, "extra", None) or {}).get("body") or "",
         "source": getattr(it, "source", "") or "",
         "layer": getattr(it, "layer", "broad") or "broad",
         "published": getattr(it, "published", "") or "",
@@ -153,6 +156,9 @@ def _material(a: dict[str, Any], b: dict[str, Any]) -> str:
         parts = [f"【{tag}】", f"标题：{v['title']}"]
         if v["summary"]:
             parts.append(f"摘要：{v['summary'][:400]}")
+        body = (v.get("body") or "").strip()
+        if body:
+            parts.append(f"正文片段：{body[:600]}")
         if v["published"]:
             parts.append(f"发布时间：{v['published']}")
         return "\n".join(parts)
@@ -334,6 +340,7 @@ def cluster_items(items: Iterable[Any], *, day: str | None = None,
     pool = store.recent_items(int(conf.get("lookback_days") or 14))
     pool_views = [{
         "identity": p["identity"], "title": p.get("title") or "", "summary": p.get("summary") or "",
+        "body": p.get("body") or "",
         "source": p.get("source") or "", "layer": p.get("layer") or "broad",
         "published": p.get("published") or "", "score": None, "item_id": p.get("id"),
     } for p in pool]

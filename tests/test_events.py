@@ -39,6 +39,28 @@ def fake_llm(monkeypatch):
     return call_json
 
 
+def test_material_includes_body_when_available():
+    """只有标题和一句摘要时，模型分不清"发布"和"发布后的评测"（实测判成 UNRELATED）。"""
+    view = {"identity": "x", "title": "Claude Fable 5.2 发布", "summary": "",
+            "body": "官方博客介绍了长上下文与价格调整。" * 5,
+            "source": "hackernews", "layer": "rank", "published": ""}
+    text = events._material(view, view)
+    assert "正文片段" in text
+    assert "长上下文" in text
+
+
+def test_material_caps_body_length():
+    view = {"identity": "x", "title": "t", "summary": "", "body": "字" * 5000,
+            "source": "s", "layer": "rank", "published": ""}
+    assert len(events._material(view, view)) < 2000
+
+
+def test_view_item_reads_body_from_extra():
+    it = mk("https://a/1", "标题")
+    it.extra["body"] = "正文内容"
+    assert events._view_item(it)["body"] == "正文内容"
+
+
 def test_lg_pair_is_below_title_threshold():
     """这条断言是整件事的动机：标题相似度只有 0.5，比标题永远合不了。"""
     assert title_similar(LG_A, LG_B) < 0.72

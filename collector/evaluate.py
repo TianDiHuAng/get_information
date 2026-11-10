@@ -117,6 +117,99 @@ def diff_report(before: dict[str, Any], after: dict[str, Any]) -> dict[str, Any]
     return out
 
 
+# --------------------------------------------------------------------------- #
+# 归组（两两关系）评测
+# --------------------------------------------------------------------------- #
+
+RELATIONS = ("SAME_OCCURRENCE", "SAME_STORY", "UNRELATED", "ROUNDUP")
+# 这两种都算"连进同一个事件"
+MERGE_RELATIONS = ("SAME_OCCURRENCE", "SAME_STORY")
+
+
+def relation_matrix(results: Iterable[dict[str, Any]]) -> dict[str, Any]:
+    """4×4 混淆表 + 每类的准召 + macro-F1 + 覆盖率。
+
+    `results` 每项：`{case_id, gold: 关系, predicted: 关系|None, confidence: float|None}`。
+    `predicted is None` 表示模型没给出结构化判断（调用失败 / 格式不合规）——
+    它不进准确率，但要进覆盖率的分母，否则"多失败几次"看起来反而更好。
+    """
+    rows = list(results)
+    matrix = {g: {p: 0 for p in RELATIONS} for g in RELATIONS}
+    valid = 0
+    correct = 0
+    for r in rows:
+        gold = str(r.get("gold") or "")
+        pred = r.get("predicted")
+        if gold not in RELATIONS or pred not in RELATIONS:
+            continue
+        valid += 1
+        matrix[gold][pred] += 1
+        if pred == gold:
+            correct += 1
+
+    per_class: dict[str, Any] = {}
+    f1s: list[float] = []
+    gold_support = {c: sum(matrix[c].values()) for c in RELATIONS}
+    for cls in RELATIONS:
+        tp = matrix[cls][cls]
+        fn = gold_support[cls] - tp
+        fp = sum(matrix[g][cls] for g in RELATIONS if g != cls)
+        scores = prf(tp, fp, fn)
+        support = gold_support[cls]
+        per_class[cls] = {"support": support, "tp": tp, "fp": fp, "fn": fn, **scores}
+        if support:  # 只在金标里出现过的类进入 macro 平均
+            f1s.append(scores["f1"])
+
+    return {
+        "total": len(rows),
+        "valid": valid,
+        "coverage": round(valid / len(rows), 4) if rows else 0.0,
+        "accuracy": round(correct / valid, 4) if valid else 0.0,
+        "complete_accuracy": round(correct / len(rows), 4) if rows else 0.0,
+        "macro_f1": round(sum(f1s) / len(f1s), 4) if f1s else 0.0,
+        "per_class": per_class,
+        "matrix": matrix,
+    }
+
+
+def merge_sweep(results: Iterable[dict[str, Any]], lo: float = 0.5, hi: float = 0.95,
+                step: float = 0.05) -> list[dict[str, Any]]:
+    """按置信度门槛扫"要不要把两篇连成同一事件"的准召。
+
+    事件聚簇里最危险的错误是**把两件事合成一件**（读者会看到一条混乱的新闻），
+    其次是**把一件事拆成两条**（日报里重复）。这条曲线就是给这个取舍用的。
+    """
+    usable = [r for r in results
+              if r.get("predicted") in RELATIONS and r.get("gold") in RELATIONS]
+    if not usable:
+        return []
+    steps = int(round((hi - lo) / step)) + 1
+    out: list[dict[str, Any]] = []
+    for i in range(steps):
+        threshold = round(lo + i * step, 2)
+        tp = fp = fn = tn = 0
+        for r in usable:
+            gold_same = r["gold"] in MERGE_RELATIONS
+            conf = r.get("confidence")
+            conf = float(conf) if conf is not None else 1.0
+            pred_same = r["predicted"] in MERGE_RELATIONS and conf >= threshold
+            if pred_same and gold_same:
+                tp += 1
+            elif pred_same:
+                fp += 1
+            elif gold_same:
+                fn += 1
+            else:
+                tn += 1
+        total = tp + fp + fn + tn
+        out.append({"threshold": threshold, "merged": tp + fp, "tp": tp, "fp": fp,
+                    "fn": fn, "tn": tn,
+                    "accuracy": round((tp + tn) / total, 4) if total else 0.0,
+                    **prf(tp, fp, fn)})
+    return out
+
+
+
 def sample_for_gold(items: Iterable[dict[str, Any]], n: int = 120,
                     band: tuple[float, float] = (40.0, 90.0)) -> list[dict[str, Any]]:
     """挑"难例"来标注：分数落在门槛附近的样本，比随手抽的更有信息量。

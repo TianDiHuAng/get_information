@@ -18,6 +18,7 @@
 from __future__ import annotations
 
 import json
+import os
 import sqlite3
 from contextlib import contextmanager
 from datetime import datetime, timedelta
@@ -26,7 +27,8 @@ from typing import Any, Iterable, Iterator
 
 from .identity import content_fingerprint, item_identity
 
-DB_PATH = Path(__file__).parent.parent / "data" / "radar.db"
+# `RADAR_DB` 可以指向另一份库 —— 评测脚本、演练、迁移前备份核对都用得上
+DB_PATH = Path(os.environ.get("RADAR_DB") or (Path(__file__).parent.parent / "data" / "radar.db"))
 
 # 迁移：索引 = 版本号，执行完把 user_version 设成该版本。只增不改。
 MIGRATIONS: list[str] = [
@@ -552,15 +554,24 @@ def source_rows() -> list[dict[str, Any]]:
 # --------------------------------------------------------------------------- #
 
 def recent_items(days: int = 14, limit: int = 1500) -> list[dict[str, Any]]:
-    """近 N 天见过的条目，作为聚簇召回池。"""
+    """近 N 天见过的条目，作为聚簇召回池。正文一起带出：只有标题和摘要是判不准的。"""
     since = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%d")
     with db() as conn:
         rows = conn.execute(
-            """SELECT id, identity, source, layer, title, url, summary, published, first_seen
+            """SELECT id, identity, source, layer, title, url, summary, published, first_seen, extra
                FROM items WHERE last_seen >= ? ORDER BY last_seen DESC LIMIT ?""",
             (since, limit),
         ).fetchall()
-    return [dict(r) for r in rows]
+    out = []
+    for row in rows:
+        item = dict(row)
+        try:
+            extra = json.loads(item.pop("extra") or "{}")
+        except Exception:
+            extra = {}
+        item["body"] = str(extra.get("body") or "")
+        out.append(item)
+    return out
 
 
 def load_pairs(keys: Iterable[tuple[str, str]]) -> dict[tuple[str, str], dict[str, Any]]:
@@ -971,6 +982,42 @@ def structure_history(days: int = 30, day: str | None = None,
                 item[key] = json.loads(item[key] or "[]")
             except Exception:
                 item[key] = []
+        out.append(item)
+    return out
+
+
+def pair_dump(limit: int = 500) -> list[dict[str, Any]]:
+    """已判过的关系对，连同两篇报道本身。
+
+    归组评测的样本就从这里挑：它和线上跑的是同一批候选，标出来的结论才用得上。
+    """
+    with db() as conn:
+        rows = conn.execute(
+            """
+            SELECT p.a, p.b, p.relation, p.confidence, p.created_at,
+                   ia.title AS a_title, ia.summary AS a_summary, ia.source AS a_source,
+                   ia.layer AS a_layer, ia.published AS a_published, ia.url AS a_url,
+                   ia.extra AS a_extra,
+                   ib.title AS b_title, ib.summary AS b_summary, ib.source AS b_source,
+                   ib.layer AS b_layer, ib.published AS b_published, ib.url AS b_url,
+                   ib.extra AS b_extra
+            FROM event_pairs p
+            JOIN items ia ON ia.identity = p.a
+            JOIN items ib ON ib.identity = p.b
+            ORDER BY p.created_at DESC
+            LIMIT ?
+            """,
+            (limit,),
+        ).fetchall()
+    out = []
+    for row in rows:
+        item = dict(row)
+        for side in ("a", "b"):
+            try:
+                extra = json.loads(item.pop(f"{side}_extra") or "{}")
+            except Exception:
+                extra = {}
+            item[f"{side}_body"] = str(extra.get("body") or "")
         out.append(item)
     return out
 

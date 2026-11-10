@@ -53,6 +53,23 @@ def test_fingerprint_change_bumps_revision(tmpdb):
         assert conn.execute("SELECT revision FROM items").fetchone()["revision"] == 2
 
 
+def test_pair_dump_carries_body_for_evaluation(tmpdb):
+    """归组评测要拿正文，否则评的是一个比线上更差的分布。"""
+    import json as _json
+
+    store.upsert_items([mk("https://a/1"), mk("https://a/2")])
+    with store.db() as conn:
+        for ident, body in (("url:https://a/1", "第一篇正文"), ("url:https://a/2", "第二篇正文")):
+            conn.execute("UPDATE items SET extra = ? WHERE identity = ?",
+                         (_json.dumps({"body": body}, ensure_ascii=False), ident))
+    store.save_pairs([{"a": "url:https://a/1", "b": "url:https://a/2",
+                       "relation": "SAME_OCCURRENCE", "confidence": 0.9}])
+    rows = store.pair_dump(limit=5)
+    assert len(rows) == 1
+    assert rows[0]["a_body"] == "第一篇正文"
+    assert rows[0]["b_body"] == "第二篇正文"
+
+
 def test_reported_items_are_suppressed_then_expire(tmpdb):
     items = [mk("https://a.com/1"), mk("https://a.com/2")]
     store.upsert_items(items, day="2026-11-10")
