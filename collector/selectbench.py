@@ -63,19 +63,52 @@ def _write(rows: list[dict[str, Any]]) -> None:
     target.write_text(text + ("\n" if text else ""), encoding="utf-8")
 
 
-def _row_for(item: dict[str, Any]) -> dict[str, Any]:
-    """把条目压成评测脚本认的那一行（字段名要和 eval_selection 对得上）。"""
+def _tier(layer: str) -> str:
+    """信源层级：评测里用来决定用哪个门槛（和 RL 的门槛表对齐）。"""
+    return {"primary": "T1", "rank": "T1_5", "broad": "T2", "search": "T2", "social": "T2"}.get(layer, "T2")
+
+
+def _row_for(item: dict[str, Any], split: str = "development",
+             stratum: str = "") -> dict[str, Any]:
+    """把条目压成评测脚本认的那一行。
+
+    比最简版多了两组字段，对应 AIHOT 的 `sourceFacts` 与 `samplingContext`：
+    - `sourceFacts`：信源层级、语言 —— 决定这条用哪个门槛；
+    - `samplingContext`：开发集/留出集、分层 —— 决定怎么看错例。
+
+    没有这两组，"按层看错"和"留出集验收"都做不了。
+    """
     identity = item.get("identity") or item_identity(item.get("url") or "")
+    layer = item.get("layer") or "broad"
     return {
         "caseId": case_id(identity),
         "identity": identity,
-        "item": {
+        "material": {
+            "title": item.get("title") or "",
+            "originalTitle": None,
+            "publishedAt": item.get("published") or "",
+            "sourceName": item.get("source") or "",
+            "bodyZh": (item.get("body") or "")[:1200],
+            "bodyOriginal": None,
+        },
+        "sourceFacts": {
+            "sourceKind": "site",
+            "sourceTier": _tier(layer),
+            "firstParty": layer == "primary",
+            "language": item.get("lang") or "zh",
+        },
+        "samplingContext": {
+            "benchmarkSplit": split if split in ("development", "holdout") else "development",
+            "samplingStratum": (stratum or (item.get("structure") or {}).get("category")
+                                or item.get("category") or "未分层"),
+        },
+        "item": {   # 兼容旧字段，评测脚本两种都能读
             "title": item.get("title") or "",
             "summary": item.get("summary") or "",
             "body": (item.get("body") or "")[:1200],
             "url": item.get("url") or "",
             "source": item.get("source") or "",
-            "layer": item.get("layer") or "broad",
+            "layer": layer,
             "published": item.get("published") or "",
         },
         "model_hint": {
@@ -96,6 +129,7 @@ def candidates(day: str | None = None, limit: int = 300) -> list[dict[str, Any]]
         identity = detail.get("identity") or item_identity(it.get("url") or "")
         row = existing.get(identity) or {}
         decision = str(((row.get("gold") or {}).get("decision")) or "")
+        split = ((row.get("samplingContext") or {}).get("benchmarkSplit")) or ""
         att = it.get("attention") or {}
         rows.append({
             "id": it["id"], "identity": identity,
@@ -104,14 +138,18 @@ def candidates(day: str | None = None, limit: int = 300) -> list[dict[str, Any]]
             "published": (it.get("published") or "")[:10],
             "score": att.get("score"), "threshold": att.get("threshold"),
             "reason": att.get("reason") or att.get("label") or "",
-            "decision": decision,
+            "decision": decision, "split": split,
         })
     rows.sort(key=lambda r: (bool(r["decision"]), -(r["score"] or 0)))
     return rows
 
 
-def label(item_id: int, decision: str) -> dict[str, Any]:
-    """给一条打标并落盘。`decision` 必须是 select / reject / either。"""
+def label(item_id: int, decision: str, split: str = "development",
+          stratum: str = "") -> dict[str, Any]:
+    """给一条打标并落盘。`decision` 必须是 select / reject / either。
+
+    `split` 决定这条进开发集还是留出集 —— 调提示词只看开发集，最后用留出集验收。
+    """
     if decision not in DECISIONS:
         return {"ok": False, "error": f"unknown decision: {decision}"}
     item = store.item_detail(int(item_id))
@@ -120,7 +158,7 @@ def label(item_id: int, decision: str) -> dict[str, Any]:
 
     rows = load()
     identity = item.get("identity") or item_identity(item.get("url") or "")
-    new = _row_for(item)
+    new = _row_for(item, split=split, stratum=stratum)
     new["gold"]["decision"] = decision
 
     replaced = False
@@ -137,6 +175,7 @@ def label(item_id: int, decision: str) -> dict[str, Any]:
         rows.append(new)
     _write(rows)
     return {"ok": True, "caseId": new["caseId"], "decision": decision,
+            "split": new["samplingContext"]["benchmarkSplit"],
             "labelled": sum(1 for r in rows if (r.get("gold") or {}).get("decision") in DECISIONS),
             "total": len(rows)}
 
@@ -163,4 +202,10 @@ def stats() -> dict[str, Any]:
             counts[decision] += 1
     counts["total"] = len(rows)
     counts["unlabelled"] = len([r for r in rows if not ((r.get("gold") or {}).get("decision"))])
+    splits = {"development": 0, "holdout": 0, "": 0}
+    for row in rows:
+        split = (row.get("samplingContext") or {}).get("benchmarkSplit") or ""
+        splits[split if split in splits else ""] += 1
+    counts["split_development"] = splits["development"]
+    counts["split_holdout"] = splits["holdout"]
     return counts

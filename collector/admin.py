@@ -403,16 +403,23 @@ def _content_section(day: str, only: str) -> str:
             f'</tr></thead><tbody>{body}</tbody></table></div>')
 
 
-def _better_section(day: str) -> str:
-    """标注台：给今天的条目打「选 / 不选 / 两可」，只写 data/gold.jsonl。"""
+def _better_section(day: str, split: str = "development") -> str:
+    """标注台：给今天的条目打「选 / 不选 / 两可」，只写 data/gold.jsonl。
+
+    顶部可以切"标进开发集还是留出集"：调提示词只看开发集，最后用留出集验收。
+    """
     from . import selectbench
 
+    split = split if split in ("development", "holdout") else "development"
     rows = selectbench.candidates(day)
     st = selectbench.stats()
     done = sum(st[d] for d in selectbench.DECISIONS)
     bar = (f'<p class="muted small">已标 <b>{done}</b> 条'
            f'（选 {st["select"]} · 不选 {st["reject"]} · 两可 {st["either"]}）'
-           f'｜文件里共 {st["total"]} 行 · <code>data/gold.jsonl</code></p>')
+           f'｜开发集 {st["split_development"]} · 留出集 {st["split_holdout"]}'
+           f'｜<code>data/gold.jsonl</code></p>'
+           + _tabs("/admin.html?tab=better&split=",
+                   (("development", "标进开发集"), ("holdout", "标进留出集")), split))
 
     body_rows = []
     for r in rows:
@@ -421,7 +428,7 @@ def _better_section(day: str) -> str:
         for key, label in (("select", "选"), ("reject", "不选"), ("either", "两可")):
             cls = "fb on" if decision == key else "fb"
             cells.append(f'<button class="{cls}" data-label="{r["id"]}" '
-                         f'data-decision="{key}">{label}</button>')
+                         f'data-decision="{key}" data-split="{split}">{label}</button>')
         if decision:
             cells.append(f'<button class="fb" data-clear="{r["id"]}" title="撤销">×</button>')
         score = r["score"] if r["score"] is not None else "—"
@@ -441,7 +448,7 @@ def _better_section(day: str) -> str:
     return (bar + table +
             '<h2>标完做什么</h2>'
             '<pre class="card flat small" style="overflow:auto;">'
-            'python tools/eval_selection.py --enrich</pre>'
+            'python tools/eval_selection.py --enrich --split development   # 调提示词\npython tools/eval_selection.py --enrich --split holdout       # 最后验收</pre>'
             '<p class="muted small">评测会读 <code>data/gold.jsonl</code>，'
             '出准确率 / 覆盖率 / 门槛扫描。标注只存在这个文件里，'
             '不碰提示词与门槛 —— 你可以随时手改或删掉。</p>' + _BETTER_JS)
@@ -458,7 +465,7 @@ document.addEventListener('click', async function(e){
   var b = e.target.closest('[data-label]');
   if (b){
     b.disabled = true;
-    var j = await postGold({item_id: Number(b.dataset.label), decision: b.dataset.decision});
+    var j = await postGold({item_id: Number(b.dataset.label), decision: b.dataset.decision, split: b.dataset.split});
     b.disabled = false;
     if (!j.ok){ alert(j.error || '失败'); return; }
     var row = b.closest('tr');
@@ -548,7 +555,8 @@ def _alert_section() -> str:
     return f'<ul class="list">{lis}</ul>'
 
 
-def render(day: str | None = None, tab: str = "runs", only: str = "all") -> str:
+def render(day: str | None = None, tab: str = "runs", only: str = "all",
+           split: str = "development") -> str:
     day = day or store.today_str()
     tabs = _tabs("/admin.html?tab=",
                  (("runs", "运行"), ("sources", "信源"), ("content", "内容诊断"),
@@ -558,7 +566,7 @@ def render(day: str | None = None, tab: str = "runs", only: str = "all") -> str:
         "runs": lambda: _run_section(day),
         "sources": _source_section,
         "content": lambda: _content_section(day, only),
-        "better": lambda: _better_section(day),
+        "better": lambda: _better_section(day, split),
         "evals": _eval_section,
         "llm": lambda: _llm_section(day),
         "config": _config_section,

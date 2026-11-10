@@ -96,6 +96,98 @@ def test_case_id_is_stable(gold_file):
     assert first == second
 
 
+def test_label_records_split_and_stratum(gold_file):
+    ids = seed(2)
+    selectbench.label(ids[0], "select", split="holdout")
+    selectbench.label(ids[1], "reject", split="development")
+    rows = selectbench.load()
+    splits = {(r["samplingContext"]["benchmarkSplit"]) for r in rows}
+    assert splits == {"holdout", "development"}
+    # 分层默认取分类
+    assert rows[0]["samplingContext"]["samplingStratum"] == "model_release"
+
+
+def test_new_format_carries_source_facts(gold_file):
+    ids = seed(1)
+    selectbench.label(ids[0], "select")
+    row = selectbench.load()[0]
+    assert row["sourceFacts"]["sourceTier"] == "T1"       # primary
+    assert row["sourceFacts"]["firstParty"] is True
+    assert row["material"]["title"].startswith("第 0 条")
+
+
+def test_stats_count_splits(gold_file):
+    ids = seed(2)
+    selectbench.label(ids[0], "select", split="holdout")
+    selectbench.label(ids[1], "reject", split="development")
+    st = selectbench.stats()
+    assert st["split_holdout"] == 1 and st["split_development"] == 1
+
+
+def test_eval_reads_new_format_with_split(gold_file):
+    """评测脚本要能读 material/sourceFacts/samplingContext，并按 split 过滤。"""
+    import importlib.util
+    from pathlib import Path
+
+    ids = seed(2)
+    selectbench.label(ids[0], "select", split="holdout")
+    selectbench.label(ids[1], "reject", split="development")
+
+    spec = importlib.util.spec_from_file_location(
+        "eval_selection", Path(__file__).resolve().parents[1] / "tools" / "eval_selection.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+
+    cases = module.load_cases(gold_file)
+    assert len(cases) == 2
+    assert {c["split"] for c in cases} == {"holdout", "development"}
+    assert all(c["item"]["title"] for c in cases)
+    dev = [c for c in cases if c["split"] == "development"]
+    assert len(dev) == 1 and dev[0]["gold"] is False
+
+
+def test_per_stratum_grouping(tmp_path):
+    import importlib.util
+    from pathlib import Path
+
+    spec = importlib.util.spec_from_file_location(
+        "eval_selection", Path(__file__).resolve().parents[1] / "tools" / "eval_selection.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+
+    results = [
+        {"case_id": "a", "gold": True, "predicted": True, "stratum": "release"},
+        {"case_id": "b", "gold": False, "predicted": True, "stratum": "release"},
+        {"case_id": "c", "gold": False, "predicted": False, "stratum": "noise"},
+    ]
+    groups = module.per_stratum(results)
+    assert groups["release"]["valid"] == 2
+    assert groups["release"]["accuracy"] == pytest.approx(0.5)
+    assert groups["noise"]["accuracy"] == pytest.approx(1.0)
+
+
+def test_tier_decides_the_threshold(gold_file):
+    """金标带 sourceTier=T1 时必须用一手门槛（58），而不是默认 68。"""
+    import importlib.util
+    from pathlib import Path
+
+    spec = importlib.util.spec_from_file_location(
+        "eval_selection", Path(__file__).resolve().parents[1] / "tools" / "eval_selection.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+
+    raw = {"title": "某条官方发布", "url": "https://a/1", "summary": "", "body": ""}
+    as_t1 = module.to_item(raw, tier="T1")
+    as_t2 = module.to_item(raw, tier="T2")
+    assert as_t1.layer == "primary" and as_t2.layer == "broad"
+
+    from collector import rating
+
+    conf = rating.config()
+    assert rating.threshold_for(as_t1, conf) == conf["thresholds"]["primary"]
+    assert rating.threshold_for(as_t2, conf) == conf["thresholds"]["broad"]
+
+
 def test_bad_lines_are_skipped(gold_file, tmp_path):
     gold_file.write_text('{"caseId":"ok","gold":{"decision":"select"}}\n不是 JSON\n', encoding="utf-8")
     rows = selectbench.load()

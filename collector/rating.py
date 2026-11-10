@@ -131,8 +131,11 @@ def material(item: Any, conf: dict[str, Any]) -> tuple[str, bool]:
 # 单条判定
 # --------------------------------------------------------------------------- #
 
-def prefilter(item: Any) -> str:
-    """PASS / BLOCK / UNKNOWN。任何失败都返回 UNKNOWN（保留，不误杀）。"""
+def prefilter(item: Any, model: str | None = None) -> str:
+    """PASS / BLOCK / UNKNOWN。任何失败都返回 UNKNOWN（保留，不误杀）。
+
+    `model` 只给评测用：同一批样本换不同模型跑，才能比较"哪个模型判得准"。
+    """
     conf = config()
     if not conf.get("prefilter", True):
         return "PASS"
@@ -140,14 +143,14 @@ def prefilter(item: Any) -> str:
     if not system:
         return "PASS"
     text, _ = material(item, conf)
-    obj = llm.call_json("prefilter", version, system, text, max_tokens=200)
+    obj = llm.call_json("prefilter", version, system, text, max_tokens=200, model=model)
     if not obj:
         return "UNKNOWN"
     label = str(obj.get("label") or "").upper()
     return label if label in ("PASS", "BLOCK", "UNKNOWN") else "UNKNOWN"
 
 
-def score_once(item: Any, call_no: int) -> dict[str, Any] | None:
+def score_once(item: Any, call_no: int, model: str | None = None) -> dict[str, Any] | None:
     """一次独立打分。返回 `{axes, itype, reason, score}` 或 None。"""
     conf = config()
     weights = conf.get("weights") or {}
@@ -164,7 +167,7 @@ def score_once(item: Any, call_no: int) -> dict[str, Any] | None:
     if title_only:
         user += "\n\n（这条材料只有标题，没有摘要和正文。）"
     obj = llm.call_json("attention-score", version, system, user, max_tokens=300,
-                        variant=f"call{call_no}")
+                        model=model, variant=f"call{call_no}")
     if not obj:
         return None
     itype = str(obj.get("itype") or "").strip()

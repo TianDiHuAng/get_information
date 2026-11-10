@@ -198,10 +198,12 @@ class Handler(SimpleHTTPRequestHandler):
             body = json.loads(self.rfile.read(length).decode("utf-8") or "{}")
             item_id = int(body.get("item_id") or 0)
             decision = str(body.get("decision") or "")
+            split = str(body.get("split") or "development")
         except Exception as e:
             return self._json({"ok": False, "error": f"bad request: {e}"}, 400)
 
-        result = selectbench.clear(item_id) if decision == "clear" else selectbench.label(item_id, decision)
+        result = (selectbench.clear(item_id) if decision == "clear"
+                  else selectbench.label(item_id, decision, split=split))
         self._json(result, 200 if result.get("ok") else 400)
 
     def _admin(self, parsed) -> None:
@@ -212,8 +214,9 @@ class Handler(SimpleHTTPRequestHandler):
         query = parse_qs(parsed.query or "")
         tab = (query.get("tab") or ["runs"])[0]
         only = (query.get("only") or ["all"])[0]
+        split = (query.get("split") or ["development"])[0]
         try:
-            doc = admin.render(tab=tab, only=only)
+            doc = admin.render(tab=tab, only=only, split=split)
         except Exception as e:
             doc = f"<pre>后台渲染失败：{e}</pre>"
         self._html(doc)
