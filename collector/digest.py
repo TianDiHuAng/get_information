@@ -8,8 +8,11 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from datetime import datetime
 from pathlib import Path
+
+from . import edition
 
 SOURCE_LABEL = {
     "smolai": "smol.ai AINews",
@@ -50,10 +53,18 @@ def _pick(items: list[dict], n: int, per_source: int = 2, skip_repeat: bool = Tr
 
 def picked(payload: dict) -> list[dict]:
     """本期日报真正选中的条目（去重），用来写「已报」记录。"""
-    sec = _sections(payload)
+    plan = edition.arrange(payload)
     seen: set[str] = set()
     out: list[dict] = []
-    for key in ("head", "primary", "x", "papers", "cn", "deal"):
+    for it in [plan.get("lead")] + plan["highlights"] + plan["body"] + plan["briefs"]:
+        if not it:
+            continue
+        url = it.get("url") or ""
+        if url and url not in seen:
+            seen.add(url)
+            out.append(it)
+    sec = _sections(payload, exclude=plan["used"])
+    for key in ("primary", "x", "papers", "cn", "deal"):
         for it in sec.get(key) or []:
             url = it.get("url") or ""
             if url and url not in seen:
@@ -64,7 +75,8 @@ def picked(payload: dict) -> list[dict]:
 
 def _line(it: dict) -> str:
     src = SOURCE_LABEL.get(it["source"], it["source"])
-    summary = (it.get("summary") or "").strip()
+    # 摘要必须压成单行：社媒正文常带换行和引用块，直接拼会把编号列表打断
+    summary = re.sub(r"\s+", " ", (it.get("summary") or "")).strip()
     tail = f" — {summary}" if summary else ""
     extra = it.get("extra") or {}
     # 一件事有多家在说：标出来，读者才知道这是"事件"而不是"一篇稿"
@@ -74,9 +86,12 @@ def _line(it: dict) -> str:
     return f"- **[{it['title']}]({it['url']})** `{src}`{crowd}{tail}"
 
 
-def _sections(payload: dict) -> dict:
-    """分区选条：国外（重点）在前，国内热榜在后。MD 与 HTML 邮件共用。"""
-    items = payload["items"]
+def _sections(payload: dict, exclude: set[str] | None = None) -> dict:
+    """分区选条：国外（重点）在前，国内热榜在后。MD 与 HTML 邮件共用。
+
+    `exclude` 是「今日要闻」已经用掉的 URL —— 同一期里一条内容只出现一次。
+    """
+    items = [i for i in payload["items"] if not exclude or i.get("url") not in exclude]
     ov = [i for i in items if (i.get("region") or "overseas") == "overseas"]
     dom = [i for i in items if (i.get("region") or "overseas") == "domestic"]
     head = _pick(ov, 6) or _pick(items, 6)
@@ -94,7 +109,8 @@ def structured_digest(payload: dict, lmarena: dict | None = None,
     items = payload["items"]
     stats = payload["stats"]
     day = datetime.now().strftime("%Y-%m-%d")
-    sec = _sections(payload)
+    plan = edition.arrange(payload)
+    sec = _sections(payload, exclude=plan["used"])
 
     parts = [
         f"# 情报日报 · {day}",
@@ -103,9 +119,7 @@ def structured_digest(payload: dict, lmarena: dict | None = None,
         f"（国外 {(stats.get('by_region') or {}).get('overseas', 0)} · 国内 {(stats.get('by_region') or {}).get('domestic', 0)}）"
         f" / 覆盖 {len(stats['by_layer'])} 层",
         "",
-        "## 国外 · 今日必看",
-        *[_line(i) for i in sec["head"]],
-        "",
+        *edition.render_md(plan, _line),
         "## 国外 · 一手源头",
         *[_line(i) for i in sec["primary"]],
         "",
@@ -156,9 +170,11 @@ def email_html(payload: dict, ai_text: str | None, lmarena: dict | None = None,
     import re
 
     stats = payload["stats"]
-    sec = _sections(payload)
+    plan = edition.arrange(payload)
+    sec = _sections(payload, exclude=plan["used"])
     day = datetime.now().strftime("%Y-%m-%d")
     bl = stats.get("by_layer", {})
+    lead_items = ([plan["lead"]] if plan.get("lead") else []) + plan["highlights"] + plan["body"]
 
     def item_html(it: dict, num: int | None = None) -> str:
         src = _h.escape(SOURCE_LABEL.get(it["source"], it["source"]))
@@ -273,7 +289,8 @@ def email_html(payload: dict, ai_text: str | None, lmarena: dict | None = None,
 <h1 style="font-size:21px;color:#111827;margin:0 0 6px;">情报日报 · {day}</h1>
 <p style="color:#6b7280;font-size:12px;margin:0 0 18px;">{stats.get('raw', 0)} 条 / {stats.get('sources_ok', 0)} 个源（国外 {(stats.get('by_region') or {}).get('overseas', 0)} · 国内 {(stats.get('by_region') or {}).get('domestic', 0)}）</p>
 {ai_html}
-{section('国外 · 今日必看', sec['head'], numbered=True)}
+{section('今日要闻', lead_items, numbered=True)}
+{section('快讯', plan['briefs'])}
 {section('国外 · 一手源头', sec['primary'])}
 {section('国外 · X 在聊什么', sec.get('x') or [])}
 {section('国外 · 论文速览', sec['papers'])}
@@ -284,6 +301,31 @@ def email_html(payload: dict, ai_text: str | None, lmarena: dict | None = None,
 <p style="color:#9ca3af;font-size:11px;margin:26px 0 0;padding-top:14px;border-top:1px solid #f3f4f6;">由 Get_Information 自动采集生成，每天一封 · 可视化面板在局域网内访问 http://localhost:8123</p>
 </div>
 </div>"""
+
+
+_source_name_cache: list[str] | None = None
+
+
+def source_names() -> list[str]:
+    """所有信源在页面/邮件上出现的名字。
+
+    导读里提到"据 Latent Space 报道"是合法的——语料里就有这个名字，
+    所以这些名字要作为 grounding 的豁免项，否则会把正常导读整段判成编造。
+    """
+    global _source_name_cache
+    if _source_name_cache is not None:
+        return _source_name_cache
+    names = list(SOURCE_LABEL.values())
+    try:
+        from .sources import REGISTRY
+
+        names += [str(r.get("name") or "") for r in REGISTRY]
+        names += [str(r.get("id") or "") for r in REGISTRY]
+    except Exception:
+        pass
+    names += ["Get_Information", "信息雷达"]
+    _source_name_cache = [n for n in dict.fromkeys(names) if n]
+    return _source_name_cache
 
 
 _LEAD_SYSTEM = (
@@ -317,7 +359,7 @@ def llm_digest(payload: dict) -> str | None:
     if not text:
         return None
 
-    verdict = grounding.check(text, corpus, skip=list(SOURCE_LABEL.values()))
+    verdict = grounding.check(text, corpus, skip=source_names())
     if not verdict["ok"]:
         print(f"  [digest] 导读里出现原文没有的名字/数字，整段丢弃: {verdict['unsupported'][:5]}")
         return None

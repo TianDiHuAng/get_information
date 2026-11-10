@@ -18,7 +18,7 @@ from pathlib import Path
 
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
-from collector import events, rating, store, structure
+from collector import alerts, events, rating, store, structure
 from collector.archive import save as save_archive
 from collector.digest import build as build_digest
 from collector.digest import picked as digest_picked
@@ -132,8 +132,10 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True) -> None:
 
     stage = _stage("digest", day)
     digest = build_digest(payload, lmarena=lmarena, aa=aa)
-    try:  # 记「已报」：下一轮这些条目在日报里不再出现
-        marked = store.mark_reported(digest_picked(payload), day, slot="digest")
+    try:  # 记「已报」与本期出刊：下一轮这些条目在日报里不再出现，也能判缺期
+        picks = digest_picked(payload)
+        marked = store.mark_reported(picks, day, slot="digest")
+        store.save_edition("daily", day, entries=len(picks))
     except Exception:
         marked = 0
     _done(stage)
@@ -177,6 +179,17 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True) -> None:
         print(f"      周报: {papers_weekly()}")
     except Exception as e:
         print(f"      周报失败: {type(e).__name__}: {e}")
+
+    stage = _stage("alerts", day)
+    try:
+        alert_result = alerts.run(payload)
+        found = int(alert_result.get("found") or 0)
+        if found:
+            print(f"      告警: {found} 条（新增 {alert_result.get('fresh', 0)}，"
+                  f"{alert_result.get('sent')}）")
+    except Exception as e:
+        print(f"      告警检查失败: {type(e).__name__}: {e}")
+    _done(stage)
 
 
 if __name__ == "__main__":

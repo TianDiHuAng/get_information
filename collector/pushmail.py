@@ -119,6 +119,31 @@ def _deliver(conf: dict, to: list[str], msg) -> str:
         return fb["user"]
 
 
+def send_text(subject: str, body: str, to: list[str] | None = None) -> str:
+    """发一封纯文本邮件（告警用）。复用同一套 SMTP 配置，不去重、不阻塞调用方。
+
+    返回状态字符串；未配置时返回 `mail-not-configured` 而不是抛异常 ——
+    告警发不出去，不该让整轮采集失败。
+    """
+    conf = _conf()
+    if not conf.get("auth_code") or not conf.get("user"):
+        return "mail-not-configured"
+    recipients = [str(x) for x in (to or conf.get("to") or []) if str(x).strip()]
+    if not recipients:
+        return "mail-no-recipient"
+
+    msg = MIMEMultipart()
+    msg["Subject"] = Header(subject, "utf-8")
+    _set_from(msg, conf)
+    msg["To"] = ", ".join(recipients)
+    msg.attach(MIMEText(body, "plain", "utf-8"))
+    try:
+        who = _deliver(conf, recipients, msg)
+        return f"mail-sent({who})"
+    except Exception as e:
+        return f"mail-failed: {type(e).__name__}: {e}"
+
+
 def send(digest_path: Path, stats: dict, payload: dict | None = None,
          force: bool = False, lmarena: dict | None = None,
          aa: dict | None = None) -> str:

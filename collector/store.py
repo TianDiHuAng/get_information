@@ -187,6 +187,27 @@ MIGRATIONS: list[str] = [
     CREATE INDEX IF NOT EXISTS idx_structures_item     ON structures(item_id, day);
     CREATE INDEX IF NOT EXISTS idx_structures_category ON structures(category);
     """,
+    # v4 —— 出刊记录（判缺期）与告警
+    """
+    CREATE TABLE IF NOT EXISTS editions (
+        kind         TEXT NOT NULL,
+        day          TEXT NOT NULL,
+        entries      INTEGER NOT NULL DEFAULT 0,
+        model        TEXT,
+        generated_at TEXT NOT NULL,
+        PRIMARY KEY (kind, day)
+    );
+
+    CREATE TABLE IF NOT EXISTS alerts (
+        id         INTEGER PRIMARY KEY,
+        kind       TEXT NOT NULL,
+        day        TEXT NOT NULL,
+        severity   TEXT NOT NULL DEFAULT 'warn',
+        message    TEXT NOT NULL,
+        created_at TEXT NOT NULL,
+        UNIQUE (kind, day, message)
+    );
+    """,
 ]
 
 
@@ -698,6 +719,66 @@ def structure_rows(day: str | None = None, category: str | None = None) -> list[
         args.append(category)
     with db() as conn:
         return [dict(r) for r in conn.execute(sql + " ORDER BY s.id DESC", args).fetchall()]
+
+
+# --------------------------------------------------------------------------- #
+# 出刊与告警
+# --------------------------------------------------------------------------- #
+
+def save_edition(kind: str, day: str, entries: int, model: str | None = None) -> None:
+    with db() as conn:
+        conn.execute(
+            """INSERT INTO editions (kind, day, entries, model, generated_at) VALUES (?,?,?,?,?)
+               ON CONFLICT(kind, day) DO UPDATE SET entries=excluded.entries,
+                 model=excluded.model, generated_at=excluded.generated_at""",
+            (kind, day, int(entries), model, now_str()),
+        )
+
+
+def edition_row(kind: str, day: str) -> dict[str, Any] | None:
+    with db() as conn:
+        row = conn.execute(
+            "SELECT * FROM editions WHERE kind = ? AND day = ?", (kind, day)
+        ).fetchone()
+    return dict(row) if row else None
+
+
+def missing_editions(kind: str = "daily", days: int = 7, day: str | None = None) -> list[str]:
+    """最近 N 天里没有出刊的日期（今天除外，今天还没到点不算缺）。"""
+    day = day or today_str()
+    today = datetime.strptime(day, "%Y-%m-%d")
+    out: list[str] = []
+    with db() as conn:
+        have = {
+            r["day"] for r in conn.execute(
+                "SELECT day FROM editions WHERE kind = ? AND day >= ?",
+                (kind, (today - timedelta(days=days)).strftime("%Y-%m-%d")),
+            )
+        }
+    for offset in range(1, days + 1):
+        d = (today - timedelta(days=offset)).strftime("%Y-%m-%d")
+        if d not in have:
+            out.append(d)
+    return out
+
+
+def save_alert(kind: str, day: str, message: str, severity: str = "warn") -> bool:
+    """同一天同一条告警只记一次，返回是否新写入（避免每轮重复发信）。"""
+    with db() as conn:
+        cur = conn.execute(
+            """INSERT INTO alerts (kind, day, severity, message, created_at) VALUES (?,?,?,?,?)
+               ON CONFLICT(kind, day, message) DO NOTHING""",
+            (kind, day, severity, message, now_str()),
+        )
+        return cur.rowcount > 0
+
+
+def alerts_on(day: str | None = None) -> list[dict[str, Any]]:
+    day = day or today_str()
+    with db() as conn:
+        return [dict(r) for r in conn.execute(
+            "SELECT * FROM alerts WHERE day = ? ORDER BY id", (day,)
+        ).fetchall()]
 
 
 # --------------------------------------------------------------------------- #
