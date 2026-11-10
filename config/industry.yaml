@@ -31,3 +31,6 @@ nav_hidden: []
 
 # 公开接口版本：只升不降。改了已有字段或含义才升主版本。
 api_version: "1"
+
+# MCP 工具名前缀：工具名 = <前缀>_get_latest 这种。上线后不要改（客户端会存工具名）。
+mcp_prefix: zbit

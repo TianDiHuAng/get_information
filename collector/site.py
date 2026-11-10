@@ -548,6 +548,15 @@ def build_static(site_root: Path | None = None) -> dict[str, Any]:
   <li><code>POST /api/feedback</code> —— <code>{"url":"…","kind":"up|down"}</code>，给一条打分</li>
   <li><code>GET /api/prefs</code> —— 当前学到的偏好权重（调试用）</li>
 </ul>
+<h2>MCP（给 Agent 直接调用）</h2>
+<p>除了读接口，还可以把本站挂成 MCP 服务，让 Claude Desktop / Cursor 直接调：</p>
+<pre class="card flat small" style="overflow:auto;">{
+  "mcpServers": {
+    "zbit": {"command": "python", "args": ["<项目路径>/mcp_server.py"]}
+  }
+}</pre>
+<p class="small muted">七个工具：最新、搜索、热点、事件、日报、周报、月报。
+工具名前缀是 <code>zbit_</code>（在 <code>config/industry.yaml</code> 的 <code>mcp_prefix</code> 改）。</p>
 <h2>给 Agent 的提示</h2>
 <pre class="card flat small" style="overflow:auto;">读 /llms.txt 了解这个站；
 要最新内容用 /api/v1/latest.json（结构化，带分数与理由）；

@@ -1196,7 +1196,10 @@ def all_items(day: str | None = None, limit: int = 2000,
                       i.published, i.extra, d.score
                FROM item_days d JOIN items i ON i.id = d.item_id
                WHERE d.day = ?
-               ORDER BY coalesce(d.score, 0) DESC, i.published DESC
+               ORDER BY CASE WHEN json_extract(i.extra, '$.attention.score') IS NULL
+                             THEN 1 ELSE 0 END,
+                        coalesce(json_extract(i.extra, '$.attention.score'),
+                                 d.score, 0) DESC, i.published DESC
                LIMIT ?""",
             (day, limit),
         ).fetchall()
