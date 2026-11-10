@@ -426,8 +426,18 @@ def build_events(site_root: Path | None = None) -> dict[str, Any]:
                 f'<span class="muted small"> · {theme.esc(m["source"])} · '
                 f'{theme.esc(m["published"][:10])}</span></li>' for m in items)
             blocks.append(f"<h2>{name} <small>{len(items)} 篇</small></h2><ul class=\"list\">{lis}</ul>")
+        digest_text = ""
+        try:
+            from . import story as _story
+
+            row = _story.get(e["id"])
+            digest_text = (row or {}).get("text") or ""
+        except Exception:
+            digest_text = ""
+        digest_html = (f'<p class="lead" style="margin:0 0 18px;">{theme.esc(digest_text)}</p>'
+                       if digest_text else "")
         _write(root / "events" / f'{e["id"]}.html', theme.page(
-            e["title"], "".join(blocks), active="/events.html",
+            e["title"], digest_html + "".join(blocks), active="/events.html",
             lead=f'{theme.esc(e["first"][:10])} · {len(e["members"])} 篇报道 · '
                  f'<a href="/events.html">← 全部事件</a>'))
         written += 1

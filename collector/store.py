@@ -239,6 +239,18 @@ MIGRATIONS: list[str] = [
     ALTER TABLE sources ADD COLUMN enabled INTEGER NOT NULL DEFAULT 1;
     ALTER TABLE sources ADD COLUMN note TEXT;
     """,
+    # v8 —— 事件综述：一个事件一段话，页面只读这张表
+    """
+    CREATE TABLE IF NOT EXISTS story_digests (
+        event_id       INTEGER PRIMARY KEY,
+        day            TEXT NOT NULL,
+        model          TEXT,
+        prompt_version TEXT,
+        text           TEXT NOT NULL,
+        sources        INTEGER NOT NULL DEFAULT 0,
+        created_at     TEXT NOT NULL
+    );
+    """,
 ]
 
 
@@ -956,6 +968,7 @@ def event_dump(days: int = 120, day: str | None = None) -> list[dict[str, Any]]:
             SELECT e.id AS event_id, e.title AS event_title, e.key AS event_key,
                    e.first_at, e.last_at,
                    i.id AS item_id, i.source, i.layer, i.region, i.title AS item_title,
+                   i.summary AS item_summary,
                    i.url, i.published,
                    s.category, s.tags, s.subjects
             FROM events e

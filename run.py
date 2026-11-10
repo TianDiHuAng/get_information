@@ -21,7 +21,7 @@ from pathlib import Path
 
 sys.stdout.reconfigure(encoding="utf-8", errors="replace", line_buffering=True)
 
-from collector import (alerts, admin, wording, board, breaking, events, export, offline, rating, report, share,
+from collector import (alerts, admin, story, wording, board, breaking, events, export, offline, rating, report, share,
                        site, state, store, structure, timeline, topics)
 from collector import pushmail
 from collector.identity import item_identity
@@ -287,6 +287,17 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True,
                   f" / 保留 {wr['skipped']} 段")
     except Exception as e:
         print(f"      改用词失败: {type(e).__name__}: {e}")
+    _done(stage)
+
+    # 事件综述：同一件事的多篇报道写成一段（≥2 篇才写，走回执不重复花钱）
+    stage = _stage("stories", day)
+    try:
+        st_res = story.run(day, limit=10)
+        if st_res.get("events"):
+            print(f"      综述: {st_res['written']} 条新写 / {st_res['skipped']} 条已是最新"
+                  f" / {st_res['failed']} 条未通过核对（共 {st_res['events']} 个事件）")
+    except Exception as e:
+        print(f"      事件综述跳过: {type(e).__name__}: {e}")
     _done(stage)
 
     # 整站页面：精选之外的全部模块（全部动态/热门/文章页/日报/周报/月报/事件/搜索/静态页）
