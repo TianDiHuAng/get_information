@@ -31,6 +31,7 @@ NAV = (
 # 次级入口，放页脚与"更多"页
 MORE = (
     ("/agent.html", "给 Agent 用"),
+    ("/admin.html", "后台"),
     ("/board.html", "运行看板"),
     ("/archive/", "历史归档"),
     ("/offline.html", "离线版"),

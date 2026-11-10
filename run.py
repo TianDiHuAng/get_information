@@ -21,7 +21,7 @@ from pathlib import Path
 
 sys.stdout.reconfigure(encoding="utf-8", errors="replace", line_buffering=True)
 
-from collector import (alerts, board, breaking, events, export, offline, rating, report, share,
+from collector import (alerts, admin, board, breaking, events, export, offline, rating, report, share,
                        site, state, store, structure, timeline, topics)
 from collector import pushmail
 from collector.identity import item_identity
@@ -230,6 +230,12 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True,
 
     # 周报月报要等日报写完「已报」记录之后才能编 —— 提前跑出来永远是 0 件。
     # 它们的生成逻辑挪到 digest 之后（见下面）。
+
+    # 后台的静态副本（serve.py 会按标签页实时渲染，这里只是离线兜底）
+    try:
+        admin.build(ROOT / "site", day)
+    except Exception as e:
+        print(f"      后台页生成失败: {type(e).__name__}: {e}")
 
     # 单文件离线归档：断网/换机时能带走的一份
     stage = _stage("offline", day)

@@ -6,6 +6,9 @@
 除了静态文件，还提供两个小接口：
 - `POST /api/feedback`  `{"url": "...", "kind": "up|down"}` —— 卡片上的反馈按钮
 - `GET  /api/prefs`     当前学到的兴趣权重（调试用，能看出它到底学到了什么）
+
+后台 `/admin.html` 是唯一的受保护路径：需要口令（`config/admin_token.txt`，
+首次启动自动生成并在控制台打印）。后台本身是只读的，改配置请改 `config/*.yaml`。
 """
 
 import json
@@ -14,11 +17,13 @@ import socket
 import sys
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from urllib.parse import parse_qs, urlparse
 
 PORT = 8123
 SITE = Path(__file__).parent / "site"
 # 反馈请求体上限：这是个本机小接口，不需要接受大包
 MAX_BODY = 4096
+COOKIE = "radar_admin"
 
 if sys.stdout is None:  # pythonw 静默运行时没有 stdout
     sys.stdout = open(os.devnull, "w", encoding="utf-8")
@@ -55,7 +60,16 @@ class Handler(SimpleHTTPRequestHandler):
         self.wfile.write(body)
 
     def do_GET(self):  # noqa: N802
-        if self.path.split("?")[0].rstrip("/") == "/api/prefs":
+        parsed = urlparse(self.path)
+        path = parsed.path.rstrip("/") or "/"
+
+        if path in ("/admin", "/admin.html"):
+            return self._admin(parsed)
+        if path == "/admin/login":
+            return self._admin_login_page()
+        if path == "/admin/logout":
+            return self._redirect("/admin.html", clear_cookie=True)
+        if path == "/api/prefs":
             try:
                 from collector import prefs
 
@@ -67,7 +81,10 @@ class Handler(SimpleHTTPRequestHandler):
         return super().do_GET()
 
     def do_POST(self):  # noqa: N802
-        if self.path.split("?")[0].rstrip("/") != "/api/feedback":
+        path = urlparse(self.path).path.rstrip("/") or "/"
+        if path == "/admin/login":
+            return self._admin_login()
+        if path != "/api/feedback":
             return self._json({"ok": False, "error": "not found"}, 404)
         try:
             length = int(self.headers.get("content-length") or 0)
@@ -80,6 +97,82 @@ class Handler(SimpleHTTPRequestHandler):
         except Exception as e:
             result = {"ok": False, "error": f"{type(e).__name__}: {e}"}
         self._json(result, 200 if result.get("ok") else 400)
+
+    # ---- 后台：口令 + 按需渲染 ------------------------------------------- #
+    def _authed(self) -> bool:
+        from collector import admin
+
+        cookie = self.headers.get("cookie") or ""
+        for part in cookie.split(";"):
+            name, _, value = part.strip().partition("=")
+            if name == COOKIE:
+                return admin.check(value)
+        return False
+
+    def _html(self, doc: str, status: int = 200, extra: dict[str, str] | None = None) -> None:
+        body = doc.encode("utf-8")
+        self.send_response(status)
+        self.send_header("content-type", "text/html; charset=utf-8")
+        self.send_header("content-length", str(len(body)))
+        self.send_header("cache-control", "no-store")
+        for key, value in (extra or {}).items():
+            self.send_header(key, value)
+        self.end_headers()
+        self.wfile.write(body)
+
+    def _redirect(self, to: str, *, clear_cookie: bool = False) -> None:
+        self.send_response(303)
+        self.send_header("location", to)
+        if clear_cookie:
+            self.send_header("set-cookie", f"{COOKIE}=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax")
+        self.end_headers()
+
+    def _admin_login_page(self, error: str = "") -> None:
+        from collector import theme
+
+        msg = f'<p class="reason">{theme.esc(error)}</p>' if error else ""
+        body = (msg + '<form method="post" action="/admin/login" style="max-width:360px;">'
+                '<p><input name="token" type="password" placeholder="后台口令" autofocus '
+                'style="width:100%;padding:11px 13px;border:1px solid var(--rule);'
+                'border-radius:10px;background:var(--card);color:var(--ink)"></p>'
+                '<p><button type="submit" style="padding:9px 18px;border-radius:10px;border:0;'
+                'background:var(--accent);color:#fff;font-size:14px;cursor:pointer">进入</button></p>'
+                "</form>"
+                '<p class="muted small">口令在 <code>config/admin_token.txt</code>；'
+                "首次启动 <code>serve.py</code> 时自动生成并打印在控制台。</p>")
+        self._html(theme.page("后台 · 登录", body, active="", lead="需要口令"))
+
+    def _admin_login(self) -> None:
+        from collector import admin
+
+        try:
+            length = int(self.headers.get("content-length") or 0)
+            raw = self.rfile.read(min(length, MAX_BODY)).decode("utf-8") if length > 0 else ""
+            token = (parse_qs(raw).get("token") or [""])[0]
+        except Exception:
+            token = ""
+        if not admin.check(token):
+            return self._admin_login_page("口令不对")
+        self.send_response(303)
+        self.send_header("location", "/admin.html")
+        # 会话 cookie：只在本机局域网用，不设 domain，HttpOnly 防脚本读取
+        self.send_header("set-cookie",
+                         f"{COOKIE}={token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=604800")
+        self.end_headers()
+
+    def _admin(self, parsed) -> None:
+        if not self._authed():
+            return self._admin_login_page("请先输入口令")
+        from collector import admin
+
+        query = parse_qs(parsed.query or "")
+        tab = (query.get("tab") or ["runs"])[0]
+        only = (query.get("only") or ["all"])[0]
+        try:
+            doc = admin.render(tab=tab, only=only)
+        except Exception as e:
+            doc = f"<pre>后台渲染失败：{e}</pre>"
+        self._html(doc)
 
 
 def already_running() -> bool:
