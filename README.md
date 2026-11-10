@@ -22,6 +22,9 @@
   **不调模型**（模型只写导读，且要过防幻觉校验）；同一批内容换个抓取顺序排出同一期
 - **告警**：源连续失败/长期静默、日报缺期、预算耗尽、失败率偏高，同一天同一条只发一次信
 - **成本可控**：每次 LLM 调用留回执，同输入零成本复用；有每日/每小时预算上限；可换备用模型
+- **个性化**：卡片上点 👍/👎，下一轮排序会微调（默认 ±8%，只调排序、不碰入选门槛）
+- **突发即时推**：官方一手 + 分数 ≥85 + 12 小时内 → 立刻推（邮件 / Telegram / webhook），
+  23:00–08:00 免打扰
 - **多出口**：除了网页和邮件，还生成 `feed.xml`（今日要闻）/ `feed-all.xml` / 按分类的 feed、
   `api/v1/latest.json`（带五轴与理由）、`llms.txt` —— 给 RSS 阅读器和 Agent 读
 - **本地存储**：SQLite（`data/radar.db`）+ 产物文件，全部在 `data/`
@@ -85,6 +88,8 @@ python serve.py        # http://localhost:8123
 | `config/events.yaml` | **聚簇口径**：召回窗口、粗排门槛、一轮最多判几对、复核线、热度参数 |
 | `config/structure.yaml` | **结构化口径**：每轮最多抽几条、并发数 |
 | `config/extract.yaml` | **正文口径**：抓多少篇、正文最短长度、哪些站不抓（JS 页面/登录墙） |
+| `config/prefs.yaml` | **个性化口径**：各种动作的权重、微调幅度、证据门槛 |
+| `config/push.yaml` | **推送口径**：通道开关、突发门槛、官方域名、免打扰时段 |
 | `config/taxonomy.yaml` | **词表**：分类、标签、实体别名、grounding 豁免词 |
 | `config/prompts/*.md` | **提示词**：预筛、注意力评分、结构化、两两关系、复核（改完即时生效，版本按内容哈希） |
 | `config/papers.yaml` | arXiv 周报主题与限额 |
@@ -118,6 +123,9 @@ collector/     采集/清洗/判断/打分/渲染/推送
   structure.py 结构化：分类 / 标签 / 主体 / 是不是一条具体新闻
   grounding.py 防幻觉：专名与数字必须能在原文找到
   edition.py   成刊：规则编排头条/看点/正文/快讯（不调模型）
+  prefs.py     个性化：反馈 → 词级权重 → 排序微调
+  breaking.py  突发：够格立刻推（免打扰、永久去重）
+  push.py      通道：邮件 / Telegram / webhook
   export.py    多出口：RSS / JSON API / llms.txt
   alerts.py    告警：源健康、缺期、预算、失败率
 config/        配置（含 example 模板、评分口径、提示词）
