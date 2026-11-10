@@ -107,6 +107,24 @@ python tools/eval_relations.py           # 出 4×4 混淆表、每类 F1、置�
 | `attention.score` | 五轴加权（0–100），判断「值不值得看」 | 精选门槛、日报取舍 |
 | `extra.score` | `0.8 × attention + 0.2 × 老分` | 站点排序（时效只剩轻微修正） |
 
+## 站点结构
+
+```
+/               今日（精选 + 反馈按钮 + 筛选）
+/topics.html    主题总览 + /topics/<分类或标签>.html
+/events.html    事件榜 + /events/<id>.html（官方 / 媒体 / 社区 三种说法并列）
+/daily.html     日报期号 + /daily/<日期>.html
+/weekly.html    周报 + /weekly/<日期>.html
+/monthly.html   月报 + /monthly/<日期>.html
+/timeline.html  主体 × 月份跨度
+/search.html    纯前端搜索（当天条目全嵌在页面里）
+/board.html     运行看板
+/archive/       历史归档
+feed.xml · feed-all.xml · feed/category/*.xml · api/v1/latest.json · llms.txt · og.png · offline.html
+```
+
+顶部导航贯通所有页面；每个页面都自带样式，不依赖外部资源。
+
 ## 配置说明
 
 | 文件 | 作用 |
