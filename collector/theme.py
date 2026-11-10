@@ -24,7 +24,7 @@ NAV = (
     ("/all.html", "全部"),
     ("/hot.html", "热点"),
     ("/daily.html", "日报"),
-    ("/monthly.html", "模型榜"),
+    ("/leaderboard.html", "模型榜"),
     ("/topics.html", "主题"),
 )
 MENU = {
