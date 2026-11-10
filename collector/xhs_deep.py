@@ -163,17 +163,89 @@ def _scaled(scale: float) -> dict:
     return {k: max(20, int(v * scale)) for k, v in BUDGET.items()}
 
 
-def _fit(text: str, limit: int) -> str:
-    """按句边界截到 limit 以内，尽量不留半句。"""
+SENT_SPLIT = re.compile(r"(?<=[。！？；])")
+
+
+def _fit(text: str, limit: int, allow_ellipsis: bool = False) -> str:
+    """截到 limit 以内：优先保留完整句子，绝不切在句子中间。
+
+    1) 整句累加，直到再加一句就超限 → 返回已收的整句
+    2) 一句都放不下时：英文按词边界收尾，中文按分句（，）收尾
+    3) 只有 allow_ellipsis=True 才允许加省略号
+    """
     t = re.sub(r"\s+", " ", (text or "").strip())
     if len(t) <= limit:
         return t
+
+    # 整句累加
+    sents = [s for s in SENT_SPLIT.split(t) if s.strip()]
+    acc = ""
+    for s in sents:
+        if len(acc) + len(s) > limit:
+            break
+        acc += s
+    if acc:
+        return acc.strip()
+
+    # 第一句就超限：按分句/词边界退让
     cut = t[:limit]
-    for sep in ("。", "；", "！", "？", ". ", "; "):
+    for sep in ("，", "、", ", ", " "):
         i = cut.rfind(sep)
-        if i > limit * 0.55:
-            return cut[: i + 1].strip()
-    return cut[: limit - 1].rstrip("，,、") + "…"
+        if i > limit * 0.5:
+            body = cut[:i].rstrip("，,、 ")
+            return body + ("…" if allow_ellipsis else "")
+    body = cut[: limit - 1].rstrip("，,、 ")
+    return body + ("…" if allow_ellipsis else "")
+
+
+CONDENSE_PROMPT = """把下面这段中文压缩到 {limit} 字以内，输出压缩后的结果（不要解释、不要引号）。
+
+必须保留：具体数字、方法名、数据集名、模型名、结论方向。
+可以删：修饰语、重复表述、铺垫、举例。
+不要加省略号，必须是完整通顺的句子结尾。
+
+原文：
+{text}"""
+
+
+def condense(facts: dict, chat, llm: dict, budget: dict | None = None) -> dict:
+    """字段超过预算时，先让模型按字数重写一次；失败再靠 _fit 整句裁剪。"""
+    B = budget or BUDGET
+    out = dict(facts)
+
+    def fix_field(key: str, limit: int) -> str:
+        val = str(out.get(key) or "").strip()
+        if not val or len(val) <= limit:
+            return val
+        try:
+            new = chat(CONDENSE_PROMPT.format(limit=limit, text=val), llm).strip()
+            new = re.sub(r"^```.*?```$", "", new, flags=re.S).strip().strip('"“”')
+            if 20 <= len(new) <= limit:
+                print(f"  [xhs] {key} 压缩 {len(val)}→{len(new)}")
+                return new
+        except Exception as e:
+            print(f"  [xhs] {key} 压缩失败: {type(e).__name__}")
+        return val
+
+    for key in ("problem", "method", "limits", "meaning"):
+        out[key] = fix_field(key, B[key])
+    if out.get("findings"):
+        out["findings"] = [fix_field_one(f, B["finding_each"], chat, llm) for f in out["findings"]]
+    return out
+
+
+def fix_field_one(text: str, limit: int, chat, llm: dict) -> str:
+    val = str(text or "").strip()
+    if len(val) <= limit:
+        return val
+    try:
+        new = chat(CONDENSE_PROMPT.format(limit=limit, text=val), llm).strip()
+        new = re.sub(r"^```.*?```$", "", new, flags=re.S).strip().strip('"“”')
+        if 12 <= len(new) <= limit:
+            return new
+    except Exception:
+        pass
+    return val
 
 
 def assemble(facts: dict, endpoint: dict, others: list[dict], cover: list[str], tags: list[str],
@@ -199,11 +271,11 @@ def assemble(facts: dict, endpoint: dict, others: list[dict], cover: list[str], 
     if others:
         rows = ["📌 顺带记两篇"]
         for it in others:
-            t = _fit(re.sub(r"\s*[:：]\s*", "：", it.get("title") or ""), B["other_title"])
+            t = _fit(re.sub(r"\s*[:：]\s*", "：", it.get("title") or ""), B["other_title"], allow_ellipsis=True)
             raw = (it.get("summary") or "").strip()
             zh = re.search(r"[\u4e00-\u9fff]", raw) is not None
             s = (raw.split("。")[0] if zh else raw.split(". ")[0]).strip()
-            s = _fit(s, B["other_sum"])
+            s = _fit(s, B["other_sum"], allow_ellipsis=True)
             rows.append(f"· {t}\n  {s}" if s else f"· {t}")
         body.append("\n".join(rows))
 

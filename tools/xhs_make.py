@@ -42,8 +42,17 @@ def main() -> None:
     missing = xhs_deep._complete(facts)
     print(f"事实齐备：{not missing}  {missing or ''}")
 
+    facts = xhs_deep.condense(facts, _chat, llm)
     shell = xhs_shell.build_shell(_chat, llm, cfg, lead["title"], facts) or {}
-    titles = shell.get("titles") or [lead["title"][:18]]
+    raw_titles = shell.get("titles") or [lead["title"][:18]]
+    lim = int(cfg["title_rules"]["max_chars"])
+    titles = []
+    for t in raw_titles:
+        t = str(t).strip()
+        if len(t) > lim:
+            cut = [x for x in t.split("，") if 6 <= len(x) <= lim]
+            t = cut[0] if cut else t[: lim - 1]
+        titles.append(t)
     cover = shell.get("cover") or ["GLP 读 ESM-2", "扩散当先验", "能读但没新料"]
     tags = shell.get("tags") or list(cfg["tags"]["fixed"])
 
