@@ -140,6 +140,21 @@ nav_hidden: ["/hot.html"]    # 导航里不显示，但地址仍可访问
 
 ---
 
+## 2b. 模块：只属于这个站的功能
+
+「模型榜」「Token 羊毛」这类**只对某个行业有意义**的功能，不放在引擎里，做成模块：
+
+```
+modules/<名字>/
+  module.py       # NAME / TITLE / HREF / SECTION / ICON + build()（可选）
+site_modules.yaml # 启用哪些模块（顺序就是导航顺序）
+```
+
+框架**不导入任何模块**，只读清单、按名字动态加载 —— 合并上游更新时不会和自己的功能冲突。
+加一个模块：建文件夹 → 写 `module.py` → 在 `site_modules.yaml` 里加一行。
+
+引擎代码里不该出现任何具体模块的名字，`tests/test_modules.py` 有一条检查守着。
+
 ## 3. 信源：`config/sources.yaml` + `collector/sources.py`
 
 抓取器写在 `collector/sources.py` 的 `REGISTRY` 里（每个源的抓取逻辑是代码），
