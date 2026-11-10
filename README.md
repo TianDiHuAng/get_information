@@ -125,6 +125,8 @@ python tools/eval_relations.py           # 出 4×4 混淆表、每类 F1、置�
 /timeline.html   主体 × 月份跨度
 /search.html     纯前端搜索（当天条目全嵌在页面里）
 /board.html      运行看板
+/admin.html      后台（七个标签页，只读）：运行 / 信源 / 内容诊断 / 评测 / 模型调用 / 配置 / 告警
+                 访问需要口令，见下
 /agent.html      给 Agent 用：RSS / JSON / llms.txt 的接入说明
 /starred.html    我的收藏（localStorage，只在本机）
 /feedback.html   反馈机制说明 + 当前学到的权重
@@ -135,6 +137,10 @@ feed.xml · feed-all.xml · feed/category/*.xml · api/v1/latest.json · llms.tx
 ```
 
 顶部导航贯通全部页面，手机端有固定底栏。每个页面都自带样式，不依赖外部资源。
+
+**后台**：`python serve.py` 启动时会在控制台打印后台口令（也存在 `data/admin_token.txt`，
+该目录不进 Git）。打开 `/admin.html` 输入口令即可。后台**只读** —— 改配置请改 `config/*.yaml`，
+下一轮自动生效。
 
 ## 配置说明
 

@@ -11,7 +11,7 @@
 4. **评测**：`data/eval/*.json` 最近一份报告的准确率、覆盖率与门槛扫描；
 5. **配置快照**：门槛、预算、每一步用哪个模型（只展示，不修改）。
 
-访问需要口令（`config/admin_token.txt`，首次由 serve.py 生成）。
+访问需要口令（`data/admin_token.txt`，首次由 serve.py 生成）。
 """
 
 from __future__ import annotations
@@ -27,7 +27,7 @@ from . import llm, rating, store, theme
 ROOT = Path(__file__).parent.parent
 SITE = ROOT / "site"
 DATA = ROOT / "data"
-TOKEN_PATH = ROOT / "config" / "admin_token.txt"
+TOKEN_PATH = ROOT / "data" / "admin_token.txt"   # data/ 已在 .gitignore 里
 
 
 # --------------------------------------------------------------------------- #

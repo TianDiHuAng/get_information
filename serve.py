@@ -7,7 +7,7 @@
 - `POST /api/feedback`  `{"url": "...", "kind": "up|down"}` —— 卡片上的反馈按钮
 - `GET  /api/prefs`     当前学到的兴趣权重（调试用，能看出它到底学到了什么）
 
-后台 `/admin.html` 是唯一的受保护路径：需要口令（`config/admin_token.txt`，
+后台 `/admin.html` 是唯一的受保护路径：需要口令（`data/admin_token.txt`，
 首次启动自动生成并在控制台打印）。后台本身是只读的，改配置请改 `config/*.yaml`。
 """
 
@@ -138,7 +138,7 @@ class Handler(SimpleHTTPRequestHandler):
                 '<p><button type="submit" style="padding:9px 18px;border-radius:10px;border:0;'
                 'background:var(--accent);color:#fff;font-size:14px;cursor:pointer">进入</button></p>'
                 "</form>"
-                '<p class="muted small">口令在 <code>config/admin_token.txt</code>；'
+                '<p class="muted small">口令在 <code>data/admin_token.txt</code>；'
                 "首次启动 <code>serve.py</code> 时自动生成并打印在控制台。</p>")
         self._html(theme.page("后台 · 登录", body, active="", lead="需要口令"))
 
