@@ -111,6 +111,8 @@ def build_cards(post: dict, max_chars: int = 150, figs: list[dict] | None = None
     figs = figs or []
     fig_queue = list(figs)
     if fig_queue:
+        cards[0]["bg"] = fig_queue[0]["path"]
+    if fig_queue:
         f = fig_queue.pop(0)
         cards.append(
             {"type": "figure", "path": f["path"], "caption": f["caption"], "label": "论文长这样", "footer": post["date"]}
@@ -285,12 +287,26 @@ def card_html(card: dict, theme: str, total: int) -> str:
 
     if card["type"] == "cover":
         sub = card["sub"] or []
+        bg_img = ""
+        if card.get("bg"):
+            from .paper_figs import data_uri
+
+            uri = data_uri(card["bg"])
+            if uri:
+                bg_img = (
+                    f'<div style="position:absolute;inset:0;background-image:url({uri});'
+                    f'background-size:cover;background-position:center;'
+                    f'filter:blur(2px) saturate(.7) brightness(.45);opacity:.55"></div>'
+                    f'<div style="position:absolute;inset:0;background:linear-gradient('
+                    f'160deg,rgba(20,20,20,.82) 0%,rgba(20,20,20,.62) 45%,rgba(28,22,18,.88) 100%)"></div>'
+                )
         sub_html = "".join(
             f'<div style="font-size:40px;line-height:1.6;color:{t["cover_fg"]};opacity:.86">{s}</div>'
             for s in sub[:2]
         )
         return (
             f'<div style="{base};background:{t["cover_bg"]};color:{t["cover_fg"]}">'
+            f"{bg_img}"
             f'<div style="position:absolute;left:88px;top:96px;font-size:28px;letter-spacing:.22em;'
             f'color:{t["cover_accent"]}">{card["kicker"]}</div>'
             f'<div style="position:absolute;left:88px;right:88px;top:330px;font-family:{t["font"]};'
