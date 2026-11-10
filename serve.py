@@ -19,7 +19,7 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
-PORT = 8123
+PORT = int(os.environ.get("RADAR_PORT") or 8123)   # 换端口：RADAR_PORT=8124 python serve.py
 SITE = Path(__file__).parent / "site"
 # 反馈请求体上限：这是个本机小接口，不需要接受大包
 MAX_BODY = 4096
