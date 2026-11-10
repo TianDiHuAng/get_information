@@ -1181,8 +1181,14 @@ def item_detail(item_id: int) -> dict[str, Any] | None:
     return item
 
 
-def all_items(day: str | None = None, limit: int = 2000) -> list[dict[str, Any]]:
-    """当天见过的全部条目，按排序分从高到低（"全部动态"与分页用）。"""
+def all_items(day: str | None = None, limit: int = 2000,
+              include_archived: bool = False,
+              include_undated: bool = False) -> list[dict[str, Any]]:
+    """当天见过的条目，按排序分从高到低（"全部动态"与分页用）。
+
+    默认只返回**可公开**的（`collector/scope.py`）：晚发现的旧文按原文时间归档，
+    没有发布时间的先不公开。后台诊断要全量时传 `include_archived=True`。
+    """
     day = content_day(day)
     with db() as conn:
         rows = conn.execute(
@@ -1209,6 +1215,24 @@ def all_items(day: str | None = None, limit: int = 2000) -> list[dict[str, Any]]
         item["deal"] = bool(extra.get("deal"))
         out.append(item)
     _merge_attention(out, day)
+    if not (include_archived and include_undated):
+        try:
+            from . import scope
+
+            keep = set()
+            if include_archived:
+                keep.add("archive")
+            if include_undated:
+                keep.add("undated")
+            conf = scope.settings()
+            filtered = []
+            for row in out:
+                status, _ = scope.classify(row.get("published") or "", day, conf=conf)
+                if status == "today" or status in keep:
+                    filtered.append(row)
+            out = filtered
+        except Exception:
+            pass
     return out
 
 

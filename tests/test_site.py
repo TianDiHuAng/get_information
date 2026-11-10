@@ -39,11 +39,14 @@ def test_theme_css_is_scoped_to_one_block():
 
 
 def seed(day=None):
+    # 必须有发布时间：公开层会把"无日期"和"太旧"的条目挡在今天之外
     items = [
         Item(source="anthropic", title="Anthropic 发布 Claude Fable 5.2 与 Mythos 5.2",
-             url="https://a/1", layer="primary", summary="官方宣布两个模型正式开放。"),
+             url="https://a/1", layer="primary", summary="官方宣布两个模型正式开放。",
+             published="2026-11-10T08:00:00+08:00"),
         Item(source="hackernews", title="Fable 5.2 在 Artificial Analysis 得 65 分",
-             url="https://a/2", layer="rank", summary="190 条评论"),
+             url="https://a/2", layer="rank", summary="190 条评论",
+             published="2026-11-10T09:00:00+08:00"),
     ]
     for it in items:
         it.extra["score"] = 80 if it.layer == "primary" else 70

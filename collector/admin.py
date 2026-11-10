@@ -110,7 +110,7 @@ def alerts(limit: int = 50) -> list[dict[str, Any]]:
 def content(day: str | None = None, only: str = "all", limit: int = 200) -> list[dict[str, Any]]:
     """今天的内容诊断表。`only` 支持 all / blocked / failed / selected。"""
     day = day or store.today_str()
-    rows = store.all_items(day, limit=limit)
+    rows = store.all_items(day, limit=limit, include_archived=True, include_undated=True)
     out = []
     for it in rows:
         att = it.get("attention") or {}

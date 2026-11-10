@@ -232,6 +232,24 @@ def run() -> dict:
     except Exception as e:
         print(f"      正文提取跳过: {type(e).__name__}: {e}")
 
+    # 公开范围：晚发现的旧文按原文归档、无发布时间的先不公开
+    try:
+        from . import scope as _scope
+
+        _today = store.today_str()
+        _st = {"today": 0, "archive": 0, "undated": 0}
+        for _it in items:
+            _status, _why = _scope.classify(getattr(_it, "published", "") or "", _today)
+            _it.extra["scope_status"] = _status
+            if _why:
+                _it.extra["scope_reason"] = _why
+            _st[_status] = _st.get(_status, 0) + 1
+        items = [i for i in items if i.extra.get("scope_status") == "today"]
+        print(f"      公开范围: 今天 {_st['today']} / 归档 {_st['archive']}"
+              f" / 无日期 {_st['undated']}（后两类留在库里，不进今天）")
+    except Exception as e:
+        print(f"      公开范围判断跳过: {type(e).__name__}: {e}")
+
     # 个性化：按你点过的东西微调排序。只调分，不碰入选门槛（防回音室）。
     pref_stats: dict = {}
     try:
