@@ -92,6 +92,11 @@ REPEAT_WINDOW_DAYS = 7
 
 
 def fetch_all(max_workers: int = 8) -> tuple[list[Item], list[dict], dict, set[str]]:
+    from . import valves
+
+    if not valves.enabled("collect"):
+        print("      [安全阀] 采集已关闭（RADAR_COLLECT=0），本轮不抓网络")
+        return [], [], {}, set()
     fetchers = build_fetchers()
     # 后台停用的源跳过（不停用代码里的定义，只停用这一次抓取）
     try:

@@ -280,6 +280,10 @@ def call_json(task: str, prompt_version: str, system: str, user: str, *,
     `variant` 参与回执键但不进提示词：需要"同一输入独立问两次"时（双次评分），
     两次必须用不同的 variant，否则第二次会命中第一次的回执，等于只问了一次。
     """
+    from . import valves
+
+    if not valves.enabled("model"):
+        return None
     conf = settings()
     if not conf["api_key"] or not conf["model"]:
         return None
@@ -358,6 +362,10 @@ def call_text(task: str, prompt_version: str, system: str, user: str, *,
               model: str | None = None, temperature: float | None = None,
               max_tokens: int | None = None, service: str = "llm") -> str | None:
     """纯文本调用（翻译/改写）。同样走回执与预算。"""
+    from . import valves
+
+    if not valves.enabled("model"):
+        return None
     conf = settings()
     if not conf["api_key"] or not conf["model"]:
         return None

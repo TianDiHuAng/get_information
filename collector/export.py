@@ -225,12 +225,21 @@ def build(payload: dict[str, Any], site_root: Path) -> dict[str, Any]:
     base_url = str(conf.get("base_url") or "http://localhost:8123").rstrip("/")
     feed_n = int(conf.get("feed_items") or 50)
     api_n = int(conf.get("api_items") or 200)
-    items = list(payload.get("items") or [])
+    raw_items = list(payload.get("items") or [])
+    # 机器出口的席位规则：同一事件只出一条（网页上仍并列展示）
+    try:
+        from . import publication
+
+        items = publication.for_export(raw_items)
+        seat = publication.summary(raw_items)
+    except Exception:
+        items = raw_items
+        seat = {"in": len(raw_items), "out": len(raw_items), "merged": 0}
     generated_at = (payload.get("stats") or {}).get("generated_at") or datetime.now().isoformat()
 
     plan = edition.arrange(payload)
     daily = [i for i in ([plan.get("lead")] + plan["highlights"] + plan["body"] + plan["briefs"]) if i]
-    stats = {"feeds": 0, "daily": len(daily), "items": len(items),
+    stats = {"feeds": 0, "daily": len(daily), "items": len(items), "seats": seat,
              "events": len({(i.get("extra") or {}).get("event_id") for i in items} - {None}),
              "sources": len({i.get("source") for i in items if i.get("source")})}
 

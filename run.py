@@ -62,6 +62,16 @@ def _done(run_id, status: str = "ok", detail: str | None = None) -> None:
 
 def main(skip_rate: bool = False, send_mail_enabled: bool = True,
          fresh: bool = False, dry_push: bool = False) -> None:
+    # 安全阀只决定"发不发出去"：命令行参数与 RADAR_PUSH 取交集
+    try:
+        from collector import valves
+
+        push_on = valves.enabled("push")
+        send_mail_enabled = send_mail_enabled and push_on
+        dry_push = dry_push or not push_on
+        print(f"安全阀: {valves.describe()}")
+    except Exception:
+        pass
     day = store.today_str()
     try:
         store.migrate()
