@@ -1068,6 +1068,43 @@ def reported_items(days: int = 7, day: str | None = None) -> list[dict[str, Any]
     return out
 
 
+def backfill_attention(day: str | None = None) -> int:
+    """把 `scores` 表里的评分合并回 `items.extra["attention"]`。
+
+    为什么需要：评分结果原本只写 scores 表，`items.extra` 里没有 ——
+    于是任何**从库里读**的地方（周报、月报、时间线）都看不到注意力分，
+    只能退回老分排序。正常流程已经在阶段末尾补写一次，这个函数用于修历史数据。
+    """
+    day = day or today_str()
+    with db() as conn:
+        rows = conn.execute(
+            """SELECT item_id, avg(score) AS avg_score, count(*) AS n
+               FROM scores WHERE day = ? AND score IS NOT NULL GROUP BY item_id""",
+            (day,),
+        ).fetchall()
+        fixed = 0
+        for row in rows:
+            rec = conn.execute("SELECT extra FROM items WHERE id = ?", (row["item_id"],)).fetchone()
+            if not rec:
+                continue
+            try:
+                extra = json.loads(rec["extra"] or "{}")
+            except Exception:
+                extra = {}
+            if (extra.get("attention") or {}).get("score") is not None:
+                continue
+            extra["attention"] = {
+                "available": True,
+                "score": int(row["avg_score"]),
+                "calls": int(row["n"]),
+                "backfilled": True,
+            }
+            conn.execute("UPDATE items SET extra = ? WHERE id = ?",
+                         (json.dumps(extra, ensure_ascii=False), row["item_id"]))
+            fixed += 1
+    return fixed
+
+
 # --------------------------------------------------------------------------- #
 # 概览
 # --------------------------------------------------------------------------- #

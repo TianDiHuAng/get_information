@@ -19,7 +19,7 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
-sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+sys.stdout.reconfigure(encoding="utf-8", errors="replace", line_buffering=True)
 
 from collector import (alerts, board, breaking, events, export, offline, rating, report, share,
                        state, store, structure, timeline, topics)
@@ -131,6 +131,15 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True,
             stage = None
         _done(stage)
 
+    # 评分 / 结构 / 事件都写进了各自的表，但**从库里读的地方**（周报、月报、时间线）
+    # 只看 items.extra —— 这里补写一次，让库里的 extra 成为完整的一份。
+    stage = _stage("persist", day)
+    try:
+        store.upsert_items(payload["items"], day)
+    except Exception as e:
+        print(f"      回写条目失败: {type(e).__name__}: {e}")
+    _done(stage)
+
     # 评分 / 结构 / 事件都要往 Item.extra 上写，到这里才算完 —— 转 dict 交给下游
     stage = _stage("translate", day)
     payload["items"] = [i.to_dict() for i in payload["items"]]
@@ -211,16 +220,8 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True,
         print(f"      主题页生成失败: {type(e).__name__}: {e}")
     _done(stage)
 
-    # 周报月报：从日报汇编（规则编排，不调模型）
-    stage = _stage("reports", day)
-    try:
-        rm = report.build_all(day)
-        payload["stats"]["reports"] = rm
-        print(f"      周报: {rm['weekly']['events']} 件（{rm['weekly']['reports']} 条报道）"
-              f" · 月报: {rm['monthly']['events']} 件")
-    except Exception as e:
-        print(f"      周报月报生成失败: {type(e).__name__}: {e}")
-    _done(stage)
+    # 周报月报要等日报写完「已报」记录之后才能编 —— 提前跑出来永远是 0 件。
+    # 它们的生成逻辑挪到 digest 之后（见下面）。
 
     # 单文件离线归档：断网/换机时能带走的一份
     stage = _stage("offline", day)
@@ -230,6 +231,27 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True,
         print(f"      离线版: offline.html（{off['bytes'] // 1024} KB）")
     except Exception as e:
         print(f"      离线归档生成失败: {type(e).__name__}: {e}")
+    _done(stage)
+
+    stage = _stage("digest", day)
+    digest = build_digest(payload, lmarena=lmarena, aa=aa)
+    try:  # 记「已报」与本期出刊：下一轮这些条目在日报里不再出现，也能判缺期
+        picks = digest_picked(payload)
+        marked = store.mark_reported(picks, day, slot="digest")
+        store.save_edition("daily", day, entries=len(picks))
+    except Exception:
+        marked = 0
+    _done(stage)
+
+    # 周报月报：从日报汇编（必须在 digest 之后 —— 它读的是"今天进了日报"的记录）
+    stage = _stage("reports", day)
+    try:
+        rm = report.build_all(day)
+        payload["stats"]["reports"] = rm
+        print(f"      周报: {rm['weekly']['events']} 件（{rm['weekly']['reports']} 条报道）"
+              f" · 月报: {rm['monthly']['events']} 件")
+    except Exception as e:
+        print(f"      周报月报生成失败: {type(e).__name__}: {e}")
     _done(stage)
 
     # 周一发周报、每月 1 号发月报：不然它们只躺在 data/ 里没人看
@@ -252,16 +274,6 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True,
             print(f"      {label}推送: {pushmail.send_text(subject, path.read_text(encoding='utf-8'))}")
     except Exception as e:
         print(f"      周报月报推送失败: {type(e).__name__}: {e}")
-
-    stage = _stage("digest", day)
-    digest = build_digest(payload, lmarena=lmarena, aa=aa)
-    try:  # 记「已报」与本期出刊：下一轮这些条目在日报里不再出现，也能判缺期
-        picks = digest_picked(payload)
-        marked = store.mark_reported(picks, day, slot="digest")
-        store.save_edition("daily", day, entries=len(picks))
-    except Exception:
-        marked = 0
-    _done(stage)
 
     print(f"[4/4] 已生成 {out}  ({len(payload['items'])} 条)")
     print(f"      日报: {digest}（记已报 {marked} 条）")

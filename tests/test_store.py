@@ -1,5 +1,7 @@
 """存储层：跨天去重、已报抑制、评分留痕。"""
 
+import json
+
 from collector import store
 from collector.identity import item_identity
 from collector.model import Item
@@ -51,6 +53,24 @@ def test_fingerprint_change_bumps_revision(tmpdb):
     assert item_identity("https://a.com/1") in second["revised"]
     with store.db() as conn:
         assert conn.execute("SELECT revision FROM items").fetchone()["revision"] == 2
+
+
+def test_backfill_attention_merges_scores_into_extra(tmpdb):
+    """评分只写 scores 表时，从库里读的地方（周报）看不到分 —— 回填补上。"""
+    store.upsert_items([mk("https://a/1")])
+    ids = store.ids_for([item_identity("https://a/1")])
+    item_id = ids[item_identity("https://a/1")]
+    store.save_scores([
+        {"item_id": item_id, "call_no": 1, "itype": "model_release", "axes": {}, "score": 80},
+        {"item_id": item_id, "call_no": 2, "itype": "model_release", "axes": {}, "score": 70},
+    ])
+    assert store.backfill_attention() == 1
+    with store.db() as conn:
+        extra = json.loads(conn.execute("SELECT extra FROM items").fetchone()["extra"])
+    assert extra["attention"]["score"] == 75      # 两次的平均
+    assert extra["attention"]["calls"] == 2
+    # 再跑一次不重复处理
+    assert store.backfill_attention() == 0
 
 
 def test_pair_dump_carries_body_for_evaluation(tmpdb):
