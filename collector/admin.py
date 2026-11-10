@@ -403,6 +403,81 @@ def _content_section(day: str, only: str) -> str:
             f'</tr></thead><tbody>{body}</tbody></table></div>')
 
 
+def _better_section(day: str) -> str:
+    """标注台：给今天的条目打「选 / 不选 / 两可」，只写 data/gold.jsonl。"""
+    from . import selectbench
+
+    rows = selectbench.candidates(day)
+    st = selectbench.stats()
+    done = sum(st[d] for d in selectbench.DECISIONS)
+    bar = (f'<p class="muted small">已标 <b>{done}</b> 条'
+           f'（选 {st["select"]} · 不选 {st["reject"]} · 两可 {st["either"]}）'
+           f'｜文件里共 {st["total"]} 行 · <code>data/gold.jsonl</code></p>')
+
+    body_rows = []
+    for r in rows:
+        decision = r["decision"]
+        cells = []
+        for key, label in (("select", "选"), ("reject", "不选"), ("either", "两可")):
+            cls = "fb on" if decision == key else "fb"
+            cells.append(f'<button class="{cls}" data-label="{r["id"]}" '
+                         f'data-decision="{key}">{label}</button>')
+        if decision:
+            cells.append(f'<button class="fb" data-clear="{r["id"]}" title="撤销">×</button>')
+        score = r["score"] if r["score"] is not None else "—"
+        mark = "" if decision else ' <span class="pill">未标</span>'
+        body_rows.append(
+            f'<tr><td><a href="/items/{r["id"]}.html">{theme.esc(r["title"][:56])}</a>{mark}</td>'
+            f'<td class="muted small">{theme.esc(r["source"])}</td>'
+            f'<td class="muted small">{theme.esc(r["category"] or "—")}</td>'
+            f'<td class="num">{score}</td>'
+            f'<td class="muted small">{theme.esc((r["reason"] or "")[:38])}</td>'
+            f'<td>{"".join(cells)}</td></tr>')
+
+    table = (f'<div class="scroll"><table><thead><tr><th>标题</th><th>源</th><th>分类</th>'
+             f'<th>分</th><th>理由</th><th>你的判断</th></tr></thead>'
+             f'<tbody>{"".join(body_rows) or "<tr><td colspan=6 class=muted>今天没有条目</td></tr>"}'
+             f'</tbody></table></div>')
+    return (bar + table +
+            '<h2>标完做什么</h2>'
+            '<pre class="card flat small" style="overflow:auto;">'
+            'python tools/eval_selection.py --enrich</pre>'
+            '<p class="muted small">评测会读 <code>data/gold.jsonl</code>，'
+            '出准确率 / 覆盖率 / 门槛扫描。标注只存在这个文件里，'
+            '不碰提示词与门槛 —— 你可以随时手改或删掉。</p>' + _BETTER_JS)
+
+
+_BETTER_JS = """
+<script>
+async function postGold(body){
+  var r = await fetch('/api/gold', {method:'POST', headers:{'content-type':'application/json'},
+                                    body: JSON.stringify(body)});
+  return r.json();
+}
+document.addEventListener('click', async function(e){
+  var b = e.target.closest('[data-label]');
+  if (b){
+    b.disabled = true;
+    var j = await postGold({item_id: Number(b.dataset.label), decision: b.dataset.decision});
+    b.disabled = false;
+    if (!j.ok){ alert(j.error || '失败'); return; }
+    var row = b.closest('tr');
+    row.querySelectorAll('[data-label]').forEach(function(x){x.classList.remove('on')});
+    b.classList.add('on');
+    location.reload();
+    return;
+  }
+  var c = e.target.closest('[data-clear]');
+  if (c){
+    c.disabled = true;
+    var j = await postGold({item_id: Number(c.dataset.clear), decision: 'clear'});
+    c.disabled = false;
+    if (j.ok) location.reload(); else alert(j.error || '失败');
+  }
+});
+</script>"""
+
+
 def _eval_section() -> str:
     rows = evaluations()
     if not rows:
@@ -477,12 +552,13 @@ def render(day: str | None = None, tab: str = "runs", only: str = "all") -> str:
     day = day or store.today_str()
     tabs = _tabs("/admin.html?tab=",
                  (("runs", "运行"), ("sources", "信源"), ("content", "内容诊断"),
-                  ("evals", "评测"), ("llm", "模型调用"), ("config", "配置"),
-                  ("alerts", "告警")), tab)
+                  ("better", "标注"), ("evals", "评测"), ("llm", "模型调用"),
+                  ("config", "配置"), ("alerts", "告警")), tab)
     sections = {
         "runs": lambda: _run_section(day),
         "sources": _source_section,
         "content": lambda: _content_section(day, only),
+        "better": lambda: _better_section(day),
         "evals": _eval_section,
         "llm": lambda: _llm_section(day),
         "config": _config_section,

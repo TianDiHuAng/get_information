@@ -86,6 +86,8 @@ class Handler(SimpleHTTPRequestHandler):
             return self._admin_login()
         if path in ("/api/source/toggle", "/api/source/preview"):
             return self._source_action(path)
+        if path == "/api/gold":
+            return self._gold_action()
         if path != "/api/feedback":
             return self._json({"ok": False, "error": "not found"}, 404)
         try:
@@ -181,6 +183,25 @@ class Handler(SimpleHTTPRequestHandler):
             result = admin.toggle_source(source, bool(body.get("enabled")))
         else:
             result = admin.preview_source(source)
+        self._json(result, 200 if result.get("ok") else 400)
+
+    def _gold_action(self) -> None:
+        """标注：只写 data/gold.jsonl，和人手改那个文件完全等价。"""
+        if not self._authed():
+            return self._json({"ok": False, "error": "unauthorized"}, 401)
+        from collector import selectbench
+
+        try:
+            length = int(self.headers.get("content-length") or 0)
+            if length <= 0 or length > MAX_BODY:
+                raise ValueError("bad body size")
+            body = json.loads(self.rfile.read(length).decode("utf-8") or "{}")
+            item_id = int(body.get("item_id") or 0)
+            decision = str(body.get("decision") or "")
+        except Exception as e:
+            return self._json({"ok": False, "error": f"bad request: {e}"}, 400)
+
+        result = selectbench.clear(item_id) if decision == "clear" else selectbench.label(item_id, decision)
         self._json(result, 200 if result.get("ok") else 400)
 
     def _admin(self, parsed) -> None:
