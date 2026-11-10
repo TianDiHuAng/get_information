@@ -163,7 +163,8 @@ def score_once(item: Any, call_no: int) -> dict[str, Any] | None:
     user = text
     if title_only:
         user += "\n\n（这条材料只有标题，没有摘要和正文。）"
-    obj = llm.call_json("attention-score", version, system, user, max_tokens=300)
+    obj = llm.call_json("attention-score", version, system, user, max_tokens=300,
+                        variant=f"call{call_no}")
     if not obj:
         return None
     itype = str(obj.get("itype") or "").strip()

@@ -139,6 +139,21 @@ def _receipt_key(task: str, model: str, prompt_version: str, payload: str) -> st
     return f"{task}|{model}|{prompt_version}|{digest}"
 
 
+def _await_receipt(key: str, timeout: float = 20.0) -> dict[str, Any] | None:
+    """同一个请求已经在飞（并发场景）：等它落地，而不是直接判失败。
+
+    之前这里直接返回 None，结果双次评分里第二次看到 pending 就放弃了 ——
+    180 条里有 147 条被判"失败"，其实只是被自己挡住了。
+    """
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        time.sleep(0.5)
+        rec = _receipt_get(key)
+        if rec and rec["state"] in ("ok", "failed", "unknown"):
+            return rec
+    return _receipt_get(key)
+
+
 def _receipt_get(key: str) -> dict[str, Any] | None:
     with store.db() as conn:
         row = conn.execute("SELECT * FROM llm_calls WHERE key = ?", (key,)).fetchone()
@@ -241,21 +256,33 @@ def _post(model: str, system: str, user: str, temperature: float, max_tokens: in
 
 def call_json(task: str, prompt_version: str, system: str, user: str, *,
               model: str | None = None, temperature: float | None = None,
-              max_tokens: int | None = None, service: str = "llm") -> dict[str, Any] | None:
-    """带回执的结构化调用。返回解析后的 dict，或 None（不可用/预算尽/结果不明）。"""
+              max_tokens: int | None = None, service: str = "llm",
+              variant: str | None = None) -> dict[str, Any] | None:
+    """带回执的结构化调用。返回解析后的 dict，或 None（不可用/预算尽/结果不明）。
+
+    `variant` 参与回执键但不进提示词：需要"同一输入独立问两次"时（双次评分），
+    两次必须用不同的 variant，否则第二次会命中第一次的回执，等于只问了一次。
+    """
     conf = settings()
     if not conf["api_key"] or not conf["model"]:
         return None
     model = model or conf["model"]
     temperature = conf["temperature"] if temperature is None else temperature
-    key = _receipt_key(task, model, prompt_version, f"{system}\x00{user}\x00{temperature}\x00{max_tokens}")
+    key = _receipt_key(task, model, prompt_version,
+                       f"{system}\x00{user}\x00{temperature}\x00{max_tokens}\x00{variant or ''}")
 
     rec = _receipt_get(key)
     if rec:
         if rec["state"] == "ok" and rec["response"]:
             # 命中回执：不花钱、不等待
             return parse_json(rec["response"])
-        if rec["state"] in ("pending", "unknown") and not _is_stale(rec):
+        if rec["state"] == "pending" and not _is_stale(rec):
+            rec = _await_receipt(key) or rec
+            if rec["state"] == "ok" and rec["response"]:
+                return parse_json(rec["response"])
+            if rec["state"] == "pending" and not _is_stale(rec):
+                return None
+        if rec["state"] == "unknown" and not _is_stale(rec):
             # 结果不明且还没到放行时间：不重发，交给下一轮或人工
             return None
         if rec["state"] == "failed" and rec["attempts"] >= MAX_ATTEMPTS:

@@ -78,13 +78,6 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True) -> None:
             stage = None
         _done(stage)
 
-    stage = _stage("translate", day)
-    # 前面几个阶段都在往 Item.extra 上写东西（评分、结构、事件），
-    # 到这里才算完，转成 dict 交给渲染/日报/出口。
-    payload["items"] = [i.to_dict() for i in payload["items"]]
-    payload["stats"]["translate"] = translate_items(payload["items"])
-    _done(stage)
-
     # 结构化：分类 / 标签 / 主体 / 是不是一条具体新闻（喂主题页、事件、防幻觉）
     if skip_rate:
         payload["stats"]["structure"] = {"skipped": "cli"}
@@ -110,6 +103,12 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True) -> None:
             _done(stage, "error", str(e))
             stage = None
         _done(stage)
+
+    # 评分 / 结构 / 事件都要往 Item.extra 上写，到这里才算完 —— 转 dict 交给下游
+    stage = _stage("translate", day)
+    payload["items"] = [i.to_dict() for i in payload["items"]]
+    payload["stats"]["translate"] = translate_items(payload["items"])
+    _done(stage)
 
     payload["stats"]["health"] = update_health(payload["stats"])
     try:

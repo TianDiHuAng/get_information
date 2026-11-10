@@ -55,6 +55,27 @@ def test_threshold_by_layer_and_override():
     assert rating.threshold_for(mk(layer="social"), conf) == conf["thresholds"]["social"]
 
 
+def test_two_score_calls_use_distinct_receipt_variants(monkeypatch):
+    """双次评分必须真的问两次。
+
+    回执按"提示词+输入"去重，两次输入一模一样时第二次会直接命中第一次的回执
+    —— 那就等于只问了一次，却按两次的门槛去判（实测 180 条里 147 条因此失败）。
+    """
+    seen = []
+    monkeypatch.setattr(rating.llm, "available", lambda: True)
+
+    def spy(task, version, system, user, **kw):
+        seen.append(kw.get("variant"))
+        return {"itype": "model_release", "sig": 8, "nov": 7, "cred": 6,
+                "reson": 8, "act": 5, "reason": "x"}
+
+    monkeypatch.setattr(rating.llm, "call_json", spy)
+    item = mk()
+    rating.score_once(item, 1)
+    rating.score_once(item, 2)
+    assert seen == ["call1", "call2"]
+
+
 def test_rate_items_annotates_and_selects(tmpdb):
     item = mk()
     stats = rating.rate_items([item], ids={})
