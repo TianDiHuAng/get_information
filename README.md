@@ -141,10 +141,13 @@ feed.xml · feed-all.xml · feed/category/*.xml · api/v1/latest.json · llms.tx
 **后台**：`python serve.py` 启动时会在控制台打印后台口令（也存在 `data/admin_token.txt`，
 该目录不进 Git）。打开 `/admin.html` 输入口令即可。
 
-后台能做两件事，其余都是只读：
+后台能做三件事，其余都是只读：
 
 - **停用 / 启用信源**：只写 SQLite 的开关，下一轮抓取跳过它；不改代码里的源定义。
 - **试抓**：真的跑一次这个源的抓取器，**不入库**；慢源（X 的 Apify）会如实返回超时。
+- **标注**（`?tab=better`）：给今天的条目打「选 / 不选 / 两可」，写进 `data/gold.jsonl`。
+  和你用编辑器改那个文件完全等价 —— 不碰提示词、不碰门槛。
+  标完跑 `python tools/eval_selection.py --enrich` 就能出准确率与门槛扫描。
 
 改门槛、预算、提示词仍然改 `config/*.yaml`，下一轮自动生效。
 
