@@ -18,7 +18,7 @@ from pathlib import Path
 
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
-from collector import alerts, board, breaking, events, export, rating, store, structure
+from collector import alerts, board, breaking, events, export, rating, store, structure, timeline
 from collector.archive import save as save_archive
 from collector.digest import build as build_digest
 from collector.digest import picked as digest_picked
@@ -152,6 +152,17 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True) -> None:
               f"官方 {bd['discourse']['official']} 条 / 国内 {bd['discourse']['domestic']} 条）")
     except Exception as e:
         print(f"      看板生成失败: {type(e).__name__}: {e}")
+    _done(stage)
+
+    # 长期时间线 + 叙事对比（只读库，不调模型）
+    stage = _stage("timeline", day)
+    try:
+        tl = timeline.build(ROOT / "site")
+        payload["stats"]["timeline"] = tl
+        print(f"      时间线: {tl['events']} 个事件 / {tl['subjects']} 个主体 / "
+              f"{tl['narratives']} 组跨渠道叙事")
+    except Exception as e:
+        print(f"      时间线生成失败: {type(e).__name__}: {e}")
     _done(stage)
 
     stage = _stage("digest", day)

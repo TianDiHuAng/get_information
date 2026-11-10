@@ -905,6 +905,43 @@ def mark_pushed(identities: Iterable[str], kind: str = "breaking", day: str | No
     return len(idents)
 
 
+def event_dump(days: int = 120, day: str | None = None) -> list[dict[str, Any]]:
+    """把近 N 天的事件连同成员、结构化结果一起取出来。
+
+    一行 = 一个事件的成员报道。时间线的"公司/产品演进"和"叙事对比"都从它算。
+    """
+    day = day or today_str()
+    since = (datetime.strptime(day, "%Y-%m-%d") - timedelta(days=days)).strftime("%Y-%m-%d")
+    with db() as conn:
+        rows = conn.execute(
+            """
+            SELECT e.id AS event_id, e.title AS event_title, e.key AS event_key,
+                   e.first_at, e.last_at,
+                   i.id AS item_id, i.source, i.layer, i.region, i.title AS item_title,
+                   i.url, i.published,
+                   s.category, s.tags, s.subjects
+            FROM events e
+            JOIN event_items ei ON ei.event_id = e.id
+            JOIN items i       ON i.id = ei.item_id
+            LEFT JOIN structures s ON s.item_id = i.id
+            WHERE coalesce(e.last_at, '') >= ? OR coalesce(e.updated_at, '') >= ?
+            ORDER BY coalesce(e.first_at, ''), e.id
+            """,
+            (since, since),
+        ).fetchall()
+
+    out: list[dict[str, Any]] = []
+    for row in rows:
+        item = dict(row)
+        for key in ("tags", "subjects"):
+            try:
+                item[key] = json.loads(item[key] or "[]")
+            except Exception:
+                item[key] = []
+        out.append(item)
+    return out
+
+
 # --------------------------------------------------------------------------- #
 # 概览
 # --------------------------------------------------------------------------- #
