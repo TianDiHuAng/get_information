@@ -40,8 +40,7 @@ SECTIONS = (
         ("/starred.html", "收藏", "bookmark"),
     )),
     ("模型", (
-        ("/leaderboard.html", "模型榜", "chart"),
-        ("/free-tokens.html", "Token 羊毛", "tag"),
+        # 模型榜 / Token 羊毛 由 modules/ 提供，见 site_modules.yaml
         ("/monthly.html", "月报", "doc"),
         ("/timeline.html", "时间线", "clock"),
     )),
@@ -381,8 +380,22 @@ def nav_html(active: str = "/") -> str:
         hidden = set(industry.settings().get("nav_hidden") or [])
     except Exception:
         hidden = set()
+    # 模块的导航项并进来：归到同名分组，没有就新建一组
+    sections = [list(x) for x in SECTIONS]
+    try:
+        from . import modules as _modules
+
+        for group_name, entries in _modules.nav_entries():
+            existing = next((x for x in sections if x[0] == group_name), None)
+            if existing:
+                existing[1] = tuple(existing[1]) + entries
+            else:
+                sections.append([group_name, entries])
+    except Exception:
+        pass
+
     blocks = []
-    for title, items in SECTIONS:
+    for title, items in sections:
         links = []
         for href, label, name in items:
             if href in hidden:
