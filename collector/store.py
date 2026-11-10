@@ -1022,6 +1022,52 @@ def pair_dump(limit: int = 500) -> list[dict[str, Any]]:
     return out
 
 
+def reported_items(days: int = 7, day: str | None = None) -> list[dict[str, Any]]:
+    """近 N 天进过日报的条目（按身份去重，一行一次），连同结构化结果。
+
+    周报/月报就是从这里汇编的：日报是"今天读什么"，这些是"这周读过什么"。
+    """
+    day = day or today_str()
+    since = (datetime.strptime(day, "%Y-%m-%d") - timedelta(days=days)).strftime("%Y-%m-%d")
+    with db() as conn:
+        rows = conn.execute(
+            """
+            SELECT i.id, i.identity, i.source, i.layer, i.region, i.title, i.url,
+                   i.summary, i.published, i.extra, i.first_seen,
+                   min(r.day)  AS first_day,
+                   count(*)    AS days_seen,
+                   s.category, s.tags, s.subjects
+            FROM reported r
+            JOIN items i ON i.id = r.item_id
+            LEFT JOIN structures s ON s.item_id = i.id
+            WHERE r.day >= ?
+            GROUP BY i.id
+            ORDER BY first_day
+            """,
+            (since,),
+        ).fetchall()
+
+    out: list[dict[str, Any]] = []
+    for row in rows:
+        item = dict(row)
+        try:
+            extra = json.loads(item.pop("extra") or "{}")
+        except Exception:
+            extra = {}
+        item["event_id"] = extra.get("event_id")
+        item["event_sources"] = extra.get("event_sources")
+        item["event_size"] = extra.get("event_size")
+        item["attention"] = extra.get("attention") or {}
+        item["score"] = extra.get("score")
+        for key in ("tags", "subjects"):
+            try:
+                item[key] = json.loads(item[key] or "[]")
+            except Exception:
+                item[key] = []
+        out.append(item)
+    return out
+
+
 # --------------------------------------------------------------------------- #
 # 概览
 # --------------------------------------------------------------------------- #

@@ -18,7 +18,7 @@ from pathlib import Path
 
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
-from collector import (alerts, board, breaking, events, export, rating, state, store,
+from collector import (alerts, board, breaking, events, export, rating, report, state, store,
                        structure, timeline, topics)
 from collector.archive import save as save_archive
 from collector.digest import build as build_digest
@@ -196,6 +196,17 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True,
         print(f"      主题: {tp['pages']} 个页面（{tp['categories']} 分类 / {tp['tags']} 标签）")
     except Exception as e:
         print(f"      主题页生成失败: {type(e).__name__}: {e}")
+    _done(stage)
+
+    # 周报月报：从日报汇编（规则编排，不调模型）
+    stage = _stage("reports", day)
+    try:
+        rm = report.build_all(day)
+        payload["stats"]["reports"] = rm
+        print(f"      周报: {rm['weekly']['events']} 件（{rm['weekly']['reports']} 条报道）"
+              f" · 月报: {rm['monthly']['events']} 件")
+    except Exception as e:
+        print(f"      周报月报生成失败: {type(e).__name__}: {e}")
     _done(stage)
 
     stage = _stage("digest", day)
