@@ -18,7 +18,7 @@ from pathlib import Path
 
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
-from collector import alerts, board, breaking, events, export, rating, store, structure, timeline
+from collector import alerts, board, breaking, events, export, rating, state, store, structure, timeline
 from collector.archive import save as save_archive
 from collector.digest import build as build_digest
 from collector.digest import picked as digest_picked
@@ -54,16 +54,38 @@ def _done(run_id, status: str = "ok", detail: str | None = None) -> None:
         pass
 
 
-def main(skip_rate: bool = False, send_mail_enabled: bool = True) -> None:
+def main(skip_rate: bool = False, send_mail_enabled: bool = True,
+         fresh: bool = False) -> None:
     day = store.today_str()
     try:
         store.migrate()
     except Exception as e:
         print(f"存储层初始化失败（继续，但会失去跨天去重）: {type(e).__name__}: {e}")
 
-    stage = _stage("pipeline", day)
-    payload = run()
-    _done(stage)
+    # 断点续跑：抓到一半挂了，重跑时不用再抓一遍网络。
+    # 只续"抓取"这一段 —— 模型阶段有回执保护，重跑很快也不花钱。
+    payload = None
+    if not fresh and "pipeline" in store.stages_done(day):
+        if not state.path(day).exists():
+            print("      续跑: 没有状态文件，重新抓")
+        elif state.is_stale(day):
+            print("      续跑: 状态文件太旧（超过 12 小时），重新抓")
+        else:
+            payload = state.load(day)
+            if payload:
+                print(f"      续跑: 复用 {len(payload['items'])} 条已抓条目（跳过抓取与正文）")
+            else:
+                print("      续跑: 状态文件读不出来，重新抓")
+
+    if payload is None:
+        stage = _stage("pipeline", day)
+        payload = run()
+        _done(stage)
+        try:
+            state.save(payload, day)
+            state.prune()
+        except Exception as e:
+            print(f"      状态保存失败（不影响本轮）: {type(e).__name__}: {e}")
 
     # 注意力评分：LLM 不可用/预算耗尽/结果不明时，老分原样保留
     if skip_rate:
@@ -236,6 +258,14 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True) -> None:
         print(f"      突发推送失败: {type(e).__name__}: {e}")
     _done(stage)
 
+    # 整轮跑完才清状态：中途挂了下次还能接着来
+    try:
+        state.discard(day)
+    except Exception:
+        pass
+
 
 if __name__ == "__main__":
-    main(skip_rate="--skip-rate" in sys.argv, send_mail_enabled="--no-mail" not in sys.argv)
+    main(skip_rate="--skip-rate" in sys.argv,
+         send_mail_enabled="--no-mail" not in sys.argv,
+         fresh="--fresh" in sys.argv)

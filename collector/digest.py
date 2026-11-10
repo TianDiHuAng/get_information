@@ -107,7 +107,9 @@ def _sections(payload: dict, exclude: set[str] | None = None) -> dict:
 def structured_digest(payload: dict, lmarena: dict | None = None,
                       aa: dict | None = None) -> str:
     items = payload["items"]
-    stats = payload["stats"]
+    from .state import ensure_stats
+
+    stats = ensure_stats(payload.get("stats"), items=len(items))
     day = datetime.now().strftime("%Y-%m-%d")
     plan = edition.arrange(payload)
     sec = _sections(payload, exclude=plan["used"])

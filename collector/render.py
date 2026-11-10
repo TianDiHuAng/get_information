@@ -41,8 +41,11 @@ def _fmt_heat(v) -> str:
 def render(payload: dict, out_path: Path, history: list[dict] | None = None,
            lmarena: dict | None = None, aa: dict | None = None) -> Path:
     items = payload["items"]
-    stats = payload["stats"]
-    registry = stats["registry"]
+    # 续跑或旧状态文件里可能缺字段：补齐再画，缺了就少画一块，不要整页崩掉
+    from .state import ensure_stats
+
+    stats = ensure_stats(payload.get("stats"), items=len(items))
+    registry = stats.get("registry") or []
 
     from .health import status_of
 
