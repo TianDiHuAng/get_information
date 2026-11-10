@@ -259,5 +259,162 @@ def build(payload: dict[str, Any], site_root: Path) -> dict[str, Any]:
     except Exception as e:
         stats["llms_error"] = f"{type(e).__name__}: {e}"
 
+    # 站点根目录的固定文件（robots / manifest / openapi / security / sitemap）
+    try:
+        cats = [str(row.get("key")) for row in (load_taxonomy().get("categories") or [])
+                if isinstance(row, dict)]
+        stats["public"] = build_public(site_root, base_url, stats, cats)
+        written.extend(stats["public"])
+    except Exception as e:
+        stats["public_error"] = f"{type(e).__name__}: {e}"
+
     stats["files"] = written
     return stats
+
+# --------------------------------------------------------------------------- #
+# 站点根目录的固定文件（对齐 AIHOT 的 site/public/）
+# --------------------------------------------------------------------------- #
+
+PUBLIC_VERSION = "1.0"
+
+
+def _public_context(base_url: str, counts: dict, categories: list[str]) -> dict[str, str]:
+    from . import industry
+
+    conf = industry.settings()
+    edition_conf = conf.get("edition") or {}
+    return {
+        "siteName": str(conf.get("name") or "Z-Bit"),
+        "siteUrl": base_url,
+        "description": str(conf.get("description") or ""),
+        "tagline": str(conf.get("tagline") or ""),
+        "locale": str(conf.get("locale") or "zh-CN"),
+        "dailyTime": str(edition_conf.get("daily") or "09:00"),
+        "weeklyTime": str(edition_conf.get("weekly") or "周一"),
+        "monthlyTime": str(edition_conf.get("monthly") or "1 日"),
+        "version": PUBLIC_VERSION,
+        "categoryList": ", ".join(categories),
+        "count": str(counts.get("items") or 0),
+    }
+
+
+def load_taxonomy() -> dict:
+    """读行业包里的 taxonomy（拿到分类 key 列表）。"""
+    from . import industry
+
+    return industry.load("taxonomy.yaml")
+
+
+def _fill(text: str, ctx: dict[str, str]) -> str:
+    for key, value in ctx.items():
+        text = text.replace("{{" + key + "}}", value)
+    return text
+
+
+ROBOTS = """# {{siteName}}
+User-agent: *
+Allow: /
+# 后台与接口的写入口不抓
+Disallow: /admin
+Disallow: /api/feedback
+
+Sitemap: {{siteUrl}}/sitemap.xml
+"""
+
+MANIFEST = """{
+  "name": "{{siteName}}",
+  "short_name": "{{siteName}}",
+  "description": "{{description}}",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#faf9f6",
+  "theme_color": "#176b75",
+  "lang": "{{locale}}",
+  "icons": [
+    {"src": "/og.png", "sizes": "1200x630", "type": "image/png", "purpose": "any"}
+  ]
+}
+"""
+
+SECURITY = """Contact: mailto:security@example.com
+Expires: 2027-01-01T00:00:00Z
+Preferred-Languages: zh, en
+# 上线前把 Contact 换成你真实的联系方式
+"""
+
+
+def render_openapi(base_url: str, ctx: dict[str, str]) -> dict:
+    """公开接口说明。字段与 /api/v1/latest.json 的实际输出一致。"""
+    return {
+        "openapi": "3.1.0",
+        "info": {
+            "title": f"{ctx['siteName']} 公开接口",
+            "version": ctx["version"],
+            "description": ctx["description"],
+        },
+        "servers": [{"url": base_url}],
+        "paths": {
+            "/api/v1/latest.json": {
+                "get": {
+                    "summary": "当天条目（含评分、结构化与事件归属）",
+                    "parameters": [
+                        {"name": "limit", "in": "query", "schema": {"type": "integer", "default": 200}}
+                    ],
+                    "responses": {"200": {"description": "条目列表"}},
+                }
+            },
+            "/api/feedback": {
+                "post": {
+                    "summary": "给一条内容打分（影响下一轮排序）",
+                    "requestBody": {
+                        "required": True,
+                        "content": {"application/json": {"schema": {
+                            "type": "object",
+                            "required": ["url", "kind"],
+                            "properties": {
+                                "url": {"type": "string"},
+                                "kind": {"type": "string", "enum": ["up", "down"]},
+                            },
+                        }}},
+                    },
+                    "responses": {"200": {"description": "已记录"}},
+                }
+            },
+            "/api/prefs": {
+                "get": {"summary": "当前学到的兴趣权重（调试用）",
+                        "responses": {"200": {"description": "词 → 权重"}}}
+            },
+        },
+    }
+
+
+def build_public(site_root: Path, base_url: str, counts: dict, categories: list[str]) -> list[str]:
+    """写 robots.txt / manifest / openapi / security.txt / sitemap.xml。"""
+    ctx = _public_context(base_url, counts, categories)
+    written = []
+    files = {
+        "robots.txt": ROBOTS,
+        "manifest.webmanifest": MANIFEST,
+        ".well-known/security.txt": SECURITY,
+    }
+    for rel, template in files.items():
+        path = site_root / rel
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(_fill(template, ctx), encoding="utf-8")
+        written.append(rel)
+
+    path = site_root / "openapi-v1.json"
+    path.write_text(json.dumps(render_openapi(base_url, ctx), ensure_ascii=False, indent=1),
+                    encoding="utf-8")
+    written.append("openapi-v1.json")
+
+    pages = ["/", "/all.html", "/hot.html", "/daily.html", "/weekly.html", "/monthly.html",
+             "/topics.html", "/timeline.html", "/leaderboard.html", "/free-tokens.html",
+             "/about.html", "/agent.html", "/changelog.html"]
+    urls = "".join(f"<url><loc>{base_url}{p}</loc></url>" for p in pages)
+    (site_root / "sitemap.xml").write_text(
+        '<?xml version="1.0" encoding="UTF-8"?>'
+        f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>',
+        encoding="utf-8")
+    written.append("sitemap.xml")
+    return written
