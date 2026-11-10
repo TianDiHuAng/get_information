@@ -187,6 +187,30 @@ python tools/customize.py check                          # 体检：找出所有
 完整步骤见 **[docs/customize.md](docs/customize.md)**，包括门槛怎么重新校准、
 哪些字段上线后不能改、`check` 每条告警是什么意思。
 
+## MCP（给 Agent 直接调用）
+
+```bash
+python mcp_server.py        # stdio，一行一个 JSON-RPC
+```
+
+挂到 Claude Desktop / Cursor：
+
+```json
+{"mcpServers": {"zbit": {"command": "python", "args": ["D:/AI/project/Get_Information/mcp_server.py"]}}}
+```
+
+七个工具，工具名 = `<前缀>_<能力>`（前缀在 `config/industry.yaml` 的 `mcp_prefix`）：
+
+| 工具 | 做什么 |
+|---|---|
+| `zbit_get_latest` | 今天精选的条目，带评分与推荐理由 |
+| `zbit_search` | 按关键词搜最近 14 天 |
+| `zbit_get_hot_topics` | 按热度排序的事件榜 |
+| `zbit_get_story` | 一个事件的详情（官方 / 媒体 / 社区） |
+| `zbit_get_daily` / `_weekly` / `_monthly` | 日报 / 周报 / 月报全文 |
+
+只读、不调模型、不写库；读的是公开读取层（旧文与无日期已被挡掉）。
+
 ## 安全阀
 
 调页面、改样式、跑测试时，不该抓真实网络、烧模型钱、往群里推消息。三个环境变量：
