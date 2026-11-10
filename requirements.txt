@@ -1,0 +1,6 @@
+# 运行依赖（Python 3.11+）
+requests>=2.31
+beautifulsoup4>=4.12
+PyYAML>=6.0
+pandas>=2.0
+pyarrow>=14.0

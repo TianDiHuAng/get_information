@@ -191,12 +191,76 @@ def scribble_underline(img: Image.Image, y: int, x0: int, x1: int, color, rnd, w
     img.alpha_composite(layer)
 
 
-def make(base_fig: Path | None, out: Path, title: str, sub: str, kicker: str, footer_left: str, footer_right: str):
+def make(base_fig: Path | None, out: Path, title: str, sub: str, kicker: str, footer_left: str, footer_right: str, with_hand: bool = False):
     rnd = random.Random(11)
     img = paper_base().convert("RGBA")
 
     top_text = 210
-    used = draw_headline(img, title, top_text, 112, INK + (255,), rnd)
+    hl_ranges: list[tuple[int, int]] = []
+    plain_parts: list[str] = []
+    pos = 0
+    i = 0
+    while i < len(title):
+        if title[i] in "【[":
+            j = title.find("】" if title[i] == "【" else "]", i + 1)
+            if j < 0:
+                plain_parts.append(title[i])
+                i += 1
+                continue
+            inner = title[i + 1 : j]
+            hl_ranges.append((pos, pos + len(inner)))
+            plain_parts.append(inner)
+            pos += len(inner)
+            i = j + 1
+        else:
+            plain_parts.append(title[i])
+            pos += 1
+            i += 1
+    plain_title = "".join(plain_parts)
+
+    # 先算换行，再在字底下铺荧光笔
+    font_h = _font(FONT_HAND, 112)
+    meas = ImageDraw.Draw(img)
+    max_w = W - 176
+    lines, cur = [], ""
+    for ch in plain_title:
+        if meas.textlength(cur + ch, font=font_h) > max_w and cur:
+            lines.append(cur)
+            cur = ch
+        else:
+            cur += ch
+    if cur:
+        lines.append(cur)
+
+    if not hl_ranges and plain_title:
+        # 没标记时自动高亮前 4 个字（通常是主语）
+        hl_ranges = [(0, min(4, len(plain_title)))]
+    if hl_ranges:
+        marker = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        md = ImageDraw.Draw(marker)
+        idx0 = 0
+        yy = top_text
+        for line in lines:
+            x = 88
+            for ch_i, ch in enumerate(line):
+                global_i = idx0 + ch_i
+                tw = meas.textlength(ch, font=font_h)
+                if any(a <= global_i < b for a, b in hl_ranges):
+                    y0 = yy + int(font_h.size * 0.18)
+                    y1 = yy + int(font_h.size * 1.02)
+                    pts = [
+                        (x - 4, y0 + rnd.uniform(-3, 3)),
+                        (x + tw + 4, y0 + rnd.uniform(-3, 3)),
+                        (x + tw + 4, y1 + rnd.uniform(-3, 3)),
+                        (x - 4, y1 + rnd.uniform(-3, 3)),
+                    ]
+                    md.polygon(pts, fill=(247, 214, 96, 150))
+                x += tw + 2
+            idx0 += len(line)
+            yy += int(112 * 1.28)
+        img.alpha_composite(marker)
+
+    used = draw_headline(img, plain_title, top_text, 112, INK + (255,), rnd)
     scribble_underline(img, top_text + used + 26, 92, 92 + min(660, int(used * 3.4)), RED + (235,), rnd)
 
     y_sub = top_text + used + 74
@@ -214,7 +278,7 @@ def make(base_fig: Path | None, out: Path, title: str, sub: str, kicker: str, fo
 
     if base_fig and base_fig.exists():
         card_top = max(y_sub + 60, 760)
-        max_w, max_h = W - 220, H - card_top - 240
+        max_w, max_h = W - 260, H - card_top - 300
         art = sketchify(base_fig, max_w, max_h)
         pad = 26
         framed = Image.new("RGBA", (art.width + pad * 2, art.height + pad * 2), (0, 0, 0, 0))
@@ -234,6 +298,15 @@ def make(base_fig: Path | None, out: Path, title: str, sub: str, kicker: str, fo
         cy = card_top
         img.alpha_composite(shadow, (cx, cy + 6))
         img.alpha_composite(framed, (cx, cy))
+
+        # 顶部两条半透明胶带
+        for tx, ang in ((cx + int(framed.width * 0.18), -8), (cx + int(framed.width * 0.68), 6)):
+            tape = Image.new("RGBA", (210, 62), (0, 0, 0, 0))
+            td = ImageDraw.Draw(tape)
+            td.rectangle([0, 0, 209, 61], fill=(226, 214, 188, 150))
+            td.rectangle([0, 0, 209, 61], outline=(206, 192, 164, 130), width=2)
+            tape = tape.rotate(ang, resample=Image.BICUBIC, expand=True)
+            img.alpha_composite(tape, (tx, cy - 26))
 
         # 老师圈重点：一段不完全闭合的红色手绘椭圆 + 箭头批注
         ann = Image.new("RGBA", (W, H), (0, 0, 0, 0))
@@ -265,11 +338,23 @@ def make(base_fig: Path | None, out: Path, title: str, sub: str, kicker: str, fo
         img.alpha_composite(ann)
 
     # 握笔的手（从右下伸入，笔尖落在图上）
-    try:
-        from hand_art import paste_hand
-        paste_hand(img, (W - 430, H - 640), angle=-18, scale=0.74)
-    except Exception as e:
-        print('hand skipped:', e)
+    if with_hand:
+        try:
+            from hand_art import paste_hand
+            paste_hand(img, (W - 430, H - 640), angle=-18, scale=0.74)
+        except Exception as e:
+            print('hand skipped:', e)
+
+    # 右上角印章
+    stamp = Image.new("RGBA", (300, 132), (0, 0, 0, 0))
+    sd2 = ImageDraw.Draw(stamp)
+    hand_rect(sd2, [8, 8, 291, 123], RED + (215,), width=5, rnd=random.Random(5))
+    sf = _font(FONT_HAND, 40)
+    sd2.text((54, 26), "arXiv", font=sf, fill=RED + (235,))
+    sf2 = _font(FONT_HAND, 34)
+    sd2.text((44, 74), "新论文速读", font=sf2, fill=RED + (235,))
+    stamp = stamp.rotate(-7, resample=Image.BICUBIC, expand=True)
+    img.alpha_composite(stamp, (W - stamp.width - 52, 56))
 
     # 页脚
     d = ImageDraw.Draw(img)
@@ -314,6 +399,7 @@ def main() -> None:
     ap.add_argument("--text", default=None)
     ap.add_argument("--sub", default=None)
     ap.add_argument("--out", default=None)
+    ap.add_argument("--hand", action="store_true", help="叠加握笔的手（线稿，效果一般）")
     a = ap.parse_args()
 
     ctx = latest_context()
@@ -323,7 +409,7 @@ def main() -> None:
     date = ctx.get("date", "")
     out = Path(a.out) if a.out else ROOT / "data" / "xhs" / "cover-hand.png"
 
-    p = make(fig, out, title, sub, "AI × DRUG DISCOVERY", "信息雷达 · arXiv 精读", date)
+    p = make(fig, out, title, sub, "AI × DRUG DISCOVERY", "信息雷达 · arXiv 精读", date, with_hand=a.hand)
     print(p)
 
 

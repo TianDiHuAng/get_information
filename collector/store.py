@@ -126,6 +126,46 @@ MIGRATIONS: list[str] = [
         updated_at TEXT
     );
     """,
+    # v2 —— 事件聚簇：事件、成员、两两判定缓存、热度快照
+    """
+    CREATE TABLE IF NOT EXISTS events (
+        id         INTEGER PRIMARY KEY,
+        key        TEXT NOT NULL UNIQUE,   -- 代表条目身份，用于幂等
+        title      TEXT,
+        first_at   TEXT,
+        last_at    TEXT,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS event_items (
+        event_id   INTEGER NOT NULL REFERENCES events(id) ON DELETE CASCADE,
+        item_id    INTEGER NOT NULL REFERENCES items(id) ON DELETE CASCADE,
+        relation   TEXT,
+        confidence REAL,
+        decided_at TEXT,
+        PRIMARY KEY (event_id, item_id)
+    );
+    CREATE INDEX IF NOT EXISTS idx_event_items_item ON event_items(item_id);
+
+    CREATE TABLE IF NOT EXISTS event_pairs (
+        a              TEXT NOT NULL,
+        b              TEXT NOT NULL,
+        relation       TEXT NOT NULL,
+        confidence     REAL,
+        prompt_version TEXT,
+        created_at     TEXT NOT NULL,
+        PRIMARY KEY (a, b)
+    );
+
+    CREATE TABLE IF NOT EXISTS event_heat (
+        event_id     INTEGER NOT NULL REFERENCES events(id) ON DELETE CASCADE,
+        computed_at  TEXT NOT NULL,
+        heat         REAL NOT NULL,
+        participants INTEGER NOT NULL,
+        PRIMARY KEY (event_id, computed_at)
+    );
+    """,
 ]
 
 
@@ -420,6 +460,163 @@ def save_source_health(health: dict[str, dict[str, Any]]) -> None:
 def source_rows() -> list[dict[str, Any]]:
     with db() as conn:
         return [dict(r) for r in conn.execute("SELECT * FROM sources ORDER BY source").fetchall()]
+
+
+# --------------------------------------------------------------------------- #
+# 事件聚簇
+# --------------------------------------------------------------------------- #
+
+def recent_items(days: int = 14, limit: int = 1500) -> list[dict[str, Any]]:
+    """近 N 天见过的条目，作为聚簇召回池。"""
+    since = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%d")
+    with db() as conn:
+        rows = conn.execute(
+            """SELECT id, identity, source, layer, title, url, summary, published, first_seen
+               FROM items WHERE last_seen >= ? ORDER BY last_seen DESC LIMIT ?""",
+            (since, limit),
+        ).fetchall()
+    return [dict(r) for r in rows]
+
+
+def load_pairs(keys: Iterable[tuple[str, str]]) -> dict[tuple[str, str], dict[str, Any]]:
+    """已经判过的关系对，避免重复花模型钱。"""
+    pairs = list(dict.fromkeys(tuple(sorted(k)) for k in keys))
+    out: dict[tuple[str, str], dict[str, Any]] = {}
+    if not pairs:
+        return out
+    wanted = set(pairs)
+    idents = list({x for pair in pairs for x in pair})
+    with db() as conn:
+        for start in range(0, len(idents), 400):
+            chunk = idents[start : start + 400]
+            marks = ",".join("?" * len(chunk))
+            # SQLite 不支持行值 IN，按一侧过滤后在内存里配对
+            for row in conn.execute(
+                f"SELECT a, b, relation, confidence FROM event_pairs WHERE a IN ({marks})", chunk
+            ):
+                key = (row["a"], row["b"])
+                if key in wanted:
+                    out[key] = {"relation": row["relation"], "confidence": row["confidence"]}
+    return out
+
+
+def save_pairs(rows: list[dict[str, Any]]) -> None:
+    if not rows:
+        return
+    ts = now_str()
+    with db() as conn:
+        conn.executemany(
+            """INSERT INTO event_pairs (a, b, relation, confidence, prompt_version, created_at)
+               VALUES (?,?,?,?,?,?)
+               ON CONFLICT(a, b) DO UPDATE SET relation=excluded.relation,
+                 confidence=excluded.confidence, prompt_version=excluded.prompt_version""",
+            [(r["a"], r["b"], r["relation"], r.get("confidence"), r.get("prompt_version"), ts) for r in rows],
+        )
+
+
+def upsert_events_bulk(rows: list[dict[str, Any]]) -> dict[str, int]:
+    """一次事务写完所有事件，返回 `{key: event_id}`。
+
+    单机上一轮可能有几百个事件，逐个开事务会把整轮拖到几十秒（实测 215 条要 44s）。
+    """
+    if not rows:
+        return {}
+    ts = now_str()
+    out: dict[str, int] = {}
+    with db() as conn:
+        for row in rows:
+            conn.execute(
+                """INSERT INTO events (key, title, first_at, last_at, created_at, updated_at)
+                   VALUES (?,?,?,?,?,?)
+                   ON CONFLICT(key) DO UPDATE SET title=excluded.title, last_at=excluded.last_at,
+                     updated_at=excluded.updated_at""",
+                (row["key"], row["title"], row.get("first_at"), row.get("last_at"), ts, ts),
+            )
+        for row in rows:
+            eid = conn.execute("SELECT id FROM events WHERE key = ?", (row["key"],)).fetchone()["id"]
+            out[row["key"]] = int(eid)
+            members = row.get("members") or []
+            if members:
+                conn.executemany(
+                    """INSERT INTO event_items (event_id, item_id, relation, confidence, decided_at)
+                       VALUES (?,?,?,?,?)
+                       ON CONFLICT(event_id, item_id) DO UPDATE SET
+                         relation=excluded.relation, confidence=excluded.confidence,
+                         decided_at=excluded.decided_at""",
+                    [(eid, iid, rel, conf, ts) for iid, rel, conf in members],
+                )
+    return out
+
+
+def save_heat_many(rows: list[tuple[int, float, int]]) -> None:
+    """批量写热度快照：`[(event_id, heat, participants)]`。"""
+    if not rows:
+        return
+    ts = now_str()
+    with db() as conn:
+        conn.executemany(
+            "INSERT INTO event_heat (event_id, computed_at, heat, participants) VALUES (?,?,?,?) "
+            "ON CONFLICT(event_id, computed_at) DO UPDATE SET heat=excluded.heat, "
+            "participants=excluded.participants",
+            [(eid, ts, heat, parts) for eid, heat, parts in rows],
+        )
+
+
+def upsert_event(key: str, title: str, first_at: str | None, last_at: str | None,
+                 members: list[tuple[int, str, float]]) -> int:
+    """事件按代表条目的身份幂等写入，成员关系一并更新。"""
+    ts = now_str()
+    with db() as conn:
+        conn.execute(
+            """INSERT INTO events (key, title, first_at, last_at, created_at, updated_at)
+               VALUES (?,?,?,?,?,?)
+               ON CONFLICT(key) DO UPDATE SET title=excluded.title, last_at=excluded.last_at,
+                 updated_at=excluded.updated_at""",
+            (key, title, first_at, last_at, ts, ts),
+        )
+        eid = conn.execute("SELECT id FROM events WHERE key = ?", (key,)).fetchone()["id"]
+        conn.executemany(
+            """INSERT INTO event_items (event_id, item_id, relation, confidence, decided_at)
+               VALUES (?,?,?,?,?)
+               ON CONFLICT(event_id, item_id) DO UPDATE SET
+                 relation=excluded.relation, confidence=excluded.confidence, decided_at=excluded.decided_at""",
+            [(eid, iid, rel, conf, ts) for iid, rel, conf in members],
+        )
+    return int(eid)
+
+
+def event_members(event_id: int) -> list[dict[str, Any]]:
+    with db() as conn:
+        rows = conn.execute(
+            """SELECT i.id, i.source, i.layer, i.title, i.url, i.published, ei.relation, ei.confidence
+               FROM event_items ei JOIN items i ON i.id = ei.item_id
+               WHERE ei.event_id = ? ORDER BY i.published""",
+            (event_id,),
+        ).fetchall()
+    return [dict(r) for r in rows]
+
+
+def save_heat(event_id: int, heat: float, participants: int) -> None:
+    """同一秒内重算不报错：秒级快照按最后一次为准。"""
+    with db() as conn:
+        conn.execute(
+            "INSERT INTO event_heat (event_id, computed_at, heat, participants) VALUES (?,?,?,?) "
+            "ON CONFLICT(event_id, computed_at) DO UPDATE SET heat=excluded.heat, "
+            "participants=excluded.participants",
+            (event_id, now_str(), heat, participants),
+        )
+
+
+def previous_heat(event_id: int, hours: int = 6) -> float | None:
+    """上一次（至少 hours 小时前）的热度快照，用来算趋势。"""
+    since = (datetime.now() - timedelta(hours=hours)).strftime("%Y-%m-%d %H:%M:%S")
+    with db() as conn:
+        row = conn.execute(
+            "SELECT heat FROM event_heat WHERE event_id = ? AND computed_at <= ? "
+            "ORDER BY computed_at DESC LIMIT 1",
+            (event_id, since),
+        ).fetchone()
+    return row["heat"] if row else None
 
 
 # --------------------------------------------------------------------------- #

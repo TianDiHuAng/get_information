@@ -147,7 +147,8 @@ def _receipt_get(key: str) -> dict[str, Any] | None:
 
 def _receipt_upsert(key: str, task: str, model: str, prompt_version: str, state: str,
                     response: str | None = None, error: str | None = None,
-                    tokens: int = 0, bump_attempt: bool = True) -> None:
+                    tokens: int = 0, bump_attempt: bool = False) -> None:
+    """`bump_attempt` 只在真正发出请求前（写 pending）加 1，后续状态更新不再加。"""
     ts = store.now_str()
     with store.db() as conn:
         conn.execute(
@@ -263,7 +264,7 @@ def call_json(task: str, prompt_version: str, system: str, user: str, *,
     if not _budget_take(service):
         return None
 
-    _receipt_upsert(key, task, model, prompt_version, "pending")
+    _receipt_upsert(key, task, model, prompt_version, "pending", bump_attempt=True)
 
     routes = [(model, conf["base_url"], conf["api_key"])]
     if conf["backup_model"]:
@@ -295,10 +296,11 @@ def call_json(task: str, prompt_version: str, system: str, user: str, *,
             if obj is None:
                 # 拿到了响应但不能用：存下来（不重复付钱），允许后续再试
                 _receipt_upsert(key, task, route_model, prompt_version, "failed",
-                                response=text[:20000], error="unparseable", tokens=tokens)
+                                response=text[:20000], error="unparseable", tokens=tokens,
+                                bump_attempt=False)
                 return None
             _receipt_upsert(key, task, route_model, prompt_version, "ok",
-                            response=text, tokens=tokens)
+                            response=text, tokens=tokens, bump_attempt=False)
             return obj
 
         if attempt < MAX_ATTEMPTS - 1:
@@ -330,7 +332,7 @@ def call_text(task: str, prompt_version: str, system: str, user: str, *,
     if not _budget_take(service):
         return None
 
-    _receipt_upsert(key, task, model, prompt_version, "pending")
+    _receipt_upsert(key, task, model, prompt_version, "pending", bump_attempt=True)
     try:
         text, tokens, _ = _post(model, system, user, temperature, max_tokens,
                                 conf["base_url"], conf["api_key"], conf["timeout"])
@@ -341,9 +343,11 @@ def call_text(task: str, prompt_version: str, system: str, user: str, *,
         _receipt_upsert(key, task, model, prompt_version, "failed", error=f"{type(e).__name__}: {e}")
         return None
     if not text.strip():
-        _receipt_upsert(key, task, model, prompt_version, "failed", error="empty", tokens=tokens)
+        _receipt_upsert(key, task, model, prompt_version, "failed", error="empty",
+                        tokens=tokens, bump_attempt=False)
         return None
-    _receipt_upsert(key, task, model, prompt_version, "ok", response=text, tokens=tokens)
+    _receipt_upsert(key, task, model, prompt_version, "ok", response=text,
+                    tokens=tokens, bump_attempt=False)
     return text
 
 

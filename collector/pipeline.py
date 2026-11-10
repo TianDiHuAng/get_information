@@ -6,10 +6,10 @@ import re
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
-from urllib.parse import parse_qsl, urlencode, urlparse, urlunparse
 
 import yaml
 
+from . import store
 from .identity import bigrams, canonical_url, item_identity, jaccard, title_key  # noqa: F401  (对外保持原名字)
 from .model import Item
 from .sources import REGISTRY, build_fetchers, region_of
@@ -75,32 +75,6 @@ WEIGHT = {"primary": 1.1, "rank": 1.0, "search": 0.9, "social": 0.9, "broad": 0.
 HALFLIFE = {"primary": 96.0, "rank": 18.0, "broad": 48.0, "search": 18.0, "social": 12.0}
 
 
-def canonical_url(url: str) -> str:
-    try:
-        p = urlparse(url.strip())
-        if p.netloc.endswith("toutiao.com"):
-            return urlunparse((p.scheme, p.netloc, p.path, "", "", ""))
-        q = [(k, v) for k, v in parse_qsl(p.query, keep_blank_values=False) if k not in DROP_PARAMS]
-        return urlunparse((p.scheme, p.netloc.lower(), p.path.rstrip("/"), "", urlencode(q), ""))
-    except Exception:
-        return url.strip()
-
-
-def title_key(title: str) -> str:
-    return re.sub(r"[^\w\u4e00-\u9fff]+", "", title.lower())
-
-
-def bigrams(text: str) -> set[str]:
-    t = title_key(text)
-    return {t[i : i + 2] for i in range(len(t) - 1)} if len(t) > 1 else {t}
-
-
-def jaccard(a: set[str], b: set[str]) -> float:
-    if not a or not b:
-        return 0.0
-    return len(a & b) / len(a | b)
-
-
 def _age_hours(item: Item) -> float:
     if not item.published:
         return 48.0
@@ -113,6 +87,8 @@ def _age_hours(item: Item) -> float:
 
 # 单源等待上限：X 要跑多条 Apify 查询，必须放宽
 SOURCE_TIMEOUT = {"x": 900, "deals": 180, "weibo": 180, "zhihu": 180, "smolai": 120}
+# 「报过的不再出现」的回看天数（日报层面），吸收自 AIHOT 的「最近 7 期报过的不再出现」
+REPEAT_WINDOW_DAYS = 7
 
 
 def fetch_all(max_workers: int = 8) -> tuple[list[Item], list[dict], dict, set[str]]:
@@ -139,18 +115,23 @@ def fetch_all(max_workers: int = 8) -> tuple[list[Item], list[dict], dict, set[s
 
 
 def dedupe(items: list[Item]) -> list[Item]:
-    """URL 完全去重 + 标题近重复（同事件跨源合并）。"""
-    by_url: dict[str, Item] = {}
+    """身份去重 + 标题近重复（同事件跨源合并）。
+
+    身份用 `item_identity`：同一篇内容的 abs/pdf 入口、微博的 m 站与主站、
+    带追踪参数的分享链接，都会落到同一个身份上。标题相似度只作为兜底，
+    它解决不了"同一件事换个说法"（实测 LG 那两条只有 0.50），那要靠事件聚簇。
+    """
+    by_id: dict[str, Item] = {}
     for it in items:
-        key = canonical_url(it.url)
-        it.url = key
-        if key not in by_url:
-            by_url[key] = it
+        it.url = canonical_url(it.url)
+        key = item_identity(it.url)
+        if key not in by_id:
+            by_id[key] = it
         else:
-            by_url[key].extra.setdefault("also", []).append(it.source)
+            by_id[key].extra.setdefault("also", []).append(it.source)
 
     kept: list[Item] = []
-    for it in by_url.values():
+    for it in by_id.values():
         grams = bigrams(it.title)
         merged = False
         for k in kept:
@@ -229,6 +210,25 @@ def run() -> dict:
     items = score(items)
     print(f"[3/4] 去重后 {len(items)} 条")
 
+    # 落库 + 跨天已报抑制。
+    # 这一段以前不存在，代价是站点列表里 41–43% 是昨天的同位条目；
+    # 现在每条都记 first_seen / last_seen，并把「最近 N 天已进过日报」标出来。
+    store_note = ""
+    try:
+        store.migrate()
+        counted = store.upsert_items(items, store.today_str())
+        recent = store.recently_reported(REPEAT_WINDOW_DAYS)
+        repeats = 0
+        for it in items:
+            ident = item_identity(it.url)
+            it.extra["new_today"] = ident in counted["new"]
+            it.extra["repeat"] = ident in recent
+            repeats += 1 if it.extra["repeat"] else 0
+        store_note = f"，新增 {len(counted['new'])} 条，已报过 {repeats} 条"
+    except Exception as e:  # 存储层不可用不能拖垮采集
+        print(f"      存储层跳过: {type(e).__name__}: {e}")
+    print(f"      落库{store_note}")
+
     stats = {
         "generated_at": datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds"),
         "raw": len(items),
@@ -240,6 +240,8 @@ def run() -> dict:
         "proxy_ok": proxy_ok,
         "by_layer": {},
         "by_region": {},
+        "new_today": sum(1 for i in items if i.extra.get("new_today")),
+        "repeats": sum(1 for i in items if i.extra.get("repeat")),
     }
     for it in items:
         stats["by_layer"][it.layer] = stats["by_layer"].get(it.layer, 0) + 1

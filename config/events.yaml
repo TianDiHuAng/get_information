@@ -1,0 +1,37 @@
+# 事件聚簇：把「同一件事的多篇报道」收成一个事件
+#
+# 吸收自 AIHOT 的 events/{recall,relate,group}.ts，按单机成本简化：
+# AIHOT 对每条都召回近两周候选并批量判定；这里先用便宜的 IDF 相似度粗排，
+# **只把够像的对送进模型**，并且把判定结果落库，同一对永不重复付费。
+
+enabled: true
+
+# 召回窗口：只在近 N 天里找候选（AIHOT 是 14 天）
+lookback_days: 14
+
+# 粗排门槛：低于它根本不问模型。调低 = 更多召回、更多钱；调高 = 更省钱、可能漏。
+candidate_floor: 0.20
+
+# 每条最多带几个候选进判定，以及一轮最多判多少对（控成本的硬闸）
+max_candidates_per_item: 6
+max_pairs: 150
+
+# 哪些关系算「同一件事」，需要合并
+merge_relations: [SAME_OCCURRENCE, SAME_STORY]
+
+# 置信度低于它的合并，必须再复核一次（独立提示词，不是同一条重跑）
+review_confidence: 0.85
+
+# 没有 LLM 时退化成纯相似度合并：只合并几乎一样的标题
+fallback_similarity: 0.72
+
+max_workers: 4
+
+# 热度：按事件算，不按文章算
+heat:
+  window_hours: 48        # 只看 48 小时内的证据
+  half_life_hours: 24     # 24 小时减半
+  min_participants: 2     # 少于两家独立来源，不进热榜
+  # 同一主体下的多个账号只算一个参与方（防矩阵号刷榜）
+  # 形如 {group_name: [source_id, ...]}；空表示按 source 直接计数
+  participant_groups: {}

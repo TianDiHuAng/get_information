@@ -48,10 +48,20 @@ def _llm_conf() -> dict:
     }
 
 
-def _pick(items: list[dict], n: int, per_source: int = 2) -> list[dict]:
-    """按分数取前 n 条，但同一来源最多 per_source 条，避免刷屏。"""
+def _pick(items: list[dict], n: int, per_source: int = 2, skip_repeat: bool = True) -> list[dict]:
+    """按分数取前 n 条，但同一来源最多 per_source 条，避免刷屏。
+
+    `skip_repeat`：最近 N 天已经进过日报的条目不再出现（吸收自 AIHOT 的
+    「最近 7 期报过的不再出现」）。这是日报层面唯一能压住 arXiv / Google News
+    连续多天返回同一批条目的手段。
+    """
     out, count = [], {}
     for it in items:
+        if skip_repeat and (it.get("extra") or {}).get("repeat"):
+            continue
+        # 同一事件只出代表稿：非代表稿留在网站上，但不进日报
+        if (it.get("extra") or {}).get("event_representative") is False:
+            continue
         if count.get(it["source"], 0) >= per_source:
             continue
         out.append(it)
@@ -61,11 +71,30 @@ def _pick(items: list[dict], n: int, per_source: int = 2) -> list[dict]:
     return out
 
 
+def picked(payload: dict) -> list[dict]:
+    """本期日报真正选中的条目（去重），用来写「已报」记录。"""
+    sec = _sections(payload)
+    seen: set[str] = set()
+    out: list[dict] = []
+    for key in ("head", "primary", "x", "papers", "cn", "deal"):
+        for it in sec.get(key) or []:
+            url = it.get("url") or ""
+            if url and url not in seen:
+                seen.add(url)
+                out.append(it)
+    return out
+
+
 def _line(it: dict) -> str:
     src = SOURCE_LABEL.get(it["source"], it["source"])
     summary = (it.get("summary") or "").strip()
     tail = f" — {summary}" if summary else ""
-    return f"- **[{it['title']}]({it['url']})** `{src}`{tail}"
+    extra = it.get("extra") or {}
+    # 一件事有多家在说：标出来，读者才知道这是"事件"而不是"一篇稿"
+    sources = extra.get("event_sources")
+    size = extra.get("event_size") or 1
+    crowd = f" · {size} 篇/{sources} 家" if size > 1 and sources else (f" · {size} 篇" if size > 1 else "")
+    return f"- **[{it['title']}]({it['url']})** `{src}`{crowd}{tail}"
 
 
 def _sections(payload: dict) -> dict:
@@ -75,7 +104,7 @@ def _sections(payload: dict) -> dict:
     dom = [i for i in items if (i.get("region") or "overseas") == "domestic"]
     head = _pick(ov, 6) or _pick(items, 6)
     primary = _pick([i for i in ov if i["layer"] == "primary"], 5, per_source=2)
-    dom.sort(key=lambda x: (bool(x["extra"].get("topic")), x["extra"]["score"]), reverse=True)
+    dom.sort(key=lambda x: (bool(x["extra"].get("topic")), x["extra"].get("score") or 0), reverse=True)
     cn = _pick(dom, 6, per_source=2)
     papers = _pick([i for i in ov if i["source"] in ("hf_papers", "arxiv")], 4, per_source=2)
     x = _pick([i for i in ov if i["source"] == "x"], 5, per_source=5)
