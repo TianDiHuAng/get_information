@@ -9,6 +9,9 @@
 用法：
     python run.py              # 正常一轮
     python run.py --skip-rate  # 跳过 LLM 评分（调样式/断网时用）
+    python run.py --no-mail    # 不发日报与周报月报邮件
+    python run.py --dry-push   # 不发告警与突发的即时推送（只看不发）
+    python run.py --fresh      # 忽略断点状态，强制重新抓取
 """
 
 import json
@@ -18,8 +21,8 @@ from pathlib import Path
 
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
-from collector import (alerts, board, breaking, events, export, rating, report, share, state,
-                       store, structure, timeline, topics)
+from collector import (alerts, board, breaking, events, export, offline, rating, report, share,
+                       state, store, structure, timeline, topics)
 from collector import pushmail
 from collector.archive import save as save_archive
 from collector.digest import build as build_digest
@@ -57,7 +60,7 @@ def _done(run_id, status: str = "ok", detail: str | None = None) -> None:
 
 
 def main(skip_rate: bool = False, send_mail_enabled: bool = True,
-         fresh: bool = False) -> None:
+         fresh: bool = False, dry_push: bool = False) -> None:
     day = store.today_str()
     try:
         store.migrate()
@@ -219,6 +222,16 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True,
         print(f"      周报月报生成失败: {type(e).__name__}: {e}")
     _done(stage)
 
+    # 单文件离线归档：断网/换机时能带走的一份
+    stage = _stage("offline", day)
+    try:
+        off = offline.build(payload, ROOT / "site")
+        payload["stats"]["offline"] = off
+        print(f"      离线版: offline.html（{off['bytes'] // 1024} KB）")
+    except Exception as e:
+        print(f"      离线归档生成失败: {type(e).__name__}: {e}")
+    _done(stage)
+
     # 周一发周报、每月 1 号发月报：不然它们只躺在 data/ 里没人看
     try:
         today = datetime.now()
@@ -292,7 +305,7 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True,
 
     stage = _stage("alerts", day)
     try:
-        alert_result = alerts.run(payload)
+        alert_result = alerts.run(payload, notify=not dry_push)
         found = int(alert_result.get("found") or 0)
         if found:
             print(f"      告警: {found} 条（新增 {alert_result.get('fresh', 0)}，"
@@ -304,7 +317,7 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True,
     # 突发即时推：够格的立刻发，不等第二天早上
     stage = _stage("breaking", day)
     try:
-        br = breaking.run(payload["items"])
+        br = breaking.run(payload["items"], notify=not dry_push)
         if br.get("picked"):
             print(f"      突发: {br['picked']} 条 → {br.get('sent')}")
     except Exception as e:
@@ -321,4 +334,5 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True,
 if __name__ == "__main__":
     main(skip_rate="--skip-rate" in sys.argv,
          send_mail_enabled="--no-mail" not in sys.argv,
-         fresh="--fresh" in sys.argv)
+         fresh="--fresh" in sys.argv,
+         dry_push="--dry-push" in sys.argv)
