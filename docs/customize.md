@@ -101,20 +101,42 @@ plain_terms:                # 总述免核对词：出现在摘要里不算专�
 3. **`entities` 是防张冠李戴用的**：模型写的公司名必须在原文里出现过。
    你的行业不需要这项检查时清空成 `[]`。
 
-`topics.yaml` 是主题页目录：
+`topics.yaml` 是关注关键词与国内源准入词表（决定"哪些内容算这个行业"）。
+**主题页的目录**在 `topic_groups.yaml`，分三组（对齐 AIHOT 的 `industry/topics.json`）：
 
 ```yaml
-topics:
-  - slug: legal-tech
-    title: 法律科技
-    tags: [法律科技, 合同审查]      # 打了这些标签的报道收进来
-  - slug: supreme-court
-    title: 最高法院
-    entity: supreme-court           # 以这家机构为主体的报道
-    aliases: [最高法, 最高院]        # 搜索框里搜这些词也能找到
+company:                      # 公司与机构：用 entity 收"以这家为主体"的报道
+  - slug: anthropic
+    title: Anthropic
+    entity: anthropic
+    aliases: [Claude, 克劳德]  # 搜索框里搜这些词也能找到
+field:                        # 方向：用 tags 收
+  - slug: open-source
+    title: 开源
+    tags: [开源, 开放权重]
+genre:                        # 内容形态：用 tags 收
+  - slug: benchmarks
+    title: 评测榜单
+    tags: [评测榜单]
 ```
 
-`slug` 上线后不要改（它就是网址）。
+`slug` 上线后不要改（它就是网址）。`entity` 要能在 `taxonomy.yaml` 的 `entities` 里找到，
+`tags` 要在标签词表里 —— `check` 会逐个核对。
+
+### 对外合并分类
+
+网页上分类分开，但 RSS / API / llms.txt 里想并成一组发布时，配 `config/industry.yaml`：
+
+```yaml
+public_categories:
+  deal: model_release        # 订阅里把"羊毛"并进"模型发布"
+```
+
+### 隐藏导航入口
+
+```yaml
+nav_hidden: ["/hot.html"]    # 导航里不显示，但地址仍可访问
+```
 
 ---
 
@@ -209,10 +231,35 @@ python tools/eval_selection.py --enrich --split holdout
 ## 6. 品牌
 
 - **站名与标志**：`config/industry.yaml` 的 `name`；页面左上角的字标读它。
+- **报头字**：日报/周报/月报页顶部的品牌字，配在 `industry.yaml` 的 `nameplate`
+  （例如 `daily: "AI日报"`）。纯文字排版，换行业不用重新生成图片。
 - **分享图**：`collector/share.py` 用 Pillow 画 1200×630 卡片，标题取当天头条。
-  换行业后不用改代码，标题会自动跟着内容走。
-- **分享图字体**：`share.py` 会按顺序找中文字体，找不到就不画图（而不是画方块）。
-  要指定字体，把 `.ttf` 放进 `assets/fonts/`，按文件名排序取第一个。
+- **分享图字体**：会按顺序找中文字体，找不到就**不画图**（而不是画方块）。
+  信源里有繁体、日文汉字、假名、韩文时，把字体放进 `assets/fonts/`，
+  命名 `<名字>-400.ttf` / `<名字>-700.ttf`（按文件名排序）；
+  画字时**逐字挑字体**，缺的字自动换下一个，不会出豆腐块。
+
+## 6b. 防张冠李戴的三张表
+
+`taxonomy.yaml` 末尾：
+
+```yaml
+publisher_domains:            # 这个域名就是这家机构自己的站
+  anthropic.com: anthropic
+identity_lexicon:             # 容易混淆的名字 → 实际指谁
+  Claude: anthropic
+identity_context_aliases:     # 只在上文提过该机构时才算数
+  豆包: bytedance
+```
+
+校验逻辑（`collector/grounding.py`）：模型写出来的公司名 / 产品名，必须在原文里能找到依据。
+
+- 自家域名发的稿，标题点自己的名不需要正文再核
+- 别名（Claude）只要对应机构（Anthropic）在正文出现过就算有依据
+- 上下文别名（豆包）必须上文提过字节跳动
+- 中文实体名也查（只查词表里的，不做泛化识别）
+
+不需要这项检查时把三张表清空成 `{}`。
 
 ---
 
@@ -240,6 +287,22 @@ budget_per_hour: 0
 
 **用推理模型时注意**：给它留出推理额度，否则推理会把输出额度用光，答案为空、
 每次调用都失败。`max_tokens` 要按"推理 + 答案"一起算。
+
+**按步骤切模型**：`steps` 里配任务名 → 模型。评分要判断力（贵模型），
+翻译只要听话（便宜模型），改用词是机械活。
+
+```yaml
+steps:
+  attention-score: "gpt-4o"
+  translate: "gpt-4o-mini"
+  wording: "gpt-4o-mini"
+```
+
+可用任务名：`prefilter`、`attention-score`、`structure`、`group-pair`、
+`group-review`、`digest-lead`、`translate`、`wording`、`report-period`。
+
+**接口版本**：`config/industry.yaml` 的 `api_version` 只升不降 ——
+改了 `/api/v1/latest.json` 已有字段或含义时才升主版本，否则订阅方会静默出错。
 
 ---
 

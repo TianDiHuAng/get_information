@@ -371,11 +371,22 @@ def esc(text: Any) -> str:
 
 
 def nav_html(active: str = "/") -> str:
-    """左侧栏：图标轨（700–940px）→ 完整栏（≥941px）。"""
+    """左侧栏：图标轨（700–940px）→ 完整栏（≥941px）。
+
+    `nav_hidden` 里的入口不显示，但页面照常生成、直接打开也能访问。
+    """
+    try:
+        from . import industry
+
+        hidden = set(industry.settings().get("nav_hidden") or [])
+    except Exception:
+        hidden = set()
     blocks = []
     for title, items in SECTIONS:
         links = []
         for href, label, name in items:
+            if href in hidden:
+                continue
             on = ' class="item on"' if href == active else ' class="item"'
             links.append(f'<a{on} href="{href}"><span class="ico">{icon(name)}</span>'
                          f'<span class="lbl">{label}</span></a>')
@@ -391,8 +402,16 @@ def nav_html(active: str = "/") -> str:
 
 
 def bottom_nav(active: str = "/") -> str:
+    try:
+        from . import industry
+
+        hidden = set(industry.settings().get("nav_hidden") or [])
+    except Exception:
+        hidden = set()
     out = []
     for href, label, name in TABS:
+        if href in hidden:
+            continue
         on = ' class="on"' if href == active else ""
         out.append(f'<a href="{href}"{on}>{icon(name, 20)}{label}</a>')
     return f'<div class="bnav">{"".join(out)}</div>'

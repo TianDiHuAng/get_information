@@ -601,15 +601,23 @@ AIHOT 的站是"一个公开读取层，多个出口"，页面大致是
 
 **还没实现的（它的细节，我没做）**
 
-- `PUBLIC_CATEGORIES`（对外合并分类）、`SITE.interfaceVersion` 版本演进策略
-- `NAV.hidden`（隐藏导航但地址仍可达）
-- `ACCESS.ratePerMinute`（限流说明与实际一致）
-- `topics.json` 的三分组（company / field / genre）
-- `IDENTITY_LEXICON` / `PUBLISHER_DOMAINS` / `IDENTITY_CONTEXT_ALIASES`（防张冠李戴的完整词典）
-- 报头字 nameplates 生成、og-fonts 缺字回退链
-- 按步骤切模型（`site/models.ts` 那一套）
+- ~~`PUBLIC_CATEGORIES`~~ ✅ P31 已做（`public_categories` 映射）
+- ~~`SITE.interfaceVersion`~~ ✅ P31 已做（`api_version`，只升不降）
+- ~~`NAV.hidden`~~ ✅ P31 已做（`nav_hidden`）
+- ~~`topics.json` 三组分~~ ✅ P31 已做（`config/topic_groups.yaml`，company / field / genre）
+- ~~`IDENTITY_LEXICON` / `PUBLISHER_DOMAINS` / `IDENTITY_CONTEXT_ALIASES`~~ ✅ P31 已做，
+  另外补了中文实体名检查
+- ~~报头字 nameplates~~ ✅ P31 已做（配置 + CSS，不用生成图片）
+- ~~og-fonts 缺字回退链~~ ✅ P31 已做（`assets/fonts/` + 逐字挑字体）
+- ~~按步骤切模型~~ ✅ P31 已做（`config/llm.yaml` 的 `steps`）
 
-### P31 收尾（下一步）
+**P31 之后仍然没做的**
+
+- MCP server（AIHOT 有，我没有）
+- 后台的信源增删改（我只能停用/启用/试抓，新增要改代码里的抓取器）
+- 事件页的综述（`story-digest.md`）—— 我的是把各来源并列，没有模型综述
+
+### P32 收尾（下一步）
 
 ---
 

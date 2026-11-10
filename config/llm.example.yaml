@@ -1,4 +1,18 @@
-# 复制为 config/llm.yaml 后填写（任意 OpenAI 兼容接口，用于翻译与日报导读）。切勿提交 key。
+# 复制为 config/llm.yaml 后填写（任意 OpenAI 兼容接口）。切勿提交 key。
 api_key: ""
 base_url: "https://api.openai.com/v1"
 model: "gpt-4o-mini"
+backup_model: ""
+
+budget:
+  per_day: 0
+  per_hour: 0
+
+temperature: 0.2
+max_tokens: 1200
+
+# 按步骤切模型：不写就用默认模型。
+# 评分要判断力（贵模型），翻译只要听话（便宜模型），改用词是机械活。
+steps: {}
+#  attention-score: "gpt-4o"
+#  translate: "gpt-4o-mini"

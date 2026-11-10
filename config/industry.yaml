@@ -4,6 +4,12 @@ tagline: 今日 AI 热点与大模型动态精选
 description: 每天一份 AI 情报日报：五轴评分、事件聚簇、规则编排
 locale: zh-CN
 pack: 
+# 报头字：日报/周报/月报页顶部的品牌字。换行业后改这里，不用重新生成图片。
+nameplate:
+  daily: "AI日报"
+  weekly: "AI周报"
+  monthly: "AI月报"
+
 edition:
   daily: 09:00
   weekly: 周一
@@ -13,3 +19,15 @@ tiers:
   T1_5: 66
   T2: 68
 browse_floor: 40
+
+# 对外合并分类：网页上仍分开，但 RSS / API / llms.txt 里并成一组发布。
+# 对齐 AIHOT 的 PUBLIC_CATEGORIES。key 是分类 key，value 是合并后的 key。
+public_categories: {}
+#  deal: model_release
+
+# 隐藏导航入口但保留地址（直接打开仍能访问）。
+# 对齐 AIHOT 的 NAV.hidden，只接受明确的几个路径。
+nav_hidden: []
+
+# 公开接口版本：只升不降。改了已有字段或含义才升主版本。
+api_version: "1"

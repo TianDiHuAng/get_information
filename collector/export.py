@@ -65,8 +65,25 @@ def _pub_date(raw: str, fallback: datetime) -> str:
         return format_datetime(fallback)
 
 
+def public_category(category: str) -> str:
+    """对外合并分类：网页上仍分开，RSS / API / llms.txt 里并成一组。
+
+    对齐 AIHOT 的 PUBLIC_CATEGORIES。映射写在 config/industry.yaml。
+    """
+    if not category:
+        return "other"
+    try:
+        from . import industry
+
+        mapping = industry.settings().get("public_categories") or {}
+        return str(mapping.get(category) or category)
+    except Exception:
+        return category
+
+
 def _category(it: dict[str, Any]) -> str:
-    return ((it.get("extra") or {}).get("structure") or {}).get("category") or "other"
+    raw = ((it.get("extra") or {}).get("structure") or {}).get("category") or "other"
+    return public_category(raw)
 
 
 # --------------------------------------------------------------------------- #
@@ -115,6 +132,12 @@ def render_rss(items: list[dict[str, Any]], *, title: str, link: str, descriptio
 # --------------------------------------------------------------------------- #
 
 def render_api(items: list[dict[str, Any]], *, generated_at: str) -> dict[str, Any]:
+    try:
+        from . import industry
+
+        version = str(industry.settings().get("api_version") or "1")
+    except Exception:
+        version = "1"
     out = []
     for it in items:
         extra = it.get("extra") or {}
@@ -152,6 +175,7 @@ def render_api(items: list[dict[str, Any]], *, generated_at: str) -> dict[str, A
             } if extra.get("event_size") else None,
         })
     return {
+        "version": version,
         "generated_at": generated_at,
         "count": len(out),
         "items": out,

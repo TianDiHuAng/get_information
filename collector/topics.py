@@ -35,6 +35,68 @@ def _slug(key: str) -> str:
     return re.sub(r"[^0-9A-Za-z\u4e00-\u9fff_-]+", "-", key).strip("-") or "topic"
 
 
+_GROUP_LABELS = (("company", "公司与机构"), ("field", "方向"), ("genre", "内容形态"))
+
+
+def grouped_topics(rows: Iterable[dict[str, Any]], *, per_topic: int = MAX_ITEMS) -> list[dict[str, Any]]:
+    """按 topic_groups.yaml 的三组收主题。
+
+    company 用 entity 收"以这家为主体"的报道；field / genre 用 tags 收。
+    这和 `compute()` 的分类/标签是两套视角：那边是"内容属于哪类"，
+    这边是"读者想按什么线索翻"。
+    """
+    from . import industry
+
+    conf = industry.load("topic_groups.yaml") or {}
+    rows = list(rows)
+    # subjects 存的是显示名（"Anthropic" / "英伟达"），不是实体 id；
+    # 用 taxonomy 里的 name + aliases + label 建一张"名字 → 命中词"表
+    tax = structure.taxonomy()
+    names_of: dict[str, set[str]] = {}
+    for eid, ent in (tax.get("entities") or {}).items():
+        names = {str(ent.get("name") or ""), str(ent.get("label") or ""), str(eid)}
+        names.update(str(a) for a in (ent.get("aliases") or []))
+        names_of[str(eid)] = {n.lower() for n in names if n}
+    out = []
+    for key, label in _GROUP_LABELS:
+        entries = []
+        for topic in (conf.get(key) or []):
+            if not isinstance(topic, dict):
+                continue
+            slug = _slug(str(topic.get("slug") or topic.get("title") or ""))
+            entity = str(topic.get("entity") or "")
+            tags = {str(t) for t in (topic.get("tags") or [])}
+            picked = []
+            for row in rows:
+                hit = False
+                if entity and str(row.get("entity") or "") == entity:
+                    hit = True
+                if not hit and entity:
+                    subjects = {str(x).lower() for x in (row.get("subjects") or [])}
+                    wanted = set(names_of.get(entity) or {entity.lower()})
+                    wanted.update(str(a).lower() for a in (topic.get("aliases") or []))
+                    hit = bool(wanted & subjects)
+                if not hit and tags:
+                    hit = bool(tags & {str(t) for t in (row.get("tags") or [])})
+                if hit:
+                    picked.append({
+                        "title": row.get("title") or "", "url": row.get("url") or "",
+                        "source": row.get("source") or "",
+                        "published": row.get("published") or row.get("day") or "",
+                        "scope": row.get("scope") or "",
+                    })
+            if not picked:
+                continue
+            entries.append({"key": slug, "label": str(topic.get("title") or slug),
+                            "slug": slug, "count": len(picked),
+                            "latest": picked[0]["published"][:10],
+                            "items": picked[:per_topic],
+                            "aliases": topic.get("aliases") or []})
+        entries.sort(key=lambda g: -g["count"])
+        out.append({"key": key, "label": label, "topics": entries})
+    return out
+
+
 def compute(rows: Iterable[dict[str, Any]], *, days: int = 30,
             per_topic: int = MAX_ITEMS) -> dict[str, Any]:
     """按分类和标签分组。同一个条目可以同时出现在分类页和多个标签页里。"""
@@ -74,6 +136,7 @@ def compute(rows: Iterable[dict[str, Any]], *, days: int = 30,
         "days": days,
         "categories": pack(cats, lambda k: _label(k, tax)),
         "tags": pack(tags, lambda k: k),
+        "groups": grouped_topics(rows, per_topic=per_topic),
         "total": len(list(rows)) if not isinstance(rows, list) else len(rows),
     }
 
@@ -142,8 +205,15 @@ def render_index(data: dict[str, Any]) -> str:
         or '<div class="muted">还没有结构化结果</div>'
     tags = "".join(_tile(g, f"/topics/{g['slug']}.html") for g in data["tags"][:24]) \
         or '<div class="muted">还没有标签</div>'
-    body = (f'<h2>分类</h2><div class="grid">{cats}</div>'
-            f'<h2>标签</h2><div class="grid">{tags}</div>')
+    groups_html = ""
+    for group in (data.get("groups") or []):
+        if not group["topics"]:
+            continue
+        tiles = "".join(_tile(t, f"/topics/{t['slug']}.html") for t in group["topics"])
+        groups_html += f'<h2>{group["label"]}</h2><div class="grid">{tiles}</div>'
+    body = (groups_html
+            + f'<h2>分类</h2><div class="grid">{cats}</div>'
+            + f'<h2>标签</h2><div class="grid">{tags}</div>')
     sub = (f'近 {data["days"]} 天 · {len(data["categories"])} 个分类 · '
            f'{len(data["tags"])} 个标签 · <a href="/">今日要闻</a> · '
            f'<a href="/board.html">看板</a> · <a href="/timeline.html">时间线</a>')
@@ -171,7 +241,8 @@ def build(site_root: Path | None = None, days: int = 30) -> dict[str, Any]:
 
     written = 1
     seen: set[str] = set()
-    for group in data["categories"] + data["tags"]:
+    flat_groups = [t for g in (data.get("groups") or []) for t in g["topics"]]
+    for group in data["categories"] + data["tags"] + flat_groups:
         if group["slug"] in seen:      # 分类和标签撞名时，先写的赢
             continue
         seen.add(group["slug"])
@@ -184,5 +255,6 @@ def build(site_root: Path | None = None, days: int = 30) -> dict[str, Any]:
         "pages": written,
         "categories": len(data["categories"]),
         "tags": len(data["tags"]),
+        "groups": len([g for g in (data.get("groups") or []) if g["topics"]]),
         "rows": len(rows),
     }

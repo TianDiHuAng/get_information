@@ -91,3 +91,36 @@ plain_terms:
    模型, 大模型, 开源, 论文, 榜单, 发布会, 融资, 估值, 智能体, 多模态, 推理, 训练,
    微调, 算力, 芯片, 机器人, 具身智能, 上下文, 价格, 免费, 开放, 上线, 评测,
    arXiv, GitHub, AIHOT, Get_Information]
+
+# —— 防张冠李戴的三张表（对齐 AIHOT 的 IDENTITY_LEXICON / PUBLISHER_DOMAINS /
+#    IDENTITY_CONTEXT_ALIASES）——
+#
+# 1) publisher_domains：这个域名就是这家机构自己的站。
+#    自家域名上发的稿子，标题里出现自家名字不需要再在正文里核对。
+publisher_domains:
+  anthropic.com: anthropic
+  openai.com: openai
+  blog.google: google
+  deepmind.google: google
+  ai.meta.com: meta
+  microsoft.com: microsoft
+  nvidia.com: nvidia
+  deepseek.com: deepseek
+
+# 2) identity_lexicon：容易混淆的名字 → 它实际指谁。
+#    比如 "Claude" 指 Anthropic 的产品，"Gemini" 指 Google 的模型。
+#    命中别名时，只要对应的机构名在正文里出现过，就算有依据。
+identity_lexicon:
+  Claude: anthropic
+  GPT: openai
+  ChatGPT: openai
+  Gemini: google
+  Llama: meta
+  Copilot: microsoft
+
+# 3) identity_context_aliases：只在上文提到该机构时才算数的别名。
+#    这些词单独出现可能是普通名词，不能当成机构名。
+identity_context_aliases:
+  豆包: bytedance
+  通义: alibaba
+  文心: baidu

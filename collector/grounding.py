@@ -70,12 +70,41 @@ def entity_terms() -> set[str]:
     return out
 
 
+def publisher_owner(url: str) -> str:
+    """这个网址属于哪家机构（publisher_domains 里配的）。没有就返回空。"""
+    tax = taxonomy()
+    domains = tax.get("publisher_domains") or {}
+    host = ""
+    try:
+        from urllib.parse import urlparse
+
+        host = (urlparse(url or "").hostname or "").lower()
+    except Exception:
+        host = ""
+    if not host:
+        return ""
+    for domain, entity in domains.items():
+        d = str(domain).lower().lstrip(".")
+        if host == d or host.endswith("." + d):
+            return str(entity)
+    return ""
+
+
+def _entity_names(entity_id: str) -> set[str]:
+    """一个实体的所有叫法（名字、label、别名），小写。"""
+    ent = (taxonomy().get("entities") or {}).get(entity_id) or {}
+    names = {str(ent.get("name") or ""), str(ent.get("label") or ""), str(entity_id)}
+    names.update(str(a) for a in (ent.get("aliases") or []))
+    return {n.lower() for n in names if n}
+
+
 def _norm(text: str) -> str:
     """把语料压成可比对的形式：小写、去掉空白与常见分隔变形。"""
     return re.sub(r"\s+", "", (text or "").lower())
 
 
-def unsupported(text: str, corpus: str, *, skip: Iterable[str] = ()) -> list[str]:
+def unsupported(text: str, corpus: str, *, skip: Iterable[str] = (),
+                url: str = "") -> list[str]:
     """返回 `text` 里找不到依据的专名与数字（去重、保序）。空列表表示通过。"""
     if not text:
         return []
@@ -84,6 +113,13 @@ def unsupported(text: str, corpus: str, *, skip: Iterable[str] = ()) -> list[str
     plain = plain_terms() | skip_words
     corpus_n = _norm(corpus)
     corpus_raw = corpus or ""
+    tax = taxonomy()
+    # 三张表：自家域名发的稿、易混别名、上下文别名
+    owner = publisher_owner(url)
+    owner_names = _entity_names(owner) if owner else set()
+    lexicon = {str(k).lower(): str(v) for k, v in (tax.get("identity_lexicon") or {}).items()}
+    context_aliases = {str(k).lower(): str(v)
+                       for k, v in (tax.get("identity_context_aliases") or {}).items()}
     bad: list[str] = []
 
     def add(token: str) -> None:
@@ -98,11 +134,40 @@ def unsupported(text: str, corpus: str, *, skip: Iterable[str] = ()) -> list[str
         # 只查专名：模型写英文产品名会大写；小写的普通英文词（release / model）不当作编造
         if not word[0].isupper():
             continue
+        # 1) 自家域名：信源就是这家机构，标题点自己的名不需要正文再核
+        if low in owner_names:
+            continue
+        # 2) 易混别名：只要对应的机构名在正文里出现过，就算有依据
+        target = lexicon.get(low)
+        if target and any(_norm(n) in corpus_n for n in _entity_names(target)):
+            continue
+        # 3) 上下文别名：单独出现不算机构名，必须上文提过
+        target = context_aliases.get(low)
+        if target and any(_norm(n) in corpus_n for n in _entity_names(target)):
+            continue
         if _norm(word) and _norm(word) in corpus_n:
             continue
         if low in corpus_n:
             continue
         add(word)
+
+    # 中文实体名：只查词表里的公司与别名，不做泛化识别（避免把普通词当人名）
+    cjk = re.compile(r"[\u4e00-\u9fff]{2,}")
+    for entity_id, ent in (tax.get("entities") or {}).items():
+        names = [str(ent.get("name") or ""), str(ent.get("label") or "")]
+        names += [str(a) for a in (ent.get("aliases") or [])]
+        for name in names:
+            if not name or not cjk.search(name):
+                continue
+            if name not in text:
+                continue
+            if name in corpus_raw or _norm(name) in corpus_n:
+                continue
+            # 上下文别名：只有上文提过这家机构才算数
+            if name in (tax.get("identity_context_aliases") or {}):
+                if any(_norm(n) in corpus_n for n in _entity_names(entity_id)):
+                    continue
+            add(name)
 
     for m in _NUMBER.finditer(text):
         raw = m.group(0).strip()
@@ -120,7 +185,8 @@ def unsupported(text: str, corpus: str, *, skip: Iterable[str] = ()) -> list[str
     return bad
 
 
-def check(text: str, corpus: str, *, skip: Iterable[str] = ()) -> dict[str, Any]:
+def check(text: str, corpus: str, *, skip: Iterable[str] = (),
+          url: str = "") -> dict[str, Any]:
     """给调用方一个结构化结果，方便日志与降级判断。"""
-    bad = unsupported(text, corpus, skip=skip)
+    bad = unsupported(text, corpus, skip=skip, url=url)
     return {"ok": not bad, "unsupported": bad}

@@ -29,6 +29,13 @@ ROOT = Path(__file__).parent.parent
 SITE = ROOT / "site"
 DATA = ROOT / "data"
 
+NAMEPLATE_CSS = """
+.nameplate{font-family:"Songti SC","Noto Serif CJK SC",Georgia,serif;font-size:34px;
+           font-weight:700;letter-spacing:.06em;color:var(--ink);line-height:1.2;
+           padding:10px 0 12px;margin:4px 0 8px;border-bottom:2px solid var(--ink)}
+@media(max-width:640px){.nameplate{font-size:26px}}
+"""
+
 PAGE_SIZE = 20           # 全部动态：每页多少条
 HOT_LIMIT = 40           # 热门：多少个事件
 
@@ -349,9 +356,19 @@ def build_issue_index(kind: str, *, site_root: Path | None = None) -> dict[str, 
             md = p.read_text(encoding="utf-8")
         except OSError:
             continue
-        _write(root / kind / f"{day}.html", theme.page(
-            f"{label} · {day}", md_to_html(md), active=f"/{kind}.html",
-            lead=f'<a href="/{kind}.html">← 全部{label}</a>'))
+        plate = ""
+        try:
+            from . import industry
+
+            plate = str((industry.settings().get("nameplate") or {}).get(kind) or "")
+        except Exception:
+            plate = ""
+        plate_html = f'<div class="nameplate">{theme.esc(plate)}</div>' if plate else ""
+        doc = theme.page(f"{label} · {day}", plate_html + md_to_html(md),
+                         active=f"/{kind}.html",
+                         lead=f'<a href="/{kind}.html">← 全部{label}</a>')
+        doc = doc.replace("</head>", f"<style>{NAMEPLATE_CSS}</style></head>", 1)
+        _write(root / kind / f"{day}.html", doc)
         written += 1
     return {"file": str(root / f"{kind}.html"), "issues": len(files), "pages": written}
 

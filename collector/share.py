@@ -36,19 +36,103 @@ FONT_CANDIDATES = (
 )
 
 
+FONTS_DIR = Path(__file__).parent.parent / "assets" / "fonts"
+
+
+def _custom_fonts(bold: bool) -> list[str]:
+    """`assets/fonts/` 里用户自备的字体，按文件名排序。
+
+    命名照 AIHOT 的规矩：`<名字>-400.ttf` 正常体、`<名字>-700.ttf` 粗体。
+    它们排在系统字体**前面** —— 你放进来的字体就是为了覆盖缺字。
+    """
+    if not FONTS_DIR.is_dir():
+        return []
+    suffix = "700" if bold else "400"
+    files = sorted(FONTS_DIR.glob("*.ttf")) + sorted(FONTS_DIR.glob("*.otf"))
+    chosen = [str(p) for p in files if f"-{suffix}" in p.stem]
+    # 只放了一种字重时，另一种也用它，别让标题突然变细
+    if not chosen:
+        chosen = [str(p) for p in files]
+    return chosen
+
+
+def _font_candidates(bold: bool) -> list[str]:
+    out = _custom_fonts(bold)
+    for group in FONT_CANDIDATES:
+        path = group[0] if bold else (group[-1] if group else None)
+        if path:
+            out.append(path)
+    return out
+
+
 def _font(size: int, bold: bool = False):
     """按平台找一款中文字体。找不到返回 None。"""
     from PIL import ImageFont
 
-    for group in FONT_CANDIDATES:
-        path = group[0] if bold else (group[-1] if group else None)
-        if not path:
-            continue
+    for path in _font_candidates(bold):
         try:
             return ImageFont.truetype(path, size)
         except Exception:
             continue
     return None
+
+
+def _font_chain(size: int, bold: bool = False) -> list:
+    """可用的字体列表（按优先级）。分享图逐字回退时用。"""
+    from PIL import ImageFont
+
+    out = []
+    for path in _font_candidates(bold):
+        try:
+            out.append(ImageFont.truetype(path, size))
+        except Exception:
+            continue
+    return out
+
+
+def _has_glyph(font, ch: str) -> bool:
+    """这个字体有没有这个字。
+
+    办法：拿一个必然不存在的码位（U+FFFF）当"豆腐块"基准，
+    如果某个字的位图与它一样，就认为没有 —— 比查 cmap 简单，也不依赖 fontTools。
+    """
+    try:
+        probe = font.getmask("\uffff")
+        mask = font.getmask(ch)
+    except Exception:
+        return True
+    try:
+        return bytes(mask) != bytes(probe) or ch == "\uffff"
+    except Exception:
+        return True
+
+
+def text_width(text: str, fonts: list, fallback_size: int = 16) -> float:
+    """按回退链算一段文字的实际宽度。"""
+    if not fonts:
+        return len(text) * fallback_size * 0.6
+    total = 0.0
+    for ch in text:
+        font = next((f for f in fonts if _has_glyph(f, ch)), fonts[0])
+        try:
+            total += font.getlength(ch)
+        except Exception:
+            total += fallback_size * 0.6
+    return total
+
+
+def draw_text(draw, xy, text: str, fonts: list, fill) -> None:
+    """逐字挑字体画。缺字时自动换下一个字体，而不是画方块。"""
+    if not fonts:
+        return
+    x, y = xy
+    for ch in text:
+        font = next((f for f in fonts if _has_glyph(f, ch)), fonts[0])
+        draw.text((x, y), ch, font=font, fill=fill)
+        try:
+            x += font.getlength(ch)
+        except Exception:
+            x += font.size * 0.6
 
 
 def _wrap(text: str, font, max_width: int, max_lines: int) -> list[str]:

@@ -1,0 +1,62 @@
+# 主题目录：/topics 页按三组展示（对齐 AIHOT 的 industry/topics.json）。
+#
+#   company  公司与机构：用 entity 收"以这家为主体"的报道
+#   field    方向：用 tags 收打了这些标签的报道
+#   genre    内容形态：用 tags 收（评测、教程、观点、论文…）
+#
+# slug 会进网址（/topics/<slug>.html），上线后不要改。
+# entity 必须能在 taxonomy.yaml 的 entities 里找到；tags 必须在标签词表里。
+
+company:
+  - slug: anthropic
+    title: Anthropic
+    entity: anthropic
+    aliases: [Claude, 克劳德]
+  - slug: openai
+    title: OpenAI
+    entity: openai
+    aliases: [GPT, ChatGPT]
+  - slug: google
+    title: Google
+    entity: google
+    aliases: [Gemini, DeepMind]
+  - slug: meta
+    title: Meta
+    entity: meta
+    aliases: [Llama]
+  - slug: nvidia
+    title: 英伟达
+    entity: nvidia
+    aliases: [NVIDIA]
+  - slug: deepseek
+    title: 深度求索
+    entity: deepseek
+    aliases: [DeepSeek]
+
+field:
+  - slug: agents
+    title: 智能体
+    tags: [智能体, Agent, RAG]
+  - slug: open-source
+    title: 开源
+    tags: [开源, 开放权重]
+  - slug: multimodal
+    title: 多模态
+    tags: [多模态, 文生图, 文生视频, 语音]
+  - slug: infra
+    title: 算力与芯片
+    tags: [算力, 芯片, 数据中心, 训练, 推理, 量化, 蒸馏]
+  - slug: robotics
+    title: 机器人与具身
+    tags: [机器人, 具身智能, 自动驾驶]
+
+genre:
+  - slug: benchmarks
+    title: 评测榜单
+    tags: [评测榜单]
+  - slug: tutorials
+    title: 教程上手
+    tags: [教程, 上手]
+  - slug: safety
+    title: 安全与合规
+    tags: [安全对齐, 隐私合规]
