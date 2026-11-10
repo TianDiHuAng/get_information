@@ -1171,12 +1171,19 @@ def item_detail(item_id: int) -> dict[str, Any] | None:
             item["siblings"] = [dict(r) for r in rows]
         else:
             item["siblings"] = []
+        # 评分理由按"这条属于哪一天"取（item_days 里有记录），不要猜 first_seen
+        row_day = conn.execute(
+            "SELECT day FROM item_days WHERE item_id = ? ORDER BY day DESC LIMIT 1",
+            (item_id,),
+        ).fetchone()
+    if row_day:
+        _merge_attention([item], row_day["day"])
     return item
 
 
 def all_items(day: str | None = None, limit: int = 2000) -> list[dict[str, Any]]:
     """当天见过的全部条目，按排序分从高到低（"全部动态"与分页用）。"""
-    day = day or today_str()
+    day = content_day(day)
     with db() as conn:
         rows = conn.execute(
             """SELECT i.id, i.source, i.layer, i.region, i.title, i.url, i.summary,
@@ -1201,6 +1208,7 @@ def all_items(day: str | None = None, limit: int = 2000) -> list[dict[str, Any]]
         item["event_sources"] = extra.get("event_sources")
         item["deal"] = bool(extra.get("deal"))
         out.append(item)
+    _merge_attention(out, day)
     return out
 
 
@@ -1213,6 +1221,74 @@ def latest_heat() -> dict[int, float]:
                  ON m.event_id = h.event_id AND m.t = h.computed_at"""
         ).fetchall()
     return {int(r["event_id"]): float(r["heat"]) for r in rows}
+
+
+def content_day(day: str | None = None) -> str:
+    """"该展示哪一天"：优先今天，今天还没数据就退回最近有数据的一天。
+
+    为什么需要：跑完一轮是 23:50，过了午夜 `today_str()` 就变成新的一天，
+    `item_days` 里查不到东西 —— 首页会空到下一轮跑完为止（最长一整天）。
+    """
+    day = day or today_str()
+    with db() as conn:
+        row = conn.execute("SELECT count(*) AS n FROM item_days WHERE day = ?", (day,)).fetchone()
+        if row and int(row["n"] or 0) > 0:
+            return day
+        latest = conn.execute("SELECT max(day) AS d FROM item_days").fetchone()
+        return (latest["d"] if latest and latest["d"] else day)
+
+
+def attention_map(day: str) -> dict[int, dict[str, Any]]:
+    """按条目汇总 `scores` 表：平均分、五轴、类型、理由。
+
+    为什么要单独算：评分完整结果在 `scores` 表（axes/itype/reason），
+    而 `items.extra` 里只有回写的一部分。页面要展示"为什么选它"，只能从这里取。
+    """
+    with db() as conn:
+        rows = conn.execute(
+            """SELECT item_id, call_no, itype, axes, score, reason
+               FROM scores WHERE day = ? AND score IS NOT NULL
+               ORDER BY item_id, call_no""",
+            (day,),
+        ).fetchall()
+    grouped: dict[int, list[dict[str, Any]]] = {}
+    for r in rows:
+        grouped.setdefault(int(r["item_id"]), []).append(dict(r))
+
+    out: dict[int, dict[str, Any]] = {}
+    for item_id, calls in grouped.items():
+        scores = [int(c["score"]) for c in calls if c["score"] is not None]
+        if not scores:
+            continue
+        last = calls[-1]
+        try:
+            axes = json.loads(last.get("axes") or "{}")
+        except Exception:
+            axes = {}
+        out[item_id] = {
+            "available": True,
+            "score": int(sum(scores) // len(scores)),
+            "calls": len(scores),
+            "axes": axes,
+            "itype": last.get("itype") or "",
+            "reason": last.get("reason") or "",
+        }
+    return out
+
+
+def _merge_attention(rows: list[dict[str, Any]], day: str) -> None:
+    """把 `attention_map` 合进读出来的行（原地改）。"""
+    try:
+        mapping = attention_map(day)
+    except Exception:
+        return
+    for row in rows:
+        att = mapping.get(int(row["id"]))
+        if not att:
+            continue
+        merged = dict(row.get("attention") or {})
+        merged.update(att)
+        row["attention"] = merged
 
 
 # --------------------------------------------------------------------------- #

@@ -598,63 +598,62 @@ CHIPS = (("all", "全部"), ("first", "一手"), ("model_release", "模型"),
 _HOME_JS = """
 <script>
 (function(){
-  var q = document.getElementById('q');
-  var chips = Array.prototype.slice.call(document.querySelectorAll('.chip[data-cat]'));
-  var items = Array.prototype.slice.call(document.querySelectorAll('.item'));
-  var unread = document.getElementById('unread');
-  var cat = 'all', unreadOnly = false;
-  function readSet(){ try { return JSON.parse(localStorage.getItem('zbit.read')||'[]') } catch(e){ return [] } }
+  var q=document.getElementById('q');
+  var pills=Array.prototype.slice.call(document.querySelectorAll('.pillbar a[data-cat]'));
+  var items=Array.prototype.slice.call(document.querySelectorAll('.slot'));
+  var cat='all';
   function apply(){
-    var k = (q && q.value || '').trim().toLowerCase();
-    var seen = readSet();
-    var shown = 0;
+    var k=(q&&q.value||'').trim().toLowerCase(), shown=0;
     items.forEach(function(el){
-      var okCat = cat === 'all' || el.dataset.cat === cat ||
-                  (cat === 'first' && el.dataset.first === '1');
-      var okText = !k || (el.dataset.text || '').indexOf(k) >= 0;
-      var okUnread = !unreadOnly || seen.indexOf(el.dataset.id) < 0;
-      var vis = okCat && okText && okUnread;
+      var okPill = cat==='all' || el.dataset.cat===cat ||
+                   (cat==='first' && el.dataset.first==='1');
+      var okText = !k || (el.dataset.text||'').indexOf(k)>=0;
+      var vis = okPill && okText;
       el.style.display = vis ? '' : 'none';
-      if (vis) shown++;
+      if(vis) shown++;
     });
-    var bar = document.getElementById('count');
-    if (bar) bar.textContent = shown;
+    var c=document.getElementById('cnt'); if(c) c.textContent=shown;
   }
-  chips.forEach(function(c){ c.addEventListener('click', function(){
-    chips.forEach(function(x){ x.classList.remove('on') });
-    c.classList.add('on'); cat = c.dataset.cat; apply();
-  }); });
-  if (q){ q.addEventListener('input', apply);
-    document.addEventListener('keydown', function(e){
-      if (e.key === '/' && document.activeElement !== q){ e.preventDefault(); q.focus(); }
-    }); }
-  if (unread){ unread.addEventListener('click', function(){
-    unreadOnly = !unreadOnly; unread.classList.toggle('on', unreadOnly); apply();
-  }); }
-  items.forEach(function(el){
-    var a = el.querySelector('h3 a');
-    if (a) a.addEventListener('click', function(){
-      var seen = readSet(); if (seen.indexOf(el.dataset.id) < 0){ seen.push(el.dataset.id);
-        try { localStorage.setItem('zbit.read', JSON.stringify(seen)) } catch(e){} }
-    });
-  });
+  pills.forEach(function(p){p.addEventListener('click',function(e){
+    e.preventDefault();
+    pills.forEach(function(x){x.classList.remove('on')});
+    p.classList.add('on'); cat=p.dataset.cat; apply();
+  });});
+  if(q){q.addEventListener('input',apply);
+    document.addEventListener('keydown',function(e){
+      if(e.key==='/'&&document.activeElement!==q){e.preventDefault();q.focus();}
+    });}
   apply();
 })();
 </script>"""
 
 
+def _day_label(day: str) -> tuple[str, str]:
+    """返回（'11月10日' 或 '今天', '周二'）。"""
+    from datetime import date
+
+    try:
+        d = date.fromisoformat(day)
+    except Exception:
+        return day, ""
+    week = "一二三四五六日"[d.weekday()]
+    today = date.today()
+    head = "今天" if d == today else f"{d.month}月{d.day}日"
+    return head, f"周{week}"
+
+
 def build_home(day: str | None = None, site_root: Path | None = None,
-               limit: int = 40) -> dict[str, Any]:
-    """生成 `site/index.html`：结构对齐 aihot.news 首页。"""
+               limit: int = 60) -> dict[str, Any]:
+    """生成 `site/index.html`：结构对齐 aihot.news 的精选页。"""
     root = site_root or SITE
-    day = day or store.today_str()
+    day = store.content_day(day)
     rows = store.all_items(day)
     try:
         heat = store.latest_heat()
     except Exception:
         heat = {}
 
-    # —— 当前热点：按热度取前 5 —— #
+    # —— 当前热点（热度前 5） —— #
     hot_rows = []
     try:
         buckets: dict[int, dict[str, Any]] = {}
@@ -666,65 +665,81 @@ def build_home(day: str | None = None, site_root: Path | None = None,
                                               "sources": set()})
             b["sources"].add(r.get("source") or "")
         ranked = sorted(buckets.items(), key=lambda kv: -heat.get(kv[0], 0.0))[:5]
-        for i, (eid, b) in enumerate(ranked, 1):
-            avatars = "".join("<i></i>" for _ in list(b["sources"])[:6])
+        for eid, b in ranked:
+            faces = "".join("<i></i>" for _ in list(b["sources"])[:6])
             hot_rows.append(
-                f'<a href="/events/{eid}.html"><span class="n">{i}</span>'
-                f'<span class="t">{theme.esc(b["title"])}</span>'
-                f'<span class="av">{avatars}</span>'
-                f'<span class="h">+{int(heat.get(eid, 0))} 热度</span></a>')
+                f'<li><a href="/events/{eid}.html"><span class="rk"></span>'
+                f'<span class="tt">{theme.esc(b["title"])}</span>'
+                f'<span class="faces">{faces}</span>'
+                f'<span class="heat"><b>{int(heat.get(eid, 0))}</b> 热度</span>'
+                f'<span></span></a></li>')
+        # 序号用 CSS 的 rank 颜色，但内容要显式写数字
+        hot_rows = [r.replace('<span class="rk"></span>',
+                              f'<span class="rk">{i}</span>', 1)
+                    for i, r in enumerate(hot_rows, 1)]
     except Exception:
         hot_rows = []
 
-    # —— 信息流：按时间倒序 —— #
-    feed = []
+    # —— 信息流：时间轴 + 卡片 —— #
+    slots = []
     for it in rows[:limit]:
         att = it.get("attention") or {}
         cat = (it.get("structure") or {}).get("category") or ""
         published = (it.get("published") or "")[:16].replace("T", " ")
         hhmm = published[11:16] if len(published) >= 16 else "--:--"
         first = "1" if it.get("layer") == "primary" else "0"
-        picked = "".join(
-            ['<span class="pick">精选</span>'] if att.get("selected") else [])
-        score = (f'<span class="score">AI 评分 {att["score"]}</span>'
-                 if att.get("available") and att.get("score") is not None else "")
+        score = ""
+        if att.get("available") and att.get("score") is not None:
+            score = f'<span class="scorelabel"><b>{att["score"]}</b>分</span>'
+        pick = '<span class="badge-pick">精选</span>' if att.get("selected") else ""
         summary = " ".join(str(it.get("summary") or "").split())
         reason = (att.get("reason") or "").strip()
         text = (str(it.get("title") or "") + " " + summary + " " + cat).lower()
-        feed.append(
-            f'<li class="item" data-id="{it["id"]}" data-cat="{theme.esc(cat)}" '
+        slots.append(
+            f'<li class="slot" data-id="{it["id"]}" data-cat="{theme.esc(cat)}" '
             f'data-first="{first}" data-text="{theme.esc(text)}">'
-            f'<div class="time">{theme.esc(hhmm)}</div><div>'
-            f'<div class="src"><span>{theme.esc(it["source"])}</span>'
+            f'<time datetime="{theme.esc(published)}">{theme.esc(hhmm)}</time>'
+            '<span class="rail" aria-hidden="true"></span>'
+            '<article class="cardrow">'
+            '<header class="hd"><span class="src">'
+            f'<span>{theme.esc(it["source"])}</span>'
             f'<span class="dot"></span><span>{theme.esc(published[5:16])}</span>'
-            f'{picked}{score}</div>'
+            f'{pick}</span>'
+            f'<span class="rt">{score}</span></header>'
             f'<h3><a href="/items/{it["id"]}.html">{theme.esc(it["title"])}</a></h3>'
-            + (f'<p class="sum">{theme.esc(summary[:180])}</p>' if summary else "")
-            + (f'<p class="reason">推荐理由：{theme.esc(reason[:110])}</p>' if reason else "")
-            + '</div></li>')
+            + (f'<p class="sum">{theme.esc(summary[:200])}</p>' if summary else "")
+            + (f'<p class="reason">推荐理由：{theme.esc(reason[:140])}</p>' if reason else "")
+            + '</article></li>')
 
-    chips = "".join(
-        f'<a class="chip{" on" if key == "all" else ""}" data-cat="{key}" href="#" '
-        f'onclick="return false">{label}</a>' for key, label in CHIPS)
+    day_head, week = _day_label(day)
+    pill_parts = []
+    for key, label in CHIPS:
+        cls = ' class="on"' if key == "all" else ""
+        pill_parts.append(f'<a href="#" data-cat="{key}"{cls}>{label}</a>')
+    pills = "".join(pill_parts)
 
     body = (
-        f'<h1 class="title">精选<small>{theme.esc(day)} · {len(rows)} 条</small></h1>'
-        f'<div class="chips">{chips}</div>'
-        '<div class="searchrow"><input id="q" type="search" '
-        'placeholder="搜索标题和摘要"><kbd>/</kbd></div>'
-        + ('<h2 class="sec">当前热点<a href="/hot.html">完整榜单 →</a></h2>'
-           f'<div class="hot">{"".join(hot_rows)}</div>' if hot_rows else "")
-        + '<h2 class="sec">今日动态'
-          f'<a href="#" id="unread" class="fb">只看未读</a></h2>'
-        + f'<ol class="feed">{"".join(feed)}</ol>'
-        + (f'<p class="muted small" style="margin-top:18px;">'
+        '<h1 class="title">精选</h1>'
+        f'<div class="pillbar">{pills}</div>'
+        '<div class="searchrow"><div class="box">'
+        f'<span class="ic">{theme.icon("list", 16)}</span>'
+        '<input id="q" type="search" placeholder="搜索标题、摘要…"><kbd>/</kbd></div></div>'
+        + (f'<section class="hotcard"><div class="hd">'
+           f'<h2><span class="dotlive"><i></i><b></b></span>当前热点</h2>'
+           f'<a class="more" href="/hot.html">完整榜单 →</a></div>'
+           f'<ol>{"".join(hot_rows)}</ol></section>' if hot_rows else "")
+        + f'<div class="daybar"><span class="d">{theme.esc(day_head)}</span>'
+          f'<span class="w">{theme.esc(week)}</span>'
+          f'<span class="aside"><b id="cnt">{len(slots)}</b> 条</span></div>'
+        + f'<ol class="feed">{"".join(slots)}</ol>'
+        + (f'<p class="muted small" style="margin-top:16px;">'
            f'<a href="/all.html">查看全部 {len(rows)} 条 →</a></p>'
            if len(rows) > limit else "")
         + _HOME_JS)
 
-    doc = theme.page(f"精选 · {theme.BRAND}", body, active="/",
-                     subtitle=f"{theme.BRAND} · 今日 AI 精选", own_heading=True)
-    _write(root / "index.html", doc)
+    _write(root / "index.html",
+           theme.page(f"精选 · {theme.BRAND}", body, active="/",
+                      subtitle=f"{theme.BRAND} · {theme.TAGLINE}", own_heading=True))
     return {"file": str(root / "index.html"), "items": min(len(rows), limit),
             "hot": len(hot_rows), "total": len(rows)}
 
@@ -807,7 +822,7 @@ def build_deals(day: str | None = None, site_root: Path | None = None,
     不额外判断"真能不能白嫖"——那要看原文，页面只负责把人送到原文。
     """
     root = site_root or SITE
-    day = day or store.today_str()
+    day = store.content_day(day)
     rows: list[dict[str, Any]] = []
     seen: set[str] = set()
     for d in range(days):
