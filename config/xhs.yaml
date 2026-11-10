@@ -31,4 +31,7 @@ cover:
   lines: 3
   max_chars_per_line: 9
 
-limit_per_post: 6      # 一篇最多放几篇论文
+limit_per_post: 3      # 深度模式：1 篇主打 + 2 篇顺带
+deep: true             # true=抓论文正文写深度稿；false=只用摘要写速览
+body_min: 650          # 深度稿正文字数下限
+body_max: 900          # 上限（小红书 1000 字封顶）
