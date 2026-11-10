@@ -1,0 +1,54 @@
+# 推送通道与「突发」判定
+#
+# AIHOT 只推飞书、且按日出刊。这里是单用户，值得多做两件事：
+# 1) 多通道：邮件之外还能走 Telegram / 通用 webhook；
+# 2) 突发即时推：新模型发布这类事，等到第二天早上就没意义了。
+
+channels:
+  email: true                      # 复用 config/mail.yaml 那套 SMTP
+  telegram:
+    enabled: false
+    bot_token: ""                  # @BotFather 拿；留空即关闭
+    chat_id: ""
+  webhook:
+    enabled: false
+    url: ""                        # 任意接收 JSON 的地址（n8n / 自建服务）
+
+breaking:
+  enabled: true
+  # 注意力分门槛：低于它不打扰
+  min_score: 85
+  # 只要这么新的（小时）
+  max_age_hours: 12
+  # 只推"官方一手"。判定有两种，满足其一即可：
+  #   1) 信源本身就是一手（layer = primary）；
+  #   2) 原文链接落在下面这些官方域名上（HN / X 转的官方博客也算）。
+  # 只按信源层判会把"HN 上的 Anthropic 官方博客"漏掉 —— 那恰恰是最该推的。
+  only_primary: true
+  official_hosts:
+    - anthropic.com
+    - openai.com
+    - deepmind.google
+    - blog.google
+    - ai.meta.com
+    - about.fb.com
+    - nvidia.com
+    - microsoft.com
+    - research.microsoft.com
+    - aws.amazon.com
+    - huggingface.co
+    - mistral.ai
+    - x.ai
+    - deepseek.com
+    - moonshot.cn
+    - zhipuai.cn
+    - alibaba.com
+    - aliyun.com
+    - tencent.com
+    - baidu.com
+    - huawei.com
+    - xiaomi.com
+  # 一轮最多推几条，防止半夜连环响
+  max_per_run: 2
+  # 免打扰时段（本地时间，含首不含尾），这段时间攒着不发
+  quiet_hours: [23, 8]

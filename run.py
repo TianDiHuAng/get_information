@@ -18,7 +18,7 @@ from pathlib import Path
 
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
-from collector import alerts, events, export, rating, store, structure
+from collector import alerts, breaking, events, export, rating, store, structure
 from collector.archive import save as save_archive
 from collector.digest import build as build_digest
 from collector.digest import picked as digest_picked
@@ -200,6 +200,16 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True) -> None:
                   f"{alert_result.get('sent')}）")
     except Exception as e:
         print(f"      告警检查失败: {type(e).__name__}: {e}")
+    _done(stage)
+
+    # 突发即时推：够格的立刻发，不等第二天早上
+    stage = _stage("breaking", day)
+    try:
+        br = breaking.run(payload["items"])
+        if br.get("picked"):
+            print(f"      突发: {br['picked']} 条 → {br.get('sent')}")
+    except Exception as e:
+        print(f"      突发推送失败: {type(e).__name__}: {e}")
     _done(stage)
 
 

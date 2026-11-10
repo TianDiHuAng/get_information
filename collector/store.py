@@ -222,6 +222,16 @@ MIGRATIONS: list[str] = [
     );
     CREATE INDEX IF NOT EXISTS idx_feedback_day ON feedback(day);
     """,
+    # v6 —— 已推送记录：同一条内容作为「突发」只推一次，永久去重
+    """
+    CREATE TABLE IF NOT EXISTS pushes (
+        identity   TEXT NOT NULL,
+        kind       TEXT NOT NULL,
+        day        TEXT NOT NULL,
+        created_at TEXT NOT NULL,
+        PRIMARY KEY (identity, kind)
+    );
+    """,
 ]
 
 
@@ -856,6 +866,31 @@ def feedback_rows(days: int = 60, day: str | None = None) -> list[dict[str, Any]
             item["terms"] = []
         out.append(item)
     return out
+
+
+# --------------------------------------------------------------------------- #
+# 推送记录
+# --------------------------------------------------------------------------- #
+
+def pushed_identities(kind: str = "breaking") -> set[str]:
+    with db() as conn:
+        rows = conn.execute("SELECT identity FROM pushes WHERE kind = ?", (kind,)).fetchall()
+    return {r["identity"] for r in rows}
+
+
+def mark_pushed(identities: Iterable[str], kind: str = "breaking", day: str | None = None) -> int:
+    idents = [i for i in dict.fromkeys(identities) if i]
+    if not idents:
+        return 0
+    ts = now_str()
+    day = day or today_str()
+    with db() as conn:
+        conn.executemany(
+            "INSERT INTO pushes (identity, kind, day, created_at) VALUES (?,?,?,?) "
+            "ON CONFLICT(identity, kind) DO NOTHING",
+            [(i, kind, day, ts) for i in idents],
+        )
+    return len(idents)
 
 
 # --------------------------------------------------------------------------- #
