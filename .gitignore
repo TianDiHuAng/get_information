@@ -26,3 +26,6 @@ Thumbs.db
 # ===== 本地工具/调研产物 =====
 .zcode/
 research/
+
+# 临时目录
+.tmp_*/
