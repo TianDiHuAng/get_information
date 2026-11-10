@@ -22,6 +22,8 @@
   **不调模型**（模型只写导读，且要过防幻觉校验）；同一批内容换个抓取顺序排出同一期
 - **告警**：源连续失败/长期静默、日报缺期、预算耗尽、失败率偏高，同一天同一条只发一次信
 - **成本可控**：每次 LLM 调用留回执，同输入零成本复用；有每日/每小时预算上限；可换备用模型
+- **可校准**：`tools/make_gold.py` + `tools/eval_selection.py`，用自己的金标算准确率/覆盖率，
+  并把门槛从 40 扫到 90 看每一档的准召
 - **个性化**：卡片上点 👍/👎，下一轮排序会微调（默认 ±8%，只调排序、不碰入选门槛）
 - **突发即时推**：官方一手 + 分数 ≥85 + 12 小时内 → 立刻推（邮件 / Telegram / webhook），
   23:00–08:00 免打扰
@@ -54,6 +56,14 @@ python serve.py        # http://localhost:8123
 
 测试：`pip install -r requirements-dev.txt && python -m pytest tests -q`
 （测试不联网、不花钱：LLM 全部用假的，数据库一律在临时目录）
+
+标定"选得准不准"：
+
+```bash
+python tools/make_gold.py --n 120        # 从今天的 items.json 挑难例，生成 data/gold.jsonl
+# 手工把每行 gold.decision 改成 select / reject / either
+python tools/eval_selection.py --enrich  # 出准确率/覆盖率/门槛扫描，逐条结果在 data/eval/
+```
 
 ## 一条条目的流程
 
@@ -127,6 +137,7 @@ collector/     采集/清洗/判断/打分/渲染/推送
   breaking.py  突发：够格立刻推（免打扰、永久去重）
   push.py      通道：邮件 / Telegram / webhook
   export.py    多出口：RSS / JSON API / llms.txt
+  evaluate.py  评测：准确率/覆盖率/门槛扫描（配 tools/ 下两个脚本）
   alerts.py    告警：源健康、缺期、预算、失败率
 config/        配置（含 example 模板、评分口径、提示词）
 data/          运行产物（忽略）
