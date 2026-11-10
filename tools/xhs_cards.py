@@ -15,7 +15,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from collector.xhs_cards import CARD_H, CARD_W, parse_post, render_pages  # noqa: E402
+from collector.paper_figs import fetch_figures
+from collector.xhs_cards import CARD_H, CARD_W, build_cards, card_html, parse_post  # noqa: E402
 
 FIT_JS = """
 const el = document.getElementById('content');
@@ -53,7 +54,13 @@ def main() -> None:
 
     src = Path(a.file) if a.file else sorted((ROOT / "data" / "xhs").glob("*-arxiv.md"))[-1]
     post = parse_post(src)
-    pages = render_pages(post, a.theme, a.max_chars)
+    figs = []
+    m = __import__('re').search(r'主打：[^\n]*', src.read_text(encoding='utf-8'))
+    pid = __import__('re').search(r'arxiv\.org/abs/([0-9.]+)', src.read_text(encoding='utf-8'))
+    if pid:
+        figs = fetch_figures(pid.group(1))
+    cards = build_cards(post, a.max_chars, figs)
+    pages = [card_html(c, a.theme, len(cards)) for c in cards]
     if not pages:
         raise SystemExit("没有可渲染的卡片")
 

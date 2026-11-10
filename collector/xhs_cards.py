@@ -83,8 +83,8 @@ def _chunk(lines: list[str], max_chars: int = 150) -> list[list[str]]:
     return pages or [[]]
 
 
-def build_cards(post: dict, max_chars: int = 150) -> list[dict]:
-    """把稿件转成卡片序列：封面 → 每段一到多张 → 结尾。"""
+def build_cards(post: dict, max_chars: int = 150, figs: list[dict] | None = None) -> list[dict]:
+    """把稿件转成卡片序列：封面 → 每段一到多张 → 结尾；有论文图时插入图卡。"""
     cards: list[dict] = []
     cover = post["cover"] or []
     lead_para = next((s for s in post["sections"] if s.get("lead")), None)
@@ -106,6 +106,14 @@ def build_cards(post: dict, max_chars: int = 150) -> list[dict]:
                 "text": " ".join(lead_para["lines"])[:110],
                 "footer": "为什么值得聊",
             }
+        )
+
+    figs = figs or []
+    fig_queue = list(figs)
+    if fig_queue:
+        f = fig_queue.pop(0)
+        cards.append(
+            {"type": "figure", "path": f["path"], "caption": f["caption"], "label": "论文长这样", "footer": post["date"]}
         )
 
     idx = 0
@@ -163,6 +171,14 @@ def build_cards(post: dict, max_chars: int = 150) -> list[dict]:
                     "footer": post["date"],
                 }
             )
+            if pi == len(pages) - 1 and "结果" in sec["title"] and fig_queue:
+                # 结果图优先选接近 4:3 的，避免超宽图缩成一条
+                fig_queue.sort(key=lambda x: abs((x["w"] / max(x["h"], 1)) - 1.4))
+                f = fig_queue.pop(0)
+                cards.append(
+                    {"type": "figure", "path": f["path"], "caption": f["caption"],
+                     "label": "论文原图", "footer": post["date"]}
+                )
 
     if extras_card:
         cards.append(extras_card)
@@ -310,6 +326,29 @@ def card_html(card: dict, theme: str, total: int) -> str:
             f'<div style="position:absolute;left:88px;right:88px;bottom:170px;font-size:28px;'
             f'color:{t["cover_accent"]}">{card["footer"]}</div>'
             f"{footer('END', t['cover_accent'])}"
+            f"</div>"
+        )
+
+    if card["type"] == "figure":
+        from .paper_figs import data_uri
+
+        uri = data_uri(card["path"])
+        if not uri:
+            return f'<div style="{base}"></div>'
+        cap = card.get("caption") or ""
+        return (
+            f'<div style="{base}">'
+            f'<div style="position:absolute;left:88px;top:96px;font-size:30px;color:{t["muted"]};'
+            f'letter-spacing:.16em">{card.get("pos", 0):02d} / {total:02d}</div>'
+            f'<div style="position:absolute;left:88px;right:88px;top:186px;font-size:34px;'
+            f'color:{t["accent"]};letter-spacing:.06em">{card.get("label", "")}</div>'
+            f'<div style="position:absolute;left:64px;right:64px;top:268px;height:760px;'
+            f'display:flex;align-items:center;justify-content:center;'
+            f'background:#fff;border:1px solid {t["line"]};border-radius:10px;overflow:hidden">'
+            f'<img src="{uri}" style="max-width:100%;max-height:100%;object-fit:contain"></div>'
+            f'<div style="position:absolute;left:88px;right:96px;top:1066px;font-size:25px;'
+            f'line-height:1.62;color:{t["muted"]}">{cap}</div>'
+            f"{footer(card['footer'], t['muted'])}"
             f"</div>"
         )
 
