@@ -118,7 +118,7 @@ def render_md(data: dict[str, Any]) -> str:
     label = "周报" if data["kind"] == "weekly" else "月报"
     start, end = data["range"]
     lines = [
-        f"# 信息雷达 · {label}（{start} ~ {end}）",
+        f"# Z-Bit · {label}（{start} ~ {end}）",
         "",
         f"> {data['reports']} 条报道 · {data['events']} 个事件 · {data['sources']} 个源",
         "",

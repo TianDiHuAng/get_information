@@ -28,14 +28,14 @@ def test_md_escapes_html():
 
 def test_theme_page_has_nav_and_bottom_nav():
     doc = theme.page("标题", "<p>x</p>", active="/all.html", lead="引子")
-    assert 'class="nav"' in doc and 'class="bnav"' in doc
-    assert '<a href="/all.html" class="on">全部</a>' in doc
+    assert 'class="top"' in doc and 'class="bnav"' in doc
+    assert "Z-Bit" in doc and 'class="brand"' in doc
     assert "<style>" in doc
 
 
 def test_theme_css_is_scoped_to_one_block():
     assert theme.CSS.count("<") == 0          # 样式里不该混进标签
-    assert "@media(max-width:719px)" in theme.CSS
+    assert "@media(max-width" in theme.CSS
 
 
 def seed(day=None):

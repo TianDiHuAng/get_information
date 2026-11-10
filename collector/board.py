@@ -229,8 +229,8 @@ def render(data: dict[str, Any]) -> str:
 
     return f"""<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>信息雷达 · 看板 {data['day']}</title>
-{og_tags(f"信息雷达 · 看板 {data['day']}", "源健康、评分分布、模型成本、官方与国内舆论场")}
+<title>Z-Bit · 看板 {data['day']}</title>
+{og_tags(f"Z-Bit · 看板 {data['day']}", "源健康、评分分布、模型成本、官方与国内舆论场")}
 <style>
 :root {{ color-scheme: dark; }}
 * {{ box-sizing: border-box; }}
@@ -261,7 +261,7 @@ table {{ width:100%; border-collapse:collapse; font-size:12px; }}
 th,td {{ text-align:left; padding:5px 8px; border-bottom:1px solid #18212b; }}
 th {{ color:#6b7785; font-weight:500; }}
 </style><style>{_override()}</style></head><body>{_nav()}<div class="wrap">
-<h1>信息雷达 · 看板</h1>
+<h1>Z-Bit · 看板</h1>
 <div class="sub">{data['day']} · 生成于 {data['generated_at']} · <a href="/">回到今日要闻</a></div>
 
 <div class="cards">{cards}</div>

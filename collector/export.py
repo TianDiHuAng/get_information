@@ -161,7 +161,7 @@ def render_api(items: list[dict[str, Any]], *, generated_at: str) -> dict[str, A
 def render_llms(base_url: str, counts: dict[str, Any]) -> str:
     base = base_url.rstrip("/")
     return "\n".join([
-        "# 信息雷达",
+        "# Z-Bit",
         "",
         "> 每天采集 AI 前沿信息（一手博客 / 论文 / X / Telegram / 国内科技媒体），",
         "> 用五轴模型打分、按事件聚簇、按规则编成一份日报。",
@@ -220,10 +220,10 @@ def build(payload: dict[str, Any], site_root: Path) -> dict[str, Any]:
         written.append(rel)
 
     try:
-        write("feed.xml", render_rss(daily or items[:20], title="信息雷达 · 今日要闻",
+        write("feed.xml", render_rss(daily or items[:20], title="Z-Bit · 今日要闻",
                                      link=f"{base_url}/", self_url=f"{base_url}/feed.xml",
                                      description="每天一份 AI 情报日报：五轴评分、事件聚簇、规则编排。"))
-        write("feed-all.xml", render_rss(items[:feed_n], title="信息雷达 · 全部动态",
+        write("feed-all.xml", render_rss(items[:feed_n], title="Z-Bit · 全部动态",
                                          link=f"{base_url}/", self_url=f"{base_url}/feed-all.xml",
                                          description="当天采集到的全部条目，按排序分从高到低。"))
         stats["feeds"] = 2
@@ -246,7 +246,7 @@ def build(payload: dict[str, Any], site_root: Path) -> dict[str, Any]:
                 if key == "other" and len(groups) > 1:
                     continue  # 没有分类的单独出不值得
                 write(f"feed/category/{key}.xml", render_rss(
-                    group[:feed_n], title=f"信息雷达 · {key}",
+                    group[:feed_n], title=f"Z-Bit · {key}",
                     link=f"{base_url}/",
                     self_url=f"{base_url}/feed/category/{key}.xml",
                     description=f"按结构化分类过滤：{key}"))

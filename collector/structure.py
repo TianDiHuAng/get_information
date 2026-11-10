@@ -30,7 +30,7 @@ ROOT = Path(__file__).parent.parent
 CONFIG_PATH = ROOT / "config" / "structure.yaml"
 TAXONOMY_PATH = ROOT / "config" / "taxonomy.yaml"
 PROMPT_DIR = ROOT / "config" / "prompts"
-SITE_NAME = "信息雷达"
+SITE_NAME = "Z-Bit"
 
 SCOPES = ("single", "composite", "unknown")
 

@@ -296,7 +296,7 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True,
             if not send_mail_enabled:
                 print(f"      {label}: 已生成（--no-mail，未发送）")
                 continue
-            subject = f"[信息雷达] {label} · {info['range'][0]} ~ {info['range'][1]}"
+            subject = f"[Z-Bit] {label} · {info['range'][0]} ~ {info['range'][1]}"
             print(f"      {label}推送: {pushmail.send_text(subject, path.read_text(encoding='utf-8'))}")
     except Exception as e:
         print(f"      周报月报推送失败: {type(e).__name__}: {e}")

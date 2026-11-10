@@ -325,7 +325,7 @@ def source_names() -> list[str]:
         names += [str(r.get("id") or "") for r in REGISTRY]
     except Exception:
         pass
-    names += ["Get_Information", "信息雷达"]
+    names += ["Get_Information", "Z-Bit"]
     _source_name_cache = [n for n in dict.fromkeys(names) if n]
     return _source_name_cache
 

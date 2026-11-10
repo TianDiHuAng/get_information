@@ -282,7 +282,7 @@ def card_html(card: dict, theme: str, total: int) -> str:
             f'<div style="position:absolute;left:88px;right:88px;bottom:70px;'
             f"display:flex;justify-content:space-between;align-items:center;"
             f'font-size:26px;color:{color};letter-spacing:.04em">'
-            f'<span>信息雷达 · 每日 arXiv</span><span>{text}</span></div>'
+            f'<span>Z-Bit · 每日 arXiv</span><span>{text}</span></div>'
         )
 
     if card["type"] == "cover":

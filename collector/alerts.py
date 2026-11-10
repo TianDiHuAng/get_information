@@ -119,8 +119,8 @@ def render(found: list[dict[str, str]]) -> tuple[str, str]:
     """把告警渲染成 (主题, 正文)。"""
     day = store.today_str()
     errors = [a for a in found if a.get("severity") == "error"]
-    subject = f"[信息雷达] {day} 告警 {len(found)} 条" + ("（含错误）" if errors else "")
-    lines = [f"# 信息雷达 · {day} 运行告警", ""]
+    subject = f"[Z-Bit] {day} 告警 {len(found)} 条" + ("（含错误）" if errors else "")
+    lines = [f"# Z-Bit · {day} 运行告警", ""]
     for a in found:
         mark = "❌" if a.get("severity") == "error" else "⚠️"
         lines.append(f"- {mark} **{a['kind']}** — {a['message']}")

@@ -160,8 +160,8 @@ def render(data: dict[str, Any]) -> str:
 
     return f"""<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>信息雷达 · 时间线</title>
-{og_tags("信息雷达 · 时间线", "主体×月份跨度，以及同一件事在官方/媒体/社区三种渠道下的说法")}
+<title>Z-Bit · 时间线</title>
+{og_tags("Z-Bit · 时间线", "主体×月份跨度，以及同一件事在官方/媒体/社区三种渠道下的说法")}
 <style>
 :root {{ color-scheme: dark; }}
 * {{ box-sizing: border-box; }}
@@ -188,7 +188,7 @@ li {{ font-size:12px; margin:3px 0; }}
 .src {{ color:#4b5563; margin-left:6px; }}
 .muted {{ color:#6b7785; }}
 </style><style>{_override()}</style></head><body>{_nav()}<div class="wrap">
-<h1>信息雷达 · 时间线</h1>
+<h1>Z-Bit · 时间线</h1>
 <div class="sub">近 {len(months)} 个月 · {monthly['events']} 个事件 ·
 <a href="/">今日要闻</a> · <a href="/board.html">运行看板</a></div>
 

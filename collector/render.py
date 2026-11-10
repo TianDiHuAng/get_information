@@ -54,7 +54,7 @@ def render(payload: dict, out_path: Path, history: list[dict] | None = None,
     from .share import og_tags
 
     share_info = stats.get("share") or {}
-    og_html = og_tags(f"信息雷达 · {stats['generated_at'][:10]}",
+    og_html = og_tags(f"Z-Bit · {stats['generated_at'][:10]}",
                       share_info.get("lead") or "每天一份 AI 情报日报：五轴评分、事件聚簇、规则编排")
     # 全站导航：主题 / 事件 / 日报 / 周报 / 月报 / 时间线 / 搜索 / 看板
     from .theme import bottom_nav, nav_html
@@ -199,10 +199,10 @@ def render(payload: dict, out_path: Path, history: list[dict] | None = None,
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>信息雷达 · {stats['generated_at'][:16]}</title>
+<title>Z-Bit · {stats['generated_at'][:16]}</title>
 {og_html}
-<link rel="alternate" type="application/rss+xml" title="信息雷达 · 今日要闻" href="/feed.xml">
-<link rel="alternate" type="application/rss+xml" title="信息雷达 · 全部动态" href="/feed-all.xml">
+<link rel="alternate" type="application/rss+xml" title="Z-Bit · 今日要闻" href="/feed.xml">
+<link rel="alternate" type="application/rss+xml" title="Z-Bit · 全部动态" href="/feed-all.xml">
 <link rel="alternate" type="application/json" title="结构化数据" href="/api/v1/latest.json">
 <style>
   :root {{ color-scheme: dark; }}
@@ -299,7 +299,7 @@ def render(payload: dict, out_path: Path, history: list[dict] | None = None,
 {nav}
 <div class="wrap">
   <header>
-    <h1>信息雷达</h1>
+    <h1>Z-Bit</h1>
     <div class="sub">生成于 {stats['generated_at'][:19].replace('T', ' ')} · 每 {len(registry)} 个源中已启用 {sum(1 for s in registry if s['enabled'])} 个 · 代理 {('可用' if stats.get('proxy_ok') else '不可用')}</div>
     <div class="stats">
       <div class="stat"><b>{len(items)}</b><span>去重后条目</span></div>

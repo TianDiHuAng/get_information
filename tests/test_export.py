@@ -1,4 +1,4 @@
-"""多出口：RSS / JSON / llms.txt。
+﻿"""多出口：RSS / JSON / llms.txt。
 
 重点验证：XML 合法（能被阅读器解析）、字段不丢、转义正确、
 分类 feed 只含该分类、以及**所有出口的数据都来自同一份 payload**（不重新判断）。
@@ -93,7 +93,7 @@ def test_api_omits_empty_blocks():
 
 def test_llms_txt_lists_endpoints():
     text = export.render_llms("http://localhost:8123/", {"items": 10, "daily": 8, "events": 3, "sources": 5})
-    assert text.startswith("# 信息雷达")
+    assert text.startswith("# Z-Bit")
     assert "http://localhost:8123/feed.xml" in text
     assert "http://localhost:8123/api/v1/latest.json" in text
     assert "今日条目：10" in text

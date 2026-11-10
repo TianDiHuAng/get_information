@@ -140,7 +140,7 @@ def select(items: Iterable[dict[str, Any]], *, now: datetime | None = None,
 
 
 def render(items: list[dict[str, Any]]) -> tuple[str, str]:
-    subject = f"[信息雷达] 突发 {len(items)} 条" if len(items) > 1 else "[信息雷达] 突发"
+    subject = f"[Z-Bit] 突发 {len(items)} 条" if len(items) > 1 else "[Z-Bit] 突发"
     lines = []
     for it in items:
         att = (it.get("extra") or {}).get("attention") or {}

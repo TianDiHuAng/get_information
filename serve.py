@@ -255,7 +255,7 @@ def main() -> None:
     except OSError:
         print(f"端口 {PORT} 绑定失败，可视化服务应已在运行")
         return
-    print("信息雷达已上线：")
+    print("Z-Bit已上线：")
     print(f"  本机    http://localhost:{PORT}")
     print(f"  局域网  http://{lan_ip()}:{PORT}   （手机需连同一 Wi-Fi）")
     srv.serve_forever()

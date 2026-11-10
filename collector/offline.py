@@ -145,9 +145,9 @@ def build(payload: dict[str, Any], site_root: Path | None = None,
 
     doc = f"""<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>信息雷达 · 离线版 {_esc(day)}</title>
+<title>Z-Bit · 离线版 {_esc(day)}</title>
 <style>{_CSS}{_override()}</style></head><body>{_nav()}<div class="wrap">
-<h1>信息雷达 · 离线版</h1>
+<h1>Z-Bit · 离线版</h1>
 <div class="sub">{_esc(day)} · {len(payload.get('items') or [])} 条 ·
 {_esc(stats.get('sources_ok') or 0)} 个源 · 生成于 {_esc(generated[:19].replace('T', ' '))}</div>
 

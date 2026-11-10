@@ -587,6 +587,149 @@ fetch('/api/prefs').then(r=>r.json()).then(function(j){
 
 
 # --------------------------------------------------------------------------- #
+# 首页：布局照 aihot.news（精选 / 筛选条 / 搜索 / 当前热点 / 日期分组信息流）
+# --------------------------------------------------------------------------- #
+
+CHIPS = (("all", "全部"), ("first", "一手"), ("model_release", "模型"),
+         ("product_launch", "产品"), ("industry_event", "行业"),
+         ("research_paper", "论文"), ("tutorial_explainer", "教程"),
+         ("opinion_analysis", "观点"))
+
+_HOME_JS = """
+<script>
+(function(){
+  var q = document.getElementById('q');
+  var chips = Array.prototype.slice.call(document.querySelectorAll('.chip[data-cat]'));
+  var items = Array.prototype.slice.call(document.querySelectorAll('.item'));
+  var unread = document.getElementById('unread');
+  var cat = 'all', unreadOnly = false;
+  function readSet(){ try { return JSON.parse(localStorage.getItem('zbit.read')||'[]') } catch(e){ return [] } }
+  function apply(){
+    var k = (q && q.value || '').trim().toLowerCase();
+    var seen = readSet();
+    var shown = 0;
+    items.forEach(function(el){
+      var okCat = cat === 'all' || el.dataset.cat === cat ||
+                  (cat === 'first' && el.dataset.first === '1');
+      var okText = !k || (el.dataset.text || '').indexOf(k) >= 0;
+      var okUnread = !unreadOnly || seen.indexOf(el.dataset.id) < 0;
+      var vis = okCat && okText && okUnread;
+      el.style.display = vis ? '' : 'none';
+      if (vis) shown++;
+    });
+    var bar = document.getElementById('count');
+    if (bar) bar.textContent = shown;
+  }
+  chips.forEach(function(c){ c.addEventListener('click', function(){
+    chips.forEach(function(x){ x.classList.remove('on') });
+    c.classList.add('on'); cat = c.dataset.cat; apply();
+  }); });
+  if (q){ q.addEventListener('input', apply);
+    document.addEventListener('keydown', function(e){
+      if (e.key === '/' && document.activeElement !== q){ e.preventDefault(); q.focus(); }
+    }); }
+  if (unread){ unread.addEventListener('click', function(){
+    unreadOnly = !unreadOnly; unread.classList.toggle('on', unreadOnly); apply();
+  }); }
+  items.forEach(function(el){
+    var a = el.querySelector('h3 a');
+    if (a) a.addEventListener('click', function(){
+      var seen = readSet(); if (seen.indexOf(el.dataset.id) < 0){ seen.push(el.dataset.id);
+        try { localStorage.setItem('zbit.read', JSON.stringify(seen)) } catch(e){} }
+    });
+  });
+  apply();
+})();
+</script>"""
+
+
+def build_home(day: str | None = None, site_root: Path | None = None,
+               limit: int = 40) -> dict[str, Any]:
+    """生成 `site/index.html`：结构对齐 aihot.news 首页。"""
+    root = site_root or SITE
+    day = day or store.today_str()
+    rows = store.all_items(day)
+    try:
+        heat = store.latest_heat()
+    except Exception:
+        heat = {}
+
+    # —— 当前热点：按热度取前 5 —— #
+    hot_rows = []
+    try:
+        buckets: dict[int, dict[str, Any]] = {}
+        for r in store.event_dump(days=3, day=day):
+            eid = r.get("event_id")
+            if eid is None:
+                continue
+            b = buckets.setdefault(int(eid), {"title": r.get("event_title") or "",
+                                              "sources": set()})
+            b["sources"].add(r.get("source") or "")
+        ranked = sorted(buckets.items(), key=lambda kv: -heat.get(kv[0], 0.0))[:5]
+        for i, (eid, b) in enumerate(ranked, 1):
+            avatars = "".join("<i></i>" for _ in list(b["sources"])[:6])
+            hot_rows.append(
+                f'<a href="/events/{eid}.html"><span class="n">{i}</span>'
+                f'<span class="t">{theme.esc(b["title"])}</span>'
+                f'<span class="av">{avatars}</span>'
+                f'<span class="h">+{int(heat.get(eid, 0))} 热度</span></a>')
+    except Exception:
+        hot_rows = []
+
+    # —— 信息流：按时间倒序 —— #
+    feed = []
+    for it in rows[:limit]:
+        att = it.get("attention") or {}
+        cat = (it.get("structure") or {}).get("category") or ""
+        published = (it.get("published") or "")[:16].replace("T", " ")
+        hhmm = published[11:16] if len(published) >= 16 else "--:--"
+        first = "1" if it.get("layer") == "primary" else "0"
+        picked = "".join(
+            ['<span class="pick">精选</span>'] if att.get("selected") else [])
+        score = (f'<span class="score">AI 评分 {att["score"]}</span>'
+                 if att.get("available") and att.get("score") is not None else "")
+        summary = " ".join(str(it.get("summary") or "").split())
+        reason = (att.get("reason") or "").strip()
+        text = (str(it.get("title") or "") + " " + summary + " " + cat).lower()
+        feed.append(
+            f'<li class="item" data-id="{it["id"]}" data-cat="{theme.esc(cat)}" '
+            f'data-first="{first}" data-text="{theme.esc(text)}">'
+            f'<div class="time">{theme.esc(hhmm)}</div><div>'
+            f'<div class="src"><span>{theme.esc(it["source"])}</span>'
+            f'<span class="dot"></span><span>{theme.esc(published[5:16])}</span>'
+            f'{picked}{score}</div>'
+            f'<h3><a href="/items/{it["id"]}.html">{theme.esc(it["title"])}</a></h3>'
+            + (f'<p class="sum">{theme.esc(summary[:180])}</p>' if summary else "")
+            + (f'<p class="reason">推荐理由：{theme.esc(reason[:110])}</p>' if reason else "")
+            + '</div></li>')
+
+    chips = "".join(
+        f'<a class="chip{" on" if key == "all" else ""}" data-cat="{key}" href="#" '
+        f'onclick="return false">{label}</a>' for key, label in CHIPS)
+
+    body = (
+        f'<h1 class="title">精选<small>{theme.esc(day)} · {len(rows)} 条</small></h1>'
+        f'<div class="chips">{chips}</div>'
+        '<div class="searchrow"><input id="q" type="search" '
+        'placeholder="搜索标题和摘要"><kbd>/</kbd></div>'
+        + ('<h2 class="sec">当前热点<a href="/hot.html">完整榜单 →</a></h2>'
+           f'<div class="hot">{"".join(hot_rows)}</div>' if hot_rows else "")
+        + '<h2 class="sec">今日动态'
+          f'<a href="#" id="unread" class="fb">只看未读</a></h2>'
+        + f'<ol class="feed">{"".join(feed)}</ol>'
+        + (f'<p class="muted small" style="margin-top:18px;">'
+           f'<a href="/all.html">查看全部 {len(rows)} 条 →</a></p>'
+           if len(rows) > limit else "")
+        + _HOME_JS)
+
+    doc = theme.page(f"精选 · {theme.BRAND}", body, active="/",
+                     subtitle=f"{theme.BRAND} · 今日 AI 精选", own_heading=True)
+    _write(root / "index.html", doc)
+    return {"file": str(root / "index.html"), "items": min(len(rows), limit),
+            "hot": len(hot_rows), "total": len(rows)}
+
+
+# --------------------------------------------------------------------------- #
 # 一把生成
 # --------------------------------------------------------------------------- #
 
@@ -596,6 +739,7 @@ def build(payload: dict[str, Any] | None = None, site_root: Path | None = None,
     root = site_root or SITE
     stats: dict[str, Any] = {}
     jobs = {
+        "home": lambda: build_home(day, root),
         "all": lambda: build_all(day, root),
         "hot": lambda: build_hot(day, root),
         "items": lambda: build_items(day, root),

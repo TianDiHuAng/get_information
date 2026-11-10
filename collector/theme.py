@@ -1,14 +1,15 @@
-"""全站视觉：一套「纸感编辑风」，所有页面共用。
+"""Z-Bit 站点视觉与骨架：布局对齐 aihot.news，皮肤换成自己的。
 
-为什么单独一个模块：之前每个页面各自内联一份 CSS，配色和字号各写一遍 ——
-加一个页面就要抄一次，抄错就花。这里只留一套 token 和几个组件类：
+布局事实（照抄 aihot.news 首页）：
+- 单列窄栏，约 42rem，居中；手机上左右各留一点
+- 两级顶栏：第一行只有 精选 / 全部 / 热点 / 日报 / 模型榜 / 我的 + 主题切换；
+  第二行是可展开的分组菜单（内容 / 模型 / 更多）
+- 首页：H1「精选」→ 筛选条（全部/一手/模型/产品/行业/论文/教程/观点）→ 搜索框
+  → 「当前热点」5 条（序号 + 标题 + 来源头像堆叠 + 热度）→ 「只看未读」
+  → 按日期分组的消息流：左侧时间，右侧来源行 · 精选徽标 · AI 评分 / 标题 / 摘要 / 推荐理由
+- 条目页、日报页都是同一条窄栏
 
-- 顶部导航（桌面）+ 底部导航（手机）
-- 卡片、标签、分数条、五轴条、反馈按钮
-- 纸底 + 衬线标题（日报/周刊的阅读感），无外部字体与图片
-
-旧页面（首页 / 看板 / 时间线 / 主题 / 离线）是深色的，用 `override_css()`
-在它们自己的样式后面追加一段覆盖，换到同一套配色 —— 不改它们的结构。
+艺术化只做三件事，不破布局：更大的字级对比、衬线展示字、极轻的纸感与渐层。
 """
 
 from __future__ import annotations
@@ -16,129 +17,206 @@ from __future__ import annotations
 import html
 from typing import Any
 
-# 站点导航：顺序就是阅读顺序
+BRAND = "Z-Bit"
+
 NAV = (
     ("/", "精选"),
     ("/all.html", "全部"),
-    ("/hot.html", "热门"),
-    ("/topics.html", "主题"),
+    ("/hot.html", "热点"),
     ("/daily.html", "日报"),
-    ("/weekly.html", "周报"),
-    ("/monthly.html", "月报"),
-    ("/timeline.html", "时间线"),
-    ("/search.html", "搜索"),
+    ("/monthly.html", "模型榜"),
+    ("/topics.html", "主题"),
 )
-# 次级入口，放页脚与"更多"页
+MENU = {
+    "内容": (("/", "精选"), ("/all.html", "全部动态"), ("/hot.html", "热点榜"),
+             ("/daily.html", "日报"), ("/weekly.html", "周报"), ("/topics.html", "主题"),
+             ("/starred.html", "收藏")),
+    "模型": (("/monthly.html", "月报"), ("/timeline.html", "时间线"),
+             ("/board.html", "运行看板")),
+    "更多": (("/agent.html", "Agent 接入"), ("/about.html", "关于"),
+             ("/feedback.html", "反馈"), ("/changelog.html", "更新日志"),
+             ("/offline.mp4" if False else "/offline.html", "离线版"),
+             ("/admin.html", "后台")),
+}
+
+# 扁平入口表：页脚、"更多"页与后台都用这个（保持和旧接口一致）
 MORE = (
-    ("/agent.html", "给 Agent 用"),
-    ("/admin.html", "后台"),
-    ("/board.html", "运行看板"),
-    ("/archive/", "历史归档"),
-    ("/offline.html", "离线版"),
-    ("/starred.html", "我的收藏"),
-    ("/feedback.html", "反馈"),
-    ("/about.html", "关于"),
-    ("/terms.html", "使用条款"),
-    ("/privacy.html", "隐私"),
+    ("/agent.html", "Agent 接入"), ("/admin.html", "后台"),
+    ("/board.html", "运行看板"), ("/archive/", "历史归档"),
+    ("/offline.html", "离线版"), ("/starred.html", "我的收藏"),
+    ("/feedback.html", "反馈"), ("/about.html", "关于"),
+    ("/terms.html", "使用条款"), ("/privacy.html", "隐私"),
     ("/changelog.html", "更新日志"),
 )
 
 CSS = """
-:root {
-  --paper:#f6f1e7; --card:#fffdf7; --ink:#1c1a16; --muted:#6f6759; --rule:#e2d8c6;
-  --accent:#b4530a; --accent-soft:#f3e0cd; --teal:#0f6b5c; --warn:#9a3412;
-  --shadow:0 1px 2px rgba(28,26,22,.05), 0 8px 24px -18px rgba(28,26,22,.35);
-  --serif:"Iowan Old Style","Palatino Linotype",Georgia,"Songti SC","Noto Serif CJK SC",serif;
-  --sans:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+:root{
+  --bg:#0a0a0b; --bg2:#101013; --ink:#f2efe9; --ink2:#a8a29a; --ink3:#6d6862;
+  --line:#1e1e22; --line2:#2a2a30;
+  --accent:#e8b04b; --accent2:#c9743a; --ok:#7fb069; --bad:#d1694a;
+  --serif:"Playfair Display","Iowan Old Style",Georgia,"Songti SC","Noto Serif CJK SC",serif;
+  --sans:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",Inter,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --w:42rem;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.75 var(--sans)}
-a{color:var(--accent);text-decoration:none;text-underline-offset:2px}
-a:hover{text-decoration:underline}
-.shell{max-width:900px;margin:0 auto;padding:0 20px 96px}
-/* —— 顶部导航 —— */
-.nav{position:sticky;top:0;z-index:20;background:rgba(246,241,231,.94);
-     backdrop-filter:blur(8px);border-bottom:1px solid var(--rule)}
-.nav .in{max-width:900px;margin:0 auto;display:flex;gap:16px;align-items:center;
-         padding:12px 20px;overflow-x:auto;scrollbar-width:none}
-.nav .in::-webkit-scrollbar{display:none}
-.nav .brand{font-family:var(--serif);font-size:18px;font-weight:700;letter-spacing:.02em;
-            color:var(--ink);margin-right:6px;white-space:nowrap}
-.nav a{font-size:14px;color:var(--muted);white-space:nowrap}
-.nav a.on{color:var(--ink);font-weight:600;box-shadow:inset 0 -2px 0 var(--accent)}
-/* —— 页头 —— */
-.head{padding:34px 0 6px}
-.head h1{font-family:var(--serif);font-size:30px;line-height:1.3;margin:0 0 6px;letter-spacing:.01em}
-.head .lead{color:var(--muted);font-size:14px}
-.head .lead b{color:var(--ink)}
-/* —— 正文块 —— */
-h2{font-family:var(--serif);font-size:19px;margin:34px 0 12px;padding-bottom:8px;
-   border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;align-items:baseline}
-h2 small{font-family:var(--sans);font-size:12px;color:var(--muted);font-weight:400}
-h3{font-family:var(--serif);font-size:18px;margin:0 0 6px;line-height:1.45}
-p{margin:0 0 12px}
-.muted{color:var(--muted)}
-.small{font-size:13px}
-.card{background:var(--card);border:1px solid var(--rule);border-radius:12px;
-      padding:16px 18px;margin:0 0 12px;box-shadow:var(--shadow)}
-.card.flat{box-shadow:none}
-.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--muted)}
-.dot{width:3px;height:3px;border-radius:50%;background:var(--rule);display:inline-block}
-.badge{display:inline-block;border:1px solid var(--rule);border-radius:6px;padding:1px 7px;
-       font-size:11px;color:var(--muted);background:#fff}
-.badge.hot{color:var(--warn);border-color:#f0c9b4;background:#fdf1ea}
-.tag{display:inline-block;border:1px solid var(--rule);border-radius:999px;
-     padding:1px 10px;font-size:12px;color:var(--muted);background:#fff;margin:2px 4px 2px 0}
-.sum{color:#4a4438;font-size:14px;margin:6px 0 0}
-/* —— 评分可视化 —— */
-.axes{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:10px 0 2px}
-.axis{font-size:11px;color:var(--muted);text-align:center}
-.axis .bar{height:5px;border-radius:3px;background:var(--rule);margin-bottom:4px;overflow:hidden}
-.axis .bar i{display:block;height:100%;background:var(--accent)}
-.score{font-family:var(--serif);font-size:26px;line-height:1}
-.score small{font-size:12px;color:var(--muted);font-family:var(--sans)}
-.reason{background:var(--accent-soft);border-radius:8px;padding:10px 12px;font-size:13px;
-        color:#5b3a17;margin:10px 0 0}
-/* —— 反馈 / 列表 —— */
-.fb{cursor:pointer;border:1px solid var(--rule);border-radius:8px;padding:2px 9px;
-    font-size:13px;background:#fff;color:var(--muted)}
-.fb:hover{border-color:var(--accent);color:var(--accent)}
-.fb.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
-ol.list,ul.list{padding-left:22px;margin:0}
-ol.list li,ul.list li{margin:10px 0}
-.grid{display:grid;gap:12px}
-@media(min-width:640px){.grid.two{grid-template-columns:1fr 1fr}}
-/* —— 页脚 + 移动端底栏 —— */
-footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--rule);
-       color:var(--muted);font-size:12px}
-footer a{color:var(--muted)}
-footer .links{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px}
-.bnav{display:none}
-@media(max-width:719px){
-  .bnav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;
-        background:rgba(255,253,247,.96);backdrop-filter:blur(8px);
-        border-top:1px solid var(--rule);padding:6px 0 max(6px,env(safe-area-inset-bottom))}
-  .bnav a{flex:1;text-align:center;font-size:11px;color:var(--muted);
-          display:flex;flex-direction:column;gap:2px;align-items:center}
-  .bnav a.on{color:var(--accent)}
-  .bnav .i{font-size:17px;line-height:1}
-  .shell{padding-bottom:76px}
-  .head h1{font-size:24px}
-  h2{font-size:17px}
-  .axes{grid-template-columns:repeat(5,1fr)}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font:16px/1.75 var(--sans);
+  -webkit-font-smoothing:antialiased;
 }
-@media(prefers-color-scheme:dark){
-  :root{--paper:#15130f;--card:#1c1914;--ink:#efe9df;--muted:#9c9384;--rule:#2e2921;
-        --accent:#e08a4b;--accent-soft:#2a211a;--teal:#4ecdc4;--warn:#f0a07a}
-  .badge,.tag,.fb{background:#221e18}
-  .sum{color:#cfc7ba}
-  .reason{color:#e6cbb0}
+/* 极轻的顶部渐层，替代表情化的装饰 */
+body::before{
+  content:"";position:fixed;inset:0 0 auto;height:340px;pointer-events:none;z-index:0;
+  background:radial-gradient(120% 100% at 50% -30%,rgba(232,176,75,.10),transparent 62%);
+}
+a{color:inherit;text-decoration:none}
+a:hover{color:var(--accent)}
+.wrap{position:relative;z-index:1;max-width:var(--w);margin:0 auto;padding:0 18px 90px}
+
+/* —— 顶栏（两级） —— */
+.top{position:sticky;top:0;z-index:30;background:rgba(10,10,11,.86);
+     backdrop-filter:blur(14px) saturate(140%);border-bottom:1px solid var(--line)}
+.top .in{max-width:var(--w);margin:0 auto;padding:10px 18px;display:flex;align-items:center;gap:14px}
+.brand{font-family:var(--serif);font-size:20px;font-weight:700;letter-spacing:.04em;
+       background:linear-gradient(92deg,#fff,var(--accent) 78%);-webkit-background-clip:text;
+       background-clip:text;color:transparent;white-space:nowrap}
+.navlinks{display:flex;gap:16px;margin-left:auto;align-items:center;overflow:auto;scrollbar-width:none}
+.navlinks::-webkit-scrollbar{display:none}
+.navlinks a{font-size:14px;color:var(--ink2);white-space:nowrap}
+.navlinks a.on{color:var(--ink);position:relative}
+.navlinks a.on::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;
+                      background:var(--accent);border-radius:2px}
+.subnav{max-width:var(--w);margin:0 auto;padding:0 18px 9px;display:flex;gap:18px;
+        font-size:12px;color:var(--ink3);overflow:auto;scrollbar-width:none}
+.subnav::-webkit-scrollbar{display:none}
+.subnav b{color:var(--ink3);font-weight:500;margin-right:6px}
+.subnav a{white-space:nowrap}
+.subnav span{display:flex;align-items:center}
+
+/* —— 页头 —— */
+h1.title{font-family:var(--serif);font-size:40px;line-height:1.15;margin:34px 0 18px;
+         letter-spacing:-.01em;font-weight:600}
+h1.title small{font-family:var(--sans);font-size:13px;color:var(--ink3);letter-spacing:0;
+               font-weight:400;margin-left:10px}
+.lead{color:var(--ink2);font-size:14px;margin:-8px 0 20px}
+
+/* —— 筛选条 + 搜索 —— */
+.chips{display:flex;gap:8px;overflow:auto;scrollbar-width:none;padding-bottom:4px;margin:0 0 14px}
+.chips::-webkit-scrollbar{display:none}
+.chip{font-size:13px;color:var(--ink2);padding:5px 12px;border-radius:999px;
+      border:1px solid var(--line2);white-space:nowrap}
+.chip.on{color:#12100c;background:var(--accent);border-color:var(--accent);font-weight:600}
+.searchrow{display:flex;gap:10px;align-items:center;margin:0 0 26px}
+.searchrow input{flex:1;background:var(--bg2);border:1px solid var(--line2);color:var(--ink);
+                 border-radius:10px;padding:10px 13px;font-size:14px;outline:none}
+.searchrow input:focus{border-color:var(--accent)}
+.searchrow kbd{font:12px var(--mono);color:var(--ink3);border:1px solid var(--line2);
+               border-radius:5px;padding:2px 6px}
+
+/* —— 当前热点 —— */
+h2.sec{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);
+       margin:30px 0 12px;display:flex;justify-content:space-between;align-items:baseline;
+       font-weight:600}
+h2.sec a{font-size:12px;letter-spacing:0;text-transform:none;color:var(--accent)}
+.hot{display:flex;flex-direction:column;gap:2px;margin-bottom:12px}
+.hot a{display:flex;gap:10px;align-items:baseline;padding:9px 10px;border-radius:10px;
+       border:1px solid transparent}
+.hot a:hover{background:var(--bg2);border-color:var(--line)}
+.hot .n{font:12px var(--mono);color:var(--ink3);width:16px;flex:none}
+.hot .t{font-size:14.5px;line-height:1.5}
+.hot .av{display:flex;margin-left:auto;flex:none}
+.hot .av i{width:16px;height:16px;border-radius:50%;background:var(--line2);
+           border:1px solid var(--bg);margin-left:-5px}
+.hot .h{font:12px var(--mono);color:var(--accent);flex:none;margin-left:8px}
+
+/* —— 日期分组 + 消息流 —— */
+.daybar{position:sticky;top:64px;z-index:5;display:flex;justify-content:space-between;
+        align-items:center;font-size:13px;color:var(--ink3);padding:8px 0;
+        background:linear-gradient(var(--bg) 72%,transparent);border-bottom:1px solid var(--line)}
+.feed{list-style:none;margin:0;padding:0}
+.item{display:grid;grid-template-columns:52px 1fr;gap:12px;padding:16px 0;
+      border-bottom:1px solid var(--line)}
+.item .time{font:12px var(--mono);color:var(--ink3);padding-top:3px}
+.item .src{font-size:12.5px;color:var(--ink3);display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.item .src .pick{color:var(--accent)}
+.item .src .score{font:12px var(--mono);color:var(--ink3);border:1px solid var(--line2);
+                  border-radius:5px;padding:0 5px}
+.item h3{font-family:var(--sans);font-size:16.5px;line-height:1.6;font-weight:600;
+         margin:6px 0 0;letter-spacing:.005em}
+.item h3 a{display:inline}
+.item .sum{color:var(--ink2);font-size:14px;margin:6px 0 0;line-height:1.75}
+.item .reason{color:var(--ink3);font-size:13px;margin:8px 0 0;padding-left:10px;
+              border-left:2px solid var(--line2)}
+.item .thumb{width:74px;height:74px;border-radius:10px;background:var(--bg2);
+             border:1px solid var(--line);float:right;margin:2px 0 6px 12px}
+.item .ops{display:flex;gap:10px;margin-top:10px;font-size:12px;color:var(--ink3)}
+
+/* —— 通用块（后台/主题/日报沿用） —— */
+.card{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:16px 18px;
+      margin:0 0 12px}
+.card h3{font-size:16px;margin:0 0 6px;font-weight:600}
+.muted{color:var(--ink3)}
+.small{font-size:13px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--ink3)}
+.dot{width:3px;height:3px;border-radius:50%;background:var(--line2);display:inline-block}
+.badge,.tag{display:inline-block;border:1px solid var(--line2);border-radius:6px;padding:1px 7px;
+            font-size:11px;color:var(--ink3)}
+.tag{border-radius:999px;padding:1px 10px;margin:2px 4px 2px 0}
+.pill{display:inline-block;border-radius:999px;padding:1px 9px;font-size:11px;
+      border:1px solid var(--line2);color:var(--ink3)}
+.pill.ok{color:var(--ok);border-color:#2c3a28}.pill.err{color:var(--bad);border-color:#3a2620}
+.axes{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:10px 0 2px}
+.axis{font-size:11px;color:var(--ink3);text-align:center}
+.axis .bar{height:4px;border-radius:3px;background:var(--line2);margin-bottom:4px;overflow:hidden}
+.axis .bar i{display:block;height:100%;background:var(--accent)}
+.score{font-family:var(--serif);font-size:26px}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+th{color:var(--ink3);font-weight:500;font-size:12px}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+.fb{cursor:pointer;border:1px solid var(--line2);border-radius:7px;padding:2px 9px;font-size:12px;
+    background:transparent;color:var(--ink3);font-family:inherit}
+.fb:hover,.fb.on{border-color:var(--accent);color:var(--accent)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}
+.tabs a{border:1px solid var(--line2);border-radius:999px;padding:3px 12px;font-size:13px;
+        color:var(--ink3)}
+.tabs a.on{background:rgba(232,176,75,.14);border-color:var(--accent);color:var(--accent)}
+ol.list,ul.list{padding-left:20px;margin:0}
+ol.list li,ul.list li{margin:9px 0}
+hr{border:0;border-top:1px solid var(--line);margin:26px 0}
+
+/* —— 页脚 —— */
+footer{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);
+       color:var(--ink3);font-size:12px}
+footer .links{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:10px}
+footer .links a{color:var(--ink3)}
+
+/* —— 手机底栏 —— */
+.bnav{display:none}
+@media(max-width:640px){
+  h1.title{font-size:30px;margin-top:24px}
+  .item{grid-template-columns:44px 1fr;gap:10px}
+  .bnav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:40;
+        background:rgba(10,10,11,.94);backdrop-filter:blur(12px);
+        border-top:1px solid var(--line);padding:7px 0 max(7px,env(safe-area-inset-bottom))}
+  .bnav a{flex:1;text-align:center;font-size:11px;color:var(--ink3)}
+  .bnav a.on{color:var(--accent)}
+  .wrap{padding-bottom:80px}
+}
+@media(prefers-color-scheme:light){
+  :root{--bg:#faf8f4;--bg2:#fffdf9;--ink:#16150f;--ink2:#57534b;--ink3:#8b857b;
+        --line:#e7e2d8;--line2:#d8d2c6;--accent:#a8620f;--accent2:#8a4d09}
+  body::before{background:radial-gradient(120% 100% at 50% -30%,rgba(168,98,15,.07),transparent 62%)}
+  .top{background:rgba(250,248,244,.88)}
+  .chip.on{color:#fff}
+  .brand{background:linear-gradient(92deg,#16150f,var(--accent) 82%);
+         -webkit-background-clip:text;background-clip:text}
+  .bnav{background:rgba(250,248,244,.94)}
 }
 """
-
-_ICONS = {"精选": "◆", "全部": "☰", "热门": "▲", "主题": "❖", "日报": "☀",
-          "周报": "◷", "月报": "◫", "时间线": "↕", "搜索": "⌕"}
 
 
 def esc(text: Any) -> str:
@@ -146,49 +224,44 @@ def esc(text: Any) -> str:
 
 
 def nav_html(active: str = "/") -> str:
+    """两级顶栏：第一行主导航，第二行分组菜单。"""
     links = []
     for href, label in NAV:
         cls = ' class="on"' if href == active else ""
         links.append(f'<a href="{href}"{cls}>{label}</a>')
-    joined = "".join(links)
-    return f'<div class="nav"><div class="in"><a class="brand" href="/">信息雷达</a>{joined}</div></div>'
+    links.append('<a href="/starred.html">我的</a>')
+    top = (f'<div class="top"><div class="in">'
+           f'<a class="brand" href="/">{BRAND}</a>'
+           f'<nav class="navlinks">{"".join(links)}</nav></div>')
+    groups = []
+    for name, items in MENU.items():
+        inner = " ".join(f'<a href="{href}">{label}</a>' for href, label in items)
+        groups.append(f'<span><b>{name}</b>{inner}</span>')
+    top += f'<div class="subnav">{"".join(groups)}</div></div>'
+    return top
 
 
 def bottom_nav(active: str = "/") -> str:
-    """手机底栏：只放最常用的五个。"""
-    picks = ("/", "/all.html", "/hot.html", "/topics.html", "/search.html")
-    items = []
-    for href, label in NAV:
-        if href not in picks:
-            continue
+    picks = ("/", "/all.html", "/hot.html", "/daily.html", "/starred.html")
+    labels = {href: label for href, label in NAV}
+    labels["/starred.html"] = "我的"
+    out = []
+    for href in picks:
         cls = ' class="on"' if href == active else ""
-        items.append(f'<a href="{href}"{cls}><span class="i">{_ICONS.get(label, "·")}</span>{label}</a>')
-    return f'<div class="bnav">{"".join(items)}</div>'
+        out.append(f'<a href="{href}"{cls}>{labels.get(href, href)}</a>')
+    return f'<div class="bnav">{"".join(out)}</div>'
 
 
 def footer_html() -> str:
-    links = "".join(f'<a href="{href}">{label}</a>' for href, label in MORE)
-    return (f'<footer><div>每天 09:00 更新 · 数据与评分均由本机生成，页面只读。</div>'
+    links = "".join(f'<a href="{href}">{label}</a>' for href, label in
+                    (("/about.html", "关于"), ("/agent.html", "Agent 接入"),
+                     ("/changelog.html", "更新日志"), ("/feedback.html", "反馈"),
+                     ("/terms.html", "条款"), ("/privacy.html", "隐私")))
+    return (f'<footer><div>{BRAND} · 每天 09:00 更新 · 内容与评分均在本机生成</div>'
             f'<div class="links">{links}</div></footer>')
 
 
-def page(title: str, body: str, *, active: str = "/", lead: str = "",
-         subtitle: str = "") -> str:
-    """整页骨架。`lead` 是标题下面那一行（可以带 HTML），`subtitle` 进 <title>。"""
-    head = f'<div class="head"><h1>{esc(title)}</h1>'
-    if lead:
-        head += f'<div class="lead">{lead}</div>'
-    head += "</div>"
-    return (f'<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">'
-            f'<meta name="viewport" content="width=device-width,initial-scale=1">'
-            f'<title>{esc(subtitle or title)}</title>'
-            f'{og_tags(title, lead)}<style>{CSS}</style></head><body>'
-            f'{nav_html(active)}<div class="shell">{head}{body}{footer_html()}</div>'
-            f'{bottom_nav(active)}</body></html>')
-
-
 def og_tags(title: str, description: str = "") -> str:
-    """Open Graph / Twitter 卡片。图片全站共用 `/og.png`（share.py 每次重画）。"""
     try:
         from .export import config as export_config
 
@@ -207,29 +280,33 @@ def og_tags(title: str, description: str = "") -> str:
     ])
 
 
-def override_css() -> str:
-    """给旧的深色页面追加的一段覆盖样式，让它们并入同一套配色。
+def page(title: str, body: str, *, active: str = "/", lead: str = "",
+         subtitle: str = "", own_heading: bool = False) -> str:
+    head = "" if own_heading else f'<h1 class="title">{esc(title)}</h1>'
+    lead_html = f'<div class="lead">{lead}</div>' if lead else ""
+    return (f'<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">'
+            f'<meta name="viewport" content="width=device-width,initial-scale=1">'
+            f'<title>{esc(subtitle or title)}</title>'
+            f'{og_tags(title, lead)}<style>{CSS}</style></head><body>'
+            f'{nav_html(active)}<div class="wrap">{head}{lead_html}{body}{footer_html()}</div>'
+            f'{bottom_nav(active)}</body></html>')
 
-    只覆盖颜色与字体，不动尺寸和布局 —— 那些页面已经调好了，重排风险大。
-    """
+
+def override_css() -> str:
+    """给老页面（看板/时间线/主题/离线）追加的一段，让它们并入新皮肤。"""
     return """
-:root{--paper:#f6f1e7;--ink:#1c1a16;--muted:#6f6759;--rule:#e2d8c6;--accent:#b4530a}
-body{background:#f6f1e7 !important;color:#1c1a16 !important;
+body{background:#0a0a0b !important;color:#f2efe9 !important;
      font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif !important}
-h1,h2,h3{font-family:"Iowan Old Style",Georgia,"Songti SC","Noto Serif CJK SC",serif !important;
-         color:#1c1a16 !important}
-a{color:#b4530a !important}
-.card,.tile{border-color:#e2d8c6 !important;background:#fffdf7 !important}
-.muted,.sub,.k,.h,.bn,.bl{color:#6f6759 !important}
-footer{color:#6f6759 !important}
-/* 手机底栏：旧页面也要有，否则手机上翻不到别的页面 */
-.bnav{display:none}
-@media(max-width:719px){
-  .bnav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;
-        background:rgba(255,253,247,.96);border-top:1px solid #e2d8c6;padding:6px 0}
-  .bnav a{flex:1;text-align:center;font-size:11px;color:#6f6759;
-          display:flex;flex-direction:column;gap:2px;align-items:center;text-decoration:none}
-  .bnav a.on{color:#b4530a}
-  .bnav .i{font-size:17px;line-height:1}
+h1,h2,h3{font-family:"Playfair Display",Georgia,"Songti SC",serif !important;color:#f2efe9 !important}
+a{color:#e8b04b !important}
+.card,.tile{border-color:#1e1e22 !important;background:#101013 !important}
+.muted,.sub,.k,.h,.bn,.bl{color:#6d6862 !important}
+footer{color:#6d6862 !important}
+@media(prefers-color-scheme:light){
+  body{background:#faf8f4 !important;color:#16150f !important}
+  h1,h2,h3{color:#16150f !important}
+  a{color:#a8620f !important}
+  .card,.tile{border-color:#e7e2d8 !important;background:#fffdf9 !important}
+  .muted,.sub,.k,.h,.bn,.bl{color:#8b857b !important}
 }
 """

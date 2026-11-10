@@ -130,7 +130,7 @@ def build(payload: dict[str, Any], site_root: Path | None = None) -> dict[str, A
 
     # 左侧强调条 + 顶部品牌行
     draw.rectangle([0, 0, 10, HEIGHT], fill=ACCENT)
-    draw.text((64, 56), "信息雷达", font=brand_font, fill=TEXT)
+    draw.text((64, 56), "Z-Bit", font=brand_font, fill=TEXT)
     draw.text((64, 100), f"{day} · {total} 条 · {sources} 个源", font=small_font, fill=MUTED)
 
     # 头条卡片

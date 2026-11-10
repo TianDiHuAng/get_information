@@ -32,7 +32,7 @@ AXES = ("sig", "nov", "cred", "reson", "act")
 ROOT = Path(__file__).parent.parent
 SCORING_PATH = ROOT / "config" / "scoring.yaml"
 PROMPT_DIR = ROOT / "config" / "prompts"
-SITE_NAME = "信息雷达"
+SITE_NAME = "Z-Bit"
 
 _config_lock = threading.Lock()
 _config_cache: dict[str, Any] = {"mtime": 0.0, "value": {}}
