@@ -157,7 +157,9 @@ feed.xml · feed-all.xml · feed/category/*.xml · api/v1/latest.json · llms.tx
 - **试抓**：真的跑一次这个源的抓取器，**不入库**；慢源（X 的 Apify）会如实返回超时。
 - **标注**（`?tab=better`）：给今天的条目打「选 / 不选 / 两可」，写进 `data/gold.jsonl`。
   和你用编辑器改那个文件完全等价 —— 不碰提示词、不碰门槛。
-  标完跑 `python tools/eval_selection.py --enrich` 就能出准确率与门槛扫描。
+  顶部可切「标进开发集 / 留出集」；标完跑 `python tools/eval_selection.py --enrich --split development`。
+- **评测对照**（`?tab=evals`）：点开一份 `data/eval/*.json`，按模型并排看指标，
+  再按「判错 / 判对 / 失败 / 只看分歧 / 分层」逐条看模型给了什么理由。
 
 改门槛、预算、提示词仍然改 `config/*.yaml`，下一轮自动生效。
 
