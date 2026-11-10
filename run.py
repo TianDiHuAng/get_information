@@ -18,7 +18,8 @@ from pathlib import Path
 
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
-from collector import alerts, board, breaking, events, export, rating, state, store, structure, timeline
+from collector import (alerts, board, breaking, events, export, rating, state, store,
+                       structure, timeline, topics)
 from collector.archive import save as save_archive
 from collector.digest import build as build_digest
 from collector.digest import picked as digest_picked
@@ -185,6 +186,16 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True,
               f"{tl['narratives']} 组跨渠道叙事")
     except Exception as e:
         print(f"      时间线生成失败: {type(e).__name__}: {e}")
+    _done(stage)
+
+    # 主题页 / 标签页：把结构化结果变成能翻的页面
+    stage = _stage("topics", day)
+    try:
+        tp = topics.build(ROOT / "site")
+        payload["stats"]["topics"] = tp
+        print(f"      主题: {tp['pages']} 个页面（{tp['categories']} 分类 / {tp['tags']} 标签）")
+    except Exception as e:
+        print(f"      主题页生成失败: {type(e).__name__}: {e}")
     _done(stage)
 
     stage = _stage("digest", day)

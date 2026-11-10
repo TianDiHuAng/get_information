@@ -942,6 +942,39 @@ def event_dump(days: int = 120, day: str | None = None) -> list[dict[str, Any]]:
     return out
 
 
+def structure_history(days: int = 30, day: str | None = None,
+                      limit: int = 3000) -> list[dict[str, Any]]:
+    """近 N 天的结构化结果（分类 / 标签 / 主体）+ 条目本身。
+
+    主题页要的是"这段时间这个方向都发生了什么"，所以按天往前查，而不是只看今天。
+    """
+    day = day or today_str()
+    since = (datetime.strptime(day, "%Y-%m-%d") - timedelta(days=days)).strftime("%Y-%m-%d")
+    with db() as conn:
+        rows = conn.execute(
+            """
+            SELECT s.category, s.tags, s.subjects, s.scope, s.day,
+                   i.title, i.url, i.source, i.layer, i.region, i.published
+            FROM structures s
+            JOIN items i ON i.id = s.item_id
+            WHERE s.day >= ?
+            ORDER BY coalesce(nullif(i.published, ''), s.day) DESC
+            LIMIT ?
+            """,
+            (since, limit),
+        ).fetchall()
+    out: list[dict[str, Any]] = []
+    for row in rows:
+        item = dict(row)
+        for key in ("tags", "subjects"):
+            try:
+                item[key] = json.loads(item[key] or "[]")
+            except Exception:
+                item[key] = []
+        out.append(item)
+    return out
+
+
 # --------------------------------------------------------------------------- #
 # 概览
 # --------------------------------------------------------------------------- #
