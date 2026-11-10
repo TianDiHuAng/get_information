@@ -768,21 +768,33 @@ def edition_row(kind: str, day: str) -> dict[str, Any] | None:
 
 
 def missing_editions(kind: str = "daily", days: int = 7, day: str | None = None) -> list[str]:
-    """最近 N 天里没有出刊的日期（今天除外，今天还没到点不算缺）。"""
+    """最近 N 天里没有出刊的日期。
+
+    两个边界：
+    - 今天不算缺（还没到点，交给 `edition_missing` 按时限判断）；
+    - **比库里最早一期还早的日子不算缺** —— 否则新建的库会一上来就报"缺 7 期"，
+      这种误报会让告警失去可信度（实测踩过：空库实跑发了一封"缺 3 期"的邮件）。
+    """
     day = day or today_str()
     today = datetime.strptime(day, "%Y-%m-%d")
-    out: list[str] = []
+    start = (today - timedelta(days=days)).strftime("%Y-%m-%d")
     with db() as conn:
-        have = {
-            r["day"] for r in conn.execute(
-                "SELECT day FROM editions WHERE kind = ? AND day >= ?",
-                (kind, (today - timedelta(days=days)).strftime("%Y-%m-%d")),
-            )
-        }
+        rows = conn.execute(
+            "SELECT day FROM editions WHERE kind = ? AND day >= ?", (kind, start)
+        ).fetchall()
+        earliest_row = conn.execute(
+            "SELECT min(day) AS d FROM editions WHERE kind = ?", (kind,)
+        ).fetchone()
+    if not earliest_row or not earliest_row["d"]:
+        return []  # 从来没出过刊：这不是"缺期"，是还没起来
+    have = {r["day"] for r in rows}
+    earliest = str(earliest_row["d"])
+    out: list[str] = []
     for offset in range(1, days + 1):
         d = (today - timedelta(days=offset)).strftime("%Y-%m-%d")
-        if d not in have:
-            out.append(d)
+        if d < earliest or d in have:
+            continue
+        out.append(d)
     return out
 
 

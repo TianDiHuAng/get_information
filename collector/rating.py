@@ -207,6 +207,10 @@ def rate_items(items: Iterable[Any], *, ids: dict[str, int] | None = None,
     items = list(items)
     if not items:
         return {"skipped": "empty"}
+    if isinstance(items[0], dict):
+        # 曾经踩过的坑：pipeline 早就把 items 转成 dict 了，这里 getattr 拿不到 extra，
+        # 于是整轮"评分了 0 条"却不报错。宁可炸，也不要静默空转。
+        raise TypeError("rating 需要 Item 对象；收到 dict（是不是提前 to_dict 了？）")
     day = day or store.today_str()
     calls = int(conf.get("score_calls") or 2)
     workers = max(1, int(conf.get("max_workers") or 4))

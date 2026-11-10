@@ -54,9 +54,21 @@ def test_before_deadline_is_not_an_alert(tmpdb, monkeypatch):
 
 
 def test_edition_gap_is_flagged(tmpdb):
+    """只有已经出过刊之后的日子才算"缺期"——空库不该一上来就报缺 7 期。"""
+    from datetime import datetime, timedelta
+
+    today = datetime.now()
+    store.save_edition("daily", (today - timedelta(days=2)).strftime("%Y-%m-%d"), entries=5)
     store.save_edition("daily", store.today_str(), entries=10)
     found = alerts.check()
-    assert any(a["kind"] == "edition_gap" for a in found)
+    gap = [a for a in found if a["kind"] == "edition_gap"]
+    assert gap, "中间那天确实缺了，要报"
+
+
+def test_fresh_database_does_not_report_gaps(tmpdb):
+    """空库只报"今天没出刊"，不报"缺了 N 期"。"""
+    found = alerts.check()
+    assert not any(a["kind"] == "edition_gap" for a in found)
 
 
 def test_alert_is_recorded_only_once(tmpdb):

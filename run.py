@@ -79,6 +79,9 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True) -> None:
         _done(stage)
 
     stage = _stage("translate", day)
+    # 前面几个阶段都在往 Item.extra 上写东西（评分、结构、事件），
+    # 到这里才算完，转成 dict 交给渲染/日报/出口。
+    payload["items"] = [i.to_dict() for i in payload["items"]]
     payload["stats"]["translate"] = translate_items(payload["items"])
     _done(stage)
 

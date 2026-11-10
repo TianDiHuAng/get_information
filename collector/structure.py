@@ -180,6 +180,8 @@ def structure_items(items: Iterable[Any], *, day: str | None = None,
     items = list(items)
     if not items:
         return {"skipped": "empty"}
+    if isinstance(items[0], dict):
+        raise TypeError("structure 需要 Item 对象；收到 dict（是不是提前 to_dict 了？）")
     day = day or store.today_str()
 
     min_score = float(conf.get("min_score") or 0)

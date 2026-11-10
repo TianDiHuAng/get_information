@@ -275,7 +275,10 @@ def run() -> dict:
     for it in items:
         stats["by_layer"][it.layer] = stats["by_layer"].get(it.layer, 0) + 1
         stats["by_region"][it.region] = stats["by_region"].get(it.region, 0) + 1
-    return {"items": [i.to_dict() for i in items], "stats": stats}
+    # 注意：这里返回的是 **Item 对象**，不是 dict。
+    # 评分 / 结构化 / 事件三个阶段都要往 `extra` 上写东西，dict 拿不到。
+    # 转成 dict 的时机在 run.py：所有阶段跑完之后、给渲染与落盘之前。
+    return {"items": items, "stats": stats}
 
 
 if __name__ == "__main__":

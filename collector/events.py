@@ -323,6 +323,8 @@ def cluster_items(items: Iterable[Any], *, day: str | None = None,
     items = list(items)
     if not items:
         return {"skipped": "empty"}
+    if isinstance(items[0], dict):
+        raise TypeError("events 需要 Item 对象；收到 dict（是不是提前 to_dict 了？）")
     day = day or store.today_str()
     views = [_view_item(it) for it in items]
     by_identity: dict[str, Any] = {v["identity"]: it for v, it in zip(views, items)}
