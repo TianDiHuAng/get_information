@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 
 import yaml
 
-from . import extract, store
+from . import extract, prefs, store
 from .identity import bigrams, canonical_url, item_identity, jaccard, title_key  # noqa: F401  (对外保持原名字)
 from .model import Item
 from .sources import REGISTRY, build_fetchers, region_of
@@ -223,6 +223,15 @@ def run() -> dict:
     except Exception as e:
         print(f"      正文提取跳过: {type(e).__name__}: {e}")
 
+    # 个性化：按你点过的东西微调排序。只调分，不碰入选门槛（防回音室）。
+    pref_stats: dict = {}
+    try:
+        pref_stats = prefs.apply(items)
+        if pref_stats.get("boosted"):
+            items.sort(key=lambda i: i.extra.get("score") or 0, reverse=True)
+    except Exception as e:
+        print(f"      偏好微调跳过: {type(e).__name__}: {e}")
+
     # 落库 + 跨天已报抑制。
     # 这一段以前不存在，代价是站点列表里 41–43% 是昨天的同位条目；
     # 现在每条都记 first_seen / last_seen，并把「最近 N 天已进过日报」标出来。
@@ -259,6 +268,7 @@ def run() -> dict:
         "by_layer": {},
         "by_region": {},
         "extract": extract_stats,
+        "prefs": pref_stats,
         "new_today": sum(1 for i in items if i.extra.get("new_today")),
         "repeats": sum(1 for i in items if i.extra.get("repeat")),
     }

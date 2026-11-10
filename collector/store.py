@@ -208,6 +208,20 @@ MIGRATIONS: list[str] = [
         UNIQUE (kind, day, message)
     );
     """,
+    # v5 —— 阅读反馈：点开 / 有用 / 没用。同一个身份同一天只记最后一次态度，
+    # 否则"点错了再改回来"会被当成两条相反的证据，把兴趣向量搅乱。
+    """
+    CREATE TABLE IF NOT EXISTS feedback (
+        id         INTEGER PRIMARY KEY,
+        identity   TEXT NOT NULL,
+        day        TEXT NOT NULL,
+        kind       TEXT NOT NULL,
+        terms      TEXT,
+        created_at TEXT NOT NULL,
+        UNIQUE (identity, day)
+    );
+    CREATE INDEX IF NOT EXISTS idx_feedback_day ON feedback(day);
+    """,
 ]
 
 
@@ -779,6 +793,69 @@ def alerts_on(day: str | None = None) -> list[dict[str, Any]]:
         return [dict(r) for r in conn.execute(
             "SELECT * FROM alerts WHERE day = ? ORDER BY id", (day,)
         ).fetchall()]
+
+
+# --------------------------------------------------------------------------- #
+# 阅读反馈
+# --------------------------------------------------------------------------- #
+
+def latest_structure(item_id: int) -> dict[str, Any] | None:
+    with db() as conn:
+        row = conn.execute(
+            "SELECT category, tags, subjects, scope FROM structures WHERE item_id = ? "
+            "ORDER BY id DESC LIMIT 1",
+            (item_id,),
+        ).fetchone()
+    if not row:
+        return None
+    out = dict(row)
+    for key in ("tags", "subjects"):
+        try:
+            out[key] = json.loads(out[key] or "[]")
+        except Exception:
+            out[key] = []
+    return out
+
+
+def item_by_identity(identity: str) -> dict[str, Any] | None:
+    with db() as conn:
+        row = conn.execute(
+            "SELECT id, identity, source, title, url, layer, region FROM items WHERE identity = ?",
+            (identity,),
+        ).fetchone()
+    return dict(row) if row else None
+
+
+def save_feedback(identity: str, kind: str, terms: Iterable[str], day: str | None = None) -> bool:
+    """同一个身份同一天只保留最后一次态度（改主意就覆盖）。"""
+    day = day or today_str()
+    with db() as conn:
+        conn.execute(
+            """INSERT INTO feedback (identity, day, kind, terms, created_at) VALUES (?,?,?,?,?)
+               ON CONFLICT(identity, day) DO UPDATE SET
+                 kind = excluded.kind, terms = excluded.terms, created_at = excluded.created_at""",
+            (identity, day, kind, json.dumps(list(dict.fromkeys(terms)), ensure_ascii=False), now_str()),
+        )
+    return True
+
+
+def feedback_rows(days: int = 60, day: str | None = None) -> list[dict[str, Any]]:
+    day = day or today_str()
+    since = (datetime.strptime(day, "%Y-%m-%d") - timedelta(days=days)).strftime("%Y-%m-%d")
+    with db() as conn:
+        rows = conn.execute(
+            "SELECT identity, day, kind, terms FROM feedback WHERE day >= ? ORDER BY day DESC",
+            (since,),
+        ).fetchall()
+    out = []
+    for row in rows:
+        item = dict(row)
+        try:
+            item["terms"] = json.loads(item["terms"] or "[]")
+        except Exception:
+            item["terms"] = []
+        out.append(item)
+    return out
 
 
 # --------------------------------------------------------------------------- #

@@ -102,7 +102,7 @@ def render(payload: dict, out_path: Path, history: list[dict] | None = None,
           </div>
           <h3>{html.escape(it['title'])}</h3>
           <p>{summary}</p>
-          <div class="foot">{heat_html}<span class="score">权重 {it['extra'].get('score', 0)}</span></div>
+          <div class="foot">{heat_html}<span class="score">权重 {it['extra'].get('score', 0)}</span><span class="fb" data-kind="up" data-url="{html.escape(it['url'], quote=True)}" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="{html.escape(it['url'], quote=True)}" title="没用：以后少推这类">👎</span></div>
         </div>
       </a>"""
         )
@@ -238,14 +238,18 @@ def render(payload: dict, out_path: Path, history: list[dict] | None = None,
   .bar {{ width:3px; flex:0 0 3px; }}
   .body {{ padding:14px 16px; display:flex; flex-direction:column; gap:8px; min-width:0; }}
   .meta {{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; font-size:11px; }}
-  .badge {{ border:1px solid; padding:1px 7px; border-radius:6px; }}
-  .tag {{ color:#6b7785; }}
+  .badge {{ border:1px solid; padding:1px 7px; border-radius:6px; }}  .tag {{ color:#6b7785; }}
   .time {{ margin-left:auto; color:#6b7785; }}
   h3 {{ margin:0; font-size:15px; line-height:1.45; font-weight:600; }}
   p {{ margin:0; color:#8b98a5; font-size:12.5px; display:-webkit-box; -webkit-line-clamp:2;
        -webkit-box-orient:vertical; overflow:hidden; }}
   .foot {{ display:flex; gap:12px; align-items:center; font-size:11px; color:#6b7785; margin-top:auto; }}
   .score {{ margin-left:auto; }}
+  /* 反馈按钮：点一下就记，不用登录也不用刷新 */
+  .fb {{ cursor:pointer; opacity:.35; font-size:13px; line-height:1; padding:2px 4px; border-radius:5px;
+         user-select:none; transition:opacity .15s, background .15s; }}
+  .fb:hover {{ opacity:.9; background:#ffffff14; }}
+  .fb.on {{ opacity:1; background:#22c55e26; }}
   .hero {{ background:linear-gradient(135deg,#101a26,#0d141d); border:1px solid #1d2a3a;
            border-radius:14px; padding:6px 18px; margin-bottom:22px; }}
   .hero h2 {{ font-size:13px; color:#7d8b99; font-weight:600; letter-spacing:.08em; margin:14px 0 6px; }}
@@ -312,6 +316,24 @@ document.querySelectorAll('.f').forEach(btn => btn.addEventListener('click', () 
   btn.classList.add('active');
   apply(btn.dataset.f);
 }}));
+// 反馈：卡片是 <a>，必须拦住跳转，否则点一下按钮就打开了原文
+document.addEventListener('click', (e) => {{
+  const el = e.target.closest('.fb');
+  if (!el) return;
+  e.preventDefault();
+  e.stopPropagation();
+  const url = el.dataset.url, kind = el.dataset.kind;
+  fetch('/api/feedback', {{
+    method: 'POST',
+    headers: {{ 'content-type': 'application/json' }},
+    body: JSON.stringify({{ url: url, kind: kind }})
+  }}).then(r => r.json()).then(j => {{
+    if (!j.ok) return;
+    const card = el.closest('.card');
+    card.querySelectorAll('.fb').forEach(b => b.classList.remove('on'));
+    el.classList.add('on');
+  }}).catch(() => {{}});
+}});
 </script>
 </body>
 </html>"""
