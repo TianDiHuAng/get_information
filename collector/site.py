@@ -645,3 +645,304 @@ def build(payload: dict[str, Any] | None = None, site_root: Path | None = None,
             total += int(v.get("pages") or v.get("items") or v.get("events") or 1)
     stats["pages"] = total
     return stats
+
+
+CHIPS = (("all", "全部"), ("first", "一手"), ("model_release", "模型"),
+         ("product_launch", "产品"), ("industry_event", "行业"),
+         ("research_paper", "论文"), ("tutorial_explainer", "教程"),
+         ("opinion_analysis", "观点"))
+
+_HOME_JS = """
+<script>
+(function(){
+  var q=document.getElementById('q');
+  var pills=Array.prototype.slice.call(document.querySelectorAll('.pillbar a[data-cat]'));
+  var items=Array.prototype.slice.call(document.querySelectorAll('.slot'));
+  var cat='all';
+  function apply(){
+    var k=(q&&q.value||'').trim().toLowerCase(), shown=0;
+    items.forEach(function(el){
+      var okPill = cat==='all' || el.dataset.cat===cat ||
+                   (cat==='first' && el.dataset.first==='1');
+      var okText = !k || (el.dataset.text||'').indexOf(k)>=0;
+      var vis = okPill && okText;
+      el.style.display = vis ? '' : 'none';
+      if(vis) shown++;
+    });
+    var c=document.getElementById('cnt'); if(c) c.textContent=shown;
+  }
+  pills.forEach(function(p){p.addEventListener('click',function(e){
+    e.preventDefault();
+    pills.forEach(function(x){x.classList.remove('on')});
+    p.classList.add('on'); cat=p.dataset.cat; apply();
+  });});
+  if(q){q.addEventListener('input',apply);
+    document.addEventListener('keydown',function(e){
+      if(e.key==='/'&&document.activeElement!==q){e.preventDefault();q.focus();}
+    });}
+  apply();
+})();
+</script>"""
+
+
+def _day_label(day: str) -> tuple[str, str]:
+    """返回（'11月10日' 或 '今天', '周二'）。"""
+    from datetime import date
+
+    try:
+        d = date.fromisoformat(day)
+    except Exception:
+        return day, ""
+    week = "一二三四五六日"[d.weekday()]
+    today = date.today()
+    head = "今天" if d == today else f"{d.month}月{d.day}日"
+    return head, f"周{week}"
+
+
+def build_home(day: str | None = None, site_root: Path | None = None,
+               limit: int = 60) -> dict[str, Any]:
+    """生成 `site/index.html`：结构对齐 aihot.news 的精选页。"""
+    root = site_root or SITE
+    day = store.content_day(day)
+    rows = store.all_items(day)
+    try:
+        heat = store.latest_heat()
+    except Exception:
+        heat = {}
+
+    # —— 当前热点（热度前 5） —— #
+    hot_rows = []
+    try:
+        buckets: dict[int, dict[str, Any]] = {}
+        for r in store.event_dump(days=3, day=day):
+            eid = r.get("event_id")
+            if eid is None:
+                continue
+            b = buckets.setdefault(int(eid), {"title": r.get("event_title") or "",
+                                              "sources": set()})
+            b["sources"].add(r.get("source") or "")
+        ranked = sorted(buckets.items(), key=lambda kv: -heat.get(kv[0], 0.0))[:5]
+        for eid, b in ranked:
+            faces = "".join("<i></i>" for _ in list(b["sources"])[:6])
+            hot_rows.append(
+                f'<li><a href="/events/{eid}.html"><span class="rk"></span>'
+                f'<span class="tt">{theme.esc(b["title"])}</span>'
+                f'<span class="faces">{faces}</span>'
+                f'<span class="heat"><b>{int(heat.get(eid, 0))}</b> 热度</span>'
+                f'<span></span></a></li>')
+        # 序号用 CSS 的 rank 颜色，但内容要显式写数字
+        hot_rows = [r.replace('<span class="rk"></span>',
+                              f'<span class="rk">{i}</span>', 1)
+                    for i, r in enumerate(hot_rows, 1)]
+    except Exception:
+        hot_rows = []
+
+    # —— 信息流：时间轴 + 卡片 —— #
+    slots = []
+    for it in rows[:limit]:
+        att = it.get("attention") or {}
+        cat = (it.get("structure") or {}).get("category") or ""
+        published = (it.get("published") or "")[:16].replace("T", " ")
+        hhmm = published[11:16] if len(published) >= 16 else "--:--"
+        first = "1" if it.get("layer") == "primary" else "0"
+        score = ""
+        if att.get("available") and att.get("score") is not None:
+            score = f'<span class="scorelabel"><b>{att["score"]}</b>分</span>'
+        pick = '<span class="badge-pick">精选</span>' if att.get("selected") else ""
+        summary = " ".join(str(it.get("summary") or "").split())
+        reason = (att.get("reason") or "").strip()
+        text = (str(it.get("title") or "") + " " + summary + " " + cat).lower()
+        slots.append(
+            f'<li class="slot" data-id="{it["id"]}" data-cat="{theme.esc(cat)}" '
+            f'data-first="{first}" data-text="{theme.esc(text)}">'
+            f'<time datetime="{theme.esc(published)}">{theme.esc(hhmm)}</time>'
+            '<span class="rail" aria-hidden="true"></span>'
+            '<article class="cardrow">'
+            '<header class="hd"><span class="src">'
+            f'<span>{theme.esc(it["source"])}</span>'
+            f'<span class="dot"></span><span>{theme.esc(published[5:16])}</span>'
+            f'{pick}</span>'
+            f'<span class="rt">{score}</span></header>'
+            f'<h3><a href="/items/{it["id"]}.html">{theme.esc(it["title"])}</a></h3>'
+            + (f'<p class="sum">{theme.esc(summary[:200])}</p>' if summary else "")
+            + (f'<p class="reason">推荐理由：{theme.esc(reason[:140])}</p>' if reason else "")
+            + '</article></li>')
+
+    day_head, week = _day_label(day)
+    pill_parts = []
+    for key, label in CHIPS:
+        cls = ' class="on"' if key == "all" else ""
+        pill_parts.append(f'<a href="#" data-cat="{key}"{cls}>{label}</a>')
+    pills = "".join(pill_parts)
+
+    body = (
+        '<h1 class="title">精选</h1>'
+        f'<div class="pillbar">{pills}</div>'
+        '<div class="searchrow"><div class="box">'
+        f'<span class="ic">{theme.icon("list", 16)}</span>'
+        '<input id="q" type="search" placeholder="搜索标题、摘要…"><kbd>/</kbd></div></div>'
+        + (f'<section class="hotcard"><div class="hd">'
+           f'<h2><span class="dotlive"><i></i><b></b></span>当前热点</h2>'
+           f'<a class="more" href="/hot.html">完整榜单 →</a></div>'
+           f'<ol>{"".join(hot_rows)}</ol></section>' if hot_rows else "")
+        + f'<div class="daybar"><span class="d">{theme.esc(day_head)}</span>'
+          f'<span class="w">{theme.esc(week)}</span>'
+          f'<span class="aside"><b id="cnt">{len(slots)}</b> 条</span></div>'
+        + f'<ol class="feed">{"".join(slots)}</ol>'
+        + (f'<p class="muted small" style="margin-top:16px;">'
+           f'<a href="/all.html">查看全部 {len(rows)} 条 →</a></p>'
+           if len(rows) > limit else "")
+        + _HOME_JS)
+
+    _write(root / "index.html",
+           theme.page(f"精选 · {theme.BRAND}", body, active="/",
+                      subtitle=f"{theme.BRAND} · {theme.TAGLINE}", own_heading=True))
+    return {"file": str(root / "index.html"), "items": min(len(rows), limit),
+            "hot": len(hot_rows), "total": len(rows)}
+
+
+def build_leaderboard(site_root: Path | None = None) -> dict[str, Any]:
+    """`/leaderboard.html`：LMArena 文本榜 + Artificial Analysis 智能指数。
+
+    数据来自 `collector/leaderboards.py` 的本地缓存（每天抓一次，HF 数据集 + AA 免费接口）。
+    涨跌用的是模型自己上次的名次，不是"上一个模型"。
+    """
+    root = site_root or SITE
+    from . import leaderboards as lb
+
+    def delta(now: int | None, before: int | None) -> str:
+        if not now or not before:
+            return '<span class="muted">—</span>'
+        if now < before:
+            return f'<span style="color:var(--ok)">▲{before - now}</span>'
+        if now > before:
+            return f'<span style="color:var(--bad)">▼{now - before}</span>'
+        return '<span class="muted">·</span>'
+
+    sections = []
+    for title, path, cols in (
+        ("LMArena 文本榜", lb.PATH, ("评分", "票数")),
+        ("Artificial Analysis 智能指数", lb.AA_PATH, ("智能分", "输出价")),
+    ):
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except Exception:
+            sections.append(f'<h2 class="sec">{theme.esc(title)}</h2>'
+                            '<p class="muted">还没有数据，跑一次 <code>python run.py</code>。</p>')
+            continue
+        models = (data.get("models") or [])[: lb.TOP_N if hasattr(lb, "TOP_N") else 20]
+        rows = []
+        for m in models:
+            rank = m.get("rank")
+            if title.startswith("LMArena"):
+                v1, v2 = m.get("rating"), m.get("votes")
+                v1s = f"{v1:.1f}" if isinstance(v1, (int, float)) else "—"
+                v2s = f"{v2:,}" if isinstance(v2, int) else "—"
+            else:
+                v1, v2 = m.get("intelligence"), m.get("price_out")
+                v1s = f"{v1:.1f}" if isinstance(v1, (int, float)) else "—"
+                v2s = f"${v2:g}" if isinstance(v2, (int, float)) else "—"
+            rows.append(
+                f'<tr><td class="num" style="width:38px">{rank}</td>'
+                f'<td>{theme.esc(m.get("model"))}'
+                f'<span class="muted small"> · {theme.esc(m.get("org") or "")}</span></td>'
+                f'<td class="num">{v1s}</td><td class="num">{v2s}</td>'
+                f'<td class="num">{delta(rank, m.get("prev_rank"))}</td></tr>')
+        sections.append(
+            f'<h2 class="sec">{theme.esc(title)}'
+            f'<span class="muted" style="font-size:11px">'
+            f'{theme.esc(str(data.get("date") or ""))}</span></h2>'
+            '<div class="scroll"><table><thead><tr><th>#</th><th>模型</th>'
+            f'<th>{cols[0]}</th><th>{cols[1]}</th><th>名次变化</th>'
+            f'</tr></thead><tbody>{"".join(rows)}</tbody></table></div>')
+
+    body = ('<h1 class="title">模型榜<small>每天同步一次</small></h1>'
+            + "".join(sections)
+            + '<p class="muted small" style="margin-top:20px;">'
+              'LMArena 取自官方每日同步的 HF 数据集；智能分与价格取自 '
+              'Artificial Analysis 免费接口。名次变化对比的是这个模型自己上一次的名次。</p>')
+    _write(root / "leaderboard.html",
+           theme.page(f"模型榜 · {theme.BRAND}", body, active="/leaderboard.html",
+                      subtitle=f"模型榜 · {theme.BRAND}", own_heading=True))
+    return {"file": str(root / "leaderboard.html"), "sections": len(sections)}
+
+
+DEAL_WORDS = ("免费", "赠送", "白嫖", "羊毛", "额度", "体验金", "注册送", "试用",
+              "优惠", "折扣", "降价", "限免", "free", "trial", "credit")
+
+
+def build_deals(day: str | None = None, site_root: Path | None = None,
+                days: int = 14) -> dict[str, Any]:
+    """`/free-tokens.html`：Token 羊毛 / 免费额度。
+
+    口径：`deals` 源抓到的，或标题摘要里带"免费/额度/赠送"这类词的。
+    不额外判断"真能不能白嫖"——那要看原文，页面只负责把人送到原文。
+    """
+    root = site_root or SITE
+    day = store.content_day(day)
+    rows: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for d in range(days):
+        try:
+            day_str = store.shift_day(day, -d) if d else day
+        except Exception:
+            day_str = day
+        try:
+            batch = store.all_items(day_str, limit=800)
+        except Exception:
+            batch = []
+        for it in batch:
+            # 只认 deals 源或已打标的条目：上游的查询词已经在做关键词过滤，
+            # 这里再用"免费/试用"撒网会混进"免费开源声明""存储试用会"这类噪音。
+            is_deal = (it.get("source") == "deals" or bool(it.get("deal")))
+            if not is_deal:
+                continue
+            key = it.get("url") or str(it.get("id"))
+            if key in seen:
+                continue
+            seen.add(key)
+            rows.append(it)
+        if d >= 2 and rows:
+            break
+
+    rows.sort(key=lambda r: str(r.get("published") or ""), reverse=True)
+    cards = []
+    for it in rows[:60]:
+        tags = []
+        text = f'{it.get("title") or ""}{it.get("summary") or ""}'
+        if "免费" in text or "free" in text.lower():
+            tags.append("免费")
+        if "额度" in text or "credit" in text.lower():
+            tags.append("额度")
+        if "降价" in text or "折扣" in text or "优惠" in text:
+            tags.append("降价")
+        if "注册" in text:
+            tags.append("注册送")
+        tag_html = "".join(f'<span class="tag">{t}</span>' for t in dict.fromkeys(tags))
+        cards.append(
+            f'<li class="item" data-id="{it.get("id")}">'
+            f'<div class="time">{theme.esc((it.get("published") or "")[11:16] or "--:--")}</div>'
+            f'<div><div class="src"><span>{theme.esc(it.get("source"))}</span>'
+            f'<span class="dot"></span><span>{theme.esc((it.get("published") or "")[5:10])}</span>'
+            f'</div><h3><a href="{theme.esc(it.get("url"))}" target="_blank" rel="noopener">'
+            f'{theme.esc(it.get("title"))}</a></h3>'
+            + (f'<p class="sum">{theme.esc(" ".join(str(it.get("summary") or "").split())[:160])}</p>'
+               if it.get("summary") else "")
+            + (f'<div style="margin-top:8px;">{tag_html}</div>' if tag_html else "")
+            + '</div></li>')
+
+    body = ('<h1 class="title">Token 羊毛'
+            f'<small>近 {days} 天 · {len(rows)} 条</small></h1>'
+            '<p class="lead">免费额度、赠送、降价。点标题去原文核对，'
+            '能不能用、还剩多少以原文为准。</p>'
+            + (f'<ol class="feed">{"".join(cards)}</ol>' if cards
+               else '<p class="muted">这几天没抓到羊毛。可以停掉某个源再试，'
+                    '或者缩小关键词。</p>')
+            + '<p class="muted small" style="margin-top:18px;">'
+              '口径：只收 deals 源与已打标的条目 —— 上游用「免费 / 额度 / 白嫖 / 注册送」等词搜索，'
+              '这里不再二次撒网。'
+              '页面只做归集，不判断真伪。</p>')
+    _write(root / "free-tokens.html",
+           theme.page(f"Token 羊毛 · {theme.BRAND}", body, active="/free-tokens.html",
+                      subtitle=f"Token 羊毛 · {theme.BRAND}", own_heading=True))
+    return {"file": str(root / "free-tokens.html"), "items": len(rows)}
