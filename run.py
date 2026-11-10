@@ -18,7 +18,7 @@ from pathlib import Path
 
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
-from collector import alerts, breaking, events, export, rating, store, structure
+from collector import alerts, board, breaking, events, export, rating, store, structure
 from collector.archive import save as save_archive
 from collector.digest import build as build_digest
 from collector.digest import picked as digest_picked
@@ -139,6 +139,17 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True) -> None:
               f"（feed {ex.get('feeds', 0)} 个 · API · llms.txt）")
     except Exception as e:
         print(f"      出口生成失败: {type(e).__name__}: {e}")
+    _done(stage)
+
+    # 本地看板：源健康 / 评分分布 / 成本 / 舆论场
+    stage = _stage("board", day)
+    try:
+        bd = board.build(payload, ROOT / "site")
+        payload["stats"]["board"] = bd
+        print(f"      看板: board.html（告警 {bd['alerts']} 条 · "
+              f"官方 {bd['discourse']['official']} 条 / 国内 {bd['discourse']['domestic']} 条）")
+    except Exception as e:
+        print(f"      看板生成失败: {type(e).__name__}: {e}")
     _done(stage)
 
     stage = _stage("digest", day)

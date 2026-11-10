@@ -291,7 +291,7 @@ def render(payload: dict, out_path: Path, history: list[dict] | None = None,
   </section>
   <div class="filters">{''.join(filters)}</div>
   {zones_html}
-  <footer>覆盖层级：榜单 = 热度信号 · 广谱 = 稳定订阅 · 搜索 = 长尾兜底 · 社媒 = 人。悬停源标签可看通道与状态 · <a href="/archive/" style="color:#7dd3fc;text-decoration:none;">历史归档 →</a></footer>
+  <footer>覆盖层级：榜单 = 热度信号 · 广谱 = 稳定订阅 · 搜索 = 长尾兜底 · 社媒 = 人。悬停源标签可看通道与状态 · <a href="/board.html" style="color:#7dd3fc;text-decoration:none;">运行看板 →</a> · <a href="/archive/" style="color:#7dd3fc;text-decoration:none;">历史归档 →</a></footer>
 </div>
 <script>
 const cards = [...document.querySelectorAll('.card')];
