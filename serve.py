@@ -43,6 +43,18 @@ def lan_ip() -> str:
 
 
 class Handler(SimpleHTTPRequestHandler):
+    # 静态文件一律按 UTF-8 发，并对 html/css/js 显式声明 charset，
+    # 否则浏览器按 latin-1 猜，中文全变乱码。
+    extensions_map = {
+        **SimpleHTTPRequestHandler.extensions_map,
+        ".html": "text/html; charset=utf-8",
+        ".css": "text/css; charset=utf-8",
+        ".js": "application/javascript; charset=utf-8",
+        ".json": "application/json; charset=utf-8",
+        ".xml": "application/xml; charset=utf-8",
+        ".txt": "text/plain; charset=utf-8",
+    }
+
     def __init__(self, *args, **kw):
         super().__init__(*args, directory=str(SITE), **kw)
 
