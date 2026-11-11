@@ -184,6 +184,22 @@ sources:
 **新增一个源**需要两步：在 `collector/sources.py` 写抓取函数并加进 `REGISTRY`，
 再（可选）在 `config/sources.yaml` 里写分级。只有后者不用改代码。
 
+如果是 RSS / Atom，**连代码都不用写** —— 直接加进 `config/feeds.yaml` 一行：
+
+```yaml
+- {id: my_feed, name: "某站", url: "https://example.com/feed.xml",
+   region: overseas, layer: broad, limit: 8, proxy: true}
+```
+
+**但先测再写**。一半的"我觉得它有 RSS"是 404、空 feed 或 HTML 错误页：
+
+```bash
+python tools/probe_feeds.py                  # 测内置候选清单
+python tools/probe_feeds.py --file urls.txt  # 一行一个 url
+```
+
+它并发测一批，报每条的条数/耗时/失败原因，最后直接打出可粘贴的 YAML 行。
+
 后台「信源」页可以停用/启用、试抓，不用改文件。
 
 ---
