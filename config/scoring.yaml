@@ -30,11 +30,15 @@ weights:
 # 信源分层 → 入选门槛（平均分）。官方一手低一些，媒体与社媒高一些。
 # 这组数是起始值，**必须用你自己的金标重新校准**（tools/eval_selection.py）。
 thresholds:
-  primary: 58   # 官方博客/实验室/arXiv 一手
-  rank: 66      # HN / GitHub / 头条 / B站 榜单
-  broad: 68     # 36氪 / IT之家 / 少数派
-  search: 74    # Google News 搜索
-  social: 76    # 微博 / 知乎 / X / Telegram
+  # 2026-11-11 用 99 条人工标注校准过一次：原值平均 68.4，而本机模型的
+  # 打分分布中位数 34、95 分位 64。金标里用户选中 28/99 = 28%，门槛扫描中
+  # 56 分恰好选中 27/99 = 27% 且 F1 最高（0.654）。因此整体下移 12 分。
+  # 换模型或换行业后必须重新校准，不要沿用这组数。
+  primary: 46   # 官方博客/实验室/arXiv 一手
+  rank: 54      # HN / GitHub / 头条 / B站 榜单
+  broad: 56     # 36氪 / IT之家 / 少数派
+  search: 62    # Google News 搜索
+  social: 64    # 微博 / 知乎 / X / Telegram
 
 # 单个信源的覆盖（比分层更细；只抬不降）
 sources:
@@ -42,7 +46,7 @@ sources:
   # weibo: 80
 
 # 平均分高于它的未入选条目，也按精选的写法写（标题+摘要+理由）
-understand_floor: 50
+understand_floor: 40
 # 「全部动态」只出平均分不低于它的条目；0 = 全出
 browse_floor: 40
 

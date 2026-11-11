@@ -238,8 +238,10 @@ def main() -> int:
             print(f"  {row['threshold']:>4} {row['selected']:>5} {row['accuracy']:>7.3f} "
                   f"{row['precision']:>7.3f} {row['recall']:>7.3f} {row['f1']:>7.3f}")
 
+    # gold 为 None 的是"两可"，不进任何分母，也不算判错
     wrong = [c for c in reports[best]["cases"]
-             if c.get("predicted") is not None and c["predicted"] != c["gold"]]
+             if c.get("gold") is not None and c.get("predicted") is not None
+             and c["predicted"] != c["gold"]]
     if wrong:
         print(f"\n=== 判错 {len(wrong)} 条（前 8）===")
         for c in wrong[:8]:
