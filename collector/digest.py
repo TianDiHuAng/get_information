@@ -10,6 +10,7 @@ import hashlib
 import json
 import re
 from datetime import datetime
+import os
 from pathlib import Path
 
 from . import edition
@@ -374,7 +375,8 @@ def build(payload: dict, lmarena: dict | None = None, aa: dict | None = None) ->
     if ai:
         body = body.replace("## 今日必看", f"## AI 导读\n\n{ai}\n\n## 今日必看", 1)
     day = datetime.now().strftime("%Y-%m-%d")
-    out = Path(__file__).parent.parent / "data" / f"digest-{day}.md"
+    data_dir = Path(os.environ.get("RADAR_DATA") or (Path(__file__).parent.parent / "data"))
+    out = data_dir / f"digest-{day}.md"
     out.parent.mkdir(exist_ok=True)
     out.write_text(body, encoding="utf-8")
     return out

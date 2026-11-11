@@ -15,6 +15,7 @@
 """
 
 import json
+import os
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -41,6 +42,7 @@ from collector.render import render
 from collector.translate import translate_items
 
 ROOT = Path(__file__).parent
+SITE_DIR = ROOT / (os.environ.get("RADAR_SITE") or "site")
 
 
 def _stage(name: str, day: str):
@@ -166,7 +168,7 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True,
 
     # 分享图：给邮件/RSS 转发用的预览图（不调模型）
     try:
-        payload["stats"]["share"] = share.build(payload, ROOT / "site")
+        payload["stats"]["share"] = share.build(payload, SITE_DIR)
         sh = payload["stats"]["share"]
         if sh.get("file"):
             print(f"      分享图: {Path(sh['file']).name}（{sh['bytes'] // 1024} KB）")
@@ -190,15 +192,15 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True,
     )
 
     stage = _stage("render", day)
-    out = render(payload, ROOT / "site" / "index.html", history=load_history(7),
+    out = render(payload, SITE_DIR / "index.html", history=load_history(7),
                  lmarena=lmarena, aa=aa)
-    arch = save_archive(payload, out, ROOT, datetime.now().strftime("%Y-%m-%d"))
+    arch = save_archive(payload, out, ROOT, datetime.now().strftime("%Y-%m-%d"), site_dir=SITE_DIR)
     _done(stage)
 
     # 多出口：RSS / JSON / llms.txt（都从同一份 payload 生成，不重新判断）
     stage = _stage("export", day)
     try:
-        ex = export.build(payload, ROOT / "site")
+        ex = export.build(payload, SITE_DIR)
         payload["stats"]["export"] = ex
         print(f"      出口: {len(ex.get('files') or [])} 个文件"
               f"（feed {ex.get('feeds', 0)} 个 · API · llms.txt）")
@@ -209,7 +211,7 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True,
     # 本地看板：源健康 / 评分分布 / 成本 / 舆论场
     stage = _stage("board", day)
     try:
-        bd = board.build(payload, ROOT / "site")
+        bd = board.build(payload, SITE_DIR)
         payload["stats"]["board"] = bd
         print(f"      看板: board.html（告警 {bd['alerts']} 条 · "
               f"官方 {bd['discourse']['official']} 条 / 国内 {bd['discourse']['domestic']} 条）")
@@ -220,7 +222,7 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True,
     # 长期时间线 + 叙事对比（只读库，不调模型）
     stage = _stage("timeline", day)
     try:
-        tl = timeline.build(ROOT / "site")
+        tl = timeline.build(SITE_DIR)
         payload["stats"]["timeline"] = tl
         print(f"      时间线: {tl['events']} 个事件 / {tl['subjects']} 个主体 / "
               f"{tl['narratives']} 组跨渠道叙事")
@@ -231,7 +233,7 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True,
     # 主题页 / 标签页：把结构化结果变成能翻的页面
     stage = _stage("topics", day)
     try:
-        tp = topics.build(ROOT / "site")
+        tp = topics.build(SITE_DIR)
         payload["stats"]["topics"] = tp
         print(f"      主题: {tp['pages']} 个页面（{tp['categories']} 分类 / {tp['tags']} 标签）")
     except Exception as e:
@@ -243,14 +245,14 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True,
 
     # 后台的静态副本（serve.py 会按标签页实时渲染，这里只是离线兜底）
     try:
-        admin.build(ROOT / "site", day)
+        admin.build(SITE_DIR, day)
     except Exception as e:
         print(f"      后台页生成失败: {type(e).__name__}: {e}")
 
     # 单文件离线归档：断网/换机时能带走的一份
     stage = _stage("offline", day)
     try:
-        off = offline.build(payload, ROOT / "site")
+        off = offline.build(payload, SITE_DIR)
         payload["stats"]["offline"] = off
         print(f"      离线版: offline.html（{off['bytes'] // 1024} KB）")
     except Exception as e:
@@ -303,7 +305,7 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True,
     # 整站页面：精选之外的全部模块（全部动态/热门/文章页/日报/周报/月报/事件/搜索/静态页）
     stage = _stage("site", day)
     try:
-        sp = site.build(payload, ROOT / "site", day)
+        sp = site.build(payload, SITE_DIR, day)
         payload["stats"]["site"] = sp
         print(f"      站点: {sp.get('pages', 0)} 个页面"
               f"（全部 {sp.get('all', {}).get('items', 0)} 条 / 文章 {sp.get('items', {}).get('items', 0)} 篇"

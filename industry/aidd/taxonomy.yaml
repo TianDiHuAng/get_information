@@ -1,0 +1,96 @@
+# AIDD（AI 制药）行业包
+#
+# 这个包覆盖 config/ 下的同名文件。切换：
+#   RADAR_PACK=aidd RADAR_DB=data/aidd.db RADAR_SITE=site-aidd python run.py
+#
+# 分类 key 会进网址，上线后不要改。
+
+categories:
+  platform_release: {label: 平台发布, desc: 新的 AIDD 平台、模型、引擎正式发布或大版本更新}
+  pipeline_progress: {label: 管线进展, desc: 候选分子进入临床前/临床、里程碑达成、项目终止}
+  clinical_data: {label: 临床数据, desc: 临床试验读出、疗效与安全性数据、终点达成}
+  research_paper: {label: 论文研究, desc: 论文、预印本、数据集、基准结果}
+  tool_or_method: {label: 工具方法, desc: 可直接复用的开源工具、流程、prompt、建模方法}
+  industry_event: {label: 融资合作, desc: 融资、并购、BD 授权、合作、人事}
+  regulatory: {label: 监管审批, desc: 获批、受理、指导原则、监管政策}
+  dataset_benchmark: {label: 数据与评测, desc: 公开数据集、benchmark、评测榜单}
+
+tags:
+  - 靶点发现
+  - 分子生成
+  - 蛋白质设计
+  - 抗体设计
+  - 多肽
+  - 小分子
+  - ADMET
+  - 虚拟筛选
+  - 分子对接
+  - 自由能计算
+  - 生成模型
+  - 扩散模型
+  - 强化学习
+  - 知识图谱
+  - 单细胞
+  - 多组学
+  - 临床试验
+  - 真实世界数据
+  - 开源
+  - 数据集
+
+entities:
+  isomorphic: {label: Isomorphic Labs, name: Isomorphic Labs, aliases: [Isomorphic]}
+  recursion: {label: Recursion, name: Recursion, aliases: [Recursion Pharmaceuticals]}
+  insilico: {label: 英矽智能, name: 英矽智能, aliases: [Insilico, Insilico Medicine]}
+  schrodinger: {label: Schrödinger, name: Schrödinger, aliases: [Schrodinger]}
+  relay: {label: Relay Therapeutics, name: Relay Therapeutics, aliases: [Relay]}
+  generate: {label: Generate Biomedicines, name: Generate Biomedicines, aliases: [Generate]}
+  xtalpi: {label: 晶泰科技, name: 晶泰科技, aliases: [XtalPi, Xtalpi]}
+  dptech: {label: 深势科技, name: 深势科技, aliases: [DP Technology, Bohrium]}
+  wuxi: {label: 药明康德, name: 药明康德, aliases: [WuXi, WuXi AppTec]}
+  ainnocence: {label: 剂泰医药, name: 剂泰医药, aliases: [METiS]}
+  atomwise: {label: Atomwise, name: Atomwise}
+  exscientia: {label: Exscientia, name: Exscientia, aliases: [Recursion]}
+  nvidia: {label: NVIDIA, name: NVIDIA, aliases: [英伟达]}
+  google: {label: Google, name: Google, aliases: [DeepMind, Isomorphic]}
+
+plain_terms:
+  - AI
+  - AIDD
+  - CADD
+  - LLM
+  - GPU
+  - mRNA
+  - IND
+  - NDA
+  - BLA
+  - FDA
+  - EMA
+  - NMPA
+  - CRO
+  - CDMO
+  - BD
+  - PDB
+  - SMILES
+  - QSAR
+  - PROTAC
+
+# 防张冠李戴：自家域名发的稿，标题点自己的名不需要正文再核
+publisher_domains:
+  isomorphiclabs.com: isomorphic
+  recursion.com: recursion
+  insilico.com: insilico
+  schrodinger.com: schrodinger
+  relaytx.com: relay
+  generatebiomedicines.com: generate
+  xtalpi.com: xtalpi
+  dp.tech: dptech
+  wuxiapptec.com: wuxi
+
+identity_lexicon:
+  AlphaFold: google
+  Boltz: dptech
+  Chemprop: schrodinger
+
+identity_context_aliases:
+  晶泰: xtalpi
+  英矽: insilico

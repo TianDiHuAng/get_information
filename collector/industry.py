@@ -17,6 +17,7 @@ AIHOT 的 `docs/customize.md` 把换行业拆成八件事（站名文案 / 分�
 
 from __future__ import annotations
 
+import os
 import re
 import shutil
 from pathlib import Path
@@ -71,6 +72,16 @@ def settings(reload: bool = False) -> dict[str, Any]:
                 data[key] = merged
             else:
                 data[key] = value
+    # 环境变量优先：同一个代码库可以同时跑多个行业站
+    env_pack = os.environ.get("RADAR_PACK", "").strip()
+    if env_pack:
+        data["pack"] = env_pack
+    # 行业包自己的站名文案（pack.yaml），覆盖 config/industry.yaml 的同名字段
+    pack_name = str(data.get("pack") or "").strip()
+    if pack_name:
+        meta = _read_yaml(PACKS / pack_name / "pack.yaml")
+        if meta:
+            data.update({k: v for k, v in meta.items() if k != "pack"})
     _cache["settings"] = data
     return data
 

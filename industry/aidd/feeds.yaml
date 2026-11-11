@@ -1,0 +1,17 @@
+# AIDD 信源：这个包里的 feeds 会**替换** config/feeds.yaml 的全部内容。
+# 只写探针测通的（tools/probe_feeds.py）。
+
+feeds:
+  # —— 生物医药媒体 ——
+  - {id: endpoints, name: "Endpoints News", url: "https://endpts.com/feed/", region: overseas, layer: primary, limit: 12, proxy: true}
+  - {id: stat, name: "STAT", url: "https://www.statnews.com/feed/", region: overseas, layer: primary, limit: 12, proxy: true}
+  - {id: gen, name: "GEN", url: "https://www.genengnews.com/feed/", region: overseas, layer: primary, limit: 12, proxy: true}
+  - {id: biopharmadive, name: "BioPharma Dive", url: "https://www.biopharmadive.com/feeds/news/", region: overseas, layer: broad, limit: 10, proxy: true}
+  - {id: labiotech, name: "Labiotech", url: "https://www.labiotech.eu/feed/", region: overseas, layer: broad, limit: 10, proxy: true}
+  # —— 期刊 ——
+  - {id: nature_biotech, name: "Nature Biotechnology", url: "https://www.nature.com/nbt.rss", region: overseas, layer: primary, limit: 10, proxy: true}
+  - {id: nature_drugdisc, name: "Nature Reviews Drug Discovery", url: "https://www.nature.com/nrd.rss", region: overseas, layer: primary, limit: 10, proxy: true}
+  # —— 预印本 / 药学综合 ——
+  - {id: arxiv_qbio, name: "arXiv q-bio", url: "https://rss.arxiv.org/rss/q-bio", region: overseas, layer: primary, limit: 15, proxy: true}
+  - {id: biorxiv, name: "bioRxiv", url: "https://connect.biorxiv.org/biorxiv_xml.php?subject=all", region: overseas, layer: primary, limit: 12, proxy: true}
+  - {id: sciencedaily_pharm, name: "ScienceDaily 药学", url: "https://www.sciencedaily.com/rss/health_medicine/pharmacology.xml", region: overseas, layer: broad, limit: 10, proxy: true}

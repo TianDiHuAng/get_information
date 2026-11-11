@@ -1,0 +1,14 @@
+name: Z-Bit AIDD
+tagline: AI 制药与计算药物发现，每天一份
+description: 盯 AI 制药的管线、临床、平台与论文：五轴评分、事件聚簇、规则编排
+mcp_prefix: aidd
+edition:
+  daily: "09:00"
+  weekly: "周一"
+  monthly: "1 日"
+
+# 与 industry/aidd/scoring.yaml 的 thresholds 保持一致（校验器会核对）
+tiers:
+  T1: 46
+  T1_5: 54
+  T2: 56

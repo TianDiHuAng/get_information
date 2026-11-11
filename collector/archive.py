@@ -65,11 +65,12 @@ def _rebuild_index(arch_dir: Path, daily_dir: Path) -> None:
     (arch_dir / "index.html").write_text(doc, encoding="utf-8")
 
 
-def save(payload: dict, site_index: Path, root: Path, day: str) -> dict:
+def save(payload: dict, site_index: Path, root: Path, day: str,
+         site_dir: Path | None = None) -> dict:
     """存当天条目快照与页面副本，并刷新归档目录。失败不抛异常。"""
     out = {"page": "", "snapshot": ""}
     try:
-        arch_dir = root / "site" / "archive"
+        arch_dir = (site_dir or (root / "site")) / "archive"
         arch_dir.mkdir(parents=True, exist_ok=True)
         page = arch_dir / f"{day}.html"
         shutil.copyfile(site_index, page)

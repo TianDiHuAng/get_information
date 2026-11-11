@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import html
 import json
+import os
 import re
 from collections import defaultdict
 from datetime import datetime
@@ -27,7 +28,7 @@ from . import store, theme
 
 ROOT = Path(__file__).parent.parent
 SITE = ROOT / "site"
-DATA = ROOT / "data"
+DATA = Path(os.environ.get("RADAR_DATA") or (ROOT / "data"))
 
 FEED_DIVIDER_CSS = """
 .feed-divider{list-style:none;margin:26px 0 6px;padding-top:16px;border-top:1px solid var(--line);

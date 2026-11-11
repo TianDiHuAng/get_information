@@ -771,6 +771,35 @@ FEEDS_PATH = Path(__file__).parent.parent / "config" / "feeds.yaml"
 
 
 def _load_feeds() -> list[dict]:
+    """读 feeds.yaml：行业包里有就用包里的，没有用 config/ 的。"""
+    try:
+        from . import industry
+
+        data = industry.load("feeds.yaml")
+        if data:
+            return list(data.get("feeds") or [])
+    except Exception:
+        pass
+    try:
+        data = yaml.safe_load(FEEDS_PATH.read_text(encoding="utf-8")) or {}
+        return list(data.get("feeds") or [])
+    except Exception:
+        return []
+
+
+def _load_feeds() -> list[dict]:
+    """读 feeds.yaml：行业包里有就用包里的，没有用 config/ 的。
+
+    这是「一个站一个行业」的关键 —— AIDD 站的源不该出现在 AI 站的清单里。
+    """
+    try:
+        from . import industry
+
+        data = industry.load("feeds.yaml")
+        if data and data.get("feeds"):
+            return [f for f in data["feeds"] if f.get("id") and f.get("url")]
+    except Exception:
+        pass
     try:
         data = yaml.safe_load(FEEDS_PATH.read_text(encoding="utf-8")) or {}
         return [f for f in (data.get("feeds") or []) if f.get("id") and f.get("url")]
@@ -931,7 +960,11 @@ def _source_overrides() -> dict[str, dict]:
     try:
         import yaml
 
-        path = Path(__file__).parent.parent / "config" / "sources.yaml"
+        from . import industry
+
+        data = industry.load("sources.yaml")
+        if data:
+            return data
         if not path.exists():
             return {}
         data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
@@ -943,7 +976,18 @@ def _source_overrides() -> dict[str, dict]:
 
 def _decorate_sources() -> None:
     overrides = _source_overrides()
+    # 行业包可以整批停源（AIDD 站不需要 AI 通用资讯）
+    disabled_in_pack = set()
+    try:
+        from . import industry
+
+        conf = industry.load("sources.yaml") or {}
+        disabled_in_pack = {str(x) for x in (conf.get("disable") or [])}
+    except Exception:
+        disabled_in_pack = set()
     for src in REGISTRY:
+        if str(src.get("id")) in disabled_in_pack:
+            src["enabled"] = False
         src.setdefault("tier", _LAYER_TIER.get(src.get("layer"), "T2"))
         src.setdefault("participation_mode", _LAYER_MODE.get(src.get("layer"), "editorial"))
         src.setdefault("site_fulltext", False)

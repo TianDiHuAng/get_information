@@ -15,13 +15,14 @@ from __future__ import annotations
 
 import math
 from datetime import datetime, timedelta
+import os
 from pathlib import Path
 from typing import Any, Iterable
 
 from . import edition, store
 
 ROOT = Path(__file__).parent.parent
-DATA = ROOT / "data"
+DATA = Path(os.environ.get("RADAR_DATA") or (ROOT / "data"))
 
 # 周报取前 20 件、月报取前 30 件（AIHOT 同样的量级）
 LIMITS = {"weekly": 20, "monthly": 30}

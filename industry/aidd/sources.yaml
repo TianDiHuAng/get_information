@@ -1,0 +1,27 @@
+# AIDD 站要停掉的源：AI 通用资讯与社交搜索对制药读者意义不大，
+# 留着只会白花评分钱。arxiv / hf_papers / google_news 保留（论文与检索仍有用）。
+
+disable:
+  - google_news
+  - arxiv
+  - hf_papers
+  - smolai
+  - thebatch
+  - hackernews
+  - github
+  - bilibili
+  - toutiao
+  - kr36
+  - sspai
+  - deals
+  - agentcases
+  - alphaxiv
+  - lmarena
+  - artificial_analysis
+  - v2ex
+  - reddit
+  - telegram
+  - x
+  - weibo
+  - zhihu
+  - gdelt

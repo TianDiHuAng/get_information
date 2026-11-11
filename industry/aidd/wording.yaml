@@ -1,0 +1,15 @@
+# 改用词：制药读者不这么说。
+
+rules:
+  - pattern: "颠覆(性|式)?"
+    replace: "改变"
+    note: 夸张
+  - pattern: "革命性"
+    replace: "新的"
+    note: 夸张
+  - pattern: "重磅"
+    replace: ""
+    note: 媒体腔
+  - pattern: "全球首个"
+    replace: "首个"
+    note: 无出处的修饰

@@ -1,0 +1,49 @@
+# AIDD 主题目录（/topics 页按三组展示）
+
+company:
+  - slug: isomorphic
+    title: Isomorphic Labs
+    entity: isomorphic
+    aliases: [Isomorphic Labs]
+  - slug: insilico
+    title: 英矽智能
+    entity: insilico
+    aliases: [Insilico]
+  - slug: recursion
+    title: Recursion
+    entity: recursion
+  - slug: schrodinger
+    title: Schrödinger
+    entity: schrodinger
+  - slug: xtalpi
+    title: 晶泰科技
+    entity: xtalpi
+    aliases: [XtalPi]
+  - slug: dptech
+    title: 深势科技
+    entity: dptech
+
+field:
+  - slug: molecule-generation
+    title: 分子生成
+    tags: [分子生成, 生成模型, 扩散模型]
+  - slug: protein-design
+    title: 蛋白质设计
+    tags: [蛋白质设计, 抗体设计, 多肽]
+  - slug: admet
+    title: 成药性 ADMET
+    tags: [ADMET, 小分子, QSAR]
+  - slug: virtual-screening
+    title: 虚拟筛选与对接
+    tags: [虚拟筛选, 分子对接, 自由能计算]
+  - slug: clinical
+    title: 临床与真实世界
+    tags: [临床试验, 真实世界数据]
+
+genre:
+  - slug: benchmarks
+    title: 数据与评测
+    tags: [数据集, benchmark]
+  - slug: open-source
+    title: 开源工具
+    tags: [开源]

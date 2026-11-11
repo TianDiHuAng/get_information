@@ -1,0 +1,31 @@
+# AIDD 评分口径：内容类型 → 五轴权重（每行和 = 10）
+#
+# 与 AI 站不同的地方：
+# - 临床数据权重最高（sig 5 + cred 3）：这是制药行业唯一真正的硬信号
+# - 论文的 cred 给到 3：AIDD 的论文常常就是方法本身，证据强度比 AI 站更重要
+# - 管线进展的 act 给 0：读者不能"用"一条管线进展，但它影响判断
+#
+# 门槛是从 AI 站的校准结果平移来的**起点**，必须用 AIDD 自己的金标重新校准。
+
+enabled: true
+prefilter: true
+score_calls: 2
+
+weights:
+  platform_release:   {sig: 2, nov: 2, cred: 2, reson: 2, act: 2}
+  pipeline_progress:  {sig: 5, nov: 2, cred: 2, reson: 1, act: 0}
+  clinical_data:      {sig: 5, nov: 2, cred: 3, reson: 0, act: 0}
+  research_paper:     {sig: 3, nov: 3, cred: 3, reson: 0, act: 1}
+  tool_or_method:     {sig: 1, nov: 2, cred: 1, reson: 2, act: 4}
+  industry_event:     {sig: 3, nov: 1, cred: 2, reson: 4, act: 0}
+  regulatory:         {sig: 4, nov: 2, cred: 2, reson: 2, act: 0}
+  dataset_benchmark:  {sig: 2, nov: 3, cred: 2, reson: 1, act: 2}
+
+thresholds:
+  primary: 46
+  rank: 54
+  broad: 56
+  search: 62
+  social: 64
+
+understand_floor: 40
