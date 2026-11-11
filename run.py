@@ -42,7 +42,10 @@ from collector.render import render
 from collector.translate import translate_items
 
 ROOT = Path(__file__).parent
-SITE_DIR = ROOT / (os.environ.get("RADAR_SITE") or "site")
+_PACK = (os.environ.get("RADAR_PACK") or "").strip()
+# 没显式指定站点目录时：有行业包就写 site/<包名>/，没有就写 site/。
+# 这样 AIDD 这类附加站不会覆盖根站。
+SITE_DIR = ROOT / (os.environ.get("RADAR_SITE") or (f"site/{_PACK}" if _PACK else "site"))
 
 
 def _stage(name: str, day: str):

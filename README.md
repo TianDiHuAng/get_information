@@ -217,9 +217,9 @@ python mcp_server.py        # stdio，一行一个 JSON-RPC
 
 ```bash
 # 1) 各自跑数据（两个库、两个产物目录，互不干扰）
-python run.py --no-mail --dry-push          # AI
+python run.py --no-mail --dry-push          # AI → site/
 RADAR_PACK=aidd RADAR_DB=data/aidd.db RADAR_DATA=data-aidd \
-  python run.py --no-mail --dry-push        # AIDD
+  python run.py --no-mail --dry-push        # AIDD → site/aidd/（按包名自动分目录）
 
 # 2) 构建到同一棵站点树
 python tools/build_sites.py --site site --data data --db data/radar.db
