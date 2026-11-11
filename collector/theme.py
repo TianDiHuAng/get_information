@@ -48,7 +48,7 @@ def _prefix(doc: str) -> str:
     if not _BASE:
         return doc
     import re as _re
-    return _re.sub(r'(href|src)="/(?!/)', rf'\1="{_BASE}/', doc)
+    return _re.sub(r'(href|src)="/(?![/"])', rf'\1="{_BASE}/', doc)
 
 # 侧栏分组（对齐它的 SECTIONS：内容 / 模型 / 更多）
 SECTIONS = (
@@ -426,6 +426,9 @@ def nav_html(active: str = "/") -> str:
         for href, label, name in items:
             if href in hidden:
                 continue
+            # 后台与归档只有根站一份：子站里指回根
+            if _BASE and href in ("/admin.html", "/archive/"):
+                href = "@@ROOT@@" + href
             on = ' class="item on"' if href == active else ' class="item"'
             links.append(f'<a{on} href="{href}"><span class="ico">{icon(name)}</span>'
                          f'<span class="lbl">{label}</span></a>')
@@ -436,10 +439,10 @@ def nav_html(active: str = "/") -> str:
             '<button class="themebtn" type="button" id="themebtn">◐ 跟随系统</button>'
             '</div>')
     sw = (f'<div class="switcher">'
-          f'<a class="{"on" if not _BASE else ""}" href="/">AI</a>'
-          f'<a class="{"on" if _BASE == "/aidd" else ""}" href="/aidd/">AIDD</a>'
-          f'</div>') if _BASE or True else ""
-    return (f'<aside class="side"><a class="brand" href="/" aria-label="{BRAND} 首页">'
+          f'<a class="{"on" if not _BASE else ""}" href="@@ROOT@@/">AI</a>'
+          f'<a class="{"on" if _BASE == "/aidd" else ""}" href="@@ROOT@@/aidd/">AIDD</a>'
+          f'</div>')
+    return (f'<aside class="side"><a class="brand" href="@@ROOT@@{_BASE}/" aria-label="{BRAND} 首页">'
             f'<span class="mark"><span class="short">Z</span>'
             f'<span class="full">{BRAND}</span></span></a>{sw}{"".join(blocks)}{foot}</aside>')
 
@@ -511,7 +514,7 @@ def page(title: str, body: str, *, active: str = "/", lead: str = "",
             f'<div class="shell">{nav_html(active)}<main class="main"><div class="page">'
             f'{head}{lead_html}{body}{footer_html()}</div></main></div>'
             f'{bottom_nav(active)}{_THEME_JS}</body></html>')
-    return _prefix(doc)
+    return _prefix(doc).replace("@@ROOT@@", "")
 
 
 def toptabs(active: str = "/") -> str:
