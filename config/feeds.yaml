@@ -18,3 +18,31 @@ feeds:
 
   # —— 国内 · 科技媒体 / 羊毛 ——
   - {id: ithome, name: IT之家, url: "https://www.ithome.com/rss/", region: domestic, layer: broad, limit: 12, proxy: false}
+
+  # —— 扩展批（2026-11 探针实测可用，25 个）——
+  # 加源一律先跑 python tools/probe_feeds.py，只写测通的
+  - {id: openai_news, name: "OpenAI News", url: "https://openai.com/news/rss.xml", region: overseas, layer: primary, limit: 8, proxy: true}
+  - {id: hf_blog, name: "Hugging Face 博客", url: "https://huggingface.co/blog/feed.xml", region: overseas, layer: primary, limit: 8, proxy: true}
+  - {id: nvidia_blog, name: "NVIDIA 博客", url: "https://blogs.nvidia.com/feed/", region: overseas, layer: primary, limit: 8, proxy: true}
+  - {id: aws_ml, name: "AWS 机器学习", url: "https://aws.amazon.com/blogs/machine-learning/feed/", region: overseas, layer: primary, limit: 8, proxy: true}
+  - {id: apple_ml, name: "Apple 机器学习", url: "https://machinelearning.apple.com/rss.xml", region: overseas, layer: primary, limit: 8, proxy: true}
+  - {id: bair, name: "Berkeley BAIR", url: "https://bair.berkeley.edu/blog/feed.xml", region: overseas, layer: primary, limit: 8, proxy: true}
+  - {id: mit_ai, name: "MIT News AI", url: "https://news.mit.edu/rss/topic/artificial-intelligence2", region: overseas, layer: primary, limit: 8, proxy: true}
+  - {id: jalammar, name: "Jay Alammar", url: "https://jalammar.github.io/feed.xml", region: overseas, layer: primary, limit: 8, proxy: true}
+  - {id: eugeneyan, name: "Eugene Yan", url: "https://eugeneyan.com/rss/", region: overseas, layer: primary, limit: 8, proxy: true}
+  - {id: huyenchip, name: "Chip Huyen", url: "https://huyenchip.com/feed.xml", region: overseas, layer: primary, limit: 8, proxy: true}
+  - {id: ruder, name: "Sebastian Ruder", url: "https://www.ruder.io/rss/", region: overseas, layer: primary, limit: 8, proxy: true}
+  - {id: techcrunch_ai, name: "TechCrunch AI", url: "https://techcrunch.com/category/artificial-intelligence/feed/", region: overseas, layer: broad, limit: 8, proxy: true}
+  - {id: verge_ai, name: "The Verge AI", url: "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml", region: overseas, layer: broad, limit: 8, proxy: true}
+  - {id: wired_ai, name: "Wired AI", url: "https://www.wired.com/feed/tag/ai/latest/rss", region: overseas, layer: broad, limit: 8, proxy: true}
+  - {id: mit_tr, name: "MIT Technology Review", url: "https://www.technologyreview.com/feed/", region: overseas, layer: broad, limit: 8, proxy: true}
+  - {id: engadget, name: "Engadget", url: "https://www.engadget.com/rss.xml", region: overseas, layer: broad, limit: 8, proxy: true}
+  - {id: marktechpost, name: "MarkTechPost", url: "https://www.marktechpost.com/feed/", region: overseas, layer: broad, limit: 8, proxy: true}
+  - {id: siliconangle, name: "SiliconANGLE", url: "https://siliconangle.com/feed/", region: overseas, layer: broad, limit: 8, proxy: true}
+  - {id: importai, name: "Import AI", url: "https://importai.substack.com/feed", region: overseas, layer: broad, limit: 8, proxy: true}
+  - {id: tldr_ai, name: "TLDR AI", url: "https://tldr.tech/api/rss/ai", region: overseas, layer: broad, limit: 8, proxy: true}
+  - {id: qbitai, name: "量子位", url: "https://www.qbitai.com/feed", region: domestic, layer: broad, limit: 8, proxy: true}
+  - {id: infoq_cn, name: "InfoQ 中文", url: "https://www.infoq.cn/feed", region: domestic, layer: broad, limit: 8, proxy: true}
+  - {id: tmtpost, name: "钛媒体", url: "https://www.tmtpost.com/rss.xml", region: domestic, layer: broad, limit: 8, proxy: true}
+  - {id: geekpark, name: "极客公园", url: "https://www.geekpark.net/rss", region: domestic, layer: broad, limit: 8, proxy: true}
+  - {id: oschina, name: "开源中国", url: "https://www.oschina.net/news/rss", region: domestic, layer: broad, limit: 8, proxy: true}
