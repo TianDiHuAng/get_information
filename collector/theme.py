@@ -29,6 +29,27 @@ def _brand() -> tuple[str, str]:
 
 BRAND, TAGLINE = _brand()
 
+# 当前构建的 URL 前缀（"" = 根站，"/aidd" = 挂在子目录的行业站）
+_BASE = ""
+
+
+def set_base(prefix: str) -> None:
+    """切站点前缀。构建 AIDD 站时设为 "/aidd"，页面里的根链接会自动加上前缀。"""
+    global _BASE
+    _BASE = (prefix or "").rstrip("/")
+
+
+def base() -> str:
+    return _BASE
+
+
+def _prefix(doc: str) -> str:
+    """把 href="/x" / src="/x" 改成带前缀的形式（不碰 // 开头的外链）。"""
+    if not _BASE:
+        return doc
+    import re as _re
+    return _re.sub(r'(href|src)="/(?!/)', rf'\1="{_BASE}/', doc)
+
 # 侧栏分组（对齐它的 SECTIONS：内容 / 模型 / 更多）
 SECTIONS = (
     ("内容", (
@@ -161,6 +182,11 @@ button{font-family:inherit}
   .side a.item span.lbl{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .side a.item.on{background:var(--accent-soft);color:var(--ink);font-weight:600}
   .side a.item.on svg{color:var(--accent)}
+  .side .switcher{display:flex;gap:4px;width:100%;margin:0 0 10px;padding:3px;
+                 border-radius:999px;background:var(--well);justify-content:center}
+  .side .switcher a{flex:1;text-align:center;font-size:11px;padding:3px 0;border-radius:999px;color:var(--ink-3)}
+  .side .switcher a.on{background:var(--surface);color:var(--ink);font-weight:600;
+                        box-shadow:0 1px 2px rgba(28,39,51,.1)}
   .side .foot{display:none}
 }
 @media(min-width:941px){
@@ -409,9 +435,13 @@ def nav_html(active: str = "/") -> str:
             f'{icon("grid", 14)} GitHub 开源</a>'
             '<button class="themebtn" type="button" id="themebtn">◐ 跟随系统</button>'
             '</div>')
+    sw = (f'<div class="switcher">'
+          f'<a class="{"on" if not _BASE else ""}" href="/">AI</a>'
+          f'<a class="{"on" if _BASE == "/aidd" else ""}" href="/aidd/">AIDD</a>'
+          f'</div>') if _BASE or True else ""
     return (f'<aside class="side"><a class="brand" href="/" aria-label="{BRAND} 首页">'
             f'<span class="mark"><span class="short">Z</span>'
-            f'<span class="full">{BRAND}</span></span></a>{"".join(blocks)}{foot}</aside>')
+            f'<span class="full">{BRAND}</span></span></a>{sw}{"".join(blocks)}{foot}</aside>')
 
 
 def bottom_nav(active: str = "/") -> str:
@@ -474,13 +504,14 @@ def page(title: str, body: str, *, active: str = "/", lead: str = "",
          subtitle: str = "", own_heading: bool = False) -> str:
     head = "" if own_heading else f'<h1 class="title">{esc(title)}</h1>'
     lead_html = f'<div class="lead">{lead}</div>' if lead else ""
-    return (f'<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">'
+    doc = (f'<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">'
             f'<meta name="viewport" content="width=device-width,initial-scale=1">'
             f'<title>{esc(subtitle or title)}</title>'
             f'{og_tags(title, lead)}<style>{CSS}</style></head><body>'
             f'<div class="shell">{nav_html(active)}<main class="main"><div class="page">'
             f'{head}{lead_html}{body}{footer_html()}</div></main></div>'
             f'{bottom_nav(active)}{_THEME_JS}</body></html>')
+    return _prefix(doc)
 
 
 def toptabs(active: str = "/") -> str:

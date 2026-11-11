@@ -185,7 +185,7 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True,
     lmarena = update_lmarena(fetch_lmarena())  # 榜单快照（官方 HF 镜像，失败用缓存）
     aa = update_aa(fetch_aa())  # AA 智能指数快照（免费 API，失败用缓存）
 
-    data_dir = ROOT / "data"
+    data_dir = Path(os.environ.get("RADAR_DATA") or (ROOT / "data"))
     data_dir.mkdir(exist_ok=True)
     (data_dir / "items.json").write_text(
         json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8"
