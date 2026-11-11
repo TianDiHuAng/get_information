@@ -29,6 +29,11 @@ ROOT = Path(__file__).parent.parent
 SITE = ROOT / "site"
 DATA = ROOT / "data"
 
+FEED_DIVIDER_CSS = """
+.feed-divider{list-style:none;margin:26px 0 6px;padding-top:16px;border-top:1px solid var(--line);
+              font-size:12px;color:var(--ink-4);letter-spacing:.04em}
+"""
+
 NAMEPLATE_CSS = """
 .nameplate{font-family:"Songti SC","Noto Serif CJK SC",Georgia,serif;font-size:34px;
            font-weight:700;letter-spacing:.06em;color:var(--ink);line-height:1.2;
@@ -367,7 +372,7 @@ def build_issue_index(kind: str, *, site_root: Path | None = None) -> dict[str, 
         doc = theme.page(f"{label} · {day}", plate_html + md_to_html(md),
                          active=f"/{kind}.html",
                          lead=f'<a href="/{kind}.html">← 全部{label}</a>')
-        doc = doc.replace("</head>", f"<style>{NAMEPLATE_CSS}</style></head>", 1)
+        doc = doc.replace("</head>", f"<style>{NAMEPLATE_CSS}{FEED_DIVIDER_CSS}</style></head>", 1)
         _write(root / kind / f"{day}.html", doc)
         written += 1
     return {"file": str(root / f"{kind}.html"), "issues": len(files), "pages": written}
@@ -757,8 +762,15 @@ def build_home(day: str | None = None, site_root: Path | None = None,
         hot_rows = []
 
     # —— 信息流：时间轴 + 卡片 —— #
+    # 精选 = 过门槛的；其余按分数排在后面并明确标出来（不混在一起冒充精选）
+    def _selected(row: dict) -> bool:
+        return bool((row.get("attention") or {}).get("selected"))
+
+    ordered = [r for r in rows if _selected(r)] + [r for r in rows if not _selected(r)]
+    first_unselected = sum(1 for r in ordered if _selected(r))
+
     slots = []
-    for it in rows[:limit]:
+    for index, it in enumerate(ordered[:limit]):
         att = it.get("attention") or {}
         cat = (it.get("structure") or {}).get("category") or ""
         published = (it.get("published") or "")[:16].replace("T", " ")
@@ -771,6 +783,8 @@ def build_home(day: str | None = None, site_root: Path | None = None,
         summary = " ".join(str(it.get("summary") or "").split())
         reason = (att.get("reason") or "").strip()
         text = (str(it.get("title") or "") + " " + summary + " " + cat).lower()
+        if index == first_unselected and first_unselected:
+            slots.append('<li class="feed-divider">更多动态 · 未过门槛，按分数排列</li>')
         slots.append(
             f'<li class="slot" data-id="{it["id"]}" data-cat="{theme.esc(cat)}" '
             f'data-first="{first}" data-text="{theme.esc(text)}">'
