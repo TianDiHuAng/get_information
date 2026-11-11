@@ -211,27 +211,31 @@ python mcp_server.py        # stdio，一行一个 JSON-RPC
 
 只读、不调模型、不写库；读的是公开读取层（旧文与无日期已被挡掉）。
 
-## 同时跑两个行业站（AI + AIDD）
+## 一个网站，两个行业（AI / AIDD）
 
-一个代码库可以跑多个行业站，各自独立的库、站点目录、日报目录与端口。
+左侧栏顶部有 **AI | AIDD** 切换，AIDD 挂在 `/aidd/` 下，同一个 `serve.py`、同一个端口。
 
 ```bash
-# AI 站（默认，8124）
-python run.py --no-mail --dry-push
-python serve.py
+# 1) 各自跑数据（两个库、两个产物目录，互不干扰）
+python run.py --no-mail --dry-push          # AI
+RADAR_PACK=aidd RADAR_DB=data/aidd.db RADAR_DATA=data-aidd \
+  python run.py --no-mail --dry-push        # AIDD
 
-# AIDD（AI 制药）站，8125
-RADAR_PACK=aidd RADAR_DB=data/aidd.db RADAR_SITE=site-aidd \
-  RADAR_DATA=data-aidd python run.py --no-mail --dry-push
-RADAR_PACK=aidd RADAR_DB=data/aidd.db RADAR_DATA=data-aidd RADAR_PORT=8125 python serve.py
+# 2) 构建到同一棵站点树
+python tools/build_sites.py --site site --data data --db data/radar.db
+RADAR_PACK=aidd python tools/build_sites.py \
+  --site site/aidd --data data-aidd --db data/aidd.db --base /aidd
+
+# 3) 一个端口
+python serve.py      # / 是 AI，/aidd/ 是 AI 制药
 ```
 
 | 变量 | 作用 |
 |---|---|
 | `RADAR_PACK` | 用哪个行业包（`industry/<名字>/`） |
 | `RADAR_DB` | SQLite 路径 |
-| `RADAR_SITE` | 静态站点目录 |
-| `RADAR_DATA` | 日报 / 周报 / 评测报告目录 |
+| `RADAR_DATA` | 日报 / 周报 / items.json / 评测报告目录 |
+| `RADAR_SITE` | 静态站点目录（单站构建时可不用，`build_sites.py` 直接传路径） |
 | `RADAR_PORT` | 端口 |
 
 行业包可以带自己的 `feeds.yaml`（替换信源清单）、`sources.yaml`（`disable:` 停掉不相关源）、
