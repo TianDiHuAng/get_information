@@ -211,6 +211,32 @@ python mcp_server.py        # stdio，一行一个 JSON-RPC
 
 只读、不调模型、不写库；读的是公开读取层（旧文与无日期已被挡掉）。
 
+## 同时跑两个行业站（AI + AIDD）
+
+一个代码库可以跑多个行业站，各自独立的库、站点目录、日报目录与端口。
+
+```bash
+# AI 站（默认，8124）
+python run.py --no-mail --dry-push
+python serve.py
+
+# AIDD（AI 制药）站，8125
+RADAR_PACK=aidd RADAR_DB=data/aidd.db RADAR_SITE=site-aidd \
+  RADAR_DATA=data-aidd python run.py --no-mail --dry-push
+RADAR_PACK=aidd RADAR_DB=data/aidd.db RADAR_DATA=data-aidd RADAR_PORT=8125 python serve.py
+```
+
+| 变量 | 作用 |
+|---|---|
+| `RADAR_PACK` | 用哪个行业包（`industry/<名字>/`） |
+| `RADAR_DB` | SQLite 路径 |
+| `RADAR_SITE` | 静态站点目录 |
+| `RADAR_DATA` | 日报 / 周报 / 评测报告目录 |
+| `RADAR_PORT` | 端口 |
+
+行业包可以带自己的 `feeds.yaml`（替换信源清单）、`sources.yaml`（`disable:` 停掉不相关源）、
+`pack.yaml`（站名、slogan、MCP 前缀）与 `scoring.yaml`（分类权重与门槛）。
+
 ## 安全阀
 
 调页面、改样式、跑测试时，不该抓真实网络、烧模型钱、往群里推消息。三个环境变量：
