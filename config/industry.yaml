@@ -15,9 +15,9 @@ edition:
   weekly: 周一
   monthly: 1 日
 tiers:
-  T1: 58
-  T1_5: 66
-  T2: 68
+  T1: 46
+  T1_5: 54
+  T2: 56
 browse_floor: 40
 
 # 对外合并分类：网页上仍分开，但 RSS / API / llms.txt 里并成一组发布。
