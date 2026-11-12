@@ -532,6 +532,12 @@ ISSUE_CSS = """
 .dl-row .n{font-size:11.5px;color:var(--ink-4);white-space:nowrap}
 .dl-side{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);
          box-shadow:var(--shadow-card);padding:18px 20px}
+.dl-cal .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-top:6px}
+.dl-cal .wk{font-size:10px;color:var(--ink-4);text-align:center;padding-bottom:2px}
+.dl-cal .cd{aspect-ratio:1;display:grid;place-items:center;border-radius:50%;
+            font:12px var(--font-mono);color:var(--ink-4)}
+.dl-cal a.cd.on{background:var(--accent-soft);color:var(--accent);font-weight:700}
+.dl-cal a.cd.on:hover{background:var(--accent);color:#fff}
 .dl-side h4{font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
             color:var(--ink-4);margin:0 0 10px}
 .dl-side ol{list-style:none;margin:0;padding:0;counter-reset:i}
@@ -561,6 +567,35 @@ def _issue_stats(day: str) -> dict[str, Any]:
            for r in scored[:3]]
     return {"items": len(rows), "sources": len(srcs), "models": models,
             "firsts": firsts, "top": top}
+
+
+def _issue_calendar(metas: list[dict[str, Any]], kind: str) -> str:
+    """月历：有出刊的日期标出来，点进去就是那一期。"""
+    if not metas:
+        return ""
+    import calendar as _cal
+
+    latest = metas[0]["date"]
+    y, m = int(latest[:4]), int(latest[5:7])
+    have = {x["date"] for x in metas if x["date"][:7] == latest[:7]}
+    weeks = _cal.Calendar(firstweekday=0).monthdayscalendar(y, m)
+    head = "".join(f'<span class="wk">{w}</span>' for w in "一二三四五六日")
+    cells = []
+    for week in weeks:
+        for d in week:
+            if not d:
+                cells.append('<span class="cd"></span>')
+                continue
+            date = f"{y:04d}-{m:02d}-{d:02d}"
+            if date in have:
+                cells.append(f'<a class="cd on" href="/{kind}/{date}.html" '
+                             f'title="{date}">{d}</a>')
+            else:
+                cells.append(f'<span class="cd">{d}</span>')
+    total = len(have)
+    return (f'<div class="dl-side dl-cal" style="margin-bottom:16px;">'
+            f'<h4>{y} 年 {m} 月 · 本月 {total} 期</h4>'
+            f'<div class="cal">{head}{"".join(cells)}</div></div>')
 
 
 def _issue_meta(p: Path) -> dict[str, Any]:
@@ -595,10 +630,11 @@ def build_issue_index(kind: str, *, site_root: Path | None = None) -> dict[str, 
     latest = metas[0] if metas else None
 
     st = _issue_stats(latest["date"]) if latest else {}
+    issue_no = len(metas)
     front = ""
     if latest:
         chips = "".join(f"<span>{theme.esc(h)}</span>" for h in latest["heads"][:6])
-        front = (f'<div class="dl-front"><div class="kicker">最新一期 · {theme.esc(latest["date"])}'
+        front = (f'<div class="dl-front"><div class="kicker">第 {issue_no:03d} 期 · {theme.esc(latest["date"])}'
                  f' · {latest["items"]} 条</div>'
                  f'<h2><a href="/{kind}/{theme.esc(latest["date"])}.html">'
                  f'{theme.esc(latest["title"] or label)}</a></h2>'
@@ -628,7 +664,7 @@ def build_issue_index(kind: str, *, site_root: Path | None = None) -> dict[str, 
         blocks.append(f'<div class="dl-month"><h3>{y} 年 {int(mm)} 月 · {len(months[month])} 期</h3>'
                       f'{rows}</div>')
 
-    side = ""
+    side = _issue_calendar(metas, kind)
     if st and st.get("top"):
         picks = "".join(
             f'<li><a href="/items/{t["id"]}.html">{theme.esc(t["title"][:64])}</a></li>'
