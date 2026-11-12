@@ -505,21 +505,114 @@ def _issues(prefix: str) -> list[Path]:
     return sorted((DATA).glob(f"{prefix}-*.md"), reverse=True)
 
 
+ISSUE_CSS = """
+.dl-front{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);
+          box-shadow:var(--shadow-card);padding:22px 24px;margin:0 0 24px}
+.dl-front .kicker{font-size:12px;letter-spacing:.08em;color:var(--ink-4);text-transform:uppercase}
+.dl-front h2{font-size:24px;font-weight:700;line-height:1.35;margin:8px 0 10px;letter-spacing:-.01em}
+.dl-front h2 a{color:var(--ink)}
+.dl-front .lead{margin:0;font-size:15px;line-height:1.8;color:var(--ink-3)}
+.dl-front .cols{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.dl-front .cols span{font-size:12px;color:var(--ink-3);background:var(--bg-sunk);
+                     border-radius:999px;padding:3px 11px}
+.dl-grid{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:28px;align-items:start}
+@media(max-width:820px){.dl-grid{grid-template-columns:1fr}}
+.dl-month{margin:0 0 20px}
+.dl-month h3{font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
+             color:var(--ink-4);margin:0 0 8px;padding-bottom:7px;border-bottom:1px solid var(--line)}
+.dl-row{display:grid;grid-template-columns:86px minmax(0,1fr) auto;gap:12px;align-items:baseline;
+        padding:9px 0;border-bottom:1px solid var(--line-soft);font-size:14px}
+.dl-row:last-child{border-bottom:0}
+.dl-row .d{font-family:var(--font-mono);font-size:12.5px;color:var(--ink-4)}
+.dl-row a{color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+.dl-row a:hover{color:var(--accent)}
+.dl-row .n{font-size:11.5px;color:var(--ink-4);white-space:nowrap}
+.dl-side{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);
+         box-shadow:var(--shadow-card);padding:18px 20px}
+.dl-side h4{font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
+            color:var(--ink-4);margin:0 0 10px}
+.dl-side ol{list-style:none;margin:0;padding:0;counter-reset:i}
+.dl-side li{counter-increment:i;display:grid;grid-template-columns:26px minmax(0,1fr);gap:8px;
+            padding:8px 0;border-bottom:1px solid var(--line-soft);font-size:13px;line-height:1.5}
+.dl-side li:last-child{border-bottom:0}
+.dl-side li::before{content:counter(i,decimal-leading-zero);font:700 12px var(--font-mono);
+                    color:var(--accent)}
+.dl-side li a{color:var(--ink-2)}
+"""
+
+
+def _issue_meta(p: Path) -> dict[str, Any]:
+    """从一期 Markdown 里抽出标题、板块、头条，用来做索引卡片。"""
+    try:
+        md = p.read_text(encoding="utf-8")
+    except OSError:
+        return {}
+    lines = md.splitlines()
+    title = next((l[2:].strip() for l in lines if l.startswith("# ")), "")
+    heads = [l[3:].strip() for l in lines if l.startswith("## ")]
+    lead = ""
+    for l in lines:
+        t = l.strip()
+        if (t.startswith("- ") or re.match(r"^\d+\. ", t)) and len(t) > 14:
+            lead = re.sub(r"^[-\d.\s]+", "", t)
+            lead = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", lead)
+            lead = re.sub(r"[*_`#>]", "", lead)
+            break
+    items = sum(1 for l in lines
+                if l.strip().startswith("- ") or re.match(r"^\d+\. ", l.strip()))
+    return {"date": p.stem.split("-", 1)[-1], "title": title, "heads": heads,
+            "lead": lead[:110], "items": items}
+
+
 def build_issue_index(kind: str, *, site_root: Path | None = None) -> dict[str, Any]:
     root = site_root or SITE
     prefix = {"daily": "digest", "weekly": "weekly", "monthly": "monthly"}[kind]
     label = {"daily": "日报", "weekly": "周报", "monthly": "月报"}[kind]
     files = _issues(prefix)
-    cards = "".join(
-        f'<div class="card"><h3><a href="/{kind}/{theme.esc(p.stem.split("-", 1)[1])}.html">'
-        f'{theme.esc(p.stem.split("-", 1)[1])}</a></h3>'
-        f'<div class="row">{p.stat().st_size // 1024} KB</div></div>' for p in files)
+    metas = [m for m in (_issue_meta(p) for p in files) if m]
+    latest = metas[0] if metas else None
+
+    front = ""
+    if latest:
+        chips = "".join(f"<span>{theme.esc(h)}</span>" for h in latest["heads"][:6])
+        front = (f'<div class="dl-front"><div class="kicker">最新一期 · {theme.esc(latest["date"])}'
+                 f' · {latest["items"]} 条</div>'
+                 f'<h2><a href="/{kind}/{theme.esc(latest["date"])}.html">'
+                 f'{theme.esc(latest["title"] or label)}</a></h2>'
+                 + (f'<p class="lead">{theme.esc(latest["lead"])}…</p>' if latest["lead"] else "")
+                 + (f'<div class="cols">{chips}</div>' if chips else "")
+                 + '</div>')
+
+    months: dict[str, list[dict[str, Any]]] = {}
+    for m in metas:
+        months.setdefault(m["date"][:7], []).append(m)
+    blocks = []
+    for month in sorted(months, reverse=True):
+        rows = "".join(
+            f'<div class="dl-row"><span class="d">{theme.esc(m["date"])}</span>'
+            f'<a href="/{kind}/{theme.esc(m["date"])}.html">'
+            f'{theme.esc(m["lead"] or m["title"] or "（无标题）")}</a>'
+            f'<span class="n">{m["items"]} 条</span></div>'
+            for m in months[month])
+        y, mm = month.split("-")
+        blocks.append(f'<div class="dl-month"><h3>{y} 年 {int(mm)} 月 · {len(months[month])} 期</h3>'
+                      f'{rows}</div>')
+
+    side = ""
+    if latest and latest["heads"]:
+        items = "".join(f'<li>{theme.esc(h)}</li>' for h in latest["heads"][:6])
+        side = (f'<div class="dl-side"><h4>本期版面</h4><ol>{items}</ol></div>')
+
+    body = front + f'<div class="dl-grid"><div>{"".join(blocks)}</div>{side}</div>' \
+        if metas else '<p class="muted">还没有出刊记录。跑一次 <code>python run.py</code> 就会生成。</p>'
     _write(root / f"{kind}.html", theme.page(
-        label, cards or '<p class="muted">还没有出刊记录。跑一次 <code>python run.py</code> 就会生成。</p>',
-        active=f"/{kind}.html", lead=f'共 {len(files)} 期 · 按日期倒序'))
+        label, body, active=f"/{kind}.html",
+        lead=f"共 {len(metas)} 期 · 每期按日期倒序，点开是当期的报纸版面",
+        extra_css=ISSUE_CSS))
+
     written = 1
     for p in files:
-        day = p.stem.split("-", 1)[1]
+        day = p.stem.split("-", 1)[-1]
         try:
             md = p.read_text(encoding="utf-8")
         except OSError:
@@ -532,7 +625,6 @@ def build_issue_index(kind: str, *, site_root: Path | None = None) -> dict[str, 
         except Exception:
             plate = ""
         plate_html = f'<div class="nameplate">{theme.esc(plate)}</div>' if plate else ""
-        # Markdown 自带的 H1 与页面标题重复，去掉第一行标题
         md_body = md
         first = md_body.lstrip().split("\n", 1)
         if first and first[0].lstrip().startswith("# "):
