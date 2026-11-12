@@ -448,6 +448,9 @@ footer .links a{color:var(--ink-4)}
 @media(min-width:700px){.bnav{display:none}.main{padding-bottom:72px}}
 
 @media(min-width:700px){.badge-pick{display:inline-flex}.scorelabel{display:inline-flex}}
+
+.feed-divider{list-style:none;display:flex;align-items:center;gap:16px;margin:32px 0 20px;font-size:12px;color:var(--ink-4);letter-spacing:.04em}
+.feed-divider::before,.feed-divider::after{content:"";flex:1;height:1px;background:var(--line)}
 """
 
 

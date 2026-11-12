@@ -31,7 +31,8 @@ SITE = ROOT / "site"
 DATA = Path(os.environ.get("RADAR_DATA") or (ROOT / "data"))
 
 FEED_DIVIDER_CSS = """
-.feed-divider{list-style:none;display:flex;align-items:center;gap:14px;margin:30px 0 18px;font-size:12px;color:var(--ink-4);letter-spacing:.03em}
+.feed-divider{list-style:none;display:flex;align-items:center;gap:16px;margin:32px 0 20px;font-size:12px;color:var(--ink-4);letter-spacing:.04em}
+.feed-divider::before,.feed-divider::after{content:"";flex:1;height:1px;background:var(--line)}
 .feed-divider::before,.feed-divider::after{content:"";flex:1;height:1px;background:var(--line)}
 """
 
@@ -332,7 +333,7 @@ def build_all(day: str | None = None, site_root: Path | None = None) -> dict[str
             "全部动态", body, active="/all.html",
             lead=f'今天 <b>{len(rows)}</b> 条，按排序分从高到低；'
                  f'想只看入选的看 <a href="/">精选</a>。',
-            extra_css=PAGER_CSS).replace("</body>", _STAR_JS + "</body>"))
+            extra_css=PAGER_CSS + FEED_DIVIDER_CSS).replace("</body>", _STAR_JS + "</body>"))
         written += 1
     return {"file": str(root / "all.html"), "items": len(rows), "pages": written}
 
