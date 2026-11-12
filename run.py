@@ -67,6 +67,17 @@ def _done(run_id, status: str = "ok", detail: str | None = None) -> None:
 
 def main(skip_rate: bool = False, send_mail_enabled: bool = True,
          fresh: bool = False, dry_push: bool = False) -> None:
+    # 前置检查：模型网关连不上就别跑，否则会静默降级成一份没评分的数据
+    if os.environ.get("RADAR_MODEL", "1") != "0":
+        from collector import llm as _llm
+
+        _ok, _why = _llm.ping()
+        print(f"[preflight] {_why}")
+        if not _ok:
+            print("[preflight] 模型不可用，已中止：启动网关后重跑，"
+                  "或设 RADAR_MODEL=0 跳过评分。", file=sys.stderr)
+            raise SystemExit(3)
+
     # 安全阀只决定"发不发出去"：命令行参数与 RADAR_PUSH 取交集
     try:
         from collector import valves

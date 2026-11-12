@@ -99,6 +99,27 @@ def settings() -> dict[str, Any]:
     }
 
 
+def ping(timeout: float = 5.0) -> tuple[bool, str]:
+    """开跑前的连通性检查：base_url 能不能连上。
+
+    不加这道检查的话，网关挂了整条链路会静默降级 —— 抓到的内容全评不上分，
+    站点看起来"跑完了"其实是空的。
+    """
+    cfg = settings()
+    base = str(cfg.get("base_url") or "").rstrip("/")
+    if not base:
+        return False, "没有配置 base_url"
+    url = base + "/models"
+    try:
+        r = _session().get(url, timeout=timeout,
+                           headers={"Authorization": f"Bearer {cfg.get('api_key') or ''}"})
+        if r.status_code < 500:
+            return True, f"{base} 可连通（HTTP {r.status_code}）"
+        return False, f"{base} 返回 HTTP {r.status_code}"
+    except Exception as e:
+        return False, f"{base} 连不上：{type(e).__name__}: {e}"
+
+
 def available() -> bool:
     s = settings()
     return bool(s["api_key"] and s["model"])
