@@ -37,6 +37,7 @@ FEED_DIVIDER_CSS = """
 
 REPORT_CSS = """
 /* 日报：按参考站的“报纸”排版 —— 大号衬线报头、头条加大、编号用等宽粗体 */
+.report{max-width:760px;margin:0 auto}
 .report h2{display:block;font-family:var(--sans,inherit);font-size:20px;font-weight:800;
            letter-spacing:-.01em;line-height:1.3;margin:30px 0 14px;padding-bottom:9px;
            border-bottom:1px solid var(--line)}
@@ -240,15 +241,18 @@ _STAR_JS = """
 
 
 def _slot(it: dict[str, Any]) -> str:
-    """一条内容的时间轴单元 —— 首页与 /all 共用同一套 DOM，保证两个页面看起来是一个站。"""
+    """一条内容的时间轴单元 —— 首页与 /all 共用同一套 DOM。
+
+    桌面端时间只在左侧时间轴上（参考站如此），header 里的日期只在手机上显示。
+    """
     att = it.get("attention") or {}
     cat = (it.get("structure") or {}).get("category") or ""
     published = (it.get("published") or "")[:16].replace("T", " ")
     hhmm = published[11:16] if len(published) >= 16 else "--:--"
     first = "1" if it.get("layer") == "primary" else "0"
+
     score = ""
     if att.get("available") and att.get("score") is not None:
-        # 照参考站：药丸里是「AI 评分 | 分」，手机只留数字
         score = (f'<span class="scorelabel" title="AI 评分 {att["score"]}/100">'
                  f'<span class="k">AI 评分</span><span class="sep"></span>'
                  f'<b>{att["score"]}</b></span>')
@@ -256,26 +260,39 @@ def _slot(it: dict[str, Any]) -> str:
     crowd = ""
     if int(it.get("event_size") or 0) > 1:
         crowd = f'<span class="badge">{it["event_size"]} 篇</span>'
+
     summary = " ".join(str(it.get("summary") or "").split())
     reason = (att.get("reason") or "").strip()
     text = (str(it.get("title") or "") + " " + summary + " " + cat).lower()
-    return (
+
+    also = ""
+    size = int(it.get("event_size") or 0)
+    if size > 1 and it.get("event_id"):
+        also = (f'<p class="also">另外 {size - 1} 家也报道了'
+                f'<a href="/events/{it["event_id"]}.html"> 看各方说法 →</a></p>')
+
+    parts = [
         f'<li class="slot" data-id="{it["id"]}" data-cat="{theme.esc(cat)}" '
-        f'data-first="{first}" data-text="{theme.esc(text)}">'
-        f'<time datetime="{theme.esc(published)}">{theme.esc(hhmm)}</time>'
-        '<span class="rail" aria-hidden="true"></span>'
-        '<article class="cardrow">'
-        '<header class="hd"><span class="src">'
-        f'<span>{theme.esc(it["source"])}</span>'
-        f'<span class="dot"></span><span>{theme.esc(published[5:16])}</span>'
-        f'{pick}{crowd}</span>'
-        f'<span class="rt">{score}'
+        f'data-first="{first}" data-text="{theme.esc(text)}">',
+        f'<time datetime="{theme.esc(published)}">{theme.esc(hhmm)}</time>',
+        '<span class="rail" aria-hidden="true"></span>',
+        '<article class="cardrow"><header class="hd"><span class="src">',
+        f'<span>{theme.esc(it["source"])}</span>',
+        f'<span class="dot"></span><span class="when">{theme.esc(published[5:16])}</span>',
+        f'{pick}{crowd}</span>',
+        f'<span class="rt">{score}',
         f'<button class="star" data-star="{theme.esc(it.get("url") or "")}" '
-        f'aria-label="收藏" title="收藏">☆</button></span></header>'
-        f'<h3><a href="/items/{it["id"]}.html">{theme.esc(it["title"])}</a></h3>'
-        + (f'<p class="sum">{theme.esc(summary[:200])}</p>' if summary else "")
-        + (f'<p class="reason">推荐理由：{theme.esc(reason[:140])}</p>' if reason else "")
-        + '</article></li>')
+        f'aria-label="收藏" title="收藏">☆</button></span></header>',
+        f'<h3><a href="/items/{it["id"]}.html">{theme.esc(it["title"])}</a></h3>',
+    ]
+    if summary:
+        parts.append(f'<p class="sum">{theme.esc(summary[:200])}</p>')
+    if reason:
+        parts.append(f'<p class="reason">推荐理由：{theme.esc(reason[:140])}</p>')
+    if also:
+        parts.append(also)
+    parts.append('</article></li>')
+    return "".join(parts)
 
 
 def _day_header(day: str, count: int) -> str:
@@ -932,6 +949,19 @@ def _day_label(day: str) -> tuple[str, str]:
     return f"{d.month}月{d.day}日", f"周{'一二三四五六日'[d.weekday()]}"
 
 
+_AVATAR_COLORS = ("#176b75", "#b3402a", "#b8873a", "#3f6b52", "#5a5f8a", "#8a5a3f")
+
+
+def _avatar_stack(sources: list[str], limit: int = 6) -> str:
+    """来源头像叠放：没有真实 favicon 时用首字母 + 稳定配色，比空圆圈好看得多。"""
+    out = []
+    for name in sources[:limit]:
+        label = (name or "?").strip()[:1].upper()
+        color = _AVATAR_COLORS[sum(ord(c) for c in (name or "?")) % len(_AVATAR_COLORS)]
+        out.append(f'<i style="background:{color}">{theme.esc(label)}</i>')
+    return "".join(out)
+
+
 def build_home(day: str | None = None, site_root: Path | None = None,
                limit: int = 60) -> dict[str, Any]:
     """生成 `site/index.html`：结构对齐 aihot.news 的精选页。"""
@@ -956,7 +986,7 @@ def build_home(day: str | None = None, site_root: Path | None = None,
             b["sources"].add(r.get("source") or "")
         ranked = sorted(buckets.items(), key=lambda kv: -heat.get(kv[0], 0.0))[:5]
         for eid, b in ranked:
-            faces = "".join("<i></i>" for _ in list(b["sources"])[:6])
+            faces = _avatar_stack([x for x in b["sources"] if x])
             hot_rows.append(
                 f'<li><a href="/events/{eid}.html"><span class="rk"></span>'
                 f'<span class="tt">{theme.esc(b["title"])}</span>'

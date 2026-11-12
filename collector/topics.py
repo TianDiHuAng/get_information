@@ -221,7 +221,7 @@ def render_index(data: dict[str, Any]) -> str:
     sub = (f'近 {data["days"]} 天 · {len(data["categories"])} 个分类 · '
            f'{len(data["tags"])} 个标签 · <a href="/">今日要闻</a> · '
            f'<a href="/board.html">看板</a> · <a href="/timeline.html">时间线</a>')
-    return _page(f"{theme.BRAND} · 主题", sub, body)
+    return _page("主题", sub, body)
 
 
 def render_topic(group: dict[str, Any], data: dict[str, Any]) -> str:
@@ -233,7 +233,7 @@ def render_topic(group: dict[str, Any], data: dict[str, Any]) -> str:
     body = f'<ul class="list">{items}</ul>'
     sub = (f'{group["count"]} 条 · 近 {data["days"]} 天 · '
            f'<a href="/topics.html">全部主题</a>')
-    return _page(f'{theme.BRAND} · {group["label"]}', sub, body)
+    return _page(group["label"], sub, body)
 
 
 def build(site_root: Path | None = None, days: int = 30) -> dict[str, Any]:

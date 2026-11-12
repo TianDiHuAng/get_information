@@ -203,7 +203,8 @@ button{font-family:inherit}
 }
 @media(min-width:941px){
   .side{width:var(--side-w);align-items:stretch;padding:24px 12px 14px}
-  .side .brand{justify-content:flex-start;height:50px;padding:0 4px;margin-bottom:16px;color:var(--ink)}
+  .side .brand{justify-content:flex-start;width:auto;height:50px;padding:0 4px;
+               margin-bottom:16px;color:var(--ink)}
   .side .mark{font-size:22px;color:var(--ink);letter-spacing:-.01em}
   .side .mark .full{display:inline}
   .side .mark .short{display:none}
@@ -277,8 +278,10 @@ h1.title small{font-size:13px;font-weight:400;color:var(--ink-4);margin-left:10p
              display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical}
 .hotcard .faces{display:none;justify-content:flex-end}
 @media(min-width:641px){.hotcard .faces{display:flex}}
-.hotcard .faces i{width:20px;height:20px;border-radius:50%;background:var(--bg-muted);
-                  border:1.5px solid var(--surface);margin-left:-6px}
+.hotcard .faces i{width:20px;height:20px;border-radius:50%;margin-left:-6px;
+                  display:inline-flex;align-items:center;justify-content:center;
+                  color:#fff;font-size:10px;font-weight:700;line-height:1;
+                  border:1.5px solid var(--surface);box-shadow:0 1px 2px rgba(0,0,0,.12)}
 .hotcard .heat{font-size:12.5px;color:var(--ink-4);white-space:nowrap;text-align:right}
 .hotcard .heat b{font-size:13.5px;font-weight:600;color:var(--ink-2)}
 @media(max-width:640px){.hotcard li:nth-child(n+4){display:none}.hotcard .faces{display:none}}
@@ -322,14 +325,21 @@ h1.title small{font-size:13px;font-weight:400;color:var(--ink-4);margin-left:10p
 .cardrow .hd{display:flex;align-items:center;gap:6px;min-height:22px;font-size:12.5px;
              line-height:18px;color:var(--ink-4)}
 @media(min-width:700px){.cardrow .hd{min-height:18px;gap:8px}}
+.cardrow .hd .when{display:inline}
+@media(min-width:700px){.cardrow .hd .when{display:none}}
+.cardrow .also{margin:8px 0 0;font-size:12.5px;color:var(--ink-4)}
+.cardrow .also a{color:var(--ink-3)}
+.cardrow .also a:hover{color:var(--accent)}
 .cardrow .hd .src{display:inline-flex;align-items:center;gap:6px;min-width:0;overflow:hidden;
                   text-overflow:ellipsis;white-space:nowrap}
+.cardrow .hd .src .when{display:inline}
+@media(min-width:700px){.cardrow .hd .src .when{display:none}}
 .cardrow .hd .rt{margin-left:auto;display:flex;align-items:center;gap:6px;flex:none;padding-left:8px}
 .badge-pick{display:none;align-items:center;gap:4px;height:18px;padding:0 8px;
             border-radius:999px;font-size:11px;font-weight:500;line-height:1;
             background:var(--amber-soft);color:var(--amber-ink);white-space:nowrap}
 .badge-pick::before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor;flex:none}
-@media(min-width:700px){.badge-pick,.scorelabel{display:inline-flex}}
+
 .scorelabel{display:none;align-items:center;gap:6px;height:20px;padding:0 8px;
             border-radius:999px;font-size:11px;font-weight:500;line-height:1;white-space:nowrap;
             background:var(--accent-soft);color:var(--accent);
@@ -344,7 +354,6 @@ h1.title small{font-size:13px;font-weight:400;color:var(--ink-4);margin-left:10p
       border-radius:var(--r-control);font-size:15px;line-height:1}
 .star:hover{background:var(--bg-sunk);color:var(--ink-2)}
 .star.on{color:var(--amber)}
-.scorelabel b{font-size:12.5px;font-weight:600;color:var(--ink-3)}
 .cardrow h3{margin:6px 0 0;font-size:17px;font-weight:650;line-height:1.5;color:var(--ink)}
 @media(min-width:700px){.cardrow h3{margin-top:8px;line-height:1.55;font-weight:650}}
 .cardrow h3 a:hover{color:var(--accent)}
@@ -425,6 +434,8 @@ footer .links a{color:var(--ink-4)}
         font-size:11px;color:var(--ink-4)}
 .bnav a.on{color:var(--accent);font-weight:600}
 @media(min-width:700px){.bnav{display:none}.main{padding-bottom:72px}}
+
+@media(min-width:700px){.badge-pick{display:inline-flex}.scorelabel{display:inline-flex}}
 """
 
 
