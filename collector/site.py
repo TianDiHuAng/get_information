@@ -357,10 +357,10 @@ HOT_CSS = """
 .rank .why{margin:6px 0 0;font-size:14px;line-height:1.75;color:var(--ink-3);
            display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .rank .who{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:12.5px;color:var(--ink-4)}
-.rank .heat{margin-left:auto;text-align:right;white-space:nowrap}
-.rank .heat b{font:600 20px var(--font-mono);color:var(--ink);
-              font-variant-numeric:tabular-nums}
-.rank .heat span{display:block;font-size:11px;color:var(--ink-4)}
+.rank .who{margin-left:0}
+.rank .ev{color:var(--ink-3);font-size:13px}
+.rank .ev b{font:700 15px var(--font-mono);color:var(--ink);font-variant-numeric:tabular-nums}
+.rank .heat{margin-left:auto;white-space:nowrap;font-size:12px;color:var(--ink-4)}
 .compact{list-style:none;margin:6px 0 0;padding:0}
 .compact li{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:12px;align-items:baseline;
             padding:10px 0;border-bottom:1px solid var(--line-soft);font-size:14px}
@@ -420,12 +420,13 @@ def build_hot(day: str | None = None, site_root: Path | None = None) -> dict[str
             f'<h3><a href="/events/{b["id"]}.html">{theme.esc(b["title"])}</a></h3>'
             + (f'<p class="why">{theme.esc(text[:260])}</p>' if text else "")
             + '<div class="who">'
-              f'<span>{len(b["sources"])} 个来源 · {b["members"]} 篇</span>'
-              f'<span class="heat"><b>{int(heat.get(b["id"], 0))}</b>'
-              f'<span>热度指数</span></span>'
-              '</div></div></li>')
-    body = (f'<p class="lead">过去 48 小时讨论最多的 {len(ranked)} 件事，'
-            f'按独立来源与时间衰减算热度。</p>'
+              f'<span class="ev"><b>{len(b["sources"])}</b> 家在说'
+              f' · <b>{b["members"]}</b> 篇</span>'
+              '<a class="heat" href="/events/%d.html">看各方说法 →</a>'
+              '</div></div></li>' % b["id"])
+    body = (f'<p class="lead">过去 48 小时讨论最多的 {len(ranked)} 件事 —— '
+            f'按「有多少家独立来源在说」和「说了多久」排序，'
+            f'同一件事的多篇报道合并成一个。</p>'
             f'<ol class="rank">{"".join(items)}</ol>')
     if rest:
         compact = "".join(
@@ -434,7 +435,7 @@ def build_hot(day: str | None = None, site_root: Path | None = None) -> dict[str
             f'<span class="heat">{int(heat.get(b["id"], 0))}</span></li>'
             for idx, b in enumerate(rest, 4))
         body += (f'<h2 class="sec">继续看 No.04–{len(ranked):02d}'
-                 f'<span class="muted small">热度 · 点击看各方说法</span></h2>'
+                 f'<span class="muted small">按独立来源数与时间衰减排序</span></h2>'
                  f'<ul class="compact">{compact}</ul>')
     if not ranked:
         body = '<p class="muted">还没有聚合出事件。跑一轮 python run.py 就会有。</p>'
