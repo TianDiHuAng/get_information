@@ -208,7 +208,8 @@ button{font-family:inherit}
   .side{width:var(--side-w);align-items:stretch;padding:24px 12px 14px}
   .side .brand{justify-content:flex-start;width:auto;height:50px;padding:0 4px;
                margin-bottom:16px;color:var(--ink)}
-  .side .brand{width:auto;height:auto;padding:0 6px;margin:0 0 14px;gap:0}
+  .side .brand{width:100%;height:auto;padding:0;margin:0 0 14px;gap:0;
+               justify-content:center}
   .side .brand .brand-mark{display:none}
   /* 按宽高比自适应：两条字标比例不同（Z-bit 3.4:1，Z-bit AIDD 6.2:1），
      写死 height 会让宽的那条被 max-width 压小 */
