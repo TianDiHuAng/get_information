@@ -111,20 +111,20 @@ def icon(name: str, size: int = 17) -> str:
 CSS = """
 :root{
   color-scheme:light;
-  --bg:#faf9f6; --bg-sunk:#f3f3ef; --bg-muted:#e9ede9; --well:#f3f3ef;
-  --surface:#fff; --surface-2:#fdfdfb; --raised:#fff; --sidebar:#fdfdfb; --daybar:#f0f2ee;
-  --ink:#202a30; --ink-2:#303c42; --ink-3:#59656b; --ink-4:#657176;
-  --line:#dfe4e1; --line-strong:#d1d9d5; --line-soft:#e9ede9;
-  --accent:#176b75; --accent-ink:#145f68; --accent-soft:rgba(23,107,117,.08);
-  --accent-softer:rgba(23,107,117,.05); --accent-contrast:#fff;
+  --bg:#fbfaf8; --bg-sunk:#f4f2ee; --bg-muted:#efece6; --well:#f6f4f0;
+  --surface:#fff; --surface-2:#fdfcfa; --raised:#fff; --sidebar:#fff; --daybar:#f7f5f0;
+  --ink:#1b1a17; --ink-2:#3b3833; --ink-3:#6b665e; --ink-4:#9a948a;
+  --line:#eeeae2; --line-strong:#e2ddd2; --line-soft:#f3f0ea;
+  --accent:#5b5bd6; --accent-ink:#4a4ac4; --accent-soft:rgba(91,91,214,.09);
+  --accent-softer:rgba(91,91,214,.05); --accent-contrast:#fff;
   --note:#526f72; --hot:#b3402a; --hot-soft:rgba(179,64,42,.08);
   --amber:#b8873a; --amber-ink:#7c5a24; --amber-soft:rgba(184,135,58,.1); --ok:#2f7d5c;
   --rank-1:#b3402a; --rank-2:#a3642f; --rank-3:#96702e; --rank-rest:#6b7684;
-  --shadow-card:0 1px 2px rgba(32,42,48,.025);
-  --shadow-card-hover:0 3px 12px rgba(32,42,48,.055);
+  --shadow-card:0 1px 2px rgba(27,26,23,.03),0 18px 40px -28px rgba(27,26,23,.22);
+  --shadow-card-hover:0 2px 4px rgba(27,26,23,.04),0 26px 50px -30px rgba(27,26,23,.28);
   --shadow-thumb:0 1px 2px rgba(28,39,51,.1),0 1px 1px rgba(28,39,51,.04);
   --shadow-soft:0 4px 12px rgba(28,39,51,.06);
-  --r-mark:5px; --r-control:8px; --r-tile:10px; --r-card:12px; --r-panel:14px; --r-sheet:16px;
+  --r-mark:6px; --r-control:10px; --r-tile:14px; --r-card:20px; --r-tile:14px; --r-panel:20px; --r-sheet:24px;
   --font-sans:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","HarmonyOS Sans SC","Microsoft YaHei",sans-serif;
   --font-mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Monaco,Consolas,monospace;
   --side-w:180px; --page-max-wide:max(1200px,calc(270dvh - 236px));
@@ -154,7 +154,7 @@ html{
 }
 input,textarea,code,pre,kbd,samp{text-autospace:no-autospace}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans);
-     font-size:14px;line-height:1.5}
+     font-size:15px;line-height:1.65}
 ::selection{background:var(--selection)}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:var(--r-mark)}
 button{cursor:pointer}
@@ -234,7 +234,7 @@ button{font-family:inherit}
 }
 
 /* —— 页头 —— */
-h1.title{font-size:24px;font-weight:600;line-height:1.3;margin:20px 0 14px}
+h1.title{font-size:30px;font-weight:650;letter-spacing:-.02em;line-height:1.25;margin:18px 0 20px}
 @media(min-width:700px){h1.title{margin:4px 0 16px}}
 h1.title small{font-size:13px;font-weight:400;color:var(--ink-4);margin-left:10px}
 .lead{color:var(--ink-3);font-size:14px;margin:-6px 0 18px}
@@ -425,7 +425,7 @@ td.num{text-align:right;font-variant-numeric:tabular-nums}
 ol.list,ul.list{padding-left:20px;margin:0}
 ol.list li,ul.list li{margin:8px 0}
 hr{border:0;border-top:1px solid var(--line);margin:24px 0}
-h2.sec{font-size:14px;font-weight:600;margin:26px 0 12px;display:flex;
+h2.sec{font-size:12.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-4);margin:32px 0 12px;display:flex;
        justify-content:space-between;align-items:baseline}
 h2.sec a{font-size:12.5px;font-weight:400;color:var(--ink-3)}
 
