@@ -696,6 +696,7 @@ def build_issue_index(kind: str, *, site_root: Path | None = None) -> dict[str, 
 
     st = _issue_stats(latest["date"]) if latest else {}
     issue_no = len(metas)
+    fig_html = ""
     front = ""
     if latest:
         chips = "".join(f"<span>{theme.esc(h)}</span>" for h in latest["heads"][:6])

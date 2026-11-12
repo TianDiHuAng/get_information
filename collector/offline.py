@@ -141,7 +141,8 @@ def _self_contained(doc: str) -> str:
     import re as _re
 
     doc = _re.sub(r'<link rel="(icon|apple-touch-icon|manifest)"[^>]*>', "", doc)
-    doc = _re.sub(r'<img class="brand-(mark|full)"[^>]*>', "", doc)
+    doc = _re.sub(r'<img[^>]*class="brand[^"]*"[^>]*>', "", doc)
+    doc = doc.replace("@@ROOT@@", "")
     doc = doc.replace('<a class="brand"', '<a class="brand brand-text"')
     return doc
 
