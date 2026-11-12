@@ -625,7 +625,14 @@ fetch('/api/prefs').then(r=>r.json()).then(function(j){
     _write(root / "feedback.html", theme.page("反馈", feedback, active="",
                                               lead="点一下就记，不用登录"))
 
-    more_links = "".join(f'<li><a href="{href}">{label}</a></li>' for href, label in theme.MORE)
+    # 后台与归档只有根站一份：子站里指回根（用哨兵，前缀替换时不会被改写）
+    root_only = {"/admin.html", "/archive/"}
+    sentinel = "@@ROOT@@"
+    parts = []
+    for href, label in theme.MORE:
+        target = f"{sentinel}{href}" if href in root_only else href
+        parts.append(f'<li><a href="{target}">{label}</a></li>')
+    more_links = "".join(parts)
     _write(root / "more.html", theme.page(
         "更多", f'<ul class="list">{more_links}</ul>', active="",
         lead="所有页面与出口"))
