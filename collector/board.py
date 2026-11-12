@@ -218,7 +218,7 @@ def render(data: dict[str, Any]) -> str:
         stops.append(f"{SEG[i % len(SEG)]} {start * 100:.2f}% {acc * 100:.2f}%")
     total_n = sum(int(b["n"]) for b in hist) or 1
     donut = (f'<div class="donut-wrap"><div class="donut" style="--seg:{", ".join(stops)}">'
-             f'<div class="donut-c"><b>{total_n}</b><span>条已评分</span></div></div>'
+             f'<div class="donut-c"><b>{total_n}</b><span>条 · 今日已评分</span></div></div>'
              '<div class="donut-legend">'
              + "".join(f'<span><i style="background:{SEG[i % len(SEG)]}"></i>'
                        f'{b["label"]} · {b["n"]} 条</span>'
@@ -266,7 +266,7 @@ def render(data: dict[str, Any]) -> str:
               background:var(--surface)}      /* 内圈跟卡片同色，不留白块 */
 .donut-c{position:absolute;inset:0;display:grid;place-items:center;z-index:1;
          text-align:center;line-height:1.2;padding:0 14px;pointer-events:none}
-.donut-c b{font:700 22px var(--font-mono);color:var(--ink);line-height:1}
+.donut-c b{font:700 22px var(--font-mono);color:var(--ink);line-height:1.05}
 .donut-c span{display:block;font-size:10.5px;color:var(--ink-4);margin-top:3px;
               letter-spacing:.02em}
 .donut-legend{display:grid;gap:9px;font-size:13px;color:var(--ink-3);min-width:0;
