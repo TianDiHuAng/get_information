@@ -241,6 +241,19 @@ python serve.py      # / 是 AI，/aidd/ 是 AI 制药
 行业包可以带自己的 `feeds.yaml`（替换信源清单）、`sources.yaml`（`disable:` 停掉不相关源）、
 `pack.yaml`（站名、slogan、MCP 前缀）与 `scoring.yaml`（分类权重与门槛）。
 
+## 站点优化（P44）
+
+| 项 | 做法 | 实测 |
+|---|---|---|
+| **传输压缩** | `serve.py` 对 html/css/js/json/xml/txt/svg 做 gzip；目录自动补 `index.html`；后台与 `/api/feedback`、`/api/prefs` 不压缩（不能被绕过鉴权） | 首页 110KB→28KB，`/aidd/` 88KB→20KB，`api/v1/latest.json` 212KB→55KB |
+| **图标** | 从品牌色画 512/192/180 方图 + `favicon.ico`，随构建幂等生成（`export._ensure_icons`） | 之前 `apple-touch-icon` 指向 1200×630 的分享图，手机会裁 |
+| **sitemap** | 扫描真实产物，不再写死 13 条；扫不到时退回基线清单 | 13 → 730 条 |
+| **404** | 自定义页面给四个真出口；`/aidd/` 下用子站自己的 404 | 不再裸错误页 |
+| **日期诚实** | 日期条写绝对日期 + `data-day`，脚本按访客当下改成「今天/昨天」，数据不是当天就标「数据截至 …」 | 静态站过午夜不再说「今天」 |
+| **head 完整** | favicon / manifest / theme-color（明暗两套）全部接上 | 之前 manifest 生成了却没人引用 |
+
+单页首次加载（gzip 后）：首页 **28KB**、全部动态 **11KB**、AIDD 首页 **20KB**、图标 3.5KB。
+
 ## 安全阀
 
 调页面、改样式、跑测试时，不该抓真实网络、烧模型钱、往群里推消息。三个环境变量：
