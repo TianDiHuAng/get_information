@@ -191,22 +191,36 @@ def main() -> int:
         piece.thumbnail((720, 720), Image.LANCZOS)
         piece.save(BRAND_DIR / name, optimize=True)
 
-    # 4) 图标：徽标放白底圆角方块上（标签栏底色各不相同，白底最稳）
+    # 4) 图标：品牌青绿底 + 白色 Z 剪影
+    #    16px 的标签页里，白底加渐变 Z 会糊成一团；纯色底 + 白剪影最清楚。
+    from PIL import ImageChops
+
+    silhouette = Image.new("RGBA", mark.size, (255, 255, 255, 255))
+    silhouette.putalpha(mark.split()[-1])          # 用徽标的 alpha 当形状
+
+    BRAND_TEAL = (23, 107, 117, 255)
+
     def icon(size: int) -> Image.Image:
         canvas = Image.new("RGBA", (size, size), (0, 0, 0, 0))
         ImageDraw.Draw(canvas).rounded_rectangle(
-            (0, 0, size - 1, size - 1), radius=max(2, int(size * 0.22)), fill=(255, 255, 255, 255))
-        inner = int(size * 0.92)
-        scaled = mark.copy()
-        scaled.thumbnail((inner, inner), Image.LANCZOS)
-        canvas.alpha_composite(scaled, ((size - scaled.size[0]) // 2,
-                                        (size - scaled.size[1]) // 2))
+            (0, 0, size - 1, size - 1), radius=max(2, int(size * 0.22)), fill=BRAND_TEAL)
+        inner = int(size * 0.82)                    # 留一点安全边，别顶到圆角
+        piece = silhouette.copy()
+        piece.thumbnail((inner, inner), Image.LANCZOS)
+        canvas.alpha_composite(piece, ((size - piece.size[0]) // 2,
+                                       (size - piece.size[1]) // 2))
         return canvas
 
     icon(512).save(BRAND_DIR / "icon-512.png", optimize=True)
     icon(192).save(BRAND_DIR / "icon-192.png", optimize=True)
     icon(180).save(BRAND_DIR / "apple-icon.png", optimize=True)
-    icon(64).save(BRAND_DIR / "favicon.ico", sizes=[(16, 16), (32, 32), (48, 48)])
+    # favicon 单独做一版：小尺寸用更粗的剪影（放大到 0.95），16px 才看得清
+    small = Image.new("RGBA", (64, 64), (0, 0, 0, 0))
+    ImageDraw.Draw(small).rounded_rectangle((0, 0, 63, 63), radius=12, fill=BRAND_TEAL)
+    big = silhouette.copy()
+    big.thumbnail((60, 60), Image.LANCZOS)
+    small.alpha_composite(big, ((64 - big.size[0]) // 2, (64 - big.size[1]) // 2))
+    small.save(BRAND_DIR / "favicon.ico", sizes=[(16, 16), (32, 32), (48, 48)])
 
     for name in ("logo-mark.png", "logo-text.png", "logo-text-aidd.png",
                  "icon-512.png", "icon-192.png", "apple-icon.png", "favicon.ico"):
