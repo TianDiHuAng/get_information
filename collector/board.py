@@ -244,31 +244,59 @@ def render(data: dict[str, Any]) -> str:
         for x in data["alerts"]) or '<li class="muted">今天没有告警</li>'
 
     page_css = """
-.kpi{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
-.kpi .card{padding:14px 16px}
+/* 看板：所有区块给足纵向间距，标签允许换行，表格可横向滚动 —— 之前挤在一起是因为
+   间距是按 14px/紧排版写的，换成 15px/1.65 和 20px 圆角后就贴到一起了。 */
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;
+     margin:8px 0 10px}
+.kpi .card{padding:16px 18px;margin:0;min-width:0}
 .kpi .k{font-size:12px;color:var(--ink-4);letter-spacing:.02em}
-.kpi .v{font:800 30px/1.1 var(--font-mono);color:var(--ink);letter-spacing:-.02em;
-        margin:6px 0 2px;font-variant-numeric:tabular-nums}
-.kpi .h{font-size:11.5px;color:var(--ink-4)}
-.donut-wrap{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin:6px 0 4px}
-.donut{width:132px;height:132px;border-radius:50%;flex:none;position:relative;
-       background:conic-gradient(var(--seg));box-shadow:inset 0 0 0 1px var(--line-soft)}
-.donut::after{content:"";position:absolute;inset:26px;border-radius:50%;background:var(--bg)}
-.donut-c{position:absolute;inset:0;display:grid;place-items:center;z-index:1;text-align:center}
-.donut-c b{font:800 22px var(--font-mono);color:var(--ink)}
-.donut-c span{display:block;font-size:10.5px;color:var(--ink-4)}
-.donut-legend{display:flex;flex-direction:column;gap:5px;font-size:12.5px;color:var(--ink-3)}
-.donut-legend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:7px}
-.bar{display:flex;align-items:center;gap:8px;margin:4px 0;font-size:12.5px}
-.bar .bl{width:64px;color:var(--ink-4);flex:none}
-.bar .bt{flex:1;height:6px;border-radius:3px;background:var(--line-soft);overflow:hidden}
-.bar .bt i{display:block;height:100%;background:var(--accent)}
-.bar .bn{width:44px;text-align:right;color:var(--ink-3);flex:none}
-.chip{display:inline-block;border:1px solid var(--line);border-radius:999px;
-      padding:1px 9px;font-size:12px;color:var(--ink-3);margin:2px 4px 2px 0;background:var(--surface)}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-@media(max-width:700px){.two{grid-template-columns:1fr}}
-.err{color:var(--hot)}
+.kpi .v{font:700 32px/1.15 var(--font-mono);color:var(--ink);letter-spacing:-.02em;
+        margin:8px 0 4px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.kpi .h{font-size:12px;color:var(--ink-4);line-height:1.5}
+
+/* 环形分布：单独一张卡，图和图例分两列，互不压迫 */
+.donut-wrap{display:grid;grid-template-columns:164px minmax(0,1fr);gap:28px;align-items:center;
+            margin:10px 0 20px;padding:18px 20px;background:var(--surface);
+            border:1px solid var(--line);border-radius:var(--r-card);box-shadow:var(--shadow-card)}
+@media(max-width:720px){.donut-wrap{grid-template-columns:1fr;justify-items:center;gap:18px}}
+.donut{width:164px;height:164px;border-radius:50%;position:relative;flex:none;
+       background:conic-gradient(var(--seg))}
+.donut::after{content:"";position:absolute;inset:34px;border-radius:50%;
+              background:var(--surface)}      /* 内圈跟卡片同色，不留白块 */
+.donut-c{position:absolute;inset:0;display:grid;place-items:center;z-index:1;
+         text-align:center;line-height:1.15;padding:0 8px}
+.donut-c b{font:700 24px var(--font-mono);color:var(--ink)}
+.donut-c span{display:block;font-size:10.5px;color:var(--ink-4);margin-top:3px;
+              letter-spacing:.02em}
+.donut-legend{display:grid;gap:9px;font-size:13px;color:var(--ink-3);min-width:0}
+.donut-legend span{display:flex;align-items:center;gap:9px}
+.donut-legend i{flex:none;width:10px;height:10px;border-radius:3px}
+
+/* 条形：标签定宽省略号，数值右对齐，条不自适应撑破 */
+.bar{display:flex;align-items:center;gap:12px;margin:0 0 11px;font-size:13px}
+.bar .bl{flex:0 0 104px;color:var(--ink-4);overflow:hidden;text-overflow:ellipsis;
+         white-space:nowrap}
+.bar .bt{flex:1;min-width:40px;height:8px;border-radius:999px;background:var(--bg-sunk);
+         overflow:hidden}
+.bar .bt i{display:block;height:100%;border-radius:999px;
+           background:linear-gradient(90deg,#9a9af2,var(--accent))}
+.bar .bn{flex:0 0 52px;text-align:right;font-family:var(--font-mono);color:var(--ink-3)}
+
+/* 标签云：换行不重叠 */
+.chip{display:inline-flex;align-items:center;margin:0 6px 7px 0;padding:3px 11px;
+      border-radius:999px;background:var(--bg-sunk);color:var(--ink-3);font-size:12px;
+      line-height:1.7;max-width:100%;overflow-wrap:anywhere}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+@media(max-width:720px){.two{grid-template-columns:1fr}}
+.two > div{min-width:0}
+
+/* 表格：小屏可横向滚，纵向给足行高 */
+.page table{width:100%;border-collapse:collapse;font-size:13px;margin:4px 0 8px}
+.page table th,.page table td{padding:9px 10px;border-bottom:1px solid var(--line-soft);
+                              text-align:left;vertical-align:top}
+.page table th{color:var(--ink-4);font-weight:600;font-size:12px}
+.scroll{overflow-x:auto}
+.axes{margin:6px 0 4px}
 """
 
     body = f"""<div class="cards">{cards}</div>
