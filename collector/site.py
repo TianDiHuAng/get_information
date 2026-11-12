@@ -214,7 +214,10 @@ def _slot(it: dict[str, Any]) -> str:
     first = "1" if it.get("layer") == "primary" else "0"
     score = ""
     if att.get("available") and att.get("score") is not None:
-        score = f'<span class="scorelabel"><b>{att["score"]}</b>分</span>'
+        # 照参考站：药丸里是「AI 评分 | 分」，手机只留数字
+        score = (f'<span class="scorelabel" title="AI 评分 {att["score"]}/100">'
+                 f'<span class="k">AI 评分</span><span class="sep"></span>'
+                 f'<b>{att["score"]}</b></span>')
     pick = '<span class="badge-pick">精选</span>' if att.get("selected") else ""
     crowd = ""
     if int(it.get("event_size") or 0) > 1:
@@ -232,7 +235,9 @@ def _slot(it: dict[str, Any]) -> str:
         f'<span>{theme.esc(it["source"])}</span>'
         f'<span class="dot"></span><span>{theme.esc(published[5:16])}</span>'
         f'{pick}{crowd}</span>'
-        f'<span class="rt">{score}</span></header>'
+        f'<span class="rt">{score}'
+        f'<button class="star" data-star="{theme.esc(it.get("url") or "")}" '
+        f'aria-label="收藏" title="收藏">☆</button></span></header>'
         f'<h3><a href="/items/{it["id"]}.html">{theme.esc(it["title"])}</a></h3>'
         + (f'<p class="sum">{theme.esc(summary[:200])}</p>' if summary else "")
         + (f'<p class="reason">推荐理由：{theme.esc(reason[:140])}</p>' if reason else "")
@@ -276,7 +281,7 @@ def build_all(day: str | None = None, site_root: Path | None = None) -> dict[str
             "全部动态", body, active="/all.html",
             lead=f'今天 <b>{len(rows)}</b> 条，按排序分从高到低；'
                  f'想只看入选的看 <a href="/">精选</a>。',
-            extra_css=PAGER_CSS))
+            extra_css=PAGER_CSS).replace("</body>", _STAR_JS + "</body>"))
         written += 1
     return {"file": str(root / "all.html"), "items": len(rows), "pages": written}
 
@@ -940,35 +945,9 @@ def build_home(day: str | None = None, site_root: Path | None = None,
 
     slots = []
     for index, it in enumerate(ordered[:limit]):
-        att = it.get("attention") or {}
-        cat = (it.get("structure") or {}).get("category") or ""
-        published = (it.get("published") or "")[:16].replace("T", " ")
-        hhmm = published[11:16] if len(published) >= 16 else "--:--"
-        first = "1" if it.get("layer") == "primary" else "0"
-        score = ""
-        if att.get("available") and att.get("score") is not None:
-            score = f'<span class="scorelabel"><b>{att["score"]}</b>分</span>'
-        pick = '<span class="badge-pick">精选</span>' if att.get("selected") else ""
-        summary = " ".join(str(it.get("summary") or "").split())
-        reason = (att.get("reason") or "").strip()
-        text = (str(it.get("title") or "") + " " + summary + " " + cat).lower()
-        if index == first_unselected and first_unselected:
+        if index == first_unselected and first_unselected and index > 0:
             slots.append('<li class="feed-divider">更多动态 · 未过门槛，按分数排列</li>')
-        slots.append(
-            f'<li class="slot" data-id="{it["id"]}" data-cat="{theme.esc(cat)}" '
-            f'data-first="{first}" data-text="{theme.esc(text)}">'
-            f'<time datetime="{theme.esc(published)}">{theme.esc(hhmm)}</time>'
-            '<span class="rail" aria-hidden="true"></span>'
-            '<article class="cardrow">'
-            '<header class="hd"><span class="src">'
-            f'<span>{theme.esc(it["source"])}</span>'
-            f'<span class="dot"></span><span>{theme.esc(published[5:16])}</span>'
-            f'{pick}</span>'
-            f'<span class="rt">{score}</span></header>'
-            f'<h3><a href="/items/{it["id"]}.html">{theme.esc(it["title"])}</a></h3>'
-            + (f'<p class="sum">{theme.esc(summary[:200])}</p>' if summary else "")
-            + (f'<p class="reason">推荐理由：{theme.esc(reason[:140])}</p>' if reason else "")
-            + '</article></li>')
+        slots.append(_slot(it))
 
     day_head, week = _day_label(day)
     pill_parts = []
@@ -987,15 +966,13 @@ def build_home(day: str | None = None, site_root: Path | None = None,
            f'<h2><span class="dotlive"><i></i><b></b></span>当前热点</h2>'
            f'<a class="more" href="/hot.html">完整榜单 →</a></div>'
            f'<ol>{"".join(hot_rows)}</ol></section>' if hot_rows else "")
-        + f'<div class="daybar" data-day="{theme.esc(day)}">'
-          f'<span class="d" data-abs="{theme.esc(day_head)}">{theme.esc(day_head)}</span>'
-          f'<span class="w">{theme.esc(week)}</span>'
-          f'<span class="aside"><b id="cnt">{len(slots)}</b> 条</span></div>'
+        + _day_header(day, len(slots)).replace(
+            '条</span></div>', f'条</span></div>', 1)
         + f'<ol class="feed">{"".join(slots)}</ol>'
         + (f'<p class="muted small" style="margin-top:16px;">'
            f'<a href="/all.html">查看全部 {len(rows)} 条 →</a></p>'
            if len(rows) > limit else "")
-        + _HOME_JS)
+        + _HOME_JS + _STAR_JS)
 
     _write(root / "index.html",
            theme.page(f"精选 · {theme.BRAND}", body, active="/",
