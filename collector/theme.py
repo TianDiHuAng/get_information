@@ -231,6 +231,9 @@ button{font-family:inherit}
                   height:32px;margin-top:10px;border:1px solid var(--line);border-radius:999px;
                   background:transparent;font-size:12px;color:var(--ink-3);cursor:pointer}
   .side .themebtn:hover{background:var(--bg-sunk);color:var(--ink)}
+  [data-theme="dark"] .side .gh,[data-theme="dark"] .side .themebtn{color:var(--ink-2);
+    border-color:var(--line-strong)}
+  [data-theme="dark"] .side .gh:hover,[data-theme="dark"] .side .themebtn:hover{color:var(--ink)}
 }
 
 /* —— 页头 —— */

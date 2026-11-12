@@ -31,7 +31,8 @@ SITE = ROOT / "site"
 DATA = Path(os.environ.get("RADAR_DATA") or (ROOT / "data"))
 
 FEED_DIVIDER_CSS = """
-.feed-divider{list-style:none;margin:34px 0 16px;padding-top:22px;border-top:1px solid var(--line);font-size:12px;color:var(--ink-4);letter-spacing:.03em;text-align:center}
+.feed-divider{list-style:none;display:flex;align-items:center;gap:14px;margin:30px 0 18px;font-size:12px;color:var(--ink-4);letter-spacing:.03em}
+.feed-divider::before,.feed-divider::after{content:"";flex:1;height:1px;background:var(--line)}
 """
 
 REPORT_CSS = """
@@ -605,11 +606,22 @@ def _og_image(url: str, root: Path) -> str:
                 page = None
         if page is None or page.status_code != 200:
             return ""
-        m = _re.search(r'<meta[^>]+(?:property|name)=["\']og:image["\'][^>]+'
-                       r'content=["\']([^"\']+)', page.text, _re.I)
-        if not m:
+        from bs4 import BeautifulSoup
+
+        soup = BeautifulSoup(page.text, "html.parser")
+        tag = soup.find("meta", attrs={"property": "og:image"}) or \
+            soup.find("meta", attrs={"name": "og:image"})
+        if not tag or not tag.get("content"):
             return ""
-        img = requests.get(m.group(1), timeout=10, headers=ua)
+        img_url = tag["content"].strip()
+        if img_url.startswith("//"):
+            img_url = "https:" + img_url
+        elif img_url.startswith("/"):
+            from urllib.parse import urljoin
+
+            img_url = urljoin(url, img_url)
+        return ""
+        img = requests.get(img_url, timeout=10, headers=ua)
         if img.status_code != 200 or len(img.content) > 3_000_000 or len(img.content) < 2000:
             return ""
         ct = (img.headers.get("content-type") or "").lower()
