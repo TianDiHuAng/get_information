@@ -46,3 +46,7 @@ feeds:
   - {id: tmtpost, name: "钛媒体", url: "https://www.tmtpost.com/rss.xml", region: domestic, layer: broad, limit: 8, proxy: true}
   - {id: geekpark, name: "极客公园", url: "https://www.geekpark.net/rss", region: domestic, layer: broad, limit: 8, proxy: true}
   - {id: oschina, name: "开源中国", url: "https://www.oschina.net/news/rss", region: domestic, layer: broad, limit: 8, proxy: true}
+  # —— 专题搜索（Google 新闻 RSS，探针测通） ——
+
+  - {id: gn_tencent_ai, name: "腾讯 AI（Google 新闻）", url: "https://news.google.com/rss/search?q=%E8%85%BE%E8%AE%AF%20AI%20%E6%B7%B7%E5%85%83&hl=zh-CN&gl=CN&ceid=CN:zh-Hans", region: domestic, layer: search, limit: 12, proxy: true}
+  - {id: gn_tencent_med, name: "腾讯 智慧医疗（Google 新闻）", url: "https://news.google.com/rss/search?q=%E8%85%BE%E8%AE%AF%20%E6%99%BA%E6%85%A7%E5%8C%BB%E7%96%97&hl=zh-CN&gl=CN&ceid=CN:zh-Hans", region: domestic, layer: search, limit: 12, proxy: true}

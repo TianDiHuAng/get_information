@@ -15,3 +15,9 @@ feeds:
   - {id: arxiv_qbio, name: "arXiv q-bio", url: "https://rss.arxiv.org/rss/q-bio", region: overseas, layer: primary, limit: 15, proxy: true}
   - {id: biorxiv, name: "bioRxiv", url: "https://connect.biorxiv.org/biorxiv_xml.php?subject=all", region: overseas, layer: primary, limit: 12, proxy: true}
   - {id: sciencedaily_pharm, name: "ScienceDaily 药学", url: "https://www.sciencedaily.com/rss/health_medicine/pharmacology.xml", region: overseas, layer: broad, limit: 10, proxy: true}
+  # —— 专题搜索（Google 新闻 RSS，探针测通） ——
+
+  - {id: gn_tencent_med2, name: "腾讯 智慧医疗（Google 新闻）", url: "https://news.google.com/rss/search?q=%E8%85%BE%E8%AE%AF%20%E6%99%BA%E6%85%A7%E5%8C%BB%E7%96%97&hl=zh-CN&gl=CN&ceid=CN:zh-Hans", region: domestic, layer: search, limit: 12, proxy: true}
+  - {id: gn_aidd_rd, name: "AI 制药（Google 新闻）", url: "https://news.google.com/rss/search?q=AI%20%E5%88%B6%E8%8D%AF%20%E8%8D%AF%E7%89%A9%E7%A0%94%E5%8F%91&hl=zh-CN&gl=CN&ceid=CN:zh-Hans", region: domestic, layer: search, limit: 12, proxy: true}
+  - {id: gn_aidd_discover, name: "AI 药物发现（Google 新闻）", url: "https://news.google.com/rss/search?q=AI%20%E8%8D%AF%E7%89%A9%E5%8F%91%E7%8E%B0&hl=zh-CN&gl=CN&ceid=CN:zh-Hans", region: domestic, layer: search, limit: 12, proxy: true}
+  - {id: gn_med_llm, name: "医疗 AI 大模型（Google 新闻）", url: "https://news.google.com/rss/search?q=%E5%8C%BB%E7%96%97%20AI%20%E5%A4%A7%E6%A8%A1%E5%9E%8B&hl=zh-CN&gl=CN&ceid=CN:zh-Hans", region: domestic, layer: search, limit: 12, proxy: true}
