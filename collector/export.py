@@ -428,6 +428,7 @@ def _copy_brand(site_root: Path) -> list[str]:
     written = []
     src_dir = Path(__file__).parent.parent / "assets" / "brand"
     for name in ("logo-mark.png", "logo-text.png", "logo-text-aidd.png",
+                 "logo-text-dark.png", "logo-text-aidd-dark.png",
                  "icon-512.png", "icon-192.png", "apple-icon.png", "favicon.ico"):
         src = src_dir / name
         if not src.is_file():

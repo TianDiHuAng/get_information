@@ -103,6 +103,22 @@ def clusters(img, band, min_gap: int = 6, min_ink: int = 2) -> list[tuple[int, i
     return merged
 
 
+def dark_variant(img):
+    """把深色文字换成浅色，彩色部件保留 —— 深色模式下字标才看得见。"""
+    import numpy as np
+    from PIL import Image as _I
+
+    a = np.array(img.convert("RGBA")).astype(int)
+    r, g, b = a[..., 0], a[..., 1], a[..., 2]
+    lum = 0.299 * r + 0.587 * g + 0.114 * b
+    sat = a[..., :3].max(axis=2) - a[..., :3].min(axis=2)
+    mask = (lum < 118) & (sat < 95)        # 深且不鲜艳 = 文字
+    a[..., 0] = np.where(mask, 241, r)
+    a[..., 1] = np.where(mask, 240, g)
+    a[..., 2] = np.where(mask, 236, b)
+    return _I.fromarray(a.astype("uint8"), "RGBA")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--src", default=str(BRAND_DIR / "logo-src.png"))
@@ -190,6 +206,8 @@ def main() -> int:
         piece = trim(img.crop((x0, band[0], x1 + 1, band[1] + 1)))
         piece.thumbnail((720, 720), Image.LANCZOS)
         piece.save(BRAND_DIR / name, optimize=True)
+        dark_variant(piece).save(
+            BRAND_DIR / name.replace(".png", "-dark.png"), optimize=True)
 
     # 4) 图标：品牌青绿底 + 白色 Z 剪影
     #    16px 的标签页里，白底加渐变 Z 会糊成一团；纯色底 + 白剪影最清楚。

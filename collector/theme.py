@@ -186,6 +186,7 @@ button{font-family:inherit}
   .side .brand img{display:block;width:auto}
   .side .brand.brand-text{font:800 20px/1 var(--font-sans);color:var(--ink)}
   .side .brand .brand-full{display:none}
+  .side .brand .brand-dark{display:none}
   .side .brand .brand-mark{height:32px}
   .side .mark .full{display:none}
   .side .mark .short{display:inline}
@@ -213,8 +214,12 @@ button{font-family:inherit}
   .side .brand .brand-mark{display:none}
   /* 按宽高比自适应：两条字标比例不同（Z-bit 3.4:1，Z-bit AIDD 6.2:1），
      写死 height 会让宽的那条被 max-width 压小 */
-  .side .brand .brand-full{display:block;width:auto;height:auto;
-                           max-width:100%;max-height:30px}
+  .side .brand .brand-light{display:block;width:auto;height:auto;
+                            max-width:100%;max-height:30px}
+  .side .brand .brand-dark{display:none}
+  [data-theme="dark"] .side .brand .brand-light{display:none}
+  [data-theme="dark"] .side .brand .brand-dark{display:block;width:auto;height:auto;
+                                               max-width:100%;max-height:30px}
   .side .mark .full{display:inline}
   .side .mark .short{display:none}
   .side .sec-title{display:block;padding:14px 10px 4px;font-size:11px;color:var(--ink-4)}
@@ -503,10 +508,13 @@ def nav_html(active: str = "/") -> str:
             '</div>')
     brand = ('<a class="brand" href="@@ROOT@@{base}/" aria-label="{name} 首页">'
              '<img class="brand-mark" src="@@ROOT@@/logo-mark.png" alt="{name}">'
-             '<img class="brand-full" src="@@ROOT@@{text}" alt="{name}">'
+             '<img class="brand-full brand-light" src="@@ROOT@@{text}" alt="{name}">'
+             '<img class="brand-full brand-dark" src="@@ROOT@@{text_dark}" alt="{name}">'
              '</a>').format(base=_BASE, name=esc(BRAND),
                             text="/logo-text-aidd.png" if "aidd" in _BASE.lower()
-                            else "/logo-text.png")
+                            else "/logo-text.png",
+                            text_dark="/logo-text-aidd-dark.png" if "aidd" in _BASE.lower()
+                            else "/logo-text-dark.png")
     sw = (f'<div class="switcher">'
           f'<a class="{"on" if not _BASE else ""}" href="@@ROOT@@/">AI</a>'
           f'<a class="{"on" if _BASE == "/aidd" else ""}" href="@@ROOT@@/aidd/">AIDD</a>'
