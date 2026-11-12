@@ -515,6 +515,9 @@ ISSUE_CSS = """
 .dl-front .cols{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
 .dl-front .cols span{font-size:12px;color:var(--ink-3);background:var(--bg-sunk);
                      border-radius:999px;padding:3px 11px}
+.dl-fig{display:block;margin:16px 0 4px;border-radius:var(--r-tile);overflow:hidden;
+        border:1px solid var(--line);background:var(--bg-sunk)}
+.dl-fig img{display:block;width:100%;max-height:340px;object-fit:cover}
 .dl-stats{display:flex;flex-wrap:wrap;gap:18px;margin-top:16px;padding-top:14px;
           border-top:1px solid var(--line-soft);font-size:13px;color:var(--ink-4)}
 .dl-stats b{font:700 16px var(--font-mono);color:var(--ink);margin-right:3px}
@@ -563,10 +566,59 @@ def _issue_stats(day: str) -> dict[str, Any]:
     scored = [r for r in rows if (r.get("attention") or {}).get("score") is not None]
     scored.sort(key=lambda r: -(r["attention"]["score"]))
     top = [{"title": r.get("title") or "", "id": r.get("id"),
-            "score": r["attention"]["score"], "source": r.get("source") or ""}
+            "score": r["attention"]["score"], "source": r.get("source") or "",
+            "url": r.get("url") or ""}
            for r in scored[:3]]
     return {"items": len(rows), "sources": len(srcs), "models": models,
             "firsts": firsts, "top": top}
+
+
+def _og_image(url: str, root: Path) -> str:
+    """抓头条原文的 og:image，缓存到 site/assets/og/，失败返回空串。
+
+    只给日报头条用一张 —— 全站配图需要图片代理 + 失效兜底，成本不划算。
+    """
+    if not url or not url.startswith("http"):
+        return ""
+    import hashlib
+    import re as _re
+
+    key = hashlib.sha1(url.encode("utf-8")).hexdigest()[:16]
+    folder = root / "assets" / "og"
+    for ext in ("jpg", "png", "webp"):
+        f = folder / f"{key}.{ext}"
+        if f.is_file():
+            return f"/assets/og/{f.name}"
+    try:
+        import requests
+
+        ua = {"User-Agent": "Mozilla/5.0 (compatible; ZBit/1.0)"}
+        proxies = [None, {"http": "http://127.0.0.1:10808",
+                          "https": "http://127.0.0.1:10808"}]
+        page = None
+        for px in proxies:
+            try:
+                page = requests.get(url, timeout=8, headers=ua, proxies=px)
+                if page.status_code == 200:
+                    break
+            except Exception:
+                page = None
+        if page is None or page.status_code != 200:
+            return ""
+        m = _re.search(r'<meta[^>]+(?:property|name)=["\']og:image["\'][^>]+'
+                       r'content=["\']([^"\']+)', page.text, _re.I)
+        if not m:
+            return ""
+        img = requests.get(m.group(1), timeout=10, headers=ua)
+        if img.status_code != 200 or len(img.content) > 3_000_000 or len(img.content) < 2000:
+            return ""
+        ct = (img.headers.get("content-type") or "").lower()
+        ext = "jpg" if ("jpeg" in ct or "jpg" in ct) else "webp" if "webp" in ct else "png"
+        folder.mkdir(parents=True, exist_ok=True)
+        (folder / f"{key}.{ext}").write_bytes(img.content)
+        return f"/assets/og/{key}.{ext}"
+    except Exception:
+        return ""
 
 
 def _issue_calendar(metas: list[dict[str, Any]], kind: str) -> str:
@@ -640,6 +692,7 @@ def build_issue_index(kind: str, *, site_root: Path | None = None) -> dict[str, 
                  f'{theme.esc(latest["title"] or label)}</a></h2>'
                  + (f'<p class="lead">{theme.esc(latest["lead"])}…</p>' if latest["lead"] else "")
                  + (f'<div class="cols">{chips}</div>' if chips else "")
+                 + fig_html
                  + (f'<div class="dl-stats">'
                     f'<span><b>{st["items"]}</b> 条</span>'
                     f'<span><b>{st["sources"]}</b> 个来源</span>'
