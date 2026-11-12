@@ -23,7 +23,11 @@ BRAND_DIR = ROOT / "assets" / "brand"
 # 当前这张组合图的字标列范围（量出来的；换图时用 --text-x 覆盖）：
 #   第 2 条 677-1235 = 纯文字 "Z-bit"（图形 Z 在 330-639）
 #   第 3 条 108-1456 = 整条组合（图形 Z + "-bit AIDD"），文字部分没有重复的 Z
-DEFAULT_TEXT_X = ("677-1235", "108-1456")
+# 两个字标都从第 3 条组合裁（同一条里的图形 Z 与 -bit 比例才一致）：
+#   主站  108-839   = 图形 Z + "-bit"（丢掉末尾的 AIDD）
+#   AIDD  108-1456  = 图形 Z + "-bit AIDD"
+LOGO_FROM_BAND = 2          # 第 3 条（0 起）
+LOGO_X = {"logo-text.png": (108, 839), "logo-text-aidd.png": (108, 1456)}
 
 ALPHA_MIN = 16
 PAD = 10
@@ -177,13 +181,15 @@ def main() -> int:
         piece.thumbnail((720, 720), Image.LANCZOS)
         return piece
 
-    xs = args.text_x or list(DEFAULT_TEXT_X)
-    if len(bands) > 1:
-        piece = explicit(bands[1], xs[0]) if len(xs) > 0 else wordmark(bands[1])
-        piece.save(BRAND_DIR / "logo-text.png", optimize=True)
-    if len(bands) > 2:
-        piece = explicit(bands[2], xs[1]) if len(xs) > 1 else wordmark(bands[2])
-        piece.save(BRAND_DIR / "logo-text-aidd.png", optimize=True)
+    xs = args.text_x or []
+    band = bands[LOGO_FROM_BAND] if len(bands) > LOGO_FROM_BAND else bands[1]
+    for name, (x0, x1) in LOGO_X.items():
+        if len(xs) >= 2:
+            spec = xs[0] if name == "logo-text.png" else xs[1]
+            x0, x1 = (int(v) for v in spec.split("-"))
+        piece = trim(img.crop((x0, band[0], x1 + 1, band[1] + 1)))
+        piece.thumbnail((720, 720), Image.LANCZOS)
+        piece.save(BRAND_DIR / name, optimize=True)
 
     # 4) 图标：徽标放白底圆角方块上（标签栏底色各不相同，白底最稳）
     def icon(size: int) -> Image.Image:
