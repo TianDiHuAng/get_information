@@ -340,6 +340,17 @@ h1.title small{font-size:13px;font-weight:400;color:var(--ink-4);margin-left:10p
      padding:0 6px;font-size:11px;color:var(--ink-4)}
 
 /* —— 通用块 —— */
+/* 主题/标签磁贴：跨板块共用，颜色一律走变量 */
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);
+      padding:12px 14px;box-shadow:var(--shadow-card);transition:border-color .15s,box-shadow .15s}
+.tile:hover{border-color:var(--line-strong);box-shadow:var(--shadow-card-hover)}
+.tile .t{font-weight:600;color:var(--ink);font-size:15px}
+.tile .n{color:var(--ink-4);font-size:12px;margin-left:6px}
+.tile ul{margin:8px 0 0;padding-left:16px}
+.tile li{font-size:12.5px;margin:3px 0;color:var(--ink-3);line-height:1.5}
+.tile li a{color:var(--ink-3)}
+.tile li a:hover{color:var(--accent)}
 .well{background:var(--well);border-radius:var(--r-panel);box-shadow:inset 0 0 0 1px var(--line-soft);
       padding:14px 16px}
 .muted{color:var(--ink-4)}
@@ -515,16 +526,19 @@ _THEME_JS = """<script>(function(){var r=document.documentElement;
 
 
 def page(title: str, body: str, *, active: str = "/", lead: str = "",
-         subtitle: str = "", own_heading: bool = False) -> str:
+         subtitle: str = "", own_heading: bool = False,
+         extra_css: str = "") -> str:
+    """整页骨架。`extra_css` 给某一页专属的组件样式（用主题变量，别写死颜色）。"""
     head = "" if own_heading else f'<h1 class="title">{esc(title)}</h1>'
     lead_html = f'<div class="lead">{lead}</div>' if lead else ""
+    style = f"<style>{CSS}{extra_css}</style>" if extra_css else f"<style>{CSS}</style>"
     doc = (f'<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">'
             f'<meta name="viewport" content="width=device-width,initial-scale=1">'
             f'<title>{esc(subtitle or title)}</title>'
             f'{FAVICON}<link rel="manifest" href="/manifest.webmanifest">'
             f'<meta name="theme-color" content="#faf9f6" media="(prefers-color-scheme: light)">'
             f'<meta name="theme-color" content="#13191c" media="(prefers-color-scheme: dark)">'
-            f'{og_tags(title, lead)}<style>{CSS}</style></head><body>'
+            f'{og_tags(title, lead)}{style}</head><body>'
             f'<div class="shell">{nav_html(active)}<main class="main"><div class="page">'
             f'{head}{lead_html}{body}{footer_html()}</div></main></div>'
             f'{bottom_nav(active)}{_THEME_JS}</body></html>')

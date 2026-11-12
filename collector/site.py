@@ -204,55 +204,131 @@ _STAR_JS = """
 # 精选之外的三条主列表
 # --------------------------------------------------------------------------- #
 
+
+def _slot(it: dict[str, Any]) -> str:
+    """一条内容的时间轴单元 —— 首页与 /all 共用同一套 DOM，保证两个页面看起来是一个站。"""
+    att = it.get("attention") or {}
+    cat = (it.get("structure") or {}).get("category") or ""
+    published = (it.get("published") or "")[:16].replace("T", " ")
+    hhmm = published[11:16] if len(published) >= 16 else "--:--"
+    first = "1" if it.get("layer") == "primary" else "0"
+    score = ""
+    if att.get("available") and att.get("score") is not None:
+        score = f'<span class="scorelabel"><b>{att["score"]}</b>分</span>'
+    pick = '<span class="badge-pick">精选</span>' if att.get("selected") else ""
+    crowd = ""
+    if int(it.get("event_size") or 0) > 1:
+        crowd = f'<span class="badge">{it["event_size"]} 篇</span>'
+    summary = " ".join(str(it.get("summary") or "").split())
+    reason = (att.get("reason") or "").strip()
+    text = (str(it.get("title") or "") + " " + summary + " " + cat).lower()
+    return (
+        f'<li class="slot" data-id="{it["id"]}" data-cat="{theme.esc(cat)}" '
+        f'data-first="{first}" data-text="{theme.esc(text)}">'
+        f'<time datetime="{theme.esc(published)}">{theme.esc(hhmm)}</time>'
+        '<span class="rail" aria-hidden="true"></span>'
+        '<article class="cardrow">'
+        '<header class="hd"><span class="src">'
+        f'<span>{theme.esc(it["source"])}</span>'
+        f'<span class="dot"></span><span>{theme.esc(published[5:16])}</span>'
+        f'{pick}{crowd}</span>'
+        f'<span class="rt">{score}</span></header>'
+        f'<h3><a href="/items/{it["id"]}.html">{theme.esc(it["title"])}</a></h3>'
+        + (f'<p class="sum">{theme.esc(summary[:200])}</p>' if summary else "")
+        + (f'<p class="reason">推荐理由：{theme.esc(reason[:140])}</p>' if reason else "")
+        + '</article></li>')
+
+
+def _day_header(day: str, count: int) -> str:
+    head, week = _day_label(day)
+    return (f'<div class="daybar" data-day="{theme.esc(day)}">'
+            f'<span class="d" data-abs="{theme.esc(head)}">{theme.esc(head)}</span>'
+            f'<span class="w">{theme.esc(week)}</span>'
+            f'<span class="aside"><b>{count}</b> 条</span></div>')
+
+
 def build_all(day: str | None = None, site_root: Path | None = None) -> dict[str, Any]:
-    """`/all.html` + `/all/<n>.html`：当天全部条目，带分页。"""
+    """`/all.html` + `/all/<n>.html`：当天全部条目，分页。
+
+    与首页共用同一套 slot/cardrow —— 点进「全部动态」不该像换了一个站。
+    """
     root = site_root or SITE
+    day = store.content_day(day)
     rows = store.all_items(day)
     pages = max(1, (len(rows) + PAGE_SIZE - 1) // PAGE_SIZE)
     written = 0
     for page in range(1, pages + 1):
         chunk = rows[(page - 1) * PAGE_SIZE: page * PAGE_SIZE]
-        cards = []
-        for it in chunk:
-            att = it.get("attention") or {}
-            cats = (it.get("structure") or {}).get("category")
-            badge = f'<span class="badge">{theme.esc(cats)}</span>' if cats else ""
-            crowd = ""
-            if int(it.get("event_size") or 0) > 1:
-                crowd = f'<span class="badge hot">{it["event_size"]} 篇</span>'
-            score = f'<span>{theme.esc(att.get("score"))}</span>' if att.get("available") else ""
-            cards.append(
-                f'<div class="card"><h3><a href="/items/{it["id"]}.html">{theme.esc(it["title"])}</a></h3>'
-                f'<div class="row">{theme.esc(it["source"])}<span class="dot"></span>'
-                f'{theme.esc((it.get("published") or "")[:10])}{badge}{crowd}{score}</div>'
-                f'<div class="sum">{theme.esc(" ".join(str(it.get("summary") or "").split())[:150])}</div>'
-                f'</div>')
+        slots = "".join(_slot(it) for it in chunk)
         pager = []
         if page > 1:
             prev = "/all.html" if page == 2 else f"/all/{page - 1}.html"
-            pager.append(f'<a href="{prev}">← 上一页</a>')
+            pager.append(f'<a class="fb" href="{prev}">← 上一页</a>')
+        pager.append(f'<span class="muted small">第 {page} / {pages} 页</span>')
         if page < pages:
-            pager.append(f'<a href="/all/{page + 1}.html">下一页 →</a>')
-        body = ("".join(cards) or '<p class="muted">今天还没有条目。</p>') + \
-               (f'<div class="row" style="justify-content:space-between;margin-top:18px;">'
-                f'{"".join(pager)}</div>' if pager else "")
+            pager.append(f'<a class="fb" href="/all/{page + 1}.html">下一页 →</a>')
+        body = (_day_header(day, len(rows))
+                + (f'<ol class="feed">{slots}</ol>' if slots
+                   else '<p class="muted">今天还没有条目。</p>')
+                + f'<div class="pager">{"".join(pager)}</div>')
         target = root / "all.html" if page == 1 else root / "all" / f"{page}.html"
         _write(target, theme.page(
             "全部动态", body, active="/all.html",
-            lead=f'今天 <b>{len(rows)}</b> 条 · 第 {page}/{pages} 页 · 按排序分从高到低'))
+            lead=f'今天 <b>{len(rows)}</b> 条，按排序分从高到低；'
+                 f'想只看入选的看 <a href="/">精选</a>。',
+            extra_css=PAGER_CSS))
         written += 1
     return {"file": str(root / "all.html"), "items": len(rows), "pages": written}
 
 
+PAGER_CSS = """
+.pager{display:flex;gap:14px;align-items:center;justify-content:space-between;margin-top:22px}
+"""
+
+
+HOT_CSS = """
+.rank{list-style:none;margin:0;padding:0}
+.rank li{display:grid;grid-template-columns:56px minmax(0,1fr);gap:14px;
+         padding:18px 0;border-bottom:1px solid var(--line-soft)}
+.rank li:last-child{border-bottom:0}
+@media(max-width:640px){.rank li{grid-template-columns:44px minmax(0,1fr);gap:10px}}
+.rank .no{font:700 13px var(--font-mono);color:var(--ink-4);padding-top:3px;white-space:nowrap}
+.rank li:nth-child(1) .no{color:var(--rank-1)}
+.rank li:nth-child(2) .no{color:var(--rank-2)}
+.rank li:nth-child(3) .no{color:var(--rank-3)}
+.rank h3{margin:0;font-size:18px;font-weight:650;line-height:1.45}
+@media(max-width:640px){.rank h3{font-size:16.5px}}
+.rank .why{margin:6px 0 0;font-size:14px;line-height:1.75;color:var(--ink-3);
+           display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.rank .who{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:12.5px;color:var(--ink-4)}
+.rank .heat{margin-left:auto;text-align:right;white-space:nowrap}
+.rank .heat b{font:600 20px var(--font-mono);color:var(--ink);
+              font-variant-numeric:tabular-nums}
+.rank .heat span{display:block;font-size:11px;color:var(--ink-4)}
+.compact{list-style:none;margin:6px 0 0;padding:0}
+.compact li{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:12px;align-items:baseline;
+            padding:10px 0;border-bottom:1px solid var(--line-soft);font-size:14px}
+.compact li:last-child{border-bottom:0}
+.compact .no{font:600 12px var(--font-mono);color:var(--ink-4)}
+.compact .heat{font:600 13px var(--font-mono);color:var(--ink-3)}
+"""
+
+
 def build_hot(day: str | None = None, site_root: Path | None = None) -> dict[str, Any]:
-    """`/hot.html`：按事件热度排的榜（不是按文章数）。"""
+    """`/hot.html`：按事件热度排的榜。
+
+    做成真正的排行榜（NO.01 大卡 + 其余紧凑行），而不是又一个列表 ——
+    AIHOT 的 /hot 就是这样，读者一眼能看出名次差别。
+    """
     root = site_root or SITE
+    day = store.content_day(day)
     try:
-        rows = store.event_dump(days=14, day=day)
         heat = store.latest_heat()
+        rows = store.event_dump(days=14, day=day)
     except Exception as e:
-        _write(root / "hot.html", theme.page("热门事件", f'<p class="muted">暂不可用：{theme.esc(e)}</p>',
-                                             active="/hot.html"))
+        _write(root / "hot.html", theme.page(
+            "热点榜", f'<p class="muted">暂不可用：{theme.esc(e)}</p>',
+            active="/hot.html"))
         return {"file": str(root / "hot.html"), "events": 0, "error": str(e)}
 
     buckets: dict[int, dict[str, Any]] = {}
@@ -260,24 +336,54 @@ def build_hot(day: str | None = None, site_root: Path | None = None) -> dict[str
         eid = row.get("event_id")
         if eid is None:
             continue
-        b = buckets.setdefault(int(eid), {"id": int(eid), "title": row.get("event_title") or "",
-                                          "first": row.get("first_at") or "", "sources": set()})
+        b = buckets.setdefault(int(eid), {
+            "id": int(eid), "title": row.get("event_title") or "",
+            "first": (row.get("first_at") or "")[:10], "sources": set(),
+            "summary": "", "members": 0,
+        })
         b["sources"].add(row.get("source") or "")
-    ranked = sorted(buckets.values(),
-                    key=lambda b: (-(heat.get(b["id"], 0.0)), -len(b["sources"]), b["first"]))
-    ranked = ranked[:HOT_LIMIT]
+        b["members"] += 1
+        if not b["summary"]:
+            b["summary"] = " ".join(str(row.get("item_summary") or "").split())
+    ranked = sorted(buckets.values(), key=lambda b: -heat.get(b["id"], 0.0))
 
+    def digest(eid: int) -> str:
+        try:
+            from . import story
+
+            return (story.get(eid) or {}).get("text") or ""
+        except Exception:
+            return ""
+
+    top, rest = ranked[:3], ranked[3:]
     items = []
-    for i, b in enumerate(ranked, 1):
-        h = heat.get(b["id"], 0.0)
+    for idx, b in enumerate(top, 1):
+        text = digest(b["id"]) or b["summary"]
         items.append(
-            f'<div class="card"><div class="row"><span class="score">{i:02d}</span>'
-            f'<span>热度 {h:g}</span><span class="dot"></span>'
-            f'<span>{len(b["sources"])} 家</span></div>'
-            f'<h3><a href="/events/{b["id"]}.html">{theme.esc(b["title"])}</a></h3></div>')
-    _write(root / "hot.html", theme.page(
-        "热门事件", "".join(items) or '<p class="muted">还没有可以排的事件。</p>',
-        active="/hot.html", lead="按事件热度排序：48 小时窗口、每个独立来源算一次、24 小时减半"))
+            f'<li><div class="no">NO.{idx:02d}</div><div>'
+            f'<h3><a href="/events/{b["id"]}.html">{theme.esc(b["title"])}</a></h3>'
+            + (f'<p class="why">{theme.esc(text[:260])}</p>' if text else "")
+            + '<div class="who">'
+              f'<span>{len(b["sources"])} 个来源 · {b["members"]} 篇</span>'
+              f'<span class="heat"><b>{int(heat.get(b["id"], 0))}</b>'
+              f'<span>热度指数</span></span>'
+              '</div></div></li>')
+    body = (f'<p class="lead">过去 48 小时讨论最多的 {len(ranked)} 件事，'
+            f'按独立来源与时间衰减算热度。</p>'
+            f'<ol class="rank">{"".join(items)}</ol>')
+    if rest:
+        compact = "".join(
+            f'<li><span class="no">{idx:02d}</span>'
+            f'<a href="/events/{b["id"]}.html">{theme.esc(b["title"])}</a>'
+            f'<span class="heat">{int(heat.get(b["id"], 0))}</span></li>'
+            for idx, b in enumerate(rest, 4))
+        body += (f'<h2 class="sec">继续看 No.04–{len(ranked):02d}'
+                 f'<span class="muted small">热度 · 点击看各方说法</span></h2>'
+                 f'<ul class="compact">{compact}</ul>')
+    if not ranked:
+        body = '<p class="muted">还没有聚合出事件。跑一轮 python run.py 就会有。</p>'
+    _write(root / "hot.html", theme.page("热点榜", body, active="/hot.html",
+                                         own_heading=False, extra_css=HOT_CSS))
     return {"file": str(root / "hot.html"), "events": len(ranked)}
 
 
@@ -370,7 +476,12 @@ def build_issue_index(kind: str, *, site_root: Path | None = None) -> dict[str, 
         except Exception:
             plate = ""
         plate_html = f'<div class="nameplate">{theme.esc(plate)}</div>' if plate else ""
-        doc = theme.page(f"{label} · {day}", plate_html + md_to_html(md),
+        # Markdown 自带的 H1 与页面标题重复，去掉第一行标题
+        md_body = md
+        first = md_body.lstrip().split("\n", 1)
+        if first and first[0].lstrip().startswith("# "):
+            md_body = first[1] if len(first) > 1 else ""
+        doc = theme.page(f"{label} · {day}", plate_html + md_to_html(md_body),
                          active=f"/{kind}.html",
                          lead=f'<a href="/{kind}.html">← 全部{label}</a>')
         doc = doc.replace("</head>", f"<style>{NAMEPLATE_CSS}{FEED_DIVIDER_CSS}</style></head>", 1)
@@ -406,13 +517,17 @@ def build_events(site_root: Path | None = None) -> dict[str, Any]:
     events = sorted(buckets.values(), key=lambda b: (-len(b["members"]), b["first"]))
 
     cards = "".join(
-        f'<div class="card"><h3><a href="/events/{e["id"]}.html">{theme.esc(e["title"])}</a></h3>'
-        f'<div class="row">{theme.esc(e["first"][:10])}<span class="dot"></span>'
-        f'{len(e["members"])} 篇<span class="dot"></span>'
-        f'{len({m["source"] for m in e["members"]})} 家</div></div>' for e in events)
+        f'<li><span class="no">{i:02d}</span>'
+        f'<a href="/events/{e["id"]}.html">{theme.esc(e["title"])}</a>'
+        f'<span class="heat">{len({m["source"] for m in e["members"]})} 家 · '
+        f'{len(e["members"])} 篇</span></li>'
+        for i, e in enumerate(events, 1))
+    body = (f'<ul class="compact">{cards}</ul>' if cards
+            else '<p class="muted">还没有聚合出事件。跑一轮 python run.py 就会有。</p>')
     _write(root / "events.html", theme.page(
-        "事件", cards or '<p class="muted">还没有聚合出事件。</p>', active="/events.html",
-        lead=f'共 {len(events)} 个事件 · 同一件事的多篇报道收在一起'))
+        "事件", body, active="/events.html",
+        lead=f'共 {len(events)} 个事件 · 同一件事的多篇报道收在一起，点进去看各方说法',
+        extra_css=HOT_CSS))
 
     written = 1
     for e in events:

@@ -18,7 +18,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Iterable
 
-from . import store
+from . import store, theme
 
 ROOT = Path(__file__).parent.parent
 SITE = ROOT / "site"
@@ -153,61 +153,48 @@ def render(data: dict[str, Any]) -> str:
 
         cards.append(
             f'<div class="story"><div class="st">'
-            f'<a href="/archive/">{b["title"][:70]}</a>'
+            f'<a href="@@ROOT@@/archive/">{b["title"][:70]}</a>'
             f'<span class="muted"> · {b["first_at"][:10]} · {b["sources"]} 篇</span></div>'
             f'<div class="cols">{col("官方", "official")}{col("媒体", "media")}{col("社区", "social")}</div>'
             f'</div>')
 
-    return f"""<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Z-Bit · 时间线</title>
-{og_tags("Z-Bit · 时间线", "主体×月份跨度，以及同一件事在官方/媒体/社区三种渠道下的说法")}
-<style>
-:root {{ color-scheme: dark; }}
-* {{ box-sizing: border-box; }}
-body {{ margin:0; background:#0b0f14; color:#e6edf3; font:14px/1.6 -apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; }}
-.wrap {{ max-width:1080px; margin:0 auto; padding:28px 18px 60px; }}
-h1 {{ font-size:19px; margin:0 0 4px; }}
-.sub {{ color:#6b7785; font-size:12px; margin-bottom:22px; }}
-a {{ color:#7dd3fc; text-decoration:none; }}
-h2 {{ font-size:14px; color:#b7c3d0; margin:28px 0 10px; padding-bottom:6px; border-bottom:1px solid #1f2a37; }}
-table {{ width:100%; border-collapse:collapse; font-size:12px; }}
-th,td {{ padding:4px 6px; text-align:center; }}
-th {{ color:#6b7785; font-weight:500; }}
-tbody th {{ text-align:left; color:#c7d2de; font-weight:600; white-space:nowrap; }}
-.cell {{ background:rgba(37,99,235,var(--o)); border-radius:3px; color:#dbe6f2; min-width:34px; }}
-.tot {{ color:#6b7785; }}
-.story {{ border:1px solid #1f2a37; border-radius:10px; padding:12px 14px; margin-bottom:12px; background:#0f151d; }}
-.st {{ font-weight:600; margin-bottom:8px; }}
-.cols {{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }}
-@media (max-width:760px) {{ .cols {{ grid-template-columns:1fr; }} }}
-h4 {{ font-size:12px; color:#8b98a8; margin:0 0 6px; }}
-h4 .n {{ color:#4b5563; margin-left:6px; }}
-ul {{ margin:0; padding-left:16px; }}
-li {{ font-size:12px; margin:3px 0; }}
-.src {{ color:#4b5563; margin-left:6px; }}
-.muted {{ color:#6b7785; }}
-</style><style>{_override()}</style></head><body>{_nav()}<div class="wrap">
-<h1>Z-Bit · 时间线</h1>
-<div class="sub">近 {len(months)} 个月 · {monthly['events']} 个事件 ·
-<a href="/">今日要闻</a> · <a href="/board.html">运行看板</a></div>
+    # 页面专属组件样式：只用主题变量，不写死颜色
+    page_css = """
+.tl-table{width:100%;border-collapse:collapse;font-size:12.5px}
+.tl-table th,.tl-table td{padding:5px 6px;text-align:center;border-bottom:1px solid var(--line-soft)}
+.tl-table th{color:var(--ink-4);font-weight:500}
+.tl-table tbody th{text-align:left;color:var(--ink-2);font-weight:600;white-space:nowrap}
+.tl-table .cell{background:color-mix(in oklab,var(--accent) calc(var(--o) * 100%),transparent);
+                border-radius:3px;color:var(--ink);min-width:34px}
+.tl-table .tot{color:var(--ink-4)}
+.story{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);
+       padding:13px 15px;margin-bottom:12px;box-shadow:var(--shadow-card)}
+.story .st{font-weight:600;margin-bottom:9px;color:var(--ink)}
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:700px){.cols{grid-template-columns:1fr}}
+.cols h4{font-size:12px;color:var(--ink-3);margin:0 0 6px;font-weight:600}
+.cols h4 .n{color:var(--ink-4);margin-left:6px;font-weight:400}
+.cols ul{margin:0;padding-left:16px}
+.cols li{font-size:12.5px;margin:3px 0;line-height:1.5;color:var(--ink-3)}
+.cols li a{color:var(--ink-2)}
+.cols .src{color:var(--ink-4);margin-left:6px}
+"""
 
-<h2>谁在什么时候出现（主体 × 月份，数字 = 事件数）</h2>
-<table><thead><tr><th></th>{head}<th>合计</th></tr></thead>
-<tbody>{''.join(rows_html) or '<tr><td class="muted">还没有足够的事件</td></tr>'}</tbody></table>
-
-<h2>同一件事，三种说法</h2>
-{''.join(cards) or '<div class="muted">今天没有跨渠道的事件</div>'}
-
-<div class="muted" style="font-size:11px;margin-top:30px;">
-只读数据库生成；叙事分组按信源层级（官方一手 / 媒体 / 社区），不代表哪边更可信。
-</div>
-</div></body></html>"""
-
-
-def _nav():
-    from .theme import bottom_nav, nav_html
-    return nav_html("/timeline.html") + bottom_nav("/timeline.html")
+    rows_block = "".join(rows_html) or '<tr><td class="muted">还没有足够的事件</td></tr>'
+    cards_block = "".join(cards) or '<p class="muted">今天没有跨渠道的事件</p>'
+    body = (
+        f'<h2 class="sec">谁在什么时候出现 '
+        f'<span class="muted small">{len(months)} 个月 · {monthly["events"]} 个事件</span></h2>'
+        f'<div class="scroll"><table class="tl-table"><thead><tr><th></th>{head}'
+        f'<th>合计</th></tr></thead><tbody>{rows_block}</tbody></table></div>'
+        '<h2 class="sec">同一件事，三种说法</h2>'
+        + cards_block
+        + '<p class="muted small" style="margin-top:26px;">'
+          '只读数据库生成；叙事分组按信源层级（官方一手 / 媒体 / 社区），不代表哪边更可信。</p>'
+    )
+    return theme.page("时间线", body, active="/timeline.html",
+                      lead="主体 × 月份跨度，以及同一件事在官方 / 媒体 / 社区三种渠道下的说法",
+                      extra_css=page_css)
 
 
 def build(site_root: Path | None = None, days: int = 120) -> dict[str, Any]:

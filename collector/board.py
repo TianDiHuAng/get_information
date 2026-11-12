@@ -16,7 +16,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Iterable
 
-from . import llm, store
+from . import llm, store, theme
 
 ROOT = Path(__file__).parent.parent
 SITE = ROOT / "site"
@@ -227,44 +227,21 @@ def render(data: dict[str, Any]) -> str:
         f'<li class="{"err" if x.get("severity") == "error" else ""}">{x.get("kind")} — {x.get("message")}</li>'
         for x in data["alerts"]) or '<li class="muted">今天没有告警</li>'
 
-    return f"""<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Z-Bit · 看板 {data['day']}</title>
-{og_tags(f"Z-Bit · 看板 {data['day']}", "源健康、评分分布、模型成本、官方与国内舆论场")}
-<style>
-:root {{ color-scheme: dark; }}
-* {{ box-sizing: border-box; }}
-body {{ margin:0; background:#0b0f14; color:#e6edf3; font:14px/1.6 -apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; }}
-.wrap {{ max-width:1080px; margin:0 auto; padding:28px 18px 60px; }}
-h1 {{ font-size:19px; margin:0 0 4px; }}
-.sub {{ color:#6b7785; font-size:12px; margin-bottom:22px; }}
-a {{ color:#7dd3fc; }}
-.cards {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:12px; margin-bottom:26px; }}
-.card {{ background:#111820; border:1px solid #1f2a37; border-radius:10px; padding:14px 16px; }}
-.k {{ color:#8b98a8; font-size:12px; }}
-.v {{ font-size:24px; font-weight:700; letter-spacing:.3px; margin:2px 0 2px; }}
-.h {{ color:#6b7785; font-size:11px; }}
-h2 {{ font-size:14px; color:#b7c3d0; margin:26px 0 10px; padding-bottom:6px; border-bottom:1px solid #1f2a37; }}
-.bar {{ display:flex; align-items:center; gap:10px; margin:5px 0; font-size:12px; }}
-.bl {{ width:64px; color:#8b98a8; flex:none; }}
-.bt {{ flex:1; background:#151d26; border-radius:4px; height:14px; overflow:hidden; }}
-.bt i {{ display:block; height:100%; background:linear-gradient(90deg,#2563eb,#22c55e); }}
-.bn {{ width:44px; text-align:right; color:#8b98a8; flex:none; }}
-.chip {{ display:inline-block; background:#16202b; border:1px solid #22303d; color:#9fb0c0;
-        border-radius:999px; padding:1px 9px; font-size:11px; margin:2px 4px 2px 0; }}
-.two {{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }}
-@media (max-width:760px) {{ .two {{ grid-template-columns:1fr; }} }}
-ul {{ margin:6px 0; padding-left:18px; }}
-li.err {{ color:#f87171; }}
-.muted {{ color:#6b7785; }}
-table {{ width:100%; border-collapse:collapse; font-size:12px; }}
-th,td {{ text-align:left; padding:5px 8px; border-bottom:1px solid #18212b; }}
-th {{ color:#6b7785; font-weight:500; }}
-</style><style>{_override()}</style></head><body>{_nav()}<div class="wrap">
-<h1>Z-Bit · 看板</h1>
-<div class="sub">{data['day']} · 生成于 {data['generated_at']} · <a href="/">回到今日要闻</a></div>
+    page_css = """
+.kpi{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.bar{display:flex;align-items:center;gap:8px;margin:4px 0;font-size:12.5px}
+.bar .bl{width:64px;color:var(--ink-4);flex:none}
+.bar .bt{flex:1;height:6px;border-radius:3px;background:var(--line-soft);overflow:hidden}
+.bar .bt i{display:block;height:100%;background:var(--accent)}
+.bar .bn{width:44px;text-align:right;color:var(--ink-3);flex:none}
+.chip{display:inline-block;border:1px solid var(--line);border-radius:999px;
+      padding:1px 9px;font-size:12px;color:var(--ink-3);margin:2px 4px 2px 0;background:var(--surface)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:700px){.two{grid-template-columns:1fr}}
+.err{color:var(--hot)}
+"""
 
-<div class="cards">{cards}</div>
+    body = f"""<div class="cards">{cards}</div>
 
 <h2>评分分布（五轴加权分，每 20 分一档）</h2>
 {hist_html}
@@ -313,8 +290,12 @@ th {{ color:#6b7785; font-weight:500; }}
 
 <div class="muted" style="font-size:11px;margin-top:30px;">
 本页由 collector/board.py 生成，不读写业务数据；反馈与设置请改 config/*.yaml。
-</div>
-</div></body></html>"""
+</div>"""
+
+    return theme.page(f"看板 · {data['day']}", body, active="/board.html",
+                      lead="源健康、评分分布、模型成本、官方与国内舆论场",
+                      extra_css=page_css)
+
 
 
 def _nav():

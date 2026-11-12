@@ -18,7 +18,7 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any, Iterable
 
-from . import store, structure
+from . import store, structure, theme
 
 ROOT = Path(__file__).parent.parent
 SITE = ROOT / "site"
@@ -178,17 +178,21 @@ def _nav():
     return nav_html("/topics.html") + bottom_nav("/topics.html")
 
 
-def _page(title: str, sub: str, body: str) -> str:
-    from .share import og_tags
+# 这一页专属的组件样式（磁贴本身在 theme.CSS 里，这里只放布局细节）
+_PAGE_CSS = """
+.tilegroups h2{margin-top:26px}
+.tilegroups h2:first-child{margin-top:0}
+"""
 
-    desc = re.sub(r"<[^>]+>", " ", sub)
-    return (f'<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">'
-            f'<meta name="viewport" content="width=device-width,initial-scale=1">'
-            f'<title>{html.escape(title)}</title>{og_tags(title, desc)}<style>{_CSS}{_override()}</style></head><body>{_nav()}<div class="wrap">'
-            f'<h1>{html.escape(title)}</h1><div class="sub">{sub}</div>{body}'
-            f'<div class="muted" style="font-size:11px;margin-top:30px;">'
-            f'只读数据库生成；分类与标签来自结构化抽取（config/prompts/structure.md）。</div>'
-            f'</div></body></html>')
+
+def _page(title: str, sub: str, body: str, active: str = "/topics.html") -> str:
+    """统一走 theme.page：同一套外壳、字体、导航，只有内容不同。"""
+    from . import theme
+
+    foot = ('<p class="muted small" style="margin-top:26px;">'
+            '只读数据库生成；分类与标签来自结构化抽取（config/prompts/structure.md）。</p>')
+    return theme.page(title, body + foot, active=active, lead=sub,
+                      extra_css=_PAGE_CSS)
 
 
 def _tile(group: dict[str, Any], href: str) -> str:
@@ -217,7 +221,7 @@ def render_index(data: dict[str, Any]) -> str:
     sub = (f'近 {data["days"]} 天 · {len(data["categories"])} 个分类 · '
            f'{len(data["tags"])} 个标签 · <a href="/">今日要闻</a> · '
            f'<a href="/board.html">看板</a> · <a href="/timeline.html">时间线</a>')
-    return _page("Z-Bit · 主题", sub, body)
+    return _page(f"{theme.BRAND} · 主题", sub, body)
 
 
 def render_topic(group: dict[str, Any], data: dict[str, Any]) -> str:
@@ -229,7 +233,7 @@ def render_topic(group: dict[str, Any], data: dict[str, Any]) -> str:
     body = f'<ul class="list">{items}</ul>'
     sub = (f'{group["count"]} 条 · 近 {data["days"]} 天 · '
            f'<a href="/topics.html">全部主题</a>')
-    return _page(f'Z-Bit · {group["label"]}', sub, body)
+    return _page(f'{theme.BRAND} · {group["label"]}', sub, body)
 
 
 def build(site_root: Path | None = None, days: int = 30) -> dict[str, Any]:

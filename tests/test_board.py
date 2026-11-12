@@ -92,7 +92,10 @@ def test_compute_exposes_llm_and_extract(tmpdb, monkeypatch):
 def test_render_is_self_contained_html():
     html = board.render(board.compute({"items": [mk()], "stats": {}}))
     assert html.startswith("<!doctype html>")
-    assert "<style>" in html and "<script" not in html   # 不依赖外部资源
+    # 不依赖外部资源：样式内联；脚本可以是内联的（主题切换），但不能有 src 外链
+    assert "<style>" in html
+    import re as _re
+    assert not _re.search(r'<script[^>]+src=', html)
     assert "中文舆论场" in html
 
 

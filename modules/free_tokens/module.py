@@ -49,17 +49,20 @@ def build(root: Path, payload: dict[str, Any] | None = None,
         text = f'{it.get("title") or ""}{it.get("summary") or ""}'
         tags = [w for w in _WORDS if w in text][:3]
         tag_html = "".join(f'<span class="tag">{theme.esc(t)}</span>' for t in dict.fromkeys(tags))
+        pub = (it.get("published") or "")[:16].replace("T", " ")
         cards.append(
-            f'<li class="item"><div class="time">'
-            f'{theme.esc((it.get("published") or "")[11:16] or "--:--")}</div><div>'
-            f'<div class="src"><span>{theme.esc(it.get("source"))}</span>'
-            f'<span class="dot"></span><span>{theme.esc((it.get("published") or "")[5:10])}</span>'
-            f'</div><h3><a href="{theme.esc(it.get("url"))}" target="_blank" rel="noopener">'
+            f'<li class="slot"><time datetime="{theme.esc(pub)}">'
+            f'{theme.esc(pub[11:16] or "--:--")}</time>'
+            '<span class="rail" aria-hidden="true"></span>'
+            '<article class="cardrow"><header class="hd"><span class="src">'
+            f'<span>{theme.esc(it.get("source"))}</span>'
+            f'<span class="dot"></span><span>{theme.esc(pub[5:16])}</span></span></header>'
+            f'<h3><a href="{theme.esc(it.get("url"))}" target="_blank" rel="noopener">'
             f'{theme.esc(it.get("title"))}</a></h3>'
-            + (f'<p class="sum">{theme.esc(" ".join(str(it.get("summary") or "").split())[:160])}</p>'
+            + (f'<p class="sum">{theme.esc(" ".join(str(it.get("summary") or "").split())[:180])}</p>'
                if it.get("summary") else "")
-            + (f'<div style="margin-top:8px;">{tag_html}</div>' if tag_html else "")
-            + "</div></li>")
+            + (f'<div class="tags" style="margin-top:8px;">{tag_html}</div>' if tag_html else "")
+            + "</article></li>")
 
     body = ('<h1 class="title">Token 羊毛'
             f'<small>近 {days} 天 · {len(rows)} 条</small></h1>'
