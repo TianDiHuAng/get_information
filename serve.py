@@ -15,6 +15,7 @@ import json
 import os
 import socket
 import sys
+import threading
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
@@ -336,6 +337,43 @@ def already_running() -> bool:
         s.close()
 
 
+# ---- 每日自动采集 ------------------------------------------------------ #
+# 计划任务需要管理员权限，这台机器上注册被拒；改成 serve.py 常驻时自带调度：
+# 每天 09:00 之后第一次检查就触发一次，靠 data/last_daily.txt 防止重复跑。
+DAILY_AT = 9
+DAILY_STAMP = Path(__file__).parent / "data" / "last_daily.txt"
+
+
+def _daily_scheduler() -> None:
+    import subprocess
+    import time
+    from datetime import datetime
+
+    while True:
+        try:
+            now = datetime.now()
+            today = now.strftime("%Y-%m-%d")
+            done = DAILY_STAMP.read_text(encoding="utf-8").strip() if DAILY_STAMP.is_file() else ""
+            if now.hour >= DAILY_AT and done != today:
+                DAILY_STAMP.parent.mkdir(parents=True, exist_ok=True)
+                DAILY_STAMP.write_text(today, encoding="utf-8")
+                log = Path(__file__).parent / "logs" / f"run-{now.strftime('%Y%m%d')}.log"
+                log.parent.mkdir(parents=True, exist_ok=True)
+                with open(log, "a", encoding="utf-8") as fh:
+                    fh.write(f"[{now:%Y-%m-%d %H:%M}] 定时触发\n")
+                    subprocess.run([sys.executable, "run.py", "--no-mail", "--dry-push"],
+                                   cwd=str(Path(__file__).parent), stdout=fh,
+                                   stderr=subprocess.STDOUT, timeout=7200)
+                    subprocess.run([sys.executable, "tools/build_sites.py", "--site", "site",
+                                    "--data", "data", "--db", "data/radar.db"],
+                                   cwd=str(Path(__file__).parent), stdout=fh,
+                                   stderr=subprocess.STDOUT, timeout=1800)
+                    fh.write(f"[{datetime.now():%Y-%m-%d %H:%M}] 定时完成\n")
+        except Exception:
+            pass
+        time.sleep(300)          # 每 5 分钟看一次，跨过 09:00 就触发
+
+
 def main() -> None:
     if already_running():
         print(f"端口 {PORT} 已有实例在服务，本进程退出")
@@ -345,6 +383,8 @@ def main() -> None:
     except OSError:
         print(f"端口 {PORT} 绑定失败，可视化服务应已在运行")
         return
+    # 只有在真正成为服务进程时才启动每日调度，避免多进程重复跑
+    threading.Thread(target=_daily_scheduler, daemon=True).start()
     print("Z-Bit已上线：")
     print(f"  本机    http://localhost:{PORT}")
     print(f"  局域网  http://{lan_ip()}:{PORT}   （手机需连同一 Wi-Fi）")
