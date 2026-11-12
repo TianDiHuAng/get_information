@@ -208,9 +208,12 @@ button{font-family:inherit}
   .side{width:var(--side-w);align-items:stretch;padding:24px 12px 14px}
   .side .brand{justify-content:flex-start;width:auto;height:50px;padding:0 4px;
                margin-bottom:16px;color:var(--ink)}
-  .side .brand{gap:0}
+  .side .brand{width:auto;height:auto;padding:0 6px;margin:0 0 14px;gap:0}
   .side .brand .brand-mark{display:none}
-  .side .brand .brand-full{display:block;height:20px}
+  /* 按宽高比自适应：两条字标比例不同（Z-bit 3.4:1，Z-bit AIDD 6.2:1），
+     写死 height 会让宽的那条被 max-width 压小 */
+  .side .brand .brand-full{display:block;width:auto;height:auto;
+                           max-width:100%;max-height:30px}
   .side .mark .full{display:inline}
   .side .mark .short{display:none}
   .side .sec-title{display:block;padding:14px 10px 4px;font-size:11px;color:var(--ink-4)}
