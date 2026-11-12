@@ -37,8 +37,8 @@ FEED_DIVIDER_CSS = """
 REPORT_CSS = """
 /* 日报：按参考站的“报纸”排版 —— 大号衬线报头、头条加大、编号用等宽粗体 */
 .report{max-width:760px;margin:0 auto}
-.report h2{display:block;font-family:var(--sans,inherit);font-size:20px;font-weight:800;
-           letter-spacing:-.01em;line-height:1.3;margin:30px 0 14px;padding-bottom:9px;
+.report h2{display:block;font-size:19px;font-weight:700;
+           letter-spacing:-.01em;line-height:1.35;margin:38px 0 16px;padding-bottom:10px;
            border-bottom:1px solid var(--line)}
 .report h3{font-size:14px;font-weight:700;letter-spacing:.04em;color:var(--ink-3);
            margin:26px 0 10px}
@@ -48,7 +48,7 @@ REPORT_CSS = """
            color:var(--ink-2)}
 .report ul.list>li:last-child,.report ol.list>li:last-child{border-bottom:0;padding-bottom:0}
 /* 头条：今日要闻第一条 */
-.report ul.list>li:first-of-type{font-size:19px;line-height:1.5;font-weight:700;color:var(--ink)}
+.report ul.list:first-of-type>li:first-of-type{font-size:19px;line-height:1.5;font-weight:700;color:var(--ink)}
 .report ul.list>li:first-of-type a{color:var(--ink)}
 /* 编号：01 02 03，等宽粗体、强调色 */
 .report ol.list{counter-reset:item}
@@ -58,13 +58,13 @@ REPORT_CSS = """
 .report strong{font-weight:700}
 .report strong a{color:var(--ink)}
 .report strong a:hover{color:var(--accent)}
-.report code{font:11.5px var(--font-mono);color:var(--ink-4);background:var(--well);
-  border-radius:5px;padding:1px 6px;margin-left:4px;white-space:nowrap}
+.report code{font:11.5px var(--font-mono);color:var(--ink-4);background:none;
+  padding:0;margin-left:6px;white-space:nowrap;opacity:.85}
 .report blockquote{margin:12px 0;padding:8px 14px;border-left:2px solid var(--line-strong);
   color:var(--ink-3);font-size:14px}
 .report hr{border:0;border-top:1px solid var(--line);margin:26px 0}
 @media(max-width:640px){
-  .report ul.list>li:first-of-type{font-size:17px}
+  .report ul.list:first-of-type>li:first-of-type{font-size:17px}
   .report li{font-size:14.5px;line-height:1.7}
 }
 """
