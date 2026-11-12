@@ -71,9 +71,87 @@ class Handler(SimpleHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    # ---- 静态文件：能压缩就压缩 ----------------------------------------- #
+    _COMPRESSIBLE = (".html", ".css", ".js", ".json", ".xml", ".txt", ".webmanifest",
+                     ".svg")
+
+    def _serve_gzip(self, path: str) -> bool:
+        """文本类静态文件按 gzip 发。首页 107KB → 约 16KB。
+
+        这里是本机站，没有 CDN 帮忙压缩；不压缩的话手机在局域网也要多等几倍。
+        已压缩过的内容不缓存到磁盘（每次都小，CPU 开销可忽略）。
+        """
+        if "gzip" not in (self.headers.get("accept-encoding") or "").lower():
+            return False
+        # 只有动态接口需要跳过；/api/v1/*.json 是静态产物，照常压缩
+        if path.startswith("/admin") or path in ("/api/feedback", "/api/prefs"):
+            return False
+        rel = path.lstrip("/") or "index.html"
+        target = (SITE / rel).resolve()
+        try:
+            target.relative_to(SITE.resolve())
+        except ValueError:
+            return False                       # 越界，交给默认处理
+        if target.is_dir():                    # 目录：用它的 index.html
+            target = target / "index.html"
+            rel = str(target.relative_to(SITE.resolve()))
+        if not target.is_file() or target.suffix.lower() not in self._COMPRESSIBLE:
+            return False
+        try:
+            raw = target.read_bytes()
+        except OSError:
+            return False
+        if len(raw) < 1024:                    # 太小，压了反而更大
+            return False
+        import gzip as _gzip
+
+        body = _gzip.compress(raw, 6)
+        if len(body) >= len(raw):
+            return False
+        self.send_response(200)
+        self.send_header("content-type", self.extensions_map.get(
+            target.suffix.lower(), "application/octet-stream"))
+        self.send_header("content-encoding", "gzip")
+        self.send_header("content-length", str(len(body)))
+        self.send_header("vary", "accept-encoding")
+        self.send_header("cache-control", "no-cache")
+        self.end_headers()
+        if self.command != "HEAD":
+            self.wfile.write(body)
+        return True
+
+    def send_error(self, code, message=None, explain=None):  # noqa: D401
+        """404 用站点自己的页面，而不是 Python 自带的裸错误页。
+
+        `/aidd/...` 下找不到时用子站自己的 404，牌子要对得上。
+        """
+        if code == 404:
+            path = urlparse(self.path).path
+            candidates = []
+            if path.startswith("/aidd/"):
+                candidates.append(SITE / "aidd" / "404.html")
+            candidates.append(SITE / "404.html")
+            for page in candidates:
+                if not page.is_file():
+                    continue
+                try:
+                    body = page.read_bytes()
+                    self.send_response(404)
+                    self.send_header("content-type", "text/html; charset=utf-8")
+                    self.send_header("content-length", str(len(body)))
+                    self.end_headers()
+                    self.wfile.write(body)
+                    return
+                except Exception:
+                    continue
+        return super().send_error(code, message, explain)
+
     def do_GET(self):  # noqa: N802
         parsed = urlparse(self.path)
         path = parsed.path.rstrip("/") or "/"
+
+        if self._serve_gzip(path):
+            return
 
         if path in ("/admin", "/admin.html"):
             return self._admin(parsed)

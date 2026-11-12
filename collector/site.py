@@ -634,6 +634,25 @@ fetch('/api/prefs').then(r=>r.json()).then(function(j){
 
 # --------------------------------------------------------------------------- #
 # 首页：布局照 aihot.news（精选 / 筛选条 / 搜索 / 当前热点 / 日期分组信息流）
+def build_404(site_root: Path | None = None) -> dict[str, Any]:
+    """自定义 404：比裸错误页有用 —— 给四个真出口，而不是让人回退。"""
+    root = site_root or SITE
+    cards = (("/", "今日精选", "当天入选的几条，带评分与理由"),
+             ("/all.html", "全部动态", "所有条目，按分数排"),
+             ("/search.html", "搜索", "按关键词找"),
+             ("/daily.html", "日报", "按日期翻阅"))
+    body = ('<h1 class="title">这个地址不存在</h1>'
+            '<p class="lead">可能链接过期了，或者拼错了。下面是几个能用的入口。</p>'
+            '<div class="grid two" style="margin-top:18px;">'
+            + "".join(f'<a class="card" href="{href}"><h3>{theme.esc(title)}</h3>'
+                      f'<div class="row">{theme.esc(desc)}</div></a>'
+                      for href, title, desc in cards)
+            + '</div>')
+    _write(root / "404.html", theme.page("页面不存在", body, active="",
+                                         subtitle="页面不存在"))
+    return {"file": str(root / "404.html")}
+
+
 def _build_about(root: Path) -> dict[str, Any]:
     from . import about as about_page
 
@@ -654,6 +673,7 @@ def build(payload: dict[str, Any] | None = None, site_root: Path | None = None,
         "search": lambda: build_search(day, root),
         "modules": lambda: __import__("collector.modules", fromlist=["x"]).build_all(root, payload, day),
         "static": lambda: build_static(root),
+        "notfound": lambda: build_404(root),
         "about": lambda: _build_about(root),
         "daily": lambda: build_issue_index("daily", site_root=root),
         "weekly": lambda: build_issue_index("weekly", site_root=root),
@@ -679,6 +699,31 @@ CHIPS = (("all", "全部"), ("first", "一手"), ("model_release", "模型"),
 
 _HOME_JS = """
 <script>
+// 日期条：构建时只能写绝对日期，这里按访客当下的日期改成「今天/昨天」；
+// 数据不是今天的再补一条「数据截至」——静态站过了午夜不能继续说「今天」。
+(function upgradeDay(){
+  var bar = document.querySelector('.daybar[data-day]');
+  if (!bar) return;
+  var parts = (bar.dataset.day || '').split('-');
+  if (parts.length !== 3) return;
+  var target = new Date(+parts[0], +parts[1] - 1, +parts[2]);
+  var now = new Date();
+  var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  var diff = Math.round((today - target) / 86400000);
+  var d = bar.querySelector('.d');
+  var abs = d ? (d.dataset.abs || d.textContent) : '';
+  if (diff === 0 && d) d.textContent = '今天';
+  else if (diff === 1 && d) d.textContent = '昨天';
+  if (diff > 0) {
+    var aside = bar.querySelector('.aside');
+    if (aside) {
+      var tag = document.createElement('span');
+      tag.className = 'stale';
+      tag.textContent = '数据截至 ' + abs + ' · ';
+      aside.insertBefore(tag, aside.firstChild);
+    }
+  }
+})();
 (function(){
   var q=document.getElementById('q');
   var pills=Array.prototype.slice.call(document.querySelectorAll('.pillbar a[data-cat]'));
@@ -711,17 +756,18 @@ _HOME_JS = """
 
 
 def _day_label(day: str) -> tuple[str, str]:
-    """返回（'11月10日' 或 '今天', '周二'）。"""
+    """返回（'11月10日', '周二'）。
+
+    **不在这里判断"今天"** —— 站点是静态的，构建时的"今天"过了午夜就变成谎话。
+    绝对日期照写，页面里的脚本再按访客当下的日期改成"今天/昨天"。
+    """
     from datetime import date
 
     try:
         d = date.fromisoformat(day)
     except Exception:
         return day, ""
-    week = "一二三四五六日"[d.weekday()]
-    today = date.today()
-    head = "今天" if d == today else f"{d.month}月{d.day}日"
-    return head, f"周{week}"
+    return f"{d.month}月{d.day}日", f"周{'一二三四五六日'[d.weekday()]}"
 
 
 def build_home(day: str | None = None, site_root: Path | None = None,
@@ -819,7 +865,8 @@ def build_home(day: str | None = None, site_root: Path | None = None,
            f'<h2><span class="dotlive"><i></i><b></b></span>当前热点</h2>'
            f'<a class="more" href="/hot.html">完整榜单 →</a></div>'
            f'<ol>{"".join(hot_rows)}</ol></section>' if hot_rows else "")
-        + f'<div class="daybar"><span class="d">{theme.esc(day_head)}</span>'
+        + f'<div class="daybar" data-day="{theme.esc(day)}">'
+          f'<span class="d" data-abs="{theme.esc(day_head)}">{theme.esc(day_head)}</span>'
           f'<span class="w">{theme.esc(week)}</span>'
           f'<span class="aside"><b id="cnt">{len(slots)}</b> 条</span></div>'
         + f'<ol class="feed">{"".join(slots)}</ol>'

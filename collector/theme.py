@@ -277,6 +277,7 @@ h1.title small{font-size:13px;font-weight:400;color:var(--ink-4);margin-left:10p
         background:var(--bg);margin:0}
 .daybar .d{font-size:18px;font-weight:600;line-height:24px;white-space:nowrap}
 .daybar .w{font-size:13px;color:var(--ink-4)}
+.daybar .stale{color:var(--hot);font-weight:600}
 .daybar .aside{margin-left:auto;font-size:12px;color:var(--ink-4)}
 .feed{list-style:none;margin:0;padding:4px 0 0}
 .slot{display:grid;grid-template-columns:minmax(0,1fr);padding:14px 0;
@@ -490,8 +491,18 @@ def og_tags(title: str, description: str = "") -> str:
     ])
 
 
-_THEME_JS = """<script>
-(function(){var r=document.documentElement;
+# 内联 SVG 图标：不额外请求文件，浅色/深色都清楚
+FAVICON = (
+    '<link rel="icon" href="data:image/svg+xml,'
+    '%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E'
+    '%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%23176b75%27/%3E'
+    '%3Ctext x=%2716%27 y=%2722%27 font-family=%27system-ui,sans-serif%27 font-size=%2719%27 '
+    'font-weight=%27700%27 fill=%27%23fff%27 text-anchor=%27middle%27%3EZ%3C/text%3E'
+    '%3C/svg%3E">'
+    '<link rel="apple-touch-icon" href="/apple-icon.png">'
+)
+
+_THEME_JS = """<script>(function(){var r=document.documentElement;
  var saved=null;try{saved=localStorage.getItem('zbit.theme')}catch(e){}
  if(saved)r.setAttribute('data-theme',saved);
  var b=document.getElementById('themebtn');
@@ -510,6 +521,9 @@ def page(title: str, body: str, *, active: str = "/", lead: str = "",
     doc = (f'<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">'
             f'<meta name="viewport" content="width=device-width,initial-scale=1">'
             f'<title>{esc(subtitle or title)}</title>'
+            f'{FAVICON}<link rel="manifest" href="/manifest.webmanifest">'
+            f'<meta name="theme-color" content="#faf9f6" media="(prefers-color-scheme: light)">'
+            f'<meta name="theme-color" content="#13191c" media="(prefers-color-scheme: dark)">'
             f'{og_tags(title, lead)}<style>{CSS}</style></head><body>'
             f'<div class="shell">{nav_html(active)}<main class="main"><div class="page">'
             f'{head}{lead_html}{body}{footer_html()}</div></main></div>'

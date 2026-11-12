@@ -364,7 +364,9 @@ MANIFEST = """{
   "theme_color": "#176b75",
   "lang": "{{locale}}",
   "icons": [
-    {"src": "/og.png", "sizes": "1200x630", "type": "image/png", "purpose": "any"}
+    {"src": "/icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "/icon-512.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
   ]
 }
 """
@@ -421,8 +423,46 @@ def render_openapi(base_url: str, ctx: dict[str, str]) -> dict:
     }
 
 
+def _ensure_icons(site_root: Path) -> list[str]:
+    """生成方图标（512/192/180/apple + favicon.ico）。幂等：已存在就跳过。
+
+    以前 apple-touch-icon 指向 1200×630 的分享图 —— 手机上会被裁成方块。
+    这里从品牌色画一张真正的方图，不依赖外部素材。
+    """
+    written = []
+    targets = {"icon-512.png": 512, "icon-192.png": 192, "apple-icon.png": 180}
+    need = [n for n in targets if not (site_root / n).exists()]
+    if not need and (site_root / "favicon.ico").exists():
+        return written
+    try:
+        from PIL import Image, ImageDraw
+
+        from . import share, theme
+
+        for name, size in targets.items():
+            if name not in need:
+                continue
+            img = Image.new("RGB", (size, size), (23, 107, 117))
+            draw = ImageDraw.Draw(img)
+            fonts = share._font_chain(int(size * 0.62), bold=True)
+            if fonts:
+                share.draw_text(draw, (int(size * 0.30), int(size * 0.20)), "Z",
+                                fonts, (255, 255, 255))
+            img.save(site_root / name, optimize=True)
+            written.append(name)
+        if need:
+            (site_root / "icon-512.png").exists() and (
+                Image.open(site_root / "icon-512.png")
+                .resize((32, 32))
+                .save(site_root / "favicon.ico", sizes=[(16, 16), (32, 32)]))
+            written.append("favicon.ico")
+    except Exception:
+        pass
+    return written
+
+
 def build_public(site_root: Path, base_url: str, counts: dict, categories: list[str]) -> list[str]:
-    """写 robots.txt / manifest / openapi / security.txt / sitemap.xml。"""
+    """写 robots.txt / manifest / openapi / security.txt / sitemap.xml / 图标。"""
     ctx = _public_context(base_url, counts, categories)
     written = []
     files = {
@@ -441,13 +481,25 @@ def build_public(site_root: Path, base_url: str, counts: dict, categories: list[
                     encoding="utf-8")
     written.append("openapi-v1.json")
 
-    pages = ["/", "/all.html", "/hot.html", "/daily.html", "/weekly.html", "/monthly.html",
-             "/topics.html", "/timeline.html", "/leaderboard.html", "/free-tokens.html",
-             "/about.html", "/agent.html", "/changelog.html"]
-    urls = "".join(f"<url><loc>{base_url}{p}</loc></url>" for p in pages)
+    # 扫真实产物，而不是写死一小串固定地址（站点现在有 700+ 页）。
+    # 一个页面都没扫到时退回基线清单 —— 免得构建出错时产出一个空 sitemap。
+    urls = []
+    skip = {"/admin.html", "/404.html"}
+    for path in sorted(site_root.rglob("*.html")):
+        rel = "/" + str(path.relative_to(site_root)).replace("\\", "/")
+        if rel in skip or rel.startswith("/admin"):
+            continue
+        urls.append(rel)
+    if not urls:
+        urls = ["/", "/all.html", "/hot.html", "/daily.html", "/weekly.html",
+                "/monthly.html", "/topics.html", "/timeline.html",
+                "/leaderboard.html", "/free-tokens.html", "/about.html",
+                "/agent.html", "/changelog.html"]
+    body = "".join(f"<url><loc>{base_url}{u}</loc></url>" for u in urls[:45000])
     (site_root / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>'
-        f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>',
+        f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{body}</urlset>',
         encoding="utf-8")
     written.append("sitemap.xml")
+    written.extend(_ensure_icons(site_root))
     return written
