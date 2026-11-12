@@ -255,20 +255,22 @@ def render(data: dict[str, Any]) -> str:
 .kpi .h{font-size:12px;color:var(--ink-4);line-height:1.5}
 
 /* 环形分布：单独一张卡，图和图例分两列，互不压迫 */
-.donut-wrap{display:grid;grid-template-columns:164px minmax(0,1fr);gap:28px;align-items:center;
+.donut-wrap{display:grid;grid-template-columns:164px minmax(0,1fr);gap:40px;align-items:center;
             margin:10px 0 20px;padding:18px 20px;background:var(--surface);
             border:1px solid var(--line);border-radius:var(--r-card);box-shadow:var(--shadow-card)}
 @media(max-width:720px){.donut-wrap{grid-template-columns:1fr;justify-items:center;gap:18px}}
 .donut{width:164px;height:164px;border-radius:50%;position:relative;flex:none;
+       justify-self:center;
        background:conic-gradient(var(--seg))}
-.donut::after{content:"";position:absolute;inset:34px;border-radius:50%;
+.donut::after{content:"";position:absolute;inset:40px;border-radius:50%;
               background:var(--surface)}      /* 内圈跟卡片同色，不留白块 */
 .donut-c{position:absolute;inset:0;display:grid;place-items:center;z-index:1;
-         text-align:center;line-height:1.15;padding:0 8px}
-.donut-c b{font:700 24px var(--font-mono);color:var(--ink)}
+         text-align:center;line-height:1.2;padding:0 14px;pointer-events:none}
+.donut-c b{font:700 22px var(--font-mono);color:var(--ink);line-height:1}
 .donut-c span{display:block;font-size:10.5px;color:var(--ink-4);margin-top:3px;
               letter-spacing:.02em}
-.donut-legend{display:grid;gap:9px;font-size:13px;color:var(--ink-3);min-width:0}
+.donut-legend{display:grid;gap:9px;font-size:13px;color:var(--ink-3);min-width:0;
+              padding-left:4px}
 .donut-legend span{display:flex;align-items:center;gap:9px}
 .donut-legend i{flex:none;width:10px;height:10px;border-radius:3px}
 
