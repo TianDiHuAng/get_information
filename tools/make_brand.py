@@ -20,6 +20,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BRAND_DIR = ROOT / "assets" / "brand"
+# 当前这张组合图的字标列范围（量出来的；换图时用 --text-x 覆盖）：
+#   第 2 条 677-1235 = 纯文字 "Z-bit"（图形 Z 在 330-639）
+#   第 3 条 108-1456 = 整条组合（图形 Z + "-bit AIDD"），文字部分没有重复的 Z
+DEFAULT_TEXT_X = ("677-1235", "108-1456")
+
 ALPHA_MIN = 16
 PAD = 10
 
@@ -55,11 +60,52 @@ def detect_bands(img, min_gap: int = 8, min_ink: int = 3) -> list[tuple[int, int
     return bands
 
 
+
+def clusters(img, band, min_gap: int = 6, min_ink: int = 2) -> list[tuple[int, int]]:
+    """一条组合带里按列间隙切出字形簇（用来区分"图形 Z"和"文字"）。"""
+    from PIL import Image as _I
+
+    mask = img.split()[-1].point(lambda v: 255 if v > ALPHA_MIN else 0)
+    w = img.size[0]
+    strip = mask.crop((0, band[0], w, band[1] + 1))
+    px = strip.load()
+    h = strip.size[1]
+    cols = []
+    for x in range(w):
+        n = 0
+        for y in range(0, h, 2):
+            if px[x, y]:
+                n += 1
+        cols.append(n)
+
+    out, run = [], None
+    for x, n in enumerate(cols):
+        if n >= min_ink:
+            run = x if run is None else run
+        else:
+            if run is not None and x - run > 4:
+                out.append((run, x - 1))
+            run = None
+    if run is not None:
+        out.append((run, len(cols) - 1))
+    # 合并间距很小的簇（同一串文字的相邻字母）
+    merged = []
+    for c in out:
+        if merged and c[0] - merged[-1][1] <= min_gap + 4:
+            merged[-1] = (merged[-1][0], c[1])
+        else:
+            merged.append(list(c))
+            merged[-1] = (c[0], c[1])
+    return merged
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--src", default=str(BRAND_DIR / "logo-src.png"))
     ap.add_argument("--bands", nargs="*", default=None,
                     help="手填行范围，形如 41-318；不给就自动切")
+    ap.add_argument("--text-x", nargs="*", default=None,
+                    help="手填字标的列范围（对应第 2、3 条），形如 677-1235")
     args = ap.parse_args()
 
     src = Path(args.src)
@@ -95,17 +141,49 @@ def main() -> int:
     rail.thumbnail((240, 240), Image.LANCZOS)
     rail.save(BRAND_DIR / "logo-mark.png", optimize=True)
 
-    # 2) 主站字标（第二条）
-    if len(bands) > 1:
-        text = cut(bands[1])
-        text.thumbnail((720, 720), Image.LANCZOS)
-        text.save(BRAND_DIR / "logo-text.png", optimize=True)
+    # 2) 字标：从"图形 Z 之后的第一条列间隙"开始裁，
+    #    否则图形 Z 和字标里的 Z 并排就成了 ZZ-bit。
+    mark_w = mark.size[0]
+    mask_full = img.split()[-1].point(lambda v: 255 if v > ALPHA_MIN else 0)
 
-    # 3) 子站字标（第三条，可选）
+    def col_ink(band, x):
+        strip = mask_full.crop((x, band[0], x + 1, band[1] + 1))
+        return strip.getbbox() is not None
+
+    def wordmark(band):
+        width = img.size[0]
+        ink = [col_ink(band, x) for x in range(width)]
+        gap_start = None
+        x = int(mark_w * 0.7)
+        while x < width:
+            if not ink[x]:
+                if gap_start is None:
+                    gap_start = x
+            else:
+                if gap_start is not None and x - gap_start >= 12:
+                    piece = trim(img.crop((x, band[0], width, band[1] + 1)))
+                    piece.thumbnail((720, 720), Image.LANCZOS)
+                    return piece
+                gap_start = None
+            x += 1
+        piece = trim(img.crop((0, band[0], width, band[1] + 1)))
+        piece.thumbnail((720, 720), Image.LANCZOS)
+        return piece
+
+    def explicit(band, spec):
+        """按显式列范围裁字标（图形 Z 之后到文字结束）。"""
+        x0, x1 = (int(v) for v in spec.split("-"))
+        piece = trim(img.crop((x0, band[0], x1 + 1, band[1] + 1)))
+        piece.thumbnail((720, 720), Image.LANCZOS)
+        return piece
+
+    xs = args.text_x or list(DEFAULT_TEXT_X)
+    if len(bands) > 1:
+        piece = explicit(bands[1], xs[0]) if len(xs) > 0 else wordmark(bands[1])
+        piece.save(BRAND_DIR / "logo-text.png", optimize=True)
     if len(bands) > 2:
-        sub = cut(bands[2])
-        sub.thumbnail((720, 720), Image.LANCZOS)
-        sub.save(BRAND_DIR / "logo-text-aidd.png", optimize=True)
+        piece = explicit(bands[2], xs[1]) if len(xs) > 1 else wordmark(bands[2])
+        piece.save(BRAND_DIR / "logo-text-aidd.png", optimize=True)
 
     # 4) 图标：徽标放白底圆角方块上（标签栏底色各不相同，白底最稳）
     def icon(size: int) -> Image.Image:
