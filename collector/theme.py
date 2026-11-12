@@ -491,7 +491,7 @@ def nav_html(active: str = "/") -> str:
                          f'<span class="lbl">{label}</span></a>')
         blocks.append(f'<div class="grp"><div class="sec-title">{title}</div>{"".join(links)}</div>')
     foot = ('<div class="foot">'
-            '<a class="gh" href="https://github.com/KKKKhazix/AIHOT" target="_blank" rel="noopener">'
+            '<a class="gh" href="https://github.com/TianDiHuAng/get_information" target="_blank" rel="noopener">'
             f'{icon("grid", 14)} GitHub 开源</a>'
             '<button class="themebtn" type="button" id="themebtn">◐ 跟随系统</button>'
             '</div>')
