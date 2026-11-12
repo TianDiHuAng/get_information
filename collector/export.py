@@ -423,6 +423,26 @@ def render_openapi(base_url: str, ctx: dict[str, str]) -> dict:
     }
 
 
+def _copy_brand(site_root: Path) -> list[str]:
+    """把 assets/brand 里的成品复制到站点根（有就用，没有就跳过）。"""
+    written = []
+    src_dir = Path(__file__).parent.parent / "assets" / "brand"
+    for name in ("logo-nav.png", "logo-mark.png", "icon-512.png", "icon-192.png",
+                 "apple-icon.png", "favicon.ico"):
+        src = src_dir / name
+        if not src.is_file():
+            continue
+        target = site_root / name
+        try:
+            import shutil
+
+            shutil.copyfile(src, target)
+            written.append(name)
+        except OSError:
+            continue
+    return written
+
+
 def _ensure_icons(site_root: Path) -> list[str]:
     """生成方图标（512/192/180/apple + favicon.ico）。幂等：已存在就跳过。
 
@@ -501,5 +521,5 @@ def build_public(site_root: Path, base_url: str, counts: dict, categories: list[
         f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{body}</urlset>',
         encoding="utf-8")
     written.append("sitemap.xml")
-    written.extend(_ensure_icons(site_root))
+    written.extend(_copy_brand(site_root) or _ensure_icons(site_root))
     return written

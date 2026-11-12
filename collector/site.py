@@ -992,7 +992,7 @@ def build_home(day: str | None = None, site_root: Path | None = None,
                 f'<li><a href="/events/{eid}.html"><span class="rk"></span>'
                 f'<span class="tt">{theme.esc(b["title"])}</span>'
                 f'<span class="faces">{faces}</span>'
-                f'<span class="heat"><b>{int(heat.get(eid, 0))}</b> 热度</span>'
+                f'<span class="heat"><b>{len([x for x in b["sources"] if x])}</b> 家</span>'
                 f'<span></span></a></li>')
         # 序号用 CSS 的 rank 颜色，但内容要显式写数字
         hot_rows = [r.replace('<span class="rk"></span>',

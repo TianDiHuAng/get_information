@@ -183,7 +183,10 @@ button{font-family:inherit}
   .side::-webkit-scrollbar{display:none}
   .side .brand{display:flex;align-items:center;justify-content:center;width:44px;height:44px;
                margin-bottom:12px;color:var(--accent)}
-  .side .mark{font:800 18px/1 var(--font-sans);letter-spacing:-.02em;color:var(--accent)}
+  .side .brand img{display:block;width:auto}
+  .side .brand.brand-text{font:800 20px/1 var(--font-sans);color:var(--ink)}
+  .side .brand .brand-full{display:none}
+  .side .brand .brand-mark{height:32px}
   .side .mark .full{display:none}
   .side .mark .short{display:inline}
   .side .sec-title{display:none}
@@ -205,7 +208,9 @@ button{font-family:inherit}
   .side{width:var(--side-w);align-items:stretch;padding:24px 12px 14px}
   .side .brand{justify-content:flex-start;width:auto;height:50px;padding:0 4px;
                margin-bottom:16px;color:var(--ink)}
-  .side .mark{font-size:22px;color:var(--ink);letter-spacing:-.01em}
+  .side .brand{gap:0}
+  .side .brand .brand-mark{display:none}
+  .side .brand .brand-full{display:block;height:20px}
   .side .mark .full{display:inline}
   .side .mark .short{display:none}
   .side .sec-title{display:block;padding:14px 10px 4px;font-size:11px;color:var(--ink-4)}
@@ -486,13 +491,15 @@ def nav_html(active: str = "/") -> str:
             f'{icon("grid", 14)} GitHub 开源</a>'
             '<button class="themebtn" type="button" id="themebtn">◐ 跟随系统</button>'
             '</div>')
+    brand = ('<a class="brand" href="@@ROOT@@{base}/" aria-label="{name} 首页">'
+             '<img class="brand-mark" src="@@ROOT@@/logo-mark.png" alt="{name}">'
+             '<img class="brand-full" src="@@ROOT@@/logo-text.png" alt="{name}">'
+             '</a>').format(base=_BASE, name=esc(BRAND))
     sw = (f'<div class="switcher">'
           f'<a class="{"on" if not _BASE else ""}" href="@@ROOT@@/">AI</a>'
           f'<a class="{"on" if _BASE == "/aidd" else ""}" href="@@ROOT@@/aidd/">AIDD</a>'
           f'</div>')
-    return (f'<aside class="side"><a class="brand" href="@@ROOT@@{_BASE}/" aria-label="{BRAND} 首页">'
-            f'<span class="mark"><span class="short">Z</span>'
-            f'<span class="full">{BRAND}</span></span></a>{sw}{"".join(blocks)}{foot}</aside>')
+    return (f'<aside class="side">{brand}{sw}{"".join(blocks)}{foot}</aside>')
 
 
 def bottom_nav(active: str = "/") -> str:
@@ -540,12 +547,8 @@ def og_tags(title: str, description: str = "") -> str:
 
 # 内联 SVG 图标：不额外请求文件，浅色/深色都清楚
 FAVICON = (
-    '<link rel="icon" href="data:image/svg+xml,'
-    '%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E'
-    '%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%23176b75%27/%3E'
-    '%3Ctext x=%2716%27 y=%2722%27 font-family=%27system-ui,sans-serif%27 font-size=%2719%27 '
-    'font-weight=%27700%27 fill=%27%23fff%27 text-anchor=%27middle%27%3EZ%3C/text%3E'
-    '%3C/svg%3E">'
+    '<link rel="icon" href="/favicon.ico" sizes="any">'
+    '<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">'
     '<link rel="apple-touch-icon" href="/apple-icon.png">'
 )
 

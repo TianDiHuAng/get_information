@@ -136,6 +136,16 @@ def _nav():
     return nav_html("") + bottom_nav("")
 
 
+def _self_contained(doc: str) -> str:
+    """离线版必须一个文件自洽：去掉外部引用的图标与品牌图，品牌退回文字。"""
+    import re as _re
+
+    doc = _re.sub(r'<link rel="(icon|apple-touch-icon|manifest)"[^>]*>', "", doc)
+    doc = _re.sub(r'<img class="brand-(mark|full)"[^>]*>', "", doc)
+    doc = doc.replace('<a class="brand"', '<a class="brand brand-text"')
+    return doc
+
+
 def build(payload: dict[str, Any], site_root: Path | None = None,
           day: str | None = None) -> dict[str, Any]:
     """生成 `site/offline.html`。任何一块失败都只影响那一块。"""
@@ -168,5 +178,5 @@ def build(payload: dict[str, Any], site_root: Path | None = None,
 
     target = (site_root or SITE) / "offline.html"
     target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(doc, encoding="utf-8")
+    target.write_text(_self_contained(doc), encoding="utf-8")
     return {"file": str(target), "bytes": target.stat().st_size, "day": day}
