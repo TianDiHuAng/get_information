@@ -199,15 +199,31 @@ def render(data: dict[str, Any]) -> str:
     d = data["discourse"]
     llm_stats = data["llm"] or {}
 
-    cards = "".join([
+    cards = '<div class="kpi">' + "".join([
         _card("今日条目", data["items"], f"新增 {data['new_today']} · 重复 {data['repeats']}"),
         _card("进日报", data["daily"], f"事件 {data['events']} 个"),
         _card("评分", f"{a['selected']}/{a['scored']}", f"过门槛 · 拦截 {a['blocked']} · 失败 {a['failed']}"),
         _card("模型调用", llm_stats.get("total", 0),
               f"命中回执 {llm_stats.get('hit', 0)} · token {llm_stats.get('tokens', 0)}"),
-    ])
+    ]) + '</div>' 
 
     hist_rows = [{"label": f"{b['lo']}–{b['hi']}", "n": b["n"], "pct": b["pct"]} for b in hist]
+
+    # 分数分布环形图（纯 CSS conic-gradient，不引图表库）
+    SEG = ("#b3402a", "#c9743a", "#b8873a", "#4c8c72", "#176b75")
+    acc, stops = 0.0, []
+    for i, b in enumerate(hist):
+        start = acc
+        acc = min(1.0, acc + float(b["pct"]))
+        stops.append(f"{SEG[i % len(SEG)]} {start * 100:.2f}% {acc * 100:.2f}%")
+    total_n = sum(int(b["n"]) for b in hist) or 1
+    donut = (f'<div class="donut-wrap"><div class="donut" style="--seg:{", ".join(stops)}">'
+             f'<div class="donut-c"><b>{total_n}</b><span>条已评分</span></div></div>'
+             '<div class="donut-legend">'
+             + "".join(f'<span><i style="background:{SEG[i % len(SEG)]}"></i>'
+                       f'{b["label"]} · {b["n"]} 条</span>'
+                       for i, b in enumerate(hist_rows))
+             + "</div></div>") if hist else ""
     hist_html = "".join(
         f'<div class="bar"><span class="bl">{b["label"]}</span>'
         f'<span class="bt"><i style="width:{round(b["pct"] * 100)}%"></i></span>'
@@ -228,7 +244,21 @@ def render(data: dict[str, Any]) -> str:
         for x in data["alerts"]) or '<li class="muted">今天没有告警</li>'
 
     page_css = """
-.kpi{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.kpi{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.kpi .card{padding:14px 16px}
+.kpi .k{font-size:12px;color:var(--ink-4);letter-spacing:.02em}
+.kpi .v{font:800 30px/1.1 var(--font-mono);color:var(--ink);letter-spacing:-.02em;
+        margin:6px 0 2px;font-variant-numeric:tabular-nums}
+.kpi .h{font-size:11.5px;color:var(--ink-4)}
+.donut-wrap{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin:6px 0 4px}
+.donut{width:132px;height:132px;border-radius:50%;flex:none;position:relative;
+       background:conic-gradient(var(--seg));box-shadow:inset 0 0 0 1px var(--line-soft)}
+.donut::after{content:"";position:absolute;inset:26px;border-radius:50%;background:var(--bg)}
+.donut-c{position:absolute;inset:0;display:grid;place-items:center;z-index:1;text-align:center}
+.donut-c b{font:800 22px var(--font-mono);color:var(--ink)}
+.donut-c span{display:block;font-size:10.5px;color:var(--ink-4)}
+.donut-legend{display:flex;flex-direction:column;gap:5px;font-size:12.5px;color:var(--ink-3)}
+.donut-legend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:7px}
 .bar{display:flex;align-items:center;gap:8px;margin:4px 0;font-size:12.5px}
 .bar .bl{width:64px;color:var(--ink-4);flex:none}
 .bar .bt{flex:1;height:6px;border-radius:3px;background:var(--line-soft);overflow:hidden}
@@ -244,7 +274,7 @@ def render(data: dict[str, Any]) -> str:
     body = f"""<div class="cards">{cards}</div>
 
 <h2>评分分布（五轴加权分，每 20 分一档）</h2>
-{hist_html}
+{donut}{hist_html}
 <div class="muted" style="font-size:11px;margin-top:6px;">
 门槛在 config/scoring.yaml：primary 58 / rank 66 / broad 68 / search 74 / social 76。
 堆在门槛附近的那一档，就是"最该拿去看错例"的样本。
