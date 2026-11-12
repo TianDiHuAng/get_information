@@ -515,6 +515,9 @@ ISSUE_CSS = """
 .dl-front .cols{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
 .dl-front .cols span{font-size:12px;color:var(--ink-3);background:var(--bg-sunk);
                      border-radius:999px;padding:3px 11px}
+.dl-stats{display:flex;flex-wrap:wrap;gap:18px;margin-top:16px;padding-top:14px;
+          border-top:1px solid var(--line-soft);font-size:13px;color:var(--ink-4)}
+.dl-stats b{font:700 16px var(--font-mono);color:var(--ink);margin-right:3px}
 .dl-grid{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:28px;align-items:start}
 @media(max-width:820px){.dl-grid{grid-template-columns:1fr}}
 .dl-month{margin:0 0 20px}
@@ -539,6 +542,25 @@ ISSUE_CSS = """
                     color:var(--accent)}
 .dl-side li a{color:var(--ink-2)}
 """
+
+
+def _issue_stats(day: str) -> dict[str, Any]:
+    """当期统计行 + 今日看点，全部从 db 现算。"""
+    try:
+        rows = store.all_items(day)
+    except Exception:
+        return {}
+    srcs = {r.get("source") for r in rows if r.get("source")}
+    models = sum(1 for r in rows
+                 if ((r.get("structure") or {}).get("category") or "") == "model_release")
+    firsts = sum(1 for r in rows if r.get("layer") == "primary")
+    scored = [r for r in rows if (r.get("attention") or {}).get("score") is not None]
+    scored.sort(key=lambda r: -(r["attention"]["score"]))
+    top = [{"title": r.get("title") or "", "id": r.get("id"),
+            "score": r["attention"]["score"], "source": r.get("source") or ""}
+           for r in scored[:3]]
+    return {"items": len(rows), "sources": len(srcs), "models": models,
+            "firsts": firsts, "top": top}
 
 
 def _issue_meta(p: Path) -> dict[str, Any]:
@@ -572,6 +594,7 @@ def build_issue_index(kind: str, *, site_root: Path | None = None) -> dict[str, 
     metas = [m for m in (_issue_meta(p) for p in files) if m]
     latest = metas[0] if metas else None
 
+    st = _issue_stats(latest["date"]) if latest else {}
     front = ""
     if latest:
         chips = "".join(f"<span>{theme.esc(h)}</span>" for h in latest["heads"][:6])
@@ -581,6 +604,13 @@ def build_issue_index(kind: str, *, site_root: Path | None = None) -> dict[str, 
                  f'{theme.esc(latest["title"] or label)}</a></h2>'
                  + (f'<p class="lead">{theme.esc(latest["lead"])}…</p>' if latest["lead"] else "")
                  + (f'<div class="cols">{chips}</div>' if chips else "")
+                 + (f'<div class="dl-stats">'
+                    f'<span><b>{st["items"]}</b> 条</span>'
+                    f'<span><b>{st["sources"]}</b> 个来源</span>'
+                    f'<span><b>{st["firsts"]}</b> 条一手</span>'
+                    f'<span><b>{st["models"]}</b> 个新模型</span>'
+                    f'<span>约 {max(2, st["items"] // 12)} 分钟读完</span></div>'
+                    if st else "")
                  + '</div>')
 
     months: dict[str, list[dict[str, Any]]] = {}
@@ -599,9 +629,15 @@ def build_issue_index(kind: str, *, site_root: Path | None = None) -> dict[str, 
                       f'{rows}</div>')
 
     side = ""
+    if st and st.get("top"):
+        picks = "".join(
+            f'<li><a href="/items/{t["id"]}.html">{theme.esc(t["title"][:64])}</a></li>'
+            for t in st["top"])
+        side += (f'<div class="dl-side" style="margin-bottom:16px;">'
+                 f'<h4>今日看点</h4><ol>{picks}</ol></div>')
     if latest and latest["heads"]:
         items = "".join(f'<li>{theme.esc(h)}</li>' for h in latest["heads"][:6])
-        side = (f'<div class="dl-side"><h4>本期版面</h4><ol>{items}</ol></div>')
+        side += f'<div class="dl-side"><h4>本期版面</h4><ol>{items}</ol></div>' 
 
     body = front + f'<div class="dl-grid"><div>{"".join(blocks)}</div>{side}</div>' \
         if metas else '<p class="muted">还没有出刊记录。跑一次 <code>python run.py</code> 就会生成。</p>'
