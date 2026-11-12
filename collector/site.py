@@ -31,8 +31,7 @@ SITE = ROOT / "site"
 DATA = Path(os.environ.get("RADAR_DATA") or (ROOT / "data"))
 
 FEED_DIVIDER_CSS = """
-.feed-divider{list-style:none;margin:26px 0 6px;padding-top:16px;border-top:1px solid var(--line);
-              font-size:12px;color:var(--ink-4);letter-spacing:.04em}
+.feed-divider{list-style:none;margin:34px 0 16px;padding-top:22px;border-top:1px solid var(--line);font-size:12px;color:var(--ink-4);letter-spacing:.03em;text-align:center}
 """
 
 REPORT_CSS = """
