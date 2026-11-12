@@ -427,8 +427,8 @@ def _copy_brand(site_root: Path) -> list[str]:
     """把 assets/brand 里的成品复制到站点根（有就用，没有就跳过）。"""
     written = []
     src_dir = Path(__file__).parent.parent / "assets" / "brand"
-    for name in ("logo-nav.png", "logo-mark.png", "icon-512.png", "icon-192.png",
-                 "apple-icon.png", "favicon.ico"):
+    for name in ("logo-mark.png", "logo-text.png", "logo-text-aidd.png",
+                 "icon-512.png", "icon-192.png", "apple-icon.png", "favicon.ico"):
         src = src_dir / name
         if not src.is_file():
             continue

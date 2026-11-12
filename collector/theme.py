@@ -493,8 +493,10 @@ def nav_html(active: str = "/") -> str:
             '</div>')
     brand = ('<a class="brand" href="@@ROOT@@{base}/" aria-label="{name} 首页">'
              '<img class="brand-mark" src="@@ROOT@@/logo-mark.png" alt="{name}">'
-             '<img class="brand-full" src="@@ROOT@@/logo-text.png" alt="{name}">'
-             '</a>').format(base=_BASE, name=esc(BRAND))
+             '<img class="brand-full" src="@@ROOT@@{text}" alt="{name}">'
+             '</a>').format(base=_BASE, name=esc(BRAND),
+                            text="/logo-text-aidd.png" if "aidd" in _BASE.lower()
+                            else "/logo-text.png")
     sw = (f'<div class="switcher">'
           f'<a class="{"on" if not _BASE else ""}" href="@@ROOT@@/">AI</a>'
           f'<a class="{"on" if _BASE == "/aidd" else ""}" href="@@ROOT@@/aidd/">AIDD</a>'
