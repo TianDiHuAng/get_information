@@ -145,9 +145,21 @@ CSS = """
   --shadow-soft:0 6px 18px rgba(0,0,0,.35);
 }
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
+html{
+  -webkit-text-size-adjust:100%;text-rendering:optimizeLegibility;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  -webkit-tap-highlight-color:transparent;
+  /* 中英混排自动留 1/8 em：标题里“Meta在Muse”和“Meta 在 Muse”读起来才一致 */
+  text-autospace:normal;
+}
+input,textarea,code,pre,kbd,samp{text-autospace:no-autospace}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans);
-     font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+     font-size:14px;line-height:1.5}
+::selection{background:var(--selection)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:var(--r-mark)}
+button{cursor:pointer}
+button:disabled{cursor:default}
+img{max-width:100%}
 a{color:inherit;text-decoration:none}
 a:hover{color:var(--accent)}
 button{font-family:inherit}
