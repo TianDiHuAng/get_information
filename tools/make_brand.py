@@ -196,8 +196,8 @@ def main() -> int:
         canvas = Image.new("RGBA", (size, size), (0, 0, 0, 0))
         ImageDraw.Draw(canvas).rounded_rectangle(
             (0, 0, size - 1, size - 1), radius=max(2, int(size * 0.22)), fill=(255, 255, 255, 255))
-        inner = int(size * 0.84)
-        scaled = square.copy()
+        inner = int(size * 0.92)
+        scaled = mark.copy()
         scaled.thumbnail((inner, inner), Image.LANCZOS)
         canvas.alpha_composite(scaled, ((size - scaled.size[0]) // 2,
                                         (size - scaled.size[1]) // 2))
