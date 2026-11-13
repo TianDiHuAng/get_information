@@ -17,9 +17,29 @@ from .sources import REGISTRY, build_fetchers, region_of
 TOPICS_PATH = Path(__file__).parent.parent / "config" / "topics.yaml"
 
 
+def _topics() -> dict:
+    """优先用行业包里的 topics.yaml，没有再退到全局。
+
+    全局那份是「科技/AI」词表，拿它筛制药新闻会把真新闻挡在门外
+    （11-12 那天 AIDD 61 条里 41 条被拦），所以行业包必须能覆盖它。
+    """
+    try:
+        from . import industry
+
+        data = industry.load("topics.yaml")
+        if data:
+            return data
+    except Exception:
+        pass
+    try:
+        return yaml.safe_load(TOPICS_PATH.read_text(encoding="utf-8")) or {}
+    except Exception:
+        return {}
+
+
 def _load_patterns() -> list[re.Pattern]:
     try:
-        data = yaml.safe_load(TOPICS_PATH.read_text(encoding="utf-8")) or {}
+        data = _topics()
         kws = [str(k).strip().lower() for k in data.get("keywords", []) if str(k).strip()]
     except Exception:
         kws = []
@@ -37,7 +57,7 @@ PATTERNS = _load_patterns()
 
 def _domestic_patterns() -> list[re.Pattern]:
     try:
-        data = yaml.safe_load(TOPICS_PATH.read_text(encoding="utf-8")) or {}
+        data = _topics()
         kws = [str(k).strip().lower() for k in (data.get("domestic_keywords") or []) if str(k).strip()]
     except Exception:
         kws = []
@@ -55,7 +75,7 @@ DOMESTIC_PATTERNS = _domestic_patterns()
 
 def _deal_patterns() -> list[re.Pattern]:
     try:
-        data = yaml.safe_load(TOPICS_PATH.read_text(encoding="utf-8")) or {}
+        data = _topics()
         kws = [str(k).strip().lower() for k in (data.get("deal_keywords") or []) if str(k).strip()]
     except Exception:
         kws = []
