@@ -200,6 +200,10 @@ def _normalise(itype: str, weights: dict[str, Any]) -> str:
     for kw, key in _ITYPE_HINTS:
         if kw in itype and key in weights:
             return key
+    # 没有关键词命中时：AI 包仍回退到 product_launch（历史行为，测试依赖它）；
+    # 其他包用自己 weights 的第一个 key。
+    if "product_launch" in weights:
+        return "product_launch"
     return next(iter(weights), "")
 
 
