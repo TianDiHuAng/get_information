@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import html
 import json
+import urllib.parse
 import re
 import time
 import xml.etree.ElementTree as ET
@@ -866,6 +867,25 @@ def _x_fetch_all() -> list[Item]:
     return items
 
 
+def _feed_field(sid: str, field: str = "url") -> str:
+    """从 feeds.yaml 里取某个源的原始字段。
+
+    REGISTRY 里是**装饰后**的源（只留 id/name/layer/tier/enabled 等），
+    url 这种抓取参数会被丢掉，所以这里回原始配置里查。
+    """
+    try:
+        from . import industry
+
+        data = industry.load("feeds.yaml") or {}
+        rows = data.get("feeds") if isinstance(data, dict) else data
+        for row in rows or []:
+            if str(row.get("id")) == sid:
+                return str(row.get(field) or "")
+    except Exception:
+        return ""
+    return ""
+
+
 def build_fetchers() -> list[tuple[str, callable]]:
     """返回 [(source_id, callable)]，只包含 enabled 的源。"""
     fetchers: list[tuple[str, callable]] = []
@@ -890,6 +910,12 @@ def build_fetchers() -> list[tuple[str, callable]]:
             fetchers.append((sid, smolai))
         elif sid == "thebatch":
             fetchers.append((sid, the_batch))
+        elif sid.startswith("pubmed"):
+            from . import pubmed as _pm
+
+            _q = urllib.parse.unquote(_feed_field(sid))
+            fetchers.append((sid, (lambda u=_q, i=sid: _pm.pubmed(
+                u, limit=12, source_id=i))))
         elif sid == "hf_papers":
             fetchers.append((sid, hf_papers))
         elif sid == "hackernews":

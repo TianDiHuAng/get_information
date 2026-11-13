@@ -21,3 +21,8 @@ feeds:
   - {id: gn_aidd_rd, name: "AI 制药（Google 新闻）", url: "https://news.google.com/rss/search?q=AI%20%E5%88%B6%E8%8D%AF%20%E8%8D%AF%E7%89%A9%E7%A0%94%E5%8F%91&hl=zh-CN&gl=CN&ceid=CN:zh-Hans", region: domestic, layer: search, limit: 12, proxy: true}
   - {id: gn_aidd_discover, name: "AI 药物发现（Google 新闻）", url: "https://news.google.com/rss/search?q=AI%20%E8%8D%AF%E7%89%A9%E5%8F%91%E7%8E%B0&hl=zh-CN&gl=CN&ceid=CN:zh-Hans", region: domestic, layer: search, limit: 12, proxy: true}
   - {id: gn_med_llm, name: "医疗 AI 大模型（Google 新闻）", url: "https://news.google.com/rss/search?q=%E5%8C%BB%E7%96%97%20AI%20%E5%A4%A7%E6%A8%A1%E5%9E%8B&hl=zh-CN&gl=CN&ceid=CN:zh-Hans", region: domestic, layer: search, limit: 12, proxy: true}
+
+  # —— PubMed 检索（E-utilities，免费无鉴权；url 是 URL 编码的检索式） ——
+  - {id: pubmed_aidd_dl, name: "AI 药物发现（PubMed）", url: "%28drug%20discovery%5BTitle%2FAbstract%5D%29%20AND%20%28deep%20learning%5BTitle%2FAbstract%5D%20OR%20machine%20learning%5BTitle%2FAbstract%5D%29", region: overseas, layer: primary, limit: 12, proxy: false}
+  - {id: pubmed_aidd_llm, name: "LLM × 生物医药（PubMed）", url: "%28large%20language%20model%5BTitle%2FAbstract%5D%29%20AND%20%28drug%5BTitle%2FAbstract%5D%20OR%20protein%5BTitle%2FAbstract%5D%29", region: overseas, layer: primary, limit: 12, proxy: false}
+  - {id: pubmed_aidd_design, name: "生成式分子/蛋白设计（PubMed）", url: "%28generative%5BTitle%2FAbstract%5D%29%20AND%20%28molecule%5BTitle%2FAbstract%5D%20OR%20protein%20design%5BTitle%2FAbstract%5D%29", region: overseas, layer: primary, limit: 12, proxy: false}
