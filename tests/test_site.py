@@ -10,6 +10,19 @@ from collector import site, store, theme
 from collector.model import Item
 
 
+# 测试数据用「相对今天」的时间，别写死日期 ——
+# 写死会在跨天后被 scope 的 max_age_hours 过滤掉，整批用例莫名失败。
+def _iso(days_ago: int = 0, hour: int = 8) -> str:
+    from datetime import datetime, timedelta
+    return (datetime.now().astimezone() - timedelta(days=days_ago)).replace(
+        hour=hour, minute=0, second=0, microsecond=0).isoformat()
+
+
+def _day(days_ago: int = 0) -> str:
+    return _iso(days_ago)[:10]
+
+
+
 def test_md_headings_lists_quote():
     html = site.md_to_html("# 标题\n\n> 引言\n\n## 小节\n\n- 一\n- 二\n\n1. 甲\n2. 乙\n")
     assert "<h1>标题</h1>" in html and "<h2>小节</h2>" in html
@@ -43,10 +56,10 @@ def seed(day=None):
     items = [
         Item(source="anthropic", title="Anthropic 发布 Claude Fable 5.2 与 Mythos 5.2",
              url="https://a/1", layer="primary", summary="官方宣布两个模型正式开放。",
-             published="2026-11-10T08:00:00+08:00"),
+             published=_iso(0, 8)),
         Item(source="hackernews", title="Fable 5.2 在 Artificial Analysis 得 65 分",
              url="https://a/2", layer="rank", summary="190 条评论",
-             published="2026-11-10T09:00:00+08:00"),
+             published=_iso(0, 9)),
     ]
     for it in items:
         it.extra["score"] = 80 if it.layer == "primary" else 70
@@ -84,7 +97,7 @@ def test_item_page_shows_reason_axes_and_siblings(tmpdb, tmp_path):
 def test_item_page_lists_other_reports_of_same_event(tmpdb, tmp_path):
     seed()
     # 手工把两条并到同一事件
-    store.upsert_event("url:https://a/1", "同一件事", "2026-11-10", "2026-11-10",
+    store.upsert_event("url:https://a/1", "同一件事", _day(0), _day(0),
                        [(1, "SAME_OCCURRENCE", 1.0), (2, "SAME_OCCURRENCE", 1.0)])
     ids = store.ids_for(["url:https://a/1"])
     detail = store.item_detail(int(ids["url:https://a/1"]))
@@ -93,9 +106,9 @@ def test_item_page_lists_other_reports_of_same_event(tmpdb, tmp_path):
 
 def test_hot_ranks_by_event_heat(tmpdb, tmp_path, monkeypatch):
     rows = [
-        {"event_id": 1, "event_title": "冷门事件", "first_at": "2026-11-09", "source": "a"},
-        {"event_id": 2, "event_title": "大热事件", "first_at": "2026-11-09", "source": "b"},
-        {"event_id": 2, "event_title": "大热事件", "first_at": "2026-11-09", "source": "c"},
+        {"event_id": 1, "event_title": "冷门事件", "first_at": _day(1), "source": "a"},
+        {"event_id": 2, "event_title": "大热事件", "first_at": _day(1), "source": "b"},
+        {"event_id": 2, "event_title": "大热事件", "first_at": _day(1), "source": "c"},
     ]
     monkeypatch.setattr(site.store, "event_dump", lambda days, day=None: rows)
     monkeypatch.setattr(site.store, "latest_heat", lambda: {1: 1.0, 2: 9.0})
@@ -107,12 +120,12 @@ def test_hot_ranks_by_event_heat(tmpdb, tmp_path, monkeypatch):
 
 def test_events_page_groups_by_channel(tmpdb, tmp_path, monkeypatch):
     rows = [
-        {"event_id": 7, "event_title": "某发布事件", "first_at": "2026-11-09T08:00:00+08:00",
+        {"event_id": 7, "event_title": "某发布事件", "first_at": _iso(1, 8),
          "item_title": "官方公告", "url": "https://a/1", "source": "anthropic", "layer": "primary",
-         "published": "2026-11-09T08:00:00+08:00"},
-        {"event_id": 7, "event_title": "某发布事件", "first_at": "2026-11-09T08:00:00+08:00",
+         "published": _iso(1, 8)},
+        {"event_id": 7, "event_title": "某发布事件", "first_at": _iso(1, 8),
          "item_title": "媒体报道", "url": "https://a/2", "source": "sspai", "layer": "broad",
-         "published": "2026-11-09T09:00:00+08:00"},
+         "published": _iso(1, 9)},
     ]
     monkeypatch.setattr(site.store, "event_dump", lambda days: rows)
     out = site.build_events(tmp_path)

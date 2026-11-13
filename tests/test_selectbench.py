@@ -12,6 +12,19 @@ from collector import selectbench, store
 from collector.model import Item
 
 
+# 测试数据用「相对今天」的时间，别写死日期 ——
+# 写死会在跨天后被 scope 的 max_age_hours 过滤掉，整批用例莫名失败。
+def _iso(days_ago: int = 0, hour: int = 8) -> str:
+    from datetime import datetime, timedelta
+    return (datetime.now().astimezone() - timedelta(days=days_ago)).replace(
+        hour=hour, minute=0, second=0, microsecond=0).isoformat()
+
+
+def _day(days_ago: int = 0) -> str:
+    return _iso(days_ago)[:10]
+
+
+
 @pytest.fixture(autouse=True)
 def gold_file(tmp_path, monkeypatch, tmpdb):
     # 必须带上 tmpdb：否则 store 会写进真实数据库（踩过一次，误插了 3 条假条目）
@@ -23,7 +36,7 @@ def seed(n=3):
     items = []
     for i in range(n):
         it = Item(source="anthropic", title=f"第 {i} 条新闻标题足够长", url=f"https://a/{i}",
-                  layer="primary", summary="摘要内容", published="2026-11-10T08:00:00+08:00")
+                  layer="primary", summary="摘要内容", published=_iso(0, 8))
         it.extra["score"] = 70 + i
         it.extra["attention"] = {"available": True, "score": 80 + i, "threshold": 58,
                                  "itype": "model_release", "reason": "正式发布"}
