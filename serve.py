@@ -368,6 +368,25 @@ def _daily_scheduler() -> None:
                                     "--data", "data", "--db", "data/radar.db"],
                                    cwd=str(Path(__file__).parent), stdout=fh,
                                    stderr=subprocess.STDOUT, timeout=1800)
+
+                    # AIDD 站：独立的数据/库/站点目录，跑完单独建站
+                    env_aidd = dict(os.environ)
+                    env_aidd.update({
+                        "RADAR_PACK": "aidd",
+                        "RADAR_DB": "data/aidd.db",
+                        "RADAR_DATA": "data-aidd",
+                        "RADAR_SITE": "site/aidd",
+                    })
+                    fh.write(f"[{datetime.now():%Y-%m-%d %H:%M}] AIDD 开始\n")
+                    subprocess.run([sys.executable, "run.py", "--no-mail", "--dry-push"],
+                                   cwd=str(Path(__file__).parent), env=env_aidd, stdout=fh,
+                                   stderr=subprocess.STDOUT, timeout=7200)
+                    subprocess.run([sys.executable, "tools/build_sites.py", "--site", "site/aidd",
+                                    "--data", "data-aidd", "--db", "data/aidd.db",
+                                    "--base", "/aidd"],
+                                   cwd=str(Path(__file__).parent), env=env_aidd, stdout=fh,
+                                   stderr=subprocess.STDOUT, timeout=1800)
+                    fh.write(f"[{datetime.now():%Y-%m-%d %H:%M}] AIDD 完成\n")
                     fh.write(f"[{datetime.now():%Y-%m-%d %H:%M}] 定时完成\n")
         except Exception:
             pass
