@@ -64,7 +64,21 @@ def prompt(name: str) -> tuple[str, str]:
     """返回 `(正文, 版本号)`。版本号是内容哈希：改了提示词，旧回执自动失效。"""
     if name in _prompt_cache:
         return _prompt_cache[name]
-    path = PROMPT_DIR / f"{name}.md"
+    # 行业包优先：industry/<pack>/prompts/<name>.md 存在就用它。
+    # 之前只读 config/prompts/，导致 industry/aidd/prompts/ 里那三份
+    # （prefilter / attention-score / structure）从来没生效过 ——
+    # AIDD 一直在用 AI 行业的评分口径。
+    import os
+
+    path = None
+    pack = (os.environ.get("RADAR_PACK") or "").strip()
+    if pack:
+        cand = (Path(__file__).parent.parent / "industry" / pack / "prompts"
+                / f"{name}.md")
+        if cand.is_file():
+            path = cand
+    if path is None:
+        path = PROMPT_DIR / f"{name}.md"
     try:
         text = path.read_text(encoding="utf-8")
     except OSError:
