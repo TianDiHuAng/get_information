@@ -5,8 +5,8 @@ model: "gpt-4o-mini"
 backup_model: ""
 
 budget:
-  per_day: 0
-  per_hour: 0
+  per_day: 3000
+  per_hour: 400
 
 temperature: 0.2
 max_tokens: 1200
