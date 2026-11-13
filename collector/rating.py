@@ -180,6 +180,29 @@ def prefilter(item: Any, model: str | None = None) -> str:
     return label if label in ("PASS", "BLOCK", "UNKNOWN") else "UNKNOWN"
 
 
+# 模型可能按提示词返回嵌套结构或中文 itype，两种都要能吃下。
+_ITYPE_HINTS = (
+    ("监管", "regulatory"), ("政策", "regulatory"), ("审批", "regulatory"),
+    ("临床", "clinical_data"), ("试验", "clinical_data"),
+    ("管线", "pipeline_progress"), ("进展", "pipeline_progress"),
+    ("平台", "platform_release"), ("发布", "platform_release"),
+    ("论文", "research_paper"), ("研究", "research_paper"),
+    ("工具", "tool_or_method"), ("方法", "tool_or_method"),
+    ("数据集", "dataset_benchmark"), ("基准", "dataset_benchmark"),
+    ("行业", "industry_event"), ("事件", "industry_event"),
+    ("融资", "industry_event"), ("并购", "industry_event"),
+)
+
+
+def _normalise(itype: str, weights: dict[str, Any]) -> str:
+    if itype in weights:
+        return itype
+    for kw, key in _ITYPE_HINTS:
+        if kw in itype and key in weights:
+            return key
+    return next(iter(weights), "")
+
+
 def score_once(item: Any, call_no: int, model: str | None = None) -> dict[str, Any] | None:
     """一次独立打分。返回 `{axes, itype, reason, score}` 或 None。"""
     conf = config()
@@ -200,13 +223,13 @@ def score_once(item: Any, call_no: int, model: str | None = None) -> dict[str, A
                         model=model, variant=f"call{call_no}")
     if not obj:
         return None
-    itype = str(obj.get("itype") or "").strip()
-    if itype not in weights:
-        itype = "product_launch"
+    itype = _normalise(str(obj.get("itype") or "").strip(), weights)
+    # 五轴可能在顶层，也可能嵌在 {"axes": {...}} 里
+    src = obj.get("axes") if isinstance(obj.get("axes"), dict) else obj
     axes: dict[str, int] = {}
     for axis in AXES:
         try:
-            value = int(obj.get(axis))
+            value = int(src.get(axis))
         except (TypeError, ValueError):
             return None
         axes[axis] = max(0, min(10, value))
@@ -279,7 +302,15 @@ def rate_items(items: Iterable[Any], *, ids: dict[str, int] | None = None,
             idx, call_no = futures[fut]
             try:
                 result = fut.result()
-            except Exception:
+            except Exception as e:
+                # 静默吞异常会让人误以为"模型不给分"，实际可能是代码 bug。
+                # 设 RADAR_DEBUG=1 时把真实异常打出来。
+                import os as _os
+                import traceback as _tb
+
+                if _os.environ.get("RADAR_DEBUG"):
+                    print(f"[score_once] 失败: {type(e).__name__}: {e}", flush=True)
+                    _tb.print_exc()
                 result = None
             if result:
                 result["call_no"] = call_no
