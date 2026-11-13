@@ -963,7 +963,14 @@ def build_fetchers() -> list[tuple[str, callable]]:
                 ),
             )
         )
-    return fetchers
+    seen: set[str] = set()
+    uniq: list[tuple[str, object]] = []
+    for sid, fn in fetchers:
+        if sid in seen:
+            continue
+        seen.add(sid)
+        uniq.append((sid, fn))
+    return uniq
 
 # ---------------------------------------------------------------- 分级与参与方式
 #
