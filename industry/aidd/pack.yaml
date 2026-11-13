@@ -9,6 +9,6 @@ edition:
 
 # 与 industry/aidd/scoring.yaml 的 thresholds 保持一致（校验器会核对）
 tiers:
-  T1: 46
-  T1_5: 54
-  T2: 56
+  T1: 36
+  T1_5: 44
+  T2: 46

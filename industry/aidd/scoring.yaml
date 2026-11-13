@@ -22,10 +22,10 @@ weights:
   dataset_benchmark:  {sig: 2, nov: 3, cred: 2, reson: 1, act: 2}
 
 thresholds:
-  primary: 46
-  rank: 54
-  broad: 56
-  search: 62
-  social: 64
+  primary: 36
+  rank: 44
+  broad: 46
+  search: 50
+  social: 52
 
 understand_floor: 40
