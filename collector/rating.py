@@ -30,7 +30,23 @@ from .identity import item_identity
 
 AXES = ("sig", "nov", "cred", "reson", "act")
 ROOT = Path(__file__).parent.parent
-SCORING_PATH = ROOT / "config" / "scoring.yaml"
+def _scoring_path() -> Path:
+    """行业包优先：industry/<pack>/scoring.yaml 存在就用它。
+
+    权重与门槛是按行业调的（AIDD 有 clinical_data / pipeline_progress 这类
+    itype），只读全局那份会在算分时 KeyError，被记成「失败」。
+    """
+    import os
+
+    pack = (os.environ.get("RADAR_PACK") or "").strip()
+    if pack:
+        cand = ROOT / "industry" / pack / "scoring.yaml"
+        if cand.is_file():
+            return cand
+    return ROOT / "config" / "scoring.yaml"
+
+
+SCORING_PATH = _scoring_path()
 PROMPT_DIR = ROOT / "config" / "prompts"
 SITE_NAME = "Z-Bit"
 
