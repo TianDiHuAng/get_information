@@ -13,15 +13,23 @@ from collector import mcp, store
 from collector.model import Item
 
 
+def _iso(days_ago: int = 0, hour: int = 8) -> str:
+    """相对今天生成时间，别写死日期（跨天会被 scope 判为过期）。"""
+    from datetime import datetime, timedelta
+    return (datetime.now().astimezone() - timedelta(days=days_ago)).replace(
+        hour=hour, minute=0, second=0, microsecond=0).isoformat()
+
+
+
 @pytest.fixture(autouse=True)
 def seeded(tmpdb):
     items = [
         Item(source="anthropic", title="Anthropic 发布 Claude Fable 5.2",
              url="https://a/1", layer="primary", summary="官方公告，价格下调",
-             published="2026-11-11T08:00:00+08:00"),
+             published=_iso(0, 8)),
         Item(source="hackernews", title="Fable 5.2 登顶榜单",
              url="https://a/2", layer="rank", summary="190 条评论",
-             published="2026-11-11T09:00:00+08:00"),
+             published=_iso(0, 8)),
     ]
     for score, it in zip((90, 85), items):
         it.extra["attention"] = {"available": True, "score": score, "itype": "model_release",
@@ -115,8 +123,8 @@ def test_serve_round_trip():
 
 def test_daily_report_tool(tmp_path, monkeypatch):
     monkeypatch.setattr(mcp, "DATA", tmp_path)
-    (tmp_path / "digest-2026-11-10.md").write_text("# 日报\n\n- 一条新闻\n", encoding="utf-8")
-    text = mcp.call_tool(mcp.tool_names()["daily"], {"date": "2026-11-10"})
+    (tmp_path / f"digest-{_iso(0)[:10]}.md").write_text("# 日报\n\n- 一条新闻\n", encoding="utf-8")
+    text = mcp.call_tool(mcp.tool_names()["daily"], {"date": _iso(0)[:10]})
     data = json.loads(text)
     assert data["kind"] == "daily" and "一条新闻" in data["markdown"]
 
