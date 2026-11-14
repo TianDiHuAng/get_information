@@ -26,3 +26,13 @@ feeds:
   - {id: pubmed_aidd_dl, name: "AI 药物发现（PubMed）", url: "%28drug%20discovery%5BTitle%2FAbstract%5D%20OR%20%22drug%20design%22%5BTitle%2FAbstract%5D%29%20AND%20%28machine%20learning%5BTitle%2FAbstract%5D%20OR%20deep%20learning%5BTitle%2FAbstract%5D%29%20AND%20review%5Bpt%5D", region: overseas, layer: primary, limit: 12, proxy: false}
   - {id: pubmed_aidd_llm, name: "LLM × 生物医药（PubMed）", url: "%28%22large%20language%20model%22%5BTitle%2FAbstract%5D%20OR%20%22foundation%20model%22%5BTitle%2FAbstract%5D%29%20AND%20%28drug%5BTitle%2FAbstract%5D%20OR%20protein%5BTitle%2FAbstract%5D%29", region: overseas, layer: primary, limit: 12, proxy: false}
   - {id: pubmed_aidd_design, name: "生成式分子/蛋白设计（PubMed）", url: "%28generative%5BTitle%2FAbstract%5D%29%20AND%20%28molecule%5BTitle%2FAbstract%5D%20OR%20%22protein%20design%22%5BTitle%2FAbstract%5D%29%20AND%20review%5Bpt%5D", region: overseas, layer: primary, limit: 12, proxy: false}
+
+  # —— 补充源（探针测通，2026-11-14） ——
+  - {id: medrxiv, name: "medRxiv 预印本", url: "https://connect.medrxiv.org/medrxiv_xml.php?subject=all", region: overseas, layer: primary, limit: 12, proxy: true}
+  - {id: natmachintell, name: "Nature Machine Intelligence", url: "https://www.nature.com/natmachintell.rss", region: overseas, layer: primary, limit: 8, proxy: true}
+  - {id: nchembio, name: "Nature Chemical Biology", url: "https://www.nature.com/nchembio.rss", region: overseas, layer: primary, limit: 8, proxy: true}
+  - {id: natcomms, name: "Nature Communications", url: "https://www.nature.com/ncomms.rss", region: overseas, layer: broad, limit: 8, proxy: true}
+  - {id: reddit_drugdisc, name: "Reddit r/drugdiscovery", url: "https://www.reddit.com/r/drugdiscovery/.rss", region: overseas, layer: social, limit: 10, proxy: true}
+  - {id: reddit_bioinfo, name: "Reddit r/bioinformatics", url: "https://www.reddit.com/r/bioinformatics/.rss", region: overseas, layer: social, limit: 10, proxy: true}
+  - {id: biotechniques, name: "BioTechniques", url: "https://www.biotechniques.com/feed/", region: overseas, layer: broad, limit: 8, proxy: true}
+  - {id: drugtimes, name: "药渡头条", url: "https://www.drugtimes.cn/feed", region: domestic, layer: broad, limit: 10, proxy: false}
