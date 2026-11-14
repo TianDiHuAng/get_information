@@ -36,3 +36,5 @@ feeds:
   - {id: reddit_bioinfo, name: "Reddit r/bioinformatics", url: "https://www.reddit.com/r/bioinformatics/.rss", region: overseas, layer: social, limit: 10, proxy: true}
   - {id: biotechniques, name: "BioTechniques", url: "https://www.biotechniques.com/feed/", region: overseas, layer: broad, limit: 8, proxy: true}
   - {id: drugtimes, name: "药渡头条", url: "https://www.drugtimes.cn/feed", region: domestic, layer: broad, limit: 10, proxy: false}
+  - {id: pubmed_jcim, name: "JCIM 计算药物化学（PubMed）", url: "%22J%20Chem%20Inf%20Model%22%5Bta%5D%20AND%20%28machine%20learning%5BTitle%2FAbstract%5D%20OR%20deep%20learning%5BTitle%2FAbstract%5D%20OR%20%22artificial%20intelligence%22%5BTitle%2FAbstract%5D%29", region: overseas, layer: primary, limit: 12, proxy: true}
+  - {id: pubmed_jmedchem, name: "J. Med. Chem.（PubMed）", url: "%22J%20Med%20Chem%22%5Bta%5D%20AND%20%28%22artificial%20intelligence%22%5BTitle%2FAbstract%5D%20OR%20%22machine%20learning%5BTitle%2FAbstract%5D%22%20OR%20%22deep%20learning%5BTitle%2FAbstract%5D%22%29", region: overseas, layer: primary, limit: 12, proxy: true}
