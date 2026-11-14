@@ -361,7 +361,7 @@ def _daily_scheduler() -> None:
                 log.parent.mkdir(parents=True, exist_ok=True)
                 with open(log, "a", encoding="utf-8") as fh:
                     fh.write(f"[{now:%Y-%m-%d %H:%M}] 定时触发\n")
-                    subprocess.run([sys.executable, "run.py", "--no-mail", "--dry-push"],
+                    subprocess.run([sys.executable, "run.py", "--dry-push"],
                                    cwd=str(Path(__file__).parent), stdout=fh,
                                    stderr=subprocess.STDOUT, timeout=7200)
                     subprocess.run([sys.executable, "tools/build_sites.py", "--site", "site",
@@ -378,7 +378,7 @@ def _daily_scheduler() -> None:
                         "RADAR_SITE": "site/aidd",
                     })
                     fh.write(f"[{datetime.now():%Y-%m-%d %H:%M}] AIDD 开始\n")
-                    subprocess.run([sys.executable, "run.py", "--no-mail", "--dry-push"],
+                    subprocess.run([sys.executable, "run.py", "--dry-push"],
                                    cwd=str(Path(__file__).parent), env=env_aidd, stdout=fh,
                                    stderr=subprocess.STDOUT, timeout=7200)
                     subprocess.run([sys.executable, "tools/build_sites.py", "--site", "site/aidd",

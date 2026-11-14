@@ -5,7 +5,7 @@
 # 这三类文件都是渲染时顺手生成的，成本接近零。
 
 # 站点根地址（写进 RSS 的 <link> 与 llms.txt）。换域名时改这里。
-base_url: "http://localhost:8123"
+base_url: "http://10.4.2.231:8124"
 
 # 每个 feed 最多多少条
 feed_items: 50
