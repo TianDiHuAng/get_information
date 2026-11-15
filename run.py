@@ -83,7 +83,8 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True,
         from collector import valves
 
         push_on = valves.enabled("push")
-        send_mail_enabled = send_mail_enabled and push_on
+        # 邮件与推送是两条渠道：RADAR_PUSH 只管 Telegram/Webhook，
+        # 不该把邮件一起关掉（以前的写法让默认配置下邮件永远发不出去）。
         dry_push = dry_push or not push_on
         print(f"安全阀: {valves.describe()}")
     except Exception:
@@ -342,7 +343,7 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True,
             if not path.is_file():
                 continue
             if not send_mail_enabled:
-                print(f"      {label}: 已生成（--no-mail，未发送）")
+                print(f"      {label}: 已生成（邮件未启用，未发送）")
                 continue
             subject = f"[Z-Bit] {label} · {info['range'][0]} ~ {info['range'][1]}"
             print(f"      {label}推送: {pushmail.send_text(subject, path.read_text(encoding='utf-8'))}")
@@ -382,7 +383,7 @@ def main(skip_rate: bool = False, send_mail_enabled: bool = True,
         except Exception as e:  # 推送失败不影响采集
             print(f"      推送失败: {type(e).__name__}: {e}")
     else:
-        print("      推送: 已跳过（--no-mail）")
+        print("      推送: 已跳过（邮件未启用或 --no-mail）")
 
     try:
         print(f"      周报: {papers_weekly()}")
