@@ -71,16 +71,25 @@ def _efetch(pmids: list[str], source_id: str = "pubmed") -> list[Item]:
                 parts.append(f"{label}: {body}" if label else body)
         summary = " ".join(parts)
 
-        year = (art.findtext(".//PubDate/Year")
-                or art.findtext(".//ArticleDate/Year") or "").strip()
-        month = (art.findtext(".//PubDate/Month")
-                 or art.findtext(".//ArticleDate/Month") or "01").strip()
-        day = (art.findtext(".//PubDate/Day")
-               or art.findtext(".//ArticleDate/Day") or "01").strip()
+        # 先取电子出版日期（ArticleDate），再退回期刊期号日期（PubDate）。
+        # 顺序反了会拿到"提前出版"的未来日期 —— 有的文章期号标到 2027 年，
+        # 那条会永远排在信息流最前面。
+        year = (art.findtext(".//ArticleDate/Year")
+                or art.findtext(".//PubDate/Year") or "").strip()
+        month = (art.findtext(".//ArticleDate/Month")
+                 or art.findtext(".//PubDate/Month") or "01").strip()
+        day = (art.findtext(".//ArticleDate/Day")
+               or art.findtext(".//PubDate/Day") or "01").strip()
         months = {"Jan": "01", "Feb": "02", "Mar": "03", "Apr": "04", "May": "05", "Jun": "06",
                   "Jul": "07", "Aug": "08", "Sep": "09", "Oct": "10", "Nov": "11", "Dec": "12"}
         month = months.get(month, month.zfill(2))
         published = f"{year}-{month}-{day.zfill(2)}" if year else ""
+        # 兜底：任何未来日期压到今天（PubMed 允许期号日期在未来）
+        if published:
+            from datetime import date
+
+            if published[:10] > date.today().isoformat():
+                published = date.today().isoformat()
 
         journal = art.findtext(".//Journal/Title") or ""
         rows.append(Item(
