@@ -20,7 +20,7 @@ from urllib.parse import quote, urlparse
 import yaml
 from bs4 import BeautifulSoup
 
-from . import xfeed
+from . import xfeed, xfeedai
 from . import apify_x
 from . import agentcases
 from . import extract as extract_mod
@@ -744,6 +744,7 @@ REGISTRY: list[dict] = [
     {"id": "smolai", "name": "smol.ai AINews", "layer": "primary", "access": "直连", "status": "ok", "enabled": True},
     {"id": "thebatch", "name": "The Batch", "layer": "primary", "access": "直连", "status": "ok", "enabled": True},
     {"id": "hf_papers", "name": "HF Daily Papers", "layer": "primary", "access": "代理", "status": "ok", "enabled": True},
+    {"id": "xfeedai", "name": "XFeed AI 创作者", "layer": "rank", "access": "直连", "status": "ok", "enabled": True},
     {"id": "hackernews", "name": "Hacker News", "layer": "rank", "access": "直连", "status": "ok", "enabled": True},
     {"id": "github", "name": "GitHub 新项目", "layer": "rank", "access": "直连", "status": "ok", "enabled": True},
     {"id": "bilibili", "name": "B站科技区", "layer": "rank", "access": "直连", "status": "ok", "enabled": True},
@@ -916,6 +917,10 @@ def build_fetchers() -> list[tuple[str, callable]]:
             _q = urllib.parse.unquote(_feed_field(sid))
             fetchers.append((sid, (lambda u=_q, i=sid: _pm.pubmed(
                 u, limit=12, source_id=i))))
+        elif sid == "xfeedai":
+            from . import xfeedai as _xf
+
+            fetchers.append((sid, (lambda: _xf.fetch(days=3, limit=40))))
         elif sid == "hf_papers":
             fetchers.append((sid, hf_papers))
         elif sid == "hackernews":
