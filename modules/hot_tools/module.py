@@ -18,7 +18,7 @@ from collector import theme, xfeedai
 NAME = "hot_tools"
 TITLE = "热门工具"
 HREF = "/hot-tools.html"
-SECTION = "模型"
+SECTION = "X 生态"
 ICON = "grid"
 
 CSS = """

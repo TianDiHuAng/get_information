@@ -17,7 +17,7 @@ from collector import theme, xfeedai
 NAME = "authors"
 TITLE = "作者精选"
 HREF = "/authors.html"
-SECTION = "更多"
+SECTION = "X 生态"
 ICON = "user"
 
 CSS = """

@@ -18,7 +18,7 @@ from collector import theme, xfeedai
 NAME = "learn"
 TITLE = "工具实操"
 HREF = "/learn.html"
-SECTION = "更多"
+SECTION = "X 生态"
 ICON = "book"
 
 CSS = """

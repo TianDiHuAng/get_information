@@ -65,6 +65,7 @@ SECTIONS = (
         ("/monthly.html", "月报", "doc"),
         ("/timeline.html", "时间线", "clock"),
     )),
+    ("X 生态", ()),
     ("更多", (
         ("/agent.html", "Agent 接入", "plug"),
         ("/about.html", "关于", "heart"),
@@ -500,6 +501,8 @@ def nav_html(active: str = "/") -> str:
             on = ' class="item on"' if href == active else ' class="item"'
             links.append(f'<a{on} href="{href}"><span class="ico">{icon(name)}</span>'
                          f'<span class="lbl">{label}</span></a>')
+        if not links:
+            continue
         blocks.append(f'<div class="grp"><div class="sec-title">{title}</div>{"".join(links)}</div>')
     foot = ('<div class="foot">'
             '<a class="gh" href="https://github.com/TianDiHuAng/get_information" target="_blank" rel="noopener">'
