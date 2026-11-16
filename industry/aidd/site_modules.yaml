@@ -1,0 +1,3 @@
+﻿# AIDD 只保留模型榜（它有自己的数据文件）；AI 工具类模块不出现
+modules:
+  - name: leaderboard

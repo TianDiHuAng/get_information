@@ -42,10 +42,26 @@ MODULES_DIR = ROOT / "modules"
 MANIFEST = ROOT / "site_modules.yaml"
 
 
+def _manifest_path() -> Path:
+    """行业包优先：industry/<pack>/site_modules.yaml 存在就用它。
+
+    不然 AIDD 站会把 AI 的工具页（热门工具/作者精选/工具实操）也生成一遍 ——
+    那些数据来自 XFeed 的 AI 创作者生态，和制药读者完全无关。
+    """
+    import os
+
+    pack = (os.environ.get("RADAR_PACK") or "").strip()
+    if pack:
+        cand = ROOT / "industry" / pack / "site_modules.yaml"
+        if cand.is_file():
+            return cand
+    return MANIFEST
+
+
 def manifest() -> list[str]:
     """清单里列的模块名（按顺序）。没清单就是空 —— 框架本身不带模块。"""
     try:
-        data = yaml.safe_load(MANIFEST.read_text(encoding="utf-8")) or {}
+        data = yaml.safe_load(_manifest_path().read_text(encoding="utf-8")) or {}
     except Exception:
         return []
     names = []

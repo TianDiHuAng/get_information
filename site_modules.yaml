@@ -7,3 +7,5 @@ modules:
   - name: leaderboard
   - name: free_tokens
   - name: hot_tools
+  - name: authors
+  - name: learn

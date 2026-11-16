@@ -105,3 +105,51 @@ def hot_tools(days: int = 7, limit: int = 12) -> list[dict[str, Any]]:
         })
     rows.sort(key=lambda x: -x["total"])
     return rows[:limit]
+
+
+def authors() -> list[dict[str, Any]]:
+    """精选作者名单（16 位，逐条审阅过，不按曝光排名）。"""
+    data = _get_json("https://xfeed.ai/author-manifest.json", timeout=60)
+    return list(data.get("authors") or [])
+
+
+def tool_guides(min_practice: int = 3, limit: int = 12) -> list[dict[str, Any]]:
+    """工具实操手册：每个工具的 practice（能做什么）与 limitations（局限）。
+
+    insights.json 的分组是 beginner / practice / limitations / discussion，
+    其中 practice 与 limitations 对读者最有用 —— 一个讲怎么做，一个讲坑在哪。
+    """
+    data = _get_json(INSIGHTS_URL, timeout=60)
+    tools = data.get("tools") or {}
+    out = []
+    for key, val in tools.items():
+        groups = {g.get("key"): g for g in (val.get("groups") or [])}
+        practice = (groups.get("practice") or {}).get("posts") or []
+        limits = (groups.get("limitations") or {}).get("posts") or []
+        if len(practice) < min_practice:
+            continue
+        out.append({
+            "key": key,
+            "total": int(val.get("total") or 0),
+            "practice": practice,
+            "limitations": limits,
+        })
+    out.sort(key=lambda x: -x["total"])
+    return out[:limit]
+
+
+def avatar_bytes(url: str, timeout: int = 20) -> bytes:
+    """取创作者头像（相对路径补域名）。"""
+    if not url:
+        return b""
+    if url.startswith("/"):
+        url = "https://xfeed.ai" + url
+    try:
+        import requests
+
+        r = requests.get(url, headers=_HEADERS, timeout=timeout)
+        if r.status_code == 200 and 200 < len(r.content) < 400_000:
+            return r.content
+    except Exception:
+        pass
+    return b""
