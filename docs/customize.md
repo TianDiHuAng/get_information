@@ -19,6 +19,8 @@ python tools/customize.py check
 
 ---
 
+> 加新信源前先看 [feed-pitfalls.md](feed-pitfalls.md)：里面记了哪些站拿不到、为什么、怎么绕。
+
 ## 0. 快速开始
 
 ```bash

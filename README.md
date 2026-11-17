@@ -6,6 +6,8 @@
 每天自动采集 AI 前沿信息（一手博客 / 论文 / X / Telegram / 国内科技媒体 / 羊毛福利），
 去重、判断、打分后生成一个本地可视化站点 + 每日邮件日报，每周一份 arXiv（AI 制药）周报。
 
+> 加新信源前先看 [feed-pitfalls.md](feed-pitfalls.md)：里面记了哪些站拿不到、为什么、怎么绕。
+
 ## 功能
 
 - **多源采集**：28 个源（实验室博客、arXiv、HF Papers、HN、GitHub、X、Telegram、微博、知乎、36氪、IT之家…）
