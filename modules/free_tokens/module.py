@@ -54,7 +54,7 @@ def _collect(day: str, days: int) -> list[dict[str, Any]]:
         except Exception:
             batch = []
         for it in batch:
-            if not (it.get("source") in ("deals", "openrouter_free") or it.get("deal")):
+            if not (it.get("source") in ("deals", "openrouter_free", "deepflood") or it.get("deal")):
                 continue
             # 证据校验：deals 源也会发新闻（财报/期货/政策），
             # 没有价格或领取证据的一律不算羊毛。

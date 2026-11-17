@@ -50,3 +50,11 @@ feeds:
 
   - {id: gn_tencent_ai, name: "腾讯 AI（Google 新闻）", url: "https://news.google.com/rss/search?q=%E8%85%BE%E8%AE%AF%20AI%20%E6%B7%B7%E5%85%83&hl=zh-CN&gl=CN&ceid=CN:zh-Hans", region: domestic, layer: search, limit: 12, proxy: true}
   - {id: gn_tencent_med, name: "腾讯 智慧医疗（Google 新闻）", url: "https://news.google.com/rss/search?q=%E8%85%BE%E8%AE%AF%20%E6%99%BA%E6%85%A7%E5%8C%BB%E7%96%97&hl=zh-CN&gl=CN&ceid=CN:zh-Hans", region: domestic, layer: search, limit: 12, proxy: true}
+
+  # —— 从 freebie-radar 的源清单里挑的（2026-11-17 探针测通） ——
+  - {id: deepflood, name: "DeepFlood · AI 与实用资源", url: "https://www.deepflood.com/rss.xml", region: domestic, layer: broad, limit: 12, proxy: false}
+  - {id: solidot, name: "Solidot · 极客科技", url: "https://www.solidot.org/index.rss", region: overseas, layer: broad, limit: 10, proxy: true}
+  - {id: ruanyifeng, name: "阮一峰 · 科技爱好者周刊", url: "https://www.ruanyifeng.com/blog/atom.xml", region: overseas, layer: primary, limit: 5, proxy: true}
+  - {id: leiphone, name: "雷锋网 · AI 与科技", url: "https://www.leiphone.com/feed", region: domestic, layer: broad, limit: 10, proxy: false}
+  - {id: appinn, name: "小众软件", url: "https://www.appinn.com/feed/", region: domestic, layer: broad, limit: 10, proxy: false}
+  - {id: gnews_tech, name: "Google 新闻 · 科技头条", url: "https://news.google.com/rss/headlines/section/topic/TECHNOLOGY?hl=zh-CN&gl=CN&ceid=CN:zh-Hans", region: overseas, layer: search, limit: 12, proxy: true}
