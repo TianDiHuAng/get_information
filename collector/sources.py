@@ -744,6 +744,7 @@ REGISTRY: list[dict] = [
     {"id": "smolai", "name": "smol.ai AINews", "layer": "primary", "access": "直连", "status": "ok", "enabled": True},
     {"id": "thebatch", "name": "The Batch", "layer": "primary", "access": "直连", "status": "ok", "enabled": True},
     {"id": "hf_papers", "name": "HF Daily Papers", "layer": "primary", "access": "代理", "status": "ok", "enabled": True},
+    {"id": "openrouter_free", "name": "OpenRouter 免费模型", "layer": "rank", "access": "代理", "status": "ok", "enabled": True},
     {"id": "xfeedai", "name": "XFeed AI 创作者", "layer": "rank", "access": "直连", "status": "ok", "enabled": True},
     {"id": "hackernews", "name": "Hacker News", "layer": "rank", "access": "直连", "status": "ok", "enabled": True},
     {"id": "github", "name": "GitHub 新项目", "layer": "rank", "access": "直连", "status": "ok", "enabled": True},
@@ -917,6 +918,10 @@ def build_fetchers() -> list[tuple[str, callable]]:
             _q = urllib.parse.unquote(_feed_field(sid))
             fetchers.append((sid, (lambda u=_q, i=sid: _pm.pubmed(
                 u, limit=12, source_id=i))))
+        elif sid == "openrouter_free":
+            from . import openrouter as _or
+
+            fetchers.append((sid, (lambda: _or.fetch(days=90, limit=20))))
         elif sid == "xfeedai":
             from . import xfeedai as _xf
 
