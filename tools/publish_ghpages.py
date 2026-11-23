@@ -52,6 +52,10 @@ def main() -> None:
 
     patched = 0
     for page in root.rglob("*.html"):
+        # 主站加工时跳过 aidd/ 子目录——它由单独的 --aidd-mode 加工，
+        # 否则会用主站 base 二次改写已正确的 AIDD 路径（logo 叠成 /aidd/get_information/）
+        if not args.aidd_mode and "aidd" in page.relative_to(root).parts:
+            continue
         text = page.read_text(encoding="utf-8")
         original = text
 
@@ -70,6 +74,8 @@ def main() -> None:
 
         if not args.keep_admin:
             text = text.replace(f'href="{base}/admin.html"', f'href="{base}/about.html"')
+            # 链接已指向 about，文字「后台」改成「说明」，避免名不副实
+            text = text.replace('<span class="lbl">后台</span>', '<span class="lbl">说明</span>')
 
         # 去掉模板自带的 switcher（旧注入的游离 div 也一并删）——统一交给 JS 渲染
         text = re.sub(r'<div class="switcher"[^>]*>.*?</div>', '', text, flags=re.S)
