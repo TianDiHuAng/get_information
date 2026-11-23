@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>Z-Bit · industry_event</title>
+<link>http://10.4.2.231:8124/</link>
+<description>按结构化分类过滤：industry_event</description>
+<language>zh-CN</language>
+<lastBuildDate>Mon, 23 Nov 2026 07:09:05 +0000</lastBuildDate>
+<atom:link href="http://10.4.2.231:8124/feed/category/industry_event.xml" rel="self" type="application/rss+xml"/>
+<item>
+<title>OpenAI 自曝模型失控险情：最强 AI 曾突破网络封锁，紧急停训 11 天</title>
+<link>https://www.ithome.com/1/029/145.htm</link>
+<guid isPermaLink="true">https://www.ithome.com/1/029/145.htm</guid>
+<pubDate>Thu, 19 Nov 2026 00:09:16 +0000</pubDate>
+<description>IT之家 11 月 19 日消息，OpenAI 今天（11 月 18 日）发布题为《管理前沿 AI 风险：从训练到部署》的安全政策说明， 首次系统披露研发、内部使用到公开发布阶段，如何在高能力模型的全生命周期中管控风险。 IT之家援引博文介绍，OpenAI 称由于前沿模型的能力正快速增强，因此理解、对齐和保障模型的能力必须“始终领先一步”。公司维持引入“安全</description>
+<category>industry_event</category>
+<source>ithome</source>
+</item>
+<item>
+<title>美国最近接连发生的技术故障源自为修复 AI 发现的漏洞</title>
+<link>https://www.solidot.org/story?sid=85918</link>
+<guid isPermaLink="true">https://www.solidot.org/story?sid=85918</guid>
+<pubDate>Wed, 18 Nov 2026 07:19:35 +0000</pubDate>
+<description>过去几天美国经历了一系列技术故障，全国航班停飞、银行在线服务中断，甚至 NSA 的一个机密通信网络瘫痪。华尔街高管和 NSA 告诉美国国会议员，一系列技术故障的起因是试图修复 AI 发现的系统漏洞。AI 模型在系统中识别了大量漏洞，为尽快修复漏洞而一次性推送了大量补丁，超出了系统的设计承载能力。摩根大通周一将其银行服务中断归咎于软件相关 bug，NSA 周二</description>
+<category>industry_event</category>
+<source>solidot</source>
+</item>
+<item>
+<title>Palo Alto Networks斥资45亿美元收购AI初创公司</title>
+<link>https://siliconangle.com/2026/11/18/palo-alto-networks-bets-4-5b-on-ai-startup-applied-compute-as-earnings-top-forecasts</link>
+<guid isPermaLink="true">https://siliconangle.com/2026/11/18/palo-alto-networks-bets-4-5b-on-ai-startup-applied-compute-as-earnings-top-forecasts</guid>
+<pubDate>Wed, 18 Nov 2026 22:13:03 +0000</pubDate>
+<description>网络安全公司Palo Alto Networks宣布，已同意收购人工智能模型训练与推理初创公司Applied Compute。</description>
+<category>industry_event</category>
+<source>siliconangle</source>
+</item>
+<item>
+<title>🚨Nvidia刚刚停止向中国发运AI芯片。</title>
+<link>https://x.com/minchoi/status/2123061382543258053</link>
+<guid isPermaLink="true">https://x.com/minchoi/status/2123061382543258053</guid>
+<pubDate>Wed, 18 Nov 2026 14:30:52 +0000</pubDate>
+<description>🚨Nvidia刚刚停止向中国发运AI芯片。 据Reuters报道，Nvidia临时CEO已确认此事，相关芯片背后的特别许可协议如今也存疑。</description>
+<category>industry_event</category>
+<source>x</source>
+</item>
+<item>
+<title>据报道Anthropic IPO定价为每股83美元，高于预期区间</title>
+<link>https://techcrunch.com/2026/11/18/anthropic-reportedly-prices-ipo-at-83-a-share-above-projected-range</link>
+<guid isPermaLink="true">https://techcrunch.com/2026/11/18/anthropic-reportedly-prices-ipo-at-83-a-share-above-projected-range</guid>
+<pubDate>Wed, 18 Nov 2026 22:11:15 +0000</pubDate>
+<description>据报道，此次备受期待的IPO按完全稀释计算，将公司估值定为1.5万亿美元。</description>
+<category>industry_event</category>
+<source>techcrunch_ai</source>
+</item>
+</channel>
+</rss>

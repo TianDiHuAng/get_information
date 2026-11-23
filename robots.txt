@@ -1,0 +1,8 @@
+# Z-Bit
+User-agent: *
+Allow: /
+# 后台与接口的写入口不抓
+Disallow: /admin
+Disallow: /api/feedback
+
+Sitemap: http://10.4.2.231:8124/sitemap.xml

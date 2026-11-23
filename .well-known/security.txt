@@ -1,0 +1,4 @@
+Contact: mailto:security@example.com
+Expires: 2027-01-01T00:00:00Z
+Preferred-Languages: zh, en
+# 上线前把 Contact 换成你真实的联系方式

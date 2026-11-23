@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>Z-Bit · research_paper</title>
+<link>http://10.4.2.231:8124/</link>
+<description>按结构化分类过滤：research_paper</description>
+<language>zh-CN</language>
+<lastBuildDate>Mon, 23 Nov 2026 07:09:05 +0000</lastBuildDate>
+<atom:link href="http://10.4.2.231:8124/feed/category/research_paper.xml" rel="self" type="application/rss+xml"/>
+<item>
+<title>OpenAI 的 GPT-6.2 Astra 在 AMD GPU IP 上实现最高 14% 的 PPA 提升 OpenAI 的 Tibo 表</title>
+<link>https://t.me/AI_News_CN/45894</link>
+<guid isPermaLink="true">https://t.me/AI_News_CN/45894</guid>
+<pubDate>Wed, 18 Nov 2026 22:21:01 +0000</pubDate>
+<description>OpenAI 的 GPT-6.2 Astra 在 AMD GPU IP 上实现最高 14% 的 PPA 提升 OpenAI 的 Tibo 表示 GPT-6.2 Astra 在困难任务上表现出色，并引用团队成果：在不到五个月内于 AMD 旗舰 GPU IP 上实现最高 14% 的 PPA 提升，且首款自研推理芯片 Jalapeño 的改进已在真实硅片上验证。 内容详情 · 原文链接 via AI情报局 | 全球 AI 动态简报 - Tel</description>
+<category>research_paper</category>
+<source>telegram</source>
+</item>
+<item>
+<title>审计试验中，AI 代理提出的问题优于 KPMG 会计师</title>
+<link>https://europeanbusinessmagazine.com/ai-agents-better-questions-kpmg</link>
+<guid isPermaLink="true">https://europeanbusinessmagazine.com/ai-agents-better-questions-kpmg</guid>
+<pubDate>Wed, 18 Nov 2026 15:49:34 +0000</pubDate>
+<description>153 条评论</description>
+<category>research_paper</category>
+<source>hackernews</source>
+</item>
+</channel>
+</rss>

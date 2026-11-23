@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>Z-Bit · model_release</title>
+<link>http://10.4.2.231:8124/</link>
+<description>按结构化分类过滤：model_release</description>
+<language>zh-CN</language>
+<lastBuildDate>Mon, 23 Nov 2026 07:09:05 +0000</lastBuildDate>
+<atom:link href="http://10.4.2.231:8124/feed/category/model_release.xml" rel="self" type="application/rss+xml"/>
+<item>
+<title>推出 Gemini 4 Neon（3 篇报道）</title>
+<link>https://deepmind.google/blog/introducing-gemini-4-neon</link>
+<guid isPermaLink="true">https://deepmind.google/blog/introducing-gemini-4-neon</guid>
+<pubDate>Wed, 18 Nov 2026 21:35:43 +0000</pubDate>
+<description></description>
+<category>model_release</category>
+<source>deepmind_blog</source>
+</item>
+<item>
+<title>谷歌发布 Gemini 4 Neon：独立评测排第三，价格不到 GPT、Claude 旗舰的四成，Pro 和 Ultra 订阅用户今天起能用</title>
+<link>https://x.com/dotey/status/2123214459703267673</link>
+<guid isPermaLink="true">https://x.com/dotey/status/2123214459703267673</guid>
+<pubDate>Thu, 19 Nov 2026 00:39:09 +0000</pubDate>
+<description>谷歌发布 Gemini 4 Neon：独立评测排第三，价格不到 GPT、Claude 旗舰的四成，Pro 和 Ultra 订阅用户今天起能用 谷歌 11 月 18 日发布大模型 Gemini 4 Neon。在独立评测机构 Artificial Analysis 的综合智能指数上，Neon 得 61 分，总排名第三，只排在 OpenAI 的 GPT-6.2 Astra 和 Anthropic 的 Claude Fable 5.2 之后，而它的价格不到这两个旗舰模型的四成。订阅了 Google AI Pro 或 Ultra 的用户，今天起可以在 Gemin</description>
+<category>model_release</category>
+<source>x</source>
+</item>
+<item>
+<title>七款新模型，兼具可扩展性与性价比</title>
+<link>https://microsoft.ai/news/microsoft-ignite-2026</link>
+<guid isPermaLink="true">https://microsoft.ai/news/microsoft-ignite-2026</guid>
+<pubDate>Wed, 18 Nov 2026 16:08:24 +0000</pubDate>
+<description>304 条评论</description>
+<category>model_release</category>
+<source>hackernews</source>
+</item>
+<item>
+<title>推出 GPT-6.2 Astra 和 Sol（9 篇报道）</title>
+<link>https://openai.com/index/introducing-gpt-6-2-astra-sol</link>
+<guid isPermaLink="true">https://openai.com/index/introducing-gpt-6-2-astra-sol</guid>
+<pubDate>Tue, 17 Nov 2026 17:45:00 +0000</pubDate>
+<description>GPT-6.2 Astra 和 Sol 在 ChatGPT Work、Codex 和 API 中提升了专业输出、编程和计算机操作能力，并以更低成本提高效率。</description>
+<category>model_release</category>
+<source>openai_news</source>
+</item>
+</channel>
+</rss>

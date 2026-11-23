@@ -1,0 +1,81 @@
+{
+ "openapi": "3.1.0",
+ "info": {
+  "title": "Z-Bit 公开接口",
+  "version": "1.0",
+  "description": "每天一份 AI 情报日报：五轴评分、事件聚簇、规则编排"
+ },
+ "servers": [
+  {
+   "url": "http://10.4.2.231:8124"
+  }
+ ],
+ "paths": {
+  "/api/v1/latest.json": {
+   "get": {
+    "summary": "当天条目（含评分、结构化与事件归属）",
+    "parameters": [
+     {
+      "name": "limit",
+      "in": "query",
+      "schema": {
+       "type": "integer",
+       "default": 200
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "条目列表"
+     }
+    }
+   }
+  },
+  "/api/feedback": {
+   "post": {
+    "summary": "给一条内容打分（影响下一轮排序）",
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object",
+        "required": [
+         "url",
+         "kind"
+        ],
+        "properties": {
+         "url": {
+          "type": "string"
+         },
+         "kind": {
+          "type": "string",
+          "enum": [
+           "up",
+           "down"
+          ]
+         }
+        }
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "已记录"
+     }
+    }
+   }
+  },
+  "/api/prefs": {
+   "get": {
+    "summary": "当前学到的兴趣权重（调试用）",
+    "responses": {
+     "200": {
+      "description": "词 → 权重"
+     }
+    }
+   }
+  }
+ }
+}

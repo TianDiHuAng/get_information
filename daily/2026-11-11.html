@@ -1,0 +1,462 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>日报 · 2026-11-11</title><link rel="icon" href="/get_information/favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="192x192" href="/get_information/icon-192.png"><link rel="apple-touch-icon" href="/get_information/apple-icon.png"><link rel="manifest" href="/get_information/manifest.webmanifest"><meta name="theme-color" content="#faf9f6" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#13191c" media="(prefers-color-scheme: dark)"><meta property="og:type" content="website">
+<meta property="og:title" content="日报 · 2026-11-11">
+<meta property="og:description" content="&lt;a href=&quot;/daily.html&quot;&gt;← 全部日报&lt;/a&gt;">
+<meta property="og:image" content="http://10.4.2.231:8124/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://10.4.2.231:8124/og.png"><style>
+:root{
+  color-scheme:light;
+  --bg:#fbfaf8; --bg-sunk:#f4f2ee; --bg-muted:#efece6; --well:#f6f4f0;
+  --surface:#fff; --surface-2:#fdfcfa; --raised:#fff; --sidebar:#fff; --daybar:#f7f5f0;
+  --ink:#1b1a17; --ink-2:#3b3833; --ink-3:#6b665e; --ink-4:#9a948a;
+  --line:#eeeae2; --line-strong:#e2ddd2; --line-soft:#f3f0ea;
+  --accent:#5b5bd6; --accent-ink:#4a4ac4; --accent-soft:rgba(91,91,214,.09);
+  --accent-softer:rgba(91,91,214,.05); --accent-contrast:#fff;
+  --note:#526f72; --hot:#b3402a; --hot-soft:rgba(179,64,42,.08);
+  --amber:#b8873a; --amber-ink:#7c5a24; --amber-soft:rgba(184,135,58,.1); --ok:#2f7d5c;
+  --rank-1:#b3402a; --rank-2:#a3642f; --rank-3:#96702e; --rank-rest:#6b7684;
+  --shadow-card:0 1px 2px rgba(27,26,23,.03),0 18px 40px -28px rgba(27,26,23,.22);
+  --shadow-card-hover:0 2px 4px rgba(27,26,23,.04),0 26px 50px -30px rgba(27,26,23,.28);
+  --shadow-thumb:0 1px 2px rgba(28,39,51,.1),0 1px 1px rgba(28,39,51,.04);
+  --shadow-soft:0 4px 12px rgba(28,39,51,.06);
+  --r-mark:6px; --r-control:10px; --r-tile:14px; --r-card:20px; --r-tile:14px; --r-panel:20px; --r-sheet:24px;
+  --font-sans:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","HarmonyOS Sans SC","Microsoft YaHei",sans-serif;
+  --font-mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Monaco,Consolas,monospace;
+  --side-w:180px; --page-max-wide:max(1200px,calc(270dvh - 236px));
+}
+[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#13191c; --bg-sunk:#182024; --bg-muted:#202a2f;
+  --well:color-mix(in oklab,var(--bg-muted) 60%,transparent);
+  --surface:#1a2226; --surface-2:#1d272b; --raised:#202a2f; --sidebar:#161e21; --daybar:#182024;
+  --ink:#e7eceb; --ink-2:#d2dada; --ink-3:#a5b0b3; --ink-4:#89979d;
+  --line:rgba(255,255,255,.08); --line-strong:rgba(255,255,255,.12); --line-soft:rgba(255,255,255,.06);
+  --accent:#12ccd8; --accent-ink:#2ce2e8; --accent-soft:rgba(18,204,216,.12);
+  --accent-softer:rgba(18,204,216,.06); --accent-contrast:#000;
+  --note:#8fb8a8; --hot:#d86a52; --hot-soft:rgba(216,106,82,.12);
+  --amber:#d3b26a; --amber-ink:#d3b26a; --amber-soft:rgba(211,178,106,.12); --ok:#5fc79a;
+  --rank-1:#d86a52; --rank-2:#d18a5e; --rank-3:#d3b26a; --rank-rest:#7b869a;
+  --shadow-card:none; --shadow-card-hover:none; --shadow-thumb:0 1px 2px rgba(0,0,0,.45);
+  --shadow-soft:0 6px 18px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html{
+  -webkit-text-size-adjust:100%;text-rendering:optimizeLegibility;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  -webkit-tap-highlight-color:transparent;
+  /* 中英混排自动留 1/8 em：标题里“Meta在Muse”和“Meta 在 Muse”读起来才一致 */
+  text-autospace:normal;
+}
+input,textarea,code,pre,kbd,samp{text-autospace:no-autospace}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans);
+     font-size:15px;line-height:1.65}
+::selection{background:var(--selection)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:var(--r-mark)}
+button{cursor:pointer}
+button:disabled{cursor:default}
+img{max-width:100%}
+a{color:inherit;text-decoration:none}
+a:hover{color:var(--accent)}
+button{font-family:inherit}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.num{font-variant-numeric:tabular-nums}
+
+/* —— 外壳：侧栏 + 主列 —— */
+.shell{display:flex;min-height:100dvh}
+.main{min-width:0;flex:1;padding:0 0 72px}
+@media(min-width:700px){.main{padding:24px 20px 72px}}
+@media(min-width:941px){.main{padding:24px 28px 72px}}
+.page{margin:0 auto;width:100%;max-width:640px;padding:0 16px}
+@media(min-width:700px){.page{max-width:var(--page-max-wide);padding:0}}
+
+/* —— 侧栏 —— */
+.side{display:none}
+@media(min-width:700px){
+  .side{display:flex;position:sticky;top:0;height:100dvh;width:64px;flex:none;
+        flex-direction:column;align-items:center;gap:4px;border-right:1px solid var(--line);
+        background:var(--sidebar);padding:20px 6px 14px;overflow:auto;scrollbar-width:none}
+  .side::-webkit-scrollbar{display:none}
+  .side .brand{display:flex;align-items:center;justify-content:center;width:44px;height:44px;
+               margin-bottom:12px;color:var(--accent)}
+  .side .brand img{display:block;width:auto}
+  .side .brand.brand-text{font:800 20px/1 var(--font-sans);color:var(--ink)}
+  .side .brand .brand-full{display:none}
+  .side .brand .brand-dark{display:none}
+  .side .brand .brand-mark{height:32px}
+  .side .mark .full{display:none}
+  .side .mark .short{display:inline}
+  .side .sec-title{display:none}
+  .side .grp{display:flex;flex-direction:column;gap:4px;width:100%}
+  .side a.item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+               height:56px;border-radius:var(--r-control);font-size:11px;font-weight:500;
+               color:var(--ink-3);transition:background .15s,color .15s}
+  .side a.item span.lbl{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .side a.item.on{background:var(--accent-soft);color:var(--ink);font-weight:600}
+  .side a.item.on svg{color:var(--accent)}
+  .side .switcher{display:flex;gap:4px;width:100%;margin:0 0 10px;padding:3px;
+                 border-radius:999px;background:var(--well);justify-content:center}
+  .side .switcher a{flex:1;text-align:center;font-size:11px;padding:3px 0;border-radius:999px;color:var(--ink-3)}
+  .side .switcher a.on{background:var(--surface);color:var(--ink);font-weight:600;
+                        box-shadow:0 1px 2px rgba(28,39,51,.1)}
+  .side .foot{display:none}
+}
+@media(min-width:941px){
+  .side{width:var(--side-w);align-items:stretch;padding:24px 12px 14px}
+  .side .brand{justify-content:flex-start;width:auto;height:50px;padding:0 4px;
+               margin-bottom:16px;color:var(--ink)}
+  .side .brand{width:100%;height:auto;padding:0;margin:0 0 14px;gap:0;
+               justify-content:center}
+  .side .brand .brand-mark{display:none}
+  /* 按宽高比自适应：两条字标比例不同（Z-bit 3.4:1，Z-bit AIDD 6.2:1），
+     写死 height 会让宽的那条被 max-width 压小 */
+  .side .brand .brand-light{display:block;width:auto;height:auto;
+                            max-width:100%;max-height:30px}
+  .side .brand .brand-dark{display:none}
+  [data-theme="dark"] .side .brand .brand-light{display:none}
+  [data-theme="dark"] .side .brand .brand-dark{display:block;width:auto;height:auto;
+                                               max-width:100%;max-height:30px}
+  .side .mark .full{display:inline}
+  .side .mark .short{display:none}
+  .side .sec-title{display:block;padding:14px 10px 4px;font-size:11px;color:var(--ink-4)}
+  .side .grp{gap:4px}
+  .side a.item{flex-direction:row;align-items:center;justify-content:flex-start;gap:10px;
+               height:40px;padding:0 10px;font-size:14px;font-weight:500}
+  .side a.item span.ico{display:flex;width:22px;flex:none;justify-content:center}
+  .side a.item.on svg{color:var(--accent)}
+  .side .foot{display:block;margin-top:auto;padding-top:8px}
+  .side .gh{display:flex;align-items:center;justify-content:center;gap:6px;height:34px;
+            border:1px solid var(--line);border-radius:999px;font-size:12.5px;color:var(--ink-3)}
+  .side .gh:hover{background:var(--bg-sunk);color:var(--ink)}
+  .side .themebtn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;
+                  height:32px;margin-top:10px;border:1px solid var(--line);border-radius:999px;
+                  background:transparent;font-size:12px;color:var(--ink-3);cursor:pointer}
+  .side .themebtn:hover{background:var(--bg-sunk);color:var(--ink)}
+  [data-theme="dark"] .side .gh,[data-theme="dark"] .side .themebtn{color:var(--ink-2);
+    border-color:var(--line-strong)}
+  [data-theme="dark"] .side .gh:hover,[data-theme="dark"] .side .themebtn:hover{color:var(--ink)}
+}
+
+/* —— 页头 —— */
+h1.title{font-size:30px;font-weight:650;letter-spacing:-.02em;line-height:1.25;margin:18px 0 20px}
+@media(min-width:700px){h1.title{margin:4px 0 16px}}
+h1.title small{font-size:13px;font-weight:400;color:var(--ink-4);margin-left:10px}
+.lead{color:var(--ink-3);font-size:14px;margin:-6px 0 18px}
+
+/* —— 药丸筛选 + 搜索 —— */
+.pillbar{display:inline-flex;gap:2px;max-width:100%;overflow-x:auto;scrollbar-width:none;
+         border-radius:999px;background:var(--well);padding:3px;
+         box-shadow:inset 0 0 0 1px var(--line-soft)}
+.pillbar::-webkit-scrollbar{display:none}
+.pillbar a{display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 16px;border-radius:999px;font-size:14px;font-weight:500;color:var(--ink-3);white-space:nowrap;transition:color .15s}
+.pillbar a.on{background:var(--surface);color:var(--ink);font-weight:600;box-shadow:var(--shadow-thumb),0 0 0 1px var(--line)}
+@media(min-width:700px){.pillbar a{height:36px}}
+.searchrow{display:flex;gap:10px;align-items:center;margin:14px 0 18px}
+.searchrow .box{position:relative;flex:1;min-width:0}
+.searchrow input{width:100%;height:42px;border:0;border-radius:999px;background:var(--well);
+                 padding:0 40px 0 38px;font-size:16px;color:var(--ink);outline:none;
+                 box-shadow:inset 0 0 0 1px var(--line-soft)}
+.searchrow input:focus{box-shadow:inset 0 0 0 1px var(--accent)}
+.searchrow .ic{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--ink-4)}
+.searchrow kbd{position:absolute;right:14px;top:50%;transform:translateY(-50%);
+               border:1px solid var(--line-strong);border-radius:var(--r-mark);background:var(--surface);
+               padding:0 6px;font:11px/16px var(--font-mono);color:var(--ink-4)}
+
+/* —— 当前热点卡片 —— */
+.hotcard{position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--line);
+         border-radius:var(--r-card);box-shadow:var(--shadow-card);padding:10px 14px 4px;margin-bottom:16px}
+.hotcard::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(120% 90% at 100% 0%,var(--hot-soft),transparent 55%)}
+.hotcard .hd{position:relative;display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.hotcard h2{display:flex;align-items:center;gap:8px;margin:0;font-size:14px;font-weight:600}
+.dotlive{position:relative;display:flex;width:8px;height:8px}
+.dotlive i{position:absolute;inset:0;border-radius:50%;background:var(--hot);opacity:.4;
+           animation:ping 1.8s cubic-bezier(0,0,.2,1) infinite}
+.dotlive b{position:relative;width:8px;height:8px;border-radius:50%;background:var(--hot)}
+@keyframes ping{75%,100%{transform:scale(2.2);opacity:0}}
+.hotcard .more{font-size:12.5px;color:var(--ink-3)}
+.hotcard ol{position:relative;list-style:none;margin:0;padding:0}
+.hotcard li a{display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:12px;align-items:center;
+              margin:0 -8px;padding:7px 8px;border-radius:var(--r-tile);min-height:40px}
+@media(min-width:641px){
+  .hotcard li a{grid-template-columns:20px minmax(0,1fr) 96px 56px 18px;gap:16px;padding:8px}
+  .hotcard li:nth-child(n+4){display:block}
+}
+.hotcard li a:hover{background:var(--bg-sunk)}
+.hotcard .rk{font-size:15px;font-weight:900;text-align:center;line-height:1;color:var(--rank-rest)}
+.hotcard li:nth-child(1) .rk{color:var(--rank-1)}
+.hotcard li:nth-child(2) .rk{color:var(--rank-2)}
+.hotcard li:nth-child(3) .rk{color:var(--rank-3)}
+.hotcard .tt{font-size:14.5px;font-weight:600;line-height:1.5;overflow:hidden;
+             display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical}
+.hotcard .faces{display:none;justify-content:flex-end}
+@media(min-width:641px){.hotcard .faces{display:flex}}
+.hotcard .faces i{width:20px;height:20px;border-radius:50%;margin-left:-6px;
+                  display:inline-flex;align-items:center;justify-content:center;
+                  color:#fff;font-size:10px;font-weight:700;line-height:1;
+                  border:1.5px solid var(--surface);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.hotcard .heat{font-size:12.5px;color:var(--ink-4);white-space:nowrap;text-align:right}
+.hotcard .heat b{font-size:13.5px;font-weight:600;color:var(--ink-2)}
+@media(max-width:640px){.hotcard li:nth-child(n+4){display:none}.hotcard .faces{display:none}}
+
+/* —— 日期分组 + 时间轴 —— */
+.daybar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;height:44px;
+        background:var(--bg);margin:0}
+.daybar .d{font-size:18px;font-weight:600;line-height:24px;white-space:nowrap;color:var(--ink)}
+.daybar .w{font-size:13px;color:var(--ink-4)}
+.daybar .stale{color:var(--hot);font-weight:600}
+.daybar .aside{margin-left:auto;font-size:12px;color:var(--ink-4)}
+.feed{list-style:none;margin:0;padding:4px 0 0}
+.slot{display:grid;grid-template-columns:minmax(0,1fr);padding:14px 0;
+      border-bottom:1px solid var(--line-soft)}
+.slot:last-child{border-bottom:0}
+@media(min-width:700px){
+  .slot{grid-template-columns:64px 22px minmax(0,1fr);border-bottom:0;padding:0 0 12px}
+  .slot:last-child{padding-bottom:0}
+  .slot>time{font-family:var(--font-mono);font-size:12.5px;font-weight:600;line-height:24px;
+             color:var(--ink-3);padding-top:15px}
+  .slot .rail{position:relative}
+  .slot .rail::before{content:"";position:absolute;left:10.5px;top:29px;bottom:-41px;width:1px;
+                      background:var(--line-strong)}
+  .slot:last-child .rail::before{display:none}
+  .slot .rail::after{content:"";position:absolute;left:7.5px;top:25.5px;width:7px;height:7px;
+                     border-radius:50%;background:var(--accent);
+                     box-shadow:0 0 0 4px var(--bg);transition:transform .3s}
+  .slot:hover .rail::after{transform:scale(1.15)}
+}
+@media(max-width:699px){.slot>time{display:none}.slot .rail{display:none}}
+
+/* —— 卡片（条目） —— */
+.cardrow{min-width:0}
+@media(min-width:700px){
+  .cardrow{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);
+           box-shadow:var(--shadow-card);padding:15px 18px 14px;
+           transition:box-shadow .2s,border-color .2s,transform .2s}
+  .cardrow:hover{box-shadow:var(--shadow-card-hover);border-color:var(--line-strong);
+                 transform:translateY(-1px)}
+}
+.cardrow .hd{display:flex;align-items:center;gap:6px;min-height:22px;font-size:12.5px;
+             line-height:18px;color:var(--ink-4)}
+@media(min-width:700px){.cardrow .hd{min-height:18px;gap:8px}}
+.cardrow .hd .when{display:inline}
+@media(min-width:700px){.cardrow .hd .when{display:none}}
+.cardrow .also{margin:8px 0 0;font-size:12.5px;color:var(--ink-4)}
+.cardrow .also a{color:var(--ink-3)}
+.cardrow .also a:hover{color:var(--accent)}
+.cardrow .hd .src{display:inline-flex;align-items:center;gap:6px;min-width:0;overflow:hidden;
+                  text-overflow:ellipsis;white-space:nowrap}
+.cardrow .hd .src .when{display:inline}
+@media(min-width:700px){.cardrow .hd .src .when{display:none}}
+.cardrow .hd .rt{margin-left:auto;display:flex;align-items:center;gap:6px;flex:none;padding-left:8px}
+.badge-pick{display:none;align-items:center;gap:4px;height:18px;padding:0 8px;
+            border-radius:999px;font-size:11px;font-weight:500;line-height:1;
+            background:var(--amber-soft);color:var(--amber-ink);white-space:nowrap}
+.badge-pick::before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor;flex:none}
+
+.scorelabel{display:none;align-items:center;gap:6px;height:20px;padding:0 8px;
+            border-radius:999px;font-size:11px;font-weight:500;line-height:1;white-space:nowrap;
+            background:var(--accent-soft);color:var(--accent);
+            box-shadow:inset 0 0 0 1px rgba(23,107,117,.2)}
+[data-theme="dark"] .scorelabel{box-shadow:inset 0 0 0 1px rgba(18,204,216,.2)}
+.scorelabel .k{font-size:11px;opacity:.8}
+.scorelabel .sep{width:1px;height:10px;background:currentColor;opacity:.25}
+.scorelabel b{font-family:var(--font-mono);font-size:12.5px;font-weight:700;
+              font-variant-numeric:tabular-nums}
+.star{border:0;background:transparent;color:var(--ink-4);cursor:pointer;padding:0;
+      width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;
+      border-radius:var(--r-control);font-size:15px;line-height:1}
+.star:hover{background:var(--bg-sunk);color:var(--ink-2)}
+.star.on{color:var(--amber)}
+.cardrow h3{margin:6px 0 0;font-size:17px;font-weight:650;line-height:1.5;color:var(--ink)}
+@media(min-width:700px){.cardrow h3{margin-top:8px;line-height:1.55;font-weight:650}}
+.cardrow h3 a:hover{color:var(--accent)}
+.cardrow .sum{margin:4px 0 0;font-size:14.5px;line-height:1.7;color:var(--ink-3);
+              display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+@media(min-width:700px){
+  .cardrow .sum{margin-top:8px;font-size:15px;line-height:1.75;-webkit-line-clamp:3}
+}
+.cardrow .reason{margin:4px 0 0;font-size:13px;line-height:1.65;color:var(--note);
+                 display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+@media(min-width:700px){
+  .cardrow .reason{margin-top:12px;border-top:1px solid var(--line-soft);padding-top:12px;
+                   line-height:1.75;-webkit-line-clamp:unset;display:block}
+}
+.cardrow .tags{display:none;gap:10px;margin-top:8px;font-size:12px;color:var(--ink-4)}
+@media(min-width:700px){.cardrow .tags{display:flex;flex-wrap:wrap}}
+.tag{display:inline-block;border:1px solid var(--line);border-radius:var(--r-mark);
+     padding:0 6px;font-size:11px;color:var(--ink-4)}
+
+/* —— 通用块 —— */
+/* 主题/标签磁贴：跨板块共用，颜色一律走变量 */
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);
+      padding:12px 14px;box-shadow:var(--shadow-card);transition:border-color .15s,box-shadow .15s}
+.tile:hover{border-color:var(--line-strong);box-shadow:var(--shadow-card-hover)}
+.tile .t{font-weight:600;color:var(--ink);font-size:15px}
+.tile .n{color:var(--ink-4);font-size:12px;margin-left:6px}
+.tile ul{margin:8px 0 0;padding-left:16px}
+.tile li{font-size:12.5px;margin:3px 0;color:var(--ink-3);line-height:1.5}
+.tile li a{color:var(--ink-3)}
+.tile li a:hover{color:var(--accent)}
+.well{background:var(--well);border-radius:var(--r-panel);box-shadow:inset 0 0 0 1px var(--line-soft);
+      padding:14px 16px}
+.muted{color:var(--ink-4)}
+.small{font-size:13px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--ink-4)}
+.dot{width:3px;height:3px;border-radius:50%;background:var(--line-strong);display:inline-block}
+.badge,.pill{display:inline-flex;align-items:center;height:18px;border-radius:var(--r-mark);
+             padding:0 6px;font-size:11px;color:var(--ink-4);background:var(--well);
+             box-shadow:inset 0 0 0 1px var(--line-soft)}
+.pill{border-radius:999px;padding:1px 9px}
+.pill.ok{color:var(--ok);background:rgba(47,125,92,.1);box-shadow:none}
+.pill.err{color:var(--hot);background:var(--hot-soft);box-shadow:none}
+.axes{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:10px 0 2px}
+.axis{font-size:11px;color:var(--ink-4);text-align:center}
+.axis .bar{height:4px;border-radius:3px;background:var(--line-soft);margin-bottom:4px;overflow:hidden}
+.axis .bar i{display:block;height:100%;background:var(--accent)}
+.score{font-family:var(--font-mono);font-size:22px;font-weight:600}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line-soft)}
+th{color:var(--ink-4);font-weight:500;font-size:12px}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+.fb{cursor:pointer;border:1px solid var(--line);border-radius:var(--r-control);padding:2px 9px;
+    font-size:12px;background:var(--surface);color:var(--ink-3)}
+.fb:hover,.fb.on{border-color:var(--accent);color:var(--accent);background:var(--accent-softer)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}
+.tabs a{border:1px solid var(--line);border-radius:999px;padding:3px 12px;font-size:13px;color:var(--ink-3)}
+.tabs a.on{background:var(--accent-soft);border-color:transparent;color:var(--accent);font-weight:600}
+ol.list,ul.list{padding-left:20px;margin:0}
+ol.list li,ul.list li{margin:8px 0}
+hr{border:0;border-top:1px solid var(--line);margin:24px 0}
+h2.sec{font-size:12.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-4);margin:32px 0 12px;display:flex;
+       justify-content:space-between;align-items:baseline}
+h2.sec a{font-size:12.5px;font-weight:400;color:var(--ink-3)}
+
+/* —— 页脚（内容区） —— */
+footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);
+       font-size:12px;color:var(--ink-4)}
+footer .links{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:8px}
+footer .links a{color:var(--ink-4)}
+
+/* —— 手机底栏 —— */
+.bnav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:40;
+      background:var(--surface);border-top:1px solid var(--line);
+      padding:6px 0 max(6px,env(safe-area-inset-bottom))}
+.bnav a{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+        font-size:11px;color:var(--ink-4)}
+.bnav a.on{color:var(--accent);font-weight:600}
+@media(min-width:700px){.bnav{display:none}.main{padding-bottom:72px}}
+
+@media(min-width:700px){.badge-pick{display:inline-flex}.scorelabel{display:inline-flex}}
+
+.feed-divider{list-style:none;display:flex;align-items:center;gap:16px;margin:32px 0 20px;font-size:12px;color:var(--ink-4);letter-spacing:.04em}
+.feed-divider::before,.feed-divider::after{content:"";flex:1;height:1px;background:var(--line)}
+
+.nameplate{font-family:"Songti SC","Noto Serif CJK SC",Georgia,serif;font-size:34px;
+           font-weight:700;letter-spacing:.06em;color:var(--ink);line-height:1.2;
+           padding:10px 0 12px;margin:4px 0 8px;border-bottom:2px solid var(--ink)}
+@media(max-width:640px){.nameplate{font-size:26px}}
+
+/* 日报：按参考站的“报纸”排版 —— 大号衬线报头、头条加大、编号用等宽粗体 */
+.report{max-width:760px;margin:0 auto}
+.report h2{display:block;font-size:19px;font-weight:700;
+           letter-spacing:-.01em;line-height:1.35;margin:38px 0 16px;padding-bottom:10px;
+           border-bottom:1px solid var(--line)}
+.report h3{font-size:14px;font-weight:700;letter-spacing:.04em;color:var(--ink-3);
+           margin:26px 0 10px}
+.report ul.list,.report ol.list{list-style:none;margin:0;padding:0}
+.report li{position:relative;margin:0 0 15px;padding:0 0 15px;
+           border-bottom:1px solid var(--line-soft);font-size:15px;line-height:1.75;
+           color:var(--ink-2)}
+.report ul.list>li:last-child,.report ol.list>li:last-child{border-bottom:0;padding-bottom:0}
+/* 头条：今日要闻第一条 */
+.report ul.list:first-of-type>li:first-of-type{font-size:19px;line-height:1.5;font-weight:700;color:var(--ink)}
+.report ul.list>li:first-of-type a{color:var(--ink)}
+/* 编号：01 02 03，等宽粗体、强调色 */
+.report ol.list{counter-reset:item}
+.report ol.list>li{counter-increment:item;padding-left:36px;min-height:30px}
+.report ol.list>li::before{content:counter(item,decimal-leading-zero);position:absolute;
+  left:0;top:2px;font:800 20px/1 var(--font-mono);color:var(--accent);letter-spacing:-.03em}
+.report strong{font-weight:700}
+.report strong a{color:var(--ink)}
+.report strong a:hover{color:var(--accent)}
+.report code{font:11.5px var(--font-mono);color:var(--ink-4);background:none;
+  padding:0;margin-left:6px;white-space:nowrap;opacity:.85}
+.report blockquote{margin:12px 0;padding:8px 14px;border-left:2px solid var(--line-strong);
+  color:var(--ink-3);font-size:14px}
+.report hr{border:0;border-top:1px solid var(--line);margin:26px 0}
+@media(max-width:640px){
+  .report ul.list:first-of-type>li:first-of-type{font-size:17px}
+  .report li{font-size:14.5px;line-height:1.7}
+}
+</style></head><body><div class="shell"><aside class="side"><a class="brand" href="/get_information/" aria-label="Z-Bit 首页"><img class="brand-mark" src="/get_information/logo-mark.png" alt="Z-Bit"><img class="brand-full brand-light" src="/get_information/logo-text.png" alt="Z-Bit"><img class="brand-full brand-dark" src="/get_information/logo-text-dark.png" alt="Z-Bit"></a><div class="switcher"><a class="" href="/">AI</a><a class="" href="/get_information/">AIDD</a></div><div class="grp"><div class="sec-title">内容</div><a class="item" href="/"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4.5 13.5H11l-1 8.5 8.5-11.5H12l1-8.5Z"/></svg></span><span class="lbl">精选</span></a><a class="item" href="/get_information/all.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></span><span class="lbl">全部动态</span></a><a class="item" href="/get_information/hot.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2c1 4-2 5-2 8a2 2 0 0 0 4 0c0-1-.5-2-.5-2S17 11 17 15a5 5 0 0 1-10 0c0-5 5-6 5-13Z"/></svg></span><span class="lbl">热点榜</span></a><a class="item on" href="/get_information/daily.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M9 13h6M9 17h4"/></svg></span><span class="lbl">日报</span></a><a class="item" href="/get_information/topics.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span><span class="lbl">主题</span></a><a class="item" href="/get_information/starred.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21 12 16 5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2Z"/></svg></span><span class="lbl">收藏</span></a></div><div class="grp"><div class="sec-title">模型</div><a class="item" href="/get_information/monthly.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M9 13h6M9 17h4"/></svg></span><span class="lbl">月报</span></a><a class="item" href="/get_information/timeline.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="lbl">时间线</span></a><a class="item" href="/get_information/leaderboard.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg></span><span class="lbl">模型榜</span></a><a class="item" href="/get_information/free-tokens.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12.5 12.5 20a2 2 0 0 1-2.8 0L3 13.3V3h10.3l6.7 6.7a2 2 0 0 1 0 2.8Z"/><circle cx="7.5" cy="7.5" r="1.2"/></svg></span><span class="lbl">Token 羊毛</span></a></div><div class="grp"><div class="sec-title">X 生态</div><a class="item" href="/get_information/hot-tools.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span><span class="lbl">热门工具</span></a><a class="item" href="/get_information/authors.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg></span><span class="lbl">作者精选</span></a><a class="item" href="/get_information/learn.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span><span class="lbl">工具实操</span></a></div><div class="grp"><div class="sec-title">更多</div><a class="item" href="/get_information/agent.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22v-5"/><path d="M9 8V2M15 8V2"/><path d="M6 8h12v3a6 6 0 0 1-12 0Z"/></svg></span><span class="lbl">Agent 接入</span></a><a class="item" href="/get_information/about.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 5.6a5 5 0 0 0-7.1 0L12 7.3l-1.7-1.7a5 5 0 1 0-7.1 7.1L12 21.5l8.8-8.8a5 5 0 0 0 0-7.1Z"/></svg></span><span class="lbl">关于</span></a><a class="item" href="/get_information/changelog.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 8v5l4 2"/></svg></span><span class="lbl">更新日志</span></a><a class="item" href="/get_information/feedback.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/></svg></span><span class="lbl">反馈</span></a><a class="item" href="/get_information/board.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span><span class="lbl">运行看板</span></a><a class="item" href="/get_information/about.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span><span class="lbl">后台</span></a></div><div class="foot"><a class="gh" href="https://github.com/TianDiHuAng/get_information" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> GitHub 开源</a><button class="themebtn" type="button" id="themebtn">◐ 跟随系统</button></div></aside><main class="main"><div class="page"><h1 class="title">日报 · 2026-11-11</h1><div class="lead"><a href="/get_information/daily.html">← 全部日报</a></div><div class="nameplate">AI日报</div><div class="report"><p class="muted">307 条 / 40 个源（国外 211 · 国内 96） / 覆盖 0 层</p>
+<h2>今日要闻</h2>
+<ul class="list">
+<li><strong><a href="https://www.latent.space/p/ainews-fable-5-2-retakes-world-1-llm-spot-as-ant-ipo-roadshow-begins" target="_blank" rel="noopener">Fable 5.2 retakes World #1 LLM spot as $ANT IPO roadshow begins</a></strong> <code>smol.ai AINews</code> — November 9, 2026 — Claude Fable 5.2 and Mythos 5.2 arrive on Anthropic’s IPO roadshow day. How much thinking is worth paying for?</li>
+</ul>
+<h3>今日看点</h3>
+<ol class="list">
+<li><strong><a href="https://deepmind.google/blog/gemini-4-carbon-is-now-available" target="_blank" rel="noopener">Gemini 4 Carbon is now available</a></strong> <code>deepmind_blog</code></li>
+<li><strong><a href="https://simonwillison.net/2026/Nov/9/llm-anthropic" target="_blank" rel="noopener">llm-anthropic 0.31</a></strong> <code>simonw</code> — Release: llm-anthropic 0.31 Anthropic released Fable 5.2 and Mythos 5.2 today. Fable 5.2 is currently ranked first on Artificial Analysis . Anthropic say it &quot;solved two open proble</li>
+<li><strong><a href="https://deepmind.google/blog/introducing-alphaproof-code" target="_blank" rel="noopener">Introducing AlphaProof Code: a breakthrough in verifying complex software at depth</a></strong> <code>deepmind_blog</code> — AlphaProof Code agents wrote three million lines of proofs in Lean to verify Signal’s core encryption.</li>
+</ol>
+<h3>其他值得知道</h3>
+<ul class="list">
+<li><strong><a href="https://t.me/AI_News_CN/45477" target="_blank" rel="noopener">IPO前夕，Anthropic七位创始人计划合计套现近17.5亿美元 Anthropic七位联合创始人计划在公司IPO中各自出售337.8万</a></strong> <code>telegram</code> — IPO前夕，Anthropic七位创始人计划合计套现近17.5亿美元 Anthropic七位联合创始人计划在公司IPO中各自出售337.8万股股票，按每股74美元的发行价中位数计算，每人预计套现约2.5亿美元。根据Anthropic最新提交的S-1文件，公司此次IPO的初始定价区间为每股70至78美元，对应每位创始人的套现金额约为2.36亿至2.64亿美元。 七位联合创始人包括CEO Dario Amodei、总裁兼董事会主席Danie</li>
+<li><strong><a href="https://github.com/GoogleChrome/modern-web-guidance" target="_blank" rel="noopener">Show HN: Get your coding agent off ~2019 JavaScript, onto modern web primitives</a></strong> <code>Hacker News</code> — 72 comments</li>
+<li><strong><a href="https://simonwillison.net/2026/Nov/10/muse-ember" target="_blank" rel="noopener">Introducing Our Smallest, Most Efficient Model: Muse Ember</a></strong> <code>simonw</code> — Introducing Our Smallest, Most Efficient Model: Muse Ember Meta AI just launched their entry in the Claude Haiku/GPT Luna category: Muse Ember, which they describe as: [...] our sm</li>
+<li><strong><a href="https://www.microsoft.com/en-us/research/blog/lazare-veni-foras-reprogramming-dormant-neurons-to-backdoor-ai-agents" target="_blank" rel="noopener">Lazare, veni foras: Reprogramming Dormant Neurons to Backdoor AI Agents</a></strong> <code>msr_blog</code> — Microsoft researchers have discovered “Lazarus,” a backdoor technique that can reprogram dormant neurons in an AI model, causing an otherwise normal AI agent to execute malicious c</li>
+<li><strong><a href="https://x.com/dotey/status/2120226054195577277" target="_blank" rel="noopener">Lenny 最新科技就业报告：产品经理岗位四年来最多，工程师岗位停止增长，设计岗位创新低</a></strong> <code>x</code> — Lenny 最新科技就业报告：产品经理岗位四年来最多，工程师岗位停止增长，设计岗位创新低 Lenny Rachitsky 11 月 10 日发布了 2026 年下半年的科技就业报告，这是他做的第五份。结论是：AI 时代产品经理需求最旺，工程师需求停滞，设计师处境最难。 先说这些数字怎么读。报告用了两套口径不同的数据： • 开放岗位：来自 TrueUp，统计全球 9000 多家科技公司正在招的职位数，反映公司“想招多少人”。 • 实际招聘：来自 Live Data Technologies，统计美国有多少人从别的公司跳槽入职某个岗位，雇主不限于科技公</li>
+<li><strong><a href="https://agentusecases.ai/use-case/teach-coding-agents-modern-web-platform-patterns" target="_blank" rel="noopener">Teach coding agents modern web platform patterns</a></strong> <code>agentcases</code> — A skill and RAG CLI with 200+ guides steers coding agents toward native web features like dialog and CSS.highlights, plus a scan that finds legacy patterns to modernize.</li>
+<li><strong><a href="https://www.tmtpost.com/8200714.html" target="_blank" rel="noopener">平头哥要上市，阿里AI的第一个“大结果”</a></strong> <code>tmtpost</code> — 大厂芯片再加速。</li>
+<li><strong><a href="https://t.me/AI_News_CN/45470" target="_blank" rel="noopener">谷歌开放Gemini 4 Carbon 12月起价格翻倍 谷歌周二宣布，前沿人工智能模型Gemini 4 Carbon即日起向付费开发者和企</a></strong> <code>telegram</code> — 谷歌开放Gemini 4 Carbon 12月起价格翻倍 谷歌周二宣布，前沿人工智能模型Gemini 4 Carbon即日起向付费开发者和企业客户开放。谷歌称，该模型能够处理复杂编程、网络安全和科学研究等多步骤任务。早期测试中，开发者曾用它重写桌面应用，安全团队使用它发现软件漏洞。 Gemini 4 Carbon此前主要通过Fairwind计划向部分网络安全防御机构开放。此次开放后，付费开发者可以通过Google AI Studio的G</li>
+</ul>
+<h2>国外 · 一手源头</h2>
+<ul class="list">
+<li><strong><a href="https://simonwillison.net/2026/Nov/10/llm-gemini" target="_blank" rel="noopener">llm-gemini 0.36</a></strong> <code>simonw</code> — Release: llm-gemini 0.36 Gemini 4 Carbon was announced two weeks ago for &quot;a subset of cyber defenders&quot;, but today it&#x27;s available to everyone else . This is Google&#x27;s best ever Gemin</li>
+<li><strong><a href="https://simonwillison.net/2026/Nov/10/prompting-claude-fable-52" target="_blank" rel="noopener">Quoting Prompting Claude Fable 5.2</a></strong> <code>simonw</code> — Claude Fable 5.2 responds closely to what the prompt says about who owns the code it works on. In Anthropic’s testing on small coding tasks, when a prompt said nothing about owners</li>
+<li><strong><a href="https://latent.space/p/naiveai" target="_blank" rel="noopener">NaiveAI Promises 2,100 Tokens per Second. How Well Does It Code?</a></strong> <code>latent_space</code> — NaiveAI could potentially top Artificial Analysis’s speed rankings. Our hands-on test suggests its coding quality holds up against DeepSeek.</li>
+<li><strong><a href="https://deepmind.google/blog/gemini-robotics-2-5-accelerates-real-world-physical-intelligence" target="_blank" rel="noopener">Gemini Robotics 2.5 accelerates real-world general dexterity</a></strong> <code>deepmind_blog</code> — Our most capable vision-language-action model enhances robot dexterity, reliability, and safety</li>
+<li><strong><a href="https://blogs.nvidia.com/blog/open-source-openshell-infrastructure" target="_blank" rel="noopener">NVIDIA Expands Open Source Commitment With OpenShell Donation and New AI Infrastructure</a></strong> <code>nvidia_blog</code> — Kubernetes, the open source system that manages how applications run across thousands of AI factories, has become the foundation for AI, and the demands on it are only growing. To</li>
+</ul>
+<h2>国外 · X 在聊什么</h2>
+<ul class="list">
+<li><strong><a href="https://x.com/dotey/status/2120208679005810803" target="_blank" rel="noopener">这期用皮影戏讲清 BaoCut 虚拟主播的工作原理：</a></strong> <code>x</code> — 这期用皮影戏讲清 BaoCut 虚拟主播的工作原理： - 拆：AI 画一张正面像，再改十一次，程序逐像素比对，拆出二十七层 - 动：给整张画罩上一张网，推网就能转头；十七个旋钮，头发像弹簧 - 说：不听音量，看每个字的读音挑嘴型，嘴比声音早 0.03 秒 还回答了：这算不算 AI 生成视频？要不要显卡？能不能换成自己的形象？他做不到什么？ 骨架、变形和弹簧移植自开源项目 LivLiv Player（Apache-2.0），感谢作者。主播形象由 Seedream 5.5 生成。 项目地址：https://github.com/JimLiu/baoc</li>
+<li><strong><a href="https://x.com/_akhaliq/status/2120265977657168218" target="_blank" rel="noopener">MiniMax-H3-Image in 2 steps, realtime</a></strong> <code>x</code> — MiniMax-H3-Image in 2 steps, realtime pDMD LoRA on MiniMax&#x27;s 33B image model realtime editing on ZeroGPU LoRA + one-file ComfyUI checkpoint: https://huggingface.co/akhaliq/minimax-h3-image-pdmd-2step app: https://huggingface.co/spaces/akhaliq/minimax-h3-image-2step</li>
+<li><strong><a href="https://x.com/dotey/status/2120205106608210251" target="_blank" rel="noopener">Gemini Carbon 做的鹈鹕骑自行车演示，一个 Agent 负责构建，在 Blender 和 Three.js 上生成建模，一个 Agent 负责审查，检查它们自己的渲染结</a></strong> <code>x</code> — Gemini Carbon 做的鹈鹕骑自行车演示，一个 Agent 负责构建，在 Blender 和 Three.js 上生成建模，一个 Agent 负责审查，检查它们自己的渲染结果，最终生成的可玩的 3D 游戏：一只鹈鹕骑着自行车在 Google 的 Mountain View 园区转悠。 测试地址：https://aistudio.google.com/apps/bundled/pelican-campus-quest?showAssistant=true&amp;showPreview=true</li>
+<li><strong><a href="https://x.com/DrJimFan/status/2120186651741655428" target="_blank" rel="noopener">Introducing GR00T 2: our most advanced, open System One model for robotics. It runs entire</a></strong> <code>x</code> — Introducing GR00T 2: our most advanced, open System One model for robotics. It runs entirely on your robot’s onboard compute, fully untethered, and you own every weight of it. GR00T 2 features: 1. Long-horizon tasks: dexterous manipulation and whole-body control chained over 20</li>
+<li><strong><a href="https://x.com/minchoi/status/2120275783570657625" target="_blank" rel="noopener">AI can now tell when you&#x27;re PAUSING vs when you&#x27;re actually DONE talking.</a></strong> <code>x</code> — AI can now tell when you&#x27;re PAUSING vs when you&#x27;re actually DONE talking. ElevenLabs just dropped Scribe v3 + Scribe v3 Live. AI that knows WHO is talking, even in noisy meetings. Knows when you&#x27;re PAUSING so it doesn&#x27;t interrupt. If you&#x27;ve ever had an AI voice assistant inte</li>
+</ul>
+<h2>国外 · 论文速览</h2>
+<ul class="list">
+<li><strong><a href="https://arxiv.org/pdf/2611.12820v1" target="_blank" rel="noopener">How Well Does AI Peer Review Work? A Benchmark Built from 100 Planted Errors</a></strong> <code>arXiv</code> — One hundred known errors were planted into 10 open-access psychology papers, and the modified papers were then run through frontier models and two commercial AI review tools. The b</li>
+<li><strong><a href="https://arxiv.org/pdf/2611.12814v1" target="_blank" rel="noopener">Curbside Chatbots: Auditing the Mental Health Interventions Large Language Models Recommend to Clinicians, Caregivers, and Patients</a></strong> <code>arXiv</code> — Users are asking language models mental health questions and are receiving answers. We audited what 41 language models recommend to users when the same clinical information reaches</li>
+<li><strong><a href="https://huggingface.co/papers/2611.12762" target="_blank" rel="noopener">Sage-Taiyi: A Metacognitive Architecture for Scientific Discovery</a></strong> <code>HF Daily Papers</code> — We introduce Sage-Taiyi, a metacognition-inspired architecture that uses accumulated scientific understanding to guide what to investigate next and how to investigate it. Through explicit monitoring and control, the syst</li>
+<li><strong><a href="https://huggingface.co/papers/2611.12426" target="_blank" rel="noopener">dNaViT: Discrete Codes are General-Purpose Visual Representations</a></strong> <code>HF Daily Papers</code> — A discrete native-resolution vision transformer with grouped product quantization and a dual-branch objective acts as a versatile visual tokenizer, matching or exceeding task-specific baselines across visual understandin</li>
+</ul>
+<h2>国内 · 热榜与媒体</h2>
+<ul class="list">
+<li><strong><a href="https://sspai.com/post/118905" target="_blank" rel="noopener">派早报：700 号段保护服务试点获批、Claude Code 设置文件泄露凭据等</a></strong> <code>少数派</code> — 卫星导航基准站网安全国标发布，影目召回 4701 副 AIR3 眼镜等。 查看全文</li>
+<li><strong><a href="http://www.geekpark.net/news/373644" target="_blank" rel="noopener">实测 HY4：腾讯最「夯」大模型，离一线还有多远？</a></strong> <code>geekpark</code> — 头图来源：腾讯混元 11 月 4 日，混元 Hy4 正式发布，模型权重将在近期开源，主打性价比的轻量版 Hy4 flash 也一起亮相。腾讯给它的定位是——首次跻身最强开源模型之列。 过去一年，腾讯在 AI 上最多被人看见的，是 WorkBuddy 这类 Agent 和应用产品；到了更底层的模型上，它的声量明显弱于应用。Hy4 真正要回答的，是腾讯在模型这条</li>
+<li><strong><a href="https://www.tmtpost.com/8194238.html" target="_blank" rel="noopener">亚洲出口，正按AI产业链位置重新排座次</a></strong> <code>tmtpost</code> — 亚洲制造的胜负手，被AI卡了位。</li>
+<li><strong><a href="https://www.ithome.com/1/025/331.htm" target="_blank" rel="noopener">华为麒麟 9050 系列芯片官宣搭载新一代达芬奇架构 NPU，业界首个 30B MoE 大模型入端</a></strong> <code>ithome</code> — IT之家 11 月 11 日消息，华为麒麟官方公众号今日发文，详细介绍了首款「逻辑折叠」技术 τ 芯片 —— 麒麟 9050 系列的新一代达芬奇架构 NPU，其支持 30B 大模型端侧运行，具备不用联网、不用等云端的特性。 新一代达芬奇架构 NPU 性能提升 140%、功耗降低 66% ，支持 Transformer 引擎、超低功耗感知引擎和 CANN 异构</li>
+<li><strong><a href="https://m.weibo.cn/detail/5363984393045157" target="_blank" rel="noopener">11月9日，英伟达、Anthropic接连发布新品，为机器人连添两把火。 先是IPO前夕备受资本市场审视的Anthropic放出两大重磅新模</a></strong> <code>weibo</code> — 11月9日，英伟达、Anthropic接连发布新品，为机器人连添两把火。 先是IPO前夕备受资本市场审视的Anthropic放出两大重磅新模型：新一代旗舰模型Fable 5.2与Mythos 5.2。 其中，作为一个通用大模型，Fable 5.2在机器人控制方面展现出的能力引发业界瞩目。Anthropic公布的测试数据显示，在RoboDojo双臂 ​ 展开 c</li>
+<li><strong><a href="http://www.geekpark.net/news/373796" target="_blank" rel="noopener">Anthropic 启动 IPO 路演，创始人将套现 17.5 亿美元；谷歌最强 AI 模型正式开放；任天堂招新：经典游戏保存员</a></strong> <code>geekpark</code> — 英伟达董事会聘请前美国联邦检察官，调查 CEO 黄仁勋相关事件 11 月 11 日消息，英伟达发布公告，宣布已聘请美国前联邦检察官金正贤（Joon H. Kim）及其所在的律师事务所 Wachtell, Lipton, Rosen &amp; Katz，负责开展一项全面、独立的调查。 此前，英伟达董事会表示，鉴于近期有关公司创始人兼 CEO 黄仁勋可能成为外国情报机</li>
+</ul>
+<h2>羊毛福利</h2>
+<ul class="list">
+<li><strong><a href="https://t.me/AI_News_CN/45468" target="_blank" rel="noopener">Claude 为付费用户提供一次免费额度重置 Claude 为 Pro、Max、Ultra 和 Team 用户各提供一次免费全量重置，涵盖所</a></strong> <code>telegram</code> — Claude 为付费用户提供一次免费额度重置 Claude 为 Pro、Max、Ultra 和 Team 用户各提供一次免费全量重置，涵盖所有模型和使用限额，可在太平洋时间 12 月 10 日下午 2 点前使用。用户可在“设置 &gt; 用量”中找到该选项，也可访问 clau.de/reset。 Claude 表示，此举是为补偿近期少数问题造成的影响：部分问题曾导致限额消耗超出预期，Fable 重置也未能帮助已用完所有模型每周限额的用户。 C</li>
+<li><strong><a href="https://news.google.com/rss/articles/CBMi8ARBVV95cUxPOC13Y0ozWWhXUE5QcllQVzMwaXhPUjJsb2JqVmdDTlktNExtLVZKMWh5MF80cC1yRzZoeXJtRlpOSkxfN2xvejR4Zm5ySkh3U3JITktXQmJYbmJkUVZQdmE2VV83VGZzcVVucTNCcjdERDhuenRldE02Ykk5aTFuMUc0d1Zvemp1THRtSFk3V3J0Zm1MdENfTEFuMU53T210QV96MWFhS1I5Rnd1UHNsbFEyZWsyNm9aaEo1RFpOc0s4NTBWNDhOcVQxNmpOWnpUOGRjb3prbWFHbXYzU1Y4TzUyLUhBbEJuQkRhaFVISDdxUy1xR29IdU9QYkd4OFozMl8tbnhNUUJQT1F5bUZ0RzhydFdVMEhsbVQ1N2g1eUpoeDZpNmxLZF82Q2c0TzU1alVHVzFiMjh6WEtMNWZHcjhvLUJ3WXJIb1hkZVNTa1dOZUFCNmoyaXgxeFpLVmhZMG5yWWNHMUlWR0F4OWlqaDZlTGxyMFRsdlRhUHliYkdhWmUzbWFndjJLaF9QeDczeXVFX0JHdG5mcWhZNDRLbnphRTVUZWlYNGpfYjFrN2tWT3FwQW8tMEx4ZllIX2k0eG5WVEhUaFNVTnh3VmQ3UkQyWG9kQ3N0YWhoc1VfRjJ0cWtFd0N3LWJqRmNoZkpOM0F3d2VEZVl1VC05SlVaOW9sTFNnZENDQVVkaVE4aFpITU9vTThRMjV4MDJuNWRIY1Z4NmFYQjBTUi1rUWVwSlU5UV9Ud0FZbWxFMVZjdmFJVkxhTGtPUXMwMUpkRVkza1ZKUm0zVFdTWlVpNFI3QUpIYjZaeGV5UzV5bmtya1Q?oc=5" target="_blank" rel="noopener">消息称三星Galaxy AI将收费：每月4.99美元，免费功能也设使用上限|额度|测试|汇率|人民币|套餐_手机新浪网 - 新浪财经</a></strong> <code>deals</code> — 消息称三星Galaxy AI将收费：每月4.99美元，免费功能也设使用上限|额度|测试|汇率|人民币|套餐_手机新浪网 新浪财经</li>
+<li><strong><a href="https://news.google.com/rss/articles/CBMia0FVX3lxTFBZdlFOWEVBczZVZF82Wl9Yb1hsLThKTVh1am5WRGwyb3picVZjeHhfQkNVY1FxcmUwR1RJSDdfczdZc1cteGNiSjhjdHcwZXdoRVczNjVBQVlrTE5Cblc3cXpabzRYRzB4aGVn?oc=5" target="_blank" rel="noopener">LG免费开放K-EXAONE2.5模型API - 汽车之家</a></strong> <code>deals</code> — LG免费开放K-EXAONE2.5模型API 汽车之家</li>
+</ul>
+<hr>
+<p>由 <code>python run.py</code> 自动生成；数据在 <code>data/items.json</code>。</p></div><footer><div>Z-Bit · 每天 09:00 更新 · 内容与评分均在本机生成</div><div class="links"><a href="/get_information/about.html">关于</a><a href="/get_information/agent.html">Agent 接入</a><a href="/get_information/changelog.html">更新日志</a><a href="/get_information/feedback.html">反馈</a><a href="/get_information/terms.html">条款</a><a href="/get_information/privacy.html">隐私</a></div></footer></div></main></div><div class="bnav"><a href="/"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4.5 13.5H11l-1 8.5 8.5-11.5H12l1-8.5Z"/></svg>精选</a><a href="/get_information/hot.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2c1 4-2 5-2 8a2 2 0 0 0 4 0c0-1-.5-2-.5-2S17 11 17 15a5 5 0 0 1-10 0c0-5 5-6 5-13Z"/></svg>热点</a><a href="/get_information/daily.html" class="on"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M9 13h6M9 17h4"/></svg>日报</a><a href="/get_information/more.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg>我的</a></div><script>(function(){var r=document.documentElement;
+ var saved=null;try{saved=localStorage.getItem('zbit.theme')}catch(e){}
+ if(saved)r.setAttribute('data-theme',saved);
+ var b=document.getElementById('themebtn');
+ if(b){b.addEventListener('click',function(){
+   var now=r.getAttribute('data-theme')==='dark'?'light':'dark';
+   r.setAttribute('data-theme',now);
+   try{localStorage.setItem('zbit.theme',now)}catch(e){}
+ });}
+})();</script></body></html>
