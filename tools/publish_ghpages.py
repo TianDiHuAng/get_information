@@ -72,6 +72,11 @@ def main() -> None:
         text = re.sub(r'(href|src)="/(?!get_information/)([a-zA-Z0-9_.\-/]+\.(?:html|xml|txt|png|svg|ico|js|css|json))"',
                       rf'\1="{base}/\2"', text)
 
+        # ④ 加 base 后再折叠一次：AIDD 原始路径已带 /aidd/，加 base 后会叠成
+        #    /get_information/aidd/aidd/xxx，这里折回单份
+        text = collapse.sub(r"\1", text)
+        text = collapse_aidd.sub(r"\1", text)
+
         if args.aidd_mode:
             # AIDD 站用专属 logo（site/aidd 里有 logo-text-aidd*.png，但模板写死了 AI 版）
             text = text.replace('logo-text-dark.png', 'logo-text-aidd-dark.png')
