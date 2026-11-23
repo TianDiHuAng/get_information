@@ -5,7 +5,7 @@
 <link>http://10.4.2.231:8124/</link>
 <description>按结构化分类过滤：research_paper</description>
 <language>zh-CN</language>
-<lastBuildDate>Mon, 23 Nov 2026 07:09:05 +0000</lastBuildDate>
+<lastBuildDate>Mon, 23 Nov 2026 07:16:37 +0000</lastBuildDate>
 <atom:link href="http://10.4.2.231:8124/feed/category/research_paper.xml" rel="self" type="application/rss+xml"/>
 <item>
 <title>OpenAI 的 GPT-6.2 Astra 在 AMD GPU IP 上实现最高 14% 的 PPA 提升 OpenAI 的 Tibo 表</title>
