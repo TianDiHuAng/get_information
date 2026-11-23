@@ -38,3 +38,31 @@ feeds:
   - {id: drugtimes, name: "药渡头条", url: "https://www.drugtimes.cn/feed", region: domestic, layer: broad, limit: 10, proxy: false}
   - {id: pubmed_jcim, name: "JCIM 计算药物化学（PubMed）", url: "%22J%20Chem%20Inf%20Model%22%5Bta%5D%20AND%20%28machine%20learning%5BTitle%2FAbstract%5D%20OR%20deep%20learning%5BTitle%2FAbstract%5D%20OR%20%22artificial%20intelligence%22%5BTitle%2FAbstract%5D%29", region: overseas, layer: primary, limit: 12, proxy: true}
   - {id: pubmed_jmedchem, name: "J. Med. Chem.（PubMed）", url: "%22J%20Med%20Chem%22%5Bta%5D%20AND%20%28%22artificial%20intelligence%22%5BTitle%2FAbstract%5D%20OR%20%22machine%20learning%5BTitle%2FAbstract%5D%22%20OR%20%22deep%20learning%5BTitle%2FAbstract%5D%22%29", region: overseas, layer: primary, limit: 12, proxy: true}
+
+  # —— 来自 baize-aidd（TianDiHuAng/baize-aidd 实测源，2026-11 探针复测通过 38/46，去掉 5 个 web_list/json_list 不支持类型）——
+  - {id: nature_methods, name: "Nature Methods", url: "https://www.nature.com/nmeth.rss", region: overseas, layer: primary, limit: 10, proxy: true}
+  - {id: npj_drug_discovery, name: "npj Drug Discovery", url: "https://www.nature.com/npjdrugdiscov.rss", region: overseas, layer: primary, limit: 10, proxy: true}
+  - {id: nature, name: "Nature", url: "https://www.nature.com/nature.rss", region: overseas, layer: primary, limit: 10, proxy: true}
+  - {id: science_news, name: "Science News", url: "https://www.science.org/rss/news_current.xml", region: overseas, layer: broad, limit: 12, proxy: true}
+  - {id: cz_biohub, name: "Chan Zuckerberg Biohub", url: "https://biohub.org/feed/", region: overseas, layer: primary, limit: 12, proxy: true}
+  - {id: deepmind, name: "Google DeepMind", url: "https://deepmind.google/blog/rss.xml", region: overseas, layer: primary, limit: 12, proxy: true}
+  - {id: nvidia_genai, name: "NVIDIA 生成式 AI 博客", url: "https://blogs.nvidia.com/blog/category/generative-ai/feed/", region: overseas, layer: primary, limit: 12, proxy: true}
+  - {id: pharmavoice, name: "PharmaVoice", url: "https://www.pharmavoice.com/feeds/news/", region: overseas, layer: broad, limit: 12, proxy: true}
+  - {id: mit_news_ai, name: "MIT News · AI", url: "https://news.mit.edu/rss/topic/artificial-intelligence2", region: overseas, layer: primary, limit: 12, proxy: true}
+  - {id: npj_digital_med, name: "npj Digital Medicine", url: "https://www.nature.com/npjdigitalmed.rss", region: overseas, layer: primary, limit: 10, proxy: true}
+  - {id: msr, name: "Microsoft Research 博客", url: "https://www.microsoft.com/en-us/research/feed/", region: overseas, layer: primary, limit: 12, proxy: true}
+  - {id: owlposting, name: "Owl Posting", url: "https://www.owlposting.com/feed", region: overseas, layer: broad, limit: 12, proxy: true}
+  - {id: xtalpi, name: "晶泰科技", url: "https://www.xtalpi.com/feed", region: domestic, layer: primary, limit: 12, proxy: false}
+  - {id: gen_aidd, name: "GEN", url: "https://www.genengnews.com/rss", region: overseas, layer: broad, limit: 12, proxy: true}
+  - {id: pharmatimes, name: "PharmaTimes", url: "https://www.pharmatimes.com/rss", region: overseas, layer: broad, limit: 12, proxy: true}
+  - {id: nature_compbio, name: "Nature · 计算生物学", url: "https://www.nature.com/subjects/computational-biology-and-bioinformatics.rss", region: overseas, layer: primary, limit: 10, proxy: true}
+  - {id: nature_ml, name: "Nature · 机器学习", url: "https://www.nature.com/subjects/machine-learning.rss", region: overseas, layer: primary, limit: 10, proxy: true}
+  - {id: nature_drugdisc_aidd, name: "Nature · 药物发现", url: "https://www.nature.com/subjects/drug-discovery.rss", region: overseas, layer: primary, limit: 10, proxy: true}
+  - {id: cradle, name: "Cradle 博客", url: "https://api.feedifyrss.com/cradle-unfolded/blog-posts/feed.xml", region: overseas, layer: primary, limit: 12, proxy: true}
+  - {id: biorxiv_pharmtox, name: "bioRxiv 药理与毒理", url: "https://connect.biorxiv.org/biorxiv_xml.php?subject=pharmacology_and_toxicology", region: overseas, layer: primary, limit: 10, proxy: true}
+  - {id: nature_comp_sci, name: "Nature Computational Science", url: "https://www.nature.com/natcomputsci.rss", region: overseas, layer: primary, limit: 10, proxy: true}
+  - {id: google_research, name: "Google Research 博客", url: "https://research.google/blog/rss/", region: overseas, layer: primary, limit: 12, proxy: true}
+  - {id: pharmafile, name: "PharmaFile", url: "https://www.pharmafile.com/rss", region: overseas, layer: broad, limit: 12, proxy: true}
+  - {id: manufacturingchemist, name: "Manufacturing Chemist", url: "https://www.manufacturingchemist.com/rss", region: overseas, layer: broad, limit: 12, proxy: true}
+  - {id: plos_compbiol, name: "PLOS Computational Biology", url: "https://journals.plos.org/ploscompbiol/feed/atom", region: overseas, layer: primary, limit: 10, proxy: true}
+  - {id: plos_digitalhealth, name: "PLOS Digital Health", url: "https://journals.plos.org/digitalhealth/feed/atom", region: overseas, layer: primary, limit: 10, proxy: true}
