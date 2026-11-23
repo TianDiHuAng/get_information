@@ -2,12 +2,17 @@
   "name": "Z-Bit AIDD",
   "short_name": "Z-Bit AIDD",
   "description": "盯 AI 制药的管线、临床、平台与论文：五轴评分、事件聚簇、规则编排",
-  "start_url": "/",
+  "start_url": "/get_information/aidd",
   "display": "standalone",
   "background_color": "#faf9f6",
   "theme_color": "#176b75",
   "lang": "zh-CN",
   "icons": [
-    {"src": "/og.png", "sizes": "1200x630", "type": "image/png", "purpose": "any"}
+    {
+      "src": "/get_information/aidd/og.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "purpose": "any"
+    }
   ]
 }

@@ -2,14 +2,27 @@
   "name": "Z-Bit",
   "short_name": "Z-Bit",
   "description": "每天一份 AI 情报日报：五轴评分、事件聚簇、规则编排",
-  "start_url": "/",
+  "start_url": "/get_information",
   "display": "standalone",
   "background_color": "#faf9f6",
   "theme_color": "#176b75",
   "lang": "zh-CN",
   "icons": [
-    {"src": "/icon-192.png", "sizes": "192x192", "type": "image/png"},
-    {"src": "/icon-512.png", "sizes": "512x512", "type": "image/png"},
-    {"src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+    {
+      "src": "/get_information/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/get_information/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/get_information/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }
