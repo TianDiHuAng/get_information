@@ -5,8 +5,13 @@ config/mail.yaml
 config/aa.yaml
 config/llm.yaml
 
-# ===== 运行产物（可重新生成）=====
-data/
+# ===== 运行产物 =====
+# data/ 默认全忽略，但白名单放行「数据快照」，防止切分支/误操作冲掉数据后无法恢复。
+# 放行的是纯数据（条目 JSON + SQLite 快照），不含任何密钥/口令/token。
+data/*
+!data/items.json
+!data/radar.db
+!data/README.md
 logs/
 site/
 *.log
@@ -23,9 +28,7 @@ Thumbs.db
 .idea/
 .vscode/
 
-# ===== ���ع���/���в��� =====
+# ===== 归档 / 临时目录 =====
 .zcode/
 research/
-
-# ��ʱĿ¼
 .tmp_*/
