@@ -1,0 +1,8 @@
+# Z-Bit AIDD
+User-agent: *
+Allow: /
+# 后台与接口的写入口不抓
+Disallow: /admin
+Disallow: /api/feedback
+
+Sitemap: http://localhost:8123/sitemap.xml

@@ -1,0 +1,26 @@
+# Z-Bit
+
+> 每天采集 AI 前沿信息（一手博客 / 论文 / X / Telegram / 国内科技媒体），
+> 用五轴模型打分、按事件聚簇、按规则编成一份日报。
+
+## 怎么读这个站
+
+- 今日要闻：http://localhost:8123/
+- 今日要闻 RSS：http://localhost:8123/feed.xml
+- 全部动态 RSS：http://localhost:8123/feed-all.xml
+- 结构化数据（JSON）：http://localhost:8123/api/v1/latest.json
+
+## 数据说明
+
+- `score` 是排序分（0–100）：判断价值为主，时效与热度只做轻微修正。
+- `attention` 是判断本身：五个维度（sig 实质份量 / nov 信息增量 / cred 证据强度 /
+  reson 共振面 / act 可用性）各 0–10，按内容类型加权；同一份材料独立打两次分。
+- `event`：同一件事被多家报道时合并成一个事件，`representative` 为 true 的那条是代表稿。
+- 标题与摘要已翻成简体中文；原文链接始终保留，不转载全文。
+
+## 当前规模
+
+- 今日条目：73
+- 进日报：12
+- 事件数：0
+- 信源数：9

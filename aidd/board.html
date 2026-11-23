@@ -1,0 +1,131 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Z-Bit · 看板 2026-11-11</title>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Z-Bit · 看板 2026-11-11">
+<meta property="og:description" content="源健康、评分分布、模型成本、官方与国内舆论场">
+<meta property="og:image" content="http://localhost:8123/og.png">
+<meta property="og:url" content="http://localhost:8123/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Z-Bit · 看板 2026-11-11">
+<meta name="twitter:image" content="http://localhost:8123/og.png">
+<style>
+:root { color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin:0; background:#0b0f14; color:#e6edf3; font:14px/1.6 -apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; }
+.wrap { max-width:1080px; margin:0 auto; padding:28px 18px 60px; }
+h1 { font-size:19px; margin:0 0 4px; }
+.sub { color:#6b7785; font-size:12px; margin-bottom:22px; }
+a { color:#7dd3fc; }
+.cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:12px; margin-bottom:26px; }
+.card { background:#111820; border:1px solid #1f2a37; border-radius:10px; padding:14px 16px; }
+.k { color:#8b98a8; font-size:12px; }
+.v { font-size:24px; font-weight:700; letter-spacing:.3px; margin:2px 0 2px; }
+.h { color:#6b7785; font-size:11px; }
+h2 { font-size:14px; color:#b7c3d0; margin:26px 0 10px; padding-bottom:6px; border-bottom:1px solid #1f2a37; }
+.bar { display:flex; align-items:center; gap:10px; margin:5px 0; font-size:12px; }
+.bl { width:64px; color:#8b98a8; flex:none; }
+.bt { flex:1; background:#151d26; border-radius:4px; height:14px; overflow:hidden; }
+.bt i { display:block; height:100%; background:linear-gradient(90deg,#2563eb,#22c55e); }
+.bn { width:44px; text-align:right; color:#8b98a8; flex:none; }
+.chip { display:inline-block; background:#16202b; border:1px solid #22303d; color:#9fb0c0;
+        border-radius:999px; padding:1px 9px; font-size:11px; margin:2px 4px 2px 0; }
+.two { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+@media (max-width:760px) { .two { grid-template-columns:1fr; } }
+ul { margin:6px 0; padding-left:18px; }
+li.err { color:#f87171; }
+.muted { color:#6b7785; }
+table { width:100%; border-collapse:collapse; font-size:12px; }
+th,td { text-align:left; padding:5px 8px; border-bottom:1px solid #18212b; }
+th { color:#6b7785; font-weight:500; }
+</style><style>
+:root{color-scheme:light;
+ --bg:#faf9f6;--bg-sunk:#f3f3ef;--bg-muted:#e9ede9;--well:#f3f3ef;
+ --surface:#fff;--surface-2:#fdfdfb;--raised:#fff;--sidebar:#fdfdfb;--daybar:#f0f2ee;
+ --ink:#202a30;--ink-2:#303c42;--ink-3:#59656b;--ink-4:#657176;
+ --line:#dfe4e1;--line-strong:#d1d9d5;--line-soft:#e9ede9;
+ --accent:#176b75;--accent-ink:#145f68;--accent-soft:rgba(23,107,117,.08);
+ --accent-softer:rgba(23,107,117,.05);--note:#526f72;--hot:#b3402a;--hot-soft:rgba(179,64,42,.08);
+ --ok:#2f7d5c;--rank-1:#b3402a;--rank-2:#a3642f;--rank-3:#96702e;--rank-rest:#6b7684;
+ --r-mark:5px;--r-control:8px;--r-tile:10px;--r-card:12px;--r-panel:14px;
+ --font-sans:system-ui,-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+ --font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+[data-theme="dark"]{color-scheme:dark;
+ --bg:#13191c;--bg-sunk:#182024;--bg-muted:#202a2f;--well:rgba(32,42,47,.6);
+ --surface:#1a2226;--surface-2:#1d272b;--raised:#202a2f;--sidebar:#161e21;--daybar:#182024;
+ --ink:#e7eceb;--ink-2:#d2dada;--ink-3:#a5b0b3;--ink-4:#89979d;
+ --line:rgba(255,255,255,.08);--line-strong:rgba(255,255,255,.12);--line-soft:rgba(255,255,255,.06);
+ --accent:#12ccd8;--accent-ink:#2ce2e8;--accent-soft:rgba(18,204,216,.12);
+ --accent-softer:rgba(18,204,216,.06);--note:#8fb8a8;--hot:#d86a52;--hot-soft:rgba(216,106,82,.12);
+ --ok:#5fc79a;--rank-1:#d86a52;--rank-2:#d18a5e;--rank-3:#d3b26a;--rank-rest:#7b869a}
+body{background:var(--bg) !important;color:var(--ink) !important;
+     font-family:var(--font-sans) !important;
+     /* 老页面没有 .shell 外壳：让 body 自己充当 flex 容器，侧栏和内容并排 */
+     display:flex !important;min-height:100dvh}
+.wrap{flex:1;min-width:0;max-width:max(1200px,calc(270dvh - 236px)) !important;
+      margin:0 auto !important;padding:0 0 72px !important}
+@media(min-width:700px){.wrap{padding:24px 20px 72px !important}}
+@media(min-width:941px){.wrap{padding:24px 28px 72px !important}}
+h1,h2,h3{color:var(--ink) !important;font-family:var(--font-sans) !important}
+a{color:var(--accent) !important}
+.card,.tile{background:var(--surface) !important;border-color:var(--line) !important;
+            color:var(--ink) !important}
+.muted,.sub,.k,.h,.bn,.bl{color:var(--ink-3) !important}
+footer{color:var(--ink-4) !important}
+table th{color:var(--ink-4) !important;border-color:var(--line) !important}
+table td{border-color:var(--line-soft) !important}
+</style></head><div class="switcher" style="padding:8px 16px;font-size:13px"><a href="/get_information/">AI</a> · <a href="/get_information/aidd/" class="on">AIDD</a></div><body><aside class="side"><a class="brand" href="/get_information/aidd/" aria-label="Z-Bit AIDD 首页"><span class="mark"><span class="short">Z</span><span class="full">Z-Bit AIDD</span></span></a><div class="grp"><div class="sec-title">内容</div><a class="item" href="/get_information/aidd/"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4.5 13.5H11l-1 8.5 8.5-11.5H12l1-8.5Z"/></svg></span><span class="lbl">精选</span></a><a class="item" href="/get_information/aidd/all.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></span><span class="lbl">全部动态</span></a><a class="item" href="/get_information/aidd/hot.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2c1 4-2 5-2 8a2 2 0 0 0 4 0c0-1-.5-2-.5-2S17 11 17 15a5 5 0 0 1-10 0c0-5 5-6 5-13Z"/></svg></span><span class="lbl">热点榜</span></a><a class="item" href="/get_information/aidd/daily.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M9 13h6M9 17h4"/></svg></span><span class="lbl">日报</span></a><a class="item" href="/get_information/aidd/topics.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span><span class="lbl">主题</span></a><a class="item" href="/get_information/aidd/starred.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21 12 16 5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2Z"/></svg></span><span class="lbl">收藏</span></a></div><div class="grp"><div class="sec-title">模型</div><a class="item" href="/get_information/aidd/monthly.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M9 13h6M9 17h4"/></svg></span><span class="lbl">月报</span></a><a class="item" href="/get_information/aidd/timeline.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="lbl">时间线</span></a><a class="item" href="/get_information/aidd/leaderboard.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg></span><span class="lbl">模型榜</span></a><a class="item" href="/get_information/aidd/free-tokens.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12.5 12.5 20a2 2 0 0 1-2.8 0L3 13.3V3h10.3l6.7 6.7a2 2 0 0 1 0 2.8Z"/><circle cx="7.5" cy="7.5" r="1.2"/></svg></span><span class="lbl">Token 羊毛</span></a></div><div class="grp"><div class="sec-title">更多</div><a class="item" href="/get_information/aidd/agent.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22v-5"/><path d="M9 8V2M15 8V2"/><path d="M6 8h12v3a6 6 0 0 1-12 0Z"/></svg></span><span class="lbl">Agent 接入</span></a><a class="item" href="/get_information/aidd/about.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 5.6a5 5 0 0 0-7.1 0L12 7.3l-1.7-1.7a5 5 0 1 0-7.1 7.1L12 21.5l8.8-8.8a5 5 0 0 0 0-7.1Z"/></svg></span><span class="lbl">关于</span></a><a class="item" href="/get_information/aidd/changelog.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 8v5l4 2"/></svg></span><span class="lbl">更新日志</span></a><a class="item" href="/get_information/aidd/feedback.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/></svg></span><span class="lbl">反馈</span></a><a class="item on" href="/get_information/aidd/board.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span><span class="lbl">运行看板</span></a><a class="item" href="/get_information/aidd/about.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span><span class="lbl">后台</span></a></div><div class="foot"><a class="gh" href="https://github.com/KKKKhazix/AIHOT" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> GitHub 开源</a><button class="themebtn" type="button" id="themebtn">◐ 跟随系统</button></div></aside><div class="bnav"><a href="/get_information/aidd/"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4.5 13.5H11l-1 8.5 8.5-11.5H12l1-8.5Z"/></svg>精选</a><a href="/get_information/aidd/hot.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2c1 4-2 5-2 8a2 2 0 0 0 4 0c0-1-.5-2-.5-2S17 11 17 15a5 5 0 0 1-10 0c0-5 5-6 5-13Z"/></svg>热点</a><a href="/get_information/aidd/daily.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M9 13h6M9 17h4"/></svg>日报</a><a href="/get_information/aidd/more.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg>我的</a></div><div class="wrap">
+<h1>Z-Bit · 看板</h1>
+<div class="sub">2026-11-11 · 生成于 2026-11-11T17:30:12+08:00 · <a href="/get_information/aidd/">回到今日要闻</a></div>
+
+<div class="cards"><div class="card"><div class="k">今日条目</div><div class="v">73</div><div class="h">新增 73 · 重复 0</div></div><div class="card"><div class="k">进日报</div><div class="v">12</div><div class="h">事件 0 个</div></div><div class="card"><div class="k">评分</div><div class="v">0/0</div><div class="h">过门槛 · 拦截 0 · 失败 0</div></div><div class="card"><div class="k">模型调用</div><div class="v">0</div><div class="h">命中回执 0 · token 0</div></div></div>
+
+<h2>评分分布（五轴加权分，每 20 分一档）</h2>
+<div class="bar"><span class="bl">0–20</span><span class="bt"><i style="width:0%"></i></span><span class="bn">0</span></div><div class="bar"><span class="bl">20–40</span><span class="bt"><i style="width:0%"></i></span><span class="bn">0</span></div><div class="bar"><span class="bl">40–60</span><span class="bt"><i style="width:0%"></i></span><span class="bn">0</span></div><div class="bar"><span class="bl">60–80</span><span class="bt"><i style="width:0%"></i></span><span class="bn">0</span></div><div class="bar"><span class="bl">80–100</span><span class="bt"><i style="width:0%"></i></span><span class="bn">0</span></div>
+<div class="muted" style="font-size:11px;margin-top:6px;">
+门槛在 config/scoring.yaml：primary 58 / rank 66 / broad 68 / search 74 / social 76。
+堆在门槛附近的那一档，就是"最该拿去看错例"的样本。
+</div>
+
+<h2>内容分类</h2>
+<div class="bar"><span class="bl">未结构化</span><span class="bt"><i style="width:100%"></i></span><span class="bn">73</span></div>
+
+<h2>中文舆论场：官方发布 vs 国内讨论</h2>
+<div class="two">
+  <div>
+    <div class="muted" style="font-size:12px;">海外官方一手（59 条）</div>
+    <span class="chip">openai</span>
+  </div>
+  <div>
+    <div class="muted" style="font-size:12px;">国内社媒（0 条）</div>
+    <span class="muted">—</span>
+  </div>
+</div>
+<div style="margin-top:10px;">
+  <div class="muted" style="font-size:12px;">两边都在说（0 个主体/标签）</div>
+  <span class="muted">—</span>
+</div>
+<div class="muted" style="font-size:11px;margin-top:8px;">
+只在左边出现的，是"还没传进中文圈"的情报；只在右边出现的，是"中文圈在聊但官方没动静"。
+</div>
+
+<h2>模型调用</h2>
+<div class="muted" style="font-size:12px;">
+共 0 次 · 命中回执 0
+（0%） · token 0
+<br>回执命中 = 同一输入复用，不花钱也不等待。按状态：
+—
+</div>
+
+<h2>信源健康</h2>
+<table><tr><th>信源</th><th>本轮条数</th><th>连续失败</th><th>最近成功</th></tr>
+<tr><td>toutiao</td><td>50</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>bilibili</td><td>30</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>arxiv_qbio</td><td>15</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T09:30:46+00:00</td></tr><tr><td>weibo</td><td>15</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>zhihu</td><td>15</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>arxiv</td><td>12</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T09:26:50+00:00</td></tr><tr><td>biorxiv</td><td>12</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T09:30:46+00:00</td></tr><tr><td>endpoints</td><td>12</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T09:30:46+00:00</td></tr><tr><td>google_news</td><td>12</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T09:26:50+00:00</td></tr><tr><td>hackernews</td><td>12</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>ithome</td><td>12</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>kr36</td><td>12</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>stat</td><td>12</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T09:30:46+00:00</td></tr><tr><td>deals</td><td>11</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>biopharmadive</td><td>10</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T09:30:46+00:00</td></tr><tr><td>gen</td><td>10</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T09:30:46+00:00</td></tr><tr><td>github</td><td>10</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>labiotech</td><td>10</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T09:30:46+00:00</td></tr><tr><td>sciencedaily_pharm</td><td>10</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T09:30:46+00:00</td></tr><tr><td>sspai</td><td>10</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>apple_ml</td><td>8</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>aws_ml</td><td>8</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>bair</td><td>8</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>engadget</td><td>8</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>eugeneyan</td><td>8</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>geekpark</td><td>8</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>hf_blog</td><td>8</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>hf_papers</td><td>8</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T09:26:50+00:00</td></tr><tr><td>huyenchip</td><td>8</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>importai</td><td>8</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>infoq_cn</td><td>8</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>jalammar</td><td>8</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>marktechpost</td><td>8</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>mit_ai</td><td>8</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>mit_tr</td><td>8</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>nature_biotech</td><td>8</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T09:30:46+00:00</td></tr><tr><td>nature_drugdisc</td><td>8</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T09:30:46+00:00</td></tr><tr><td>nvidia_blog</td><td>8</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>openai_news</td><td>8</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>oschina</td><td>8</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>qbitai</td><td>8</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>ruder</td><td>8</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>siliconangle</td><td>8</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>techcrunch_ai</td><td>8</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>tldr_ai</td><td>8</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>tmtpost</td><td>8</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>verge_ai</td><td>8</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>wired_ai</td><td>8</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>simonw</td><td>6</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>telegram</td><td>6</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>deepmind_blog</td><td>5</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>google_research</td><td>5</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>msr_blog</td><td>5</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>interconnects</td><td>4</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>latent_space</td><td>4</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>oneusefulthing</td><td>4</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>smolai</td><td>4</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>thebatch</td><td>4</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>aheadofai</td><td>3</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>gradient</td><td>3</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>lilianweng</td><td>3</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>agentcases</td><td>0</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr><tr><td>x</td><td>0</td><td style="color:#6b7785">0</td><td class="muted">2026-11-11T04:24:18+00:00</td></tr>
+</table>
+
+<h2>告警</h2>
+<ul><li class="muted">今天没有告警</li></ul>
+
+<div class="muted" style="font-size:11px;margin-top:30px;">
+本页由 collector/board.py 生成，不读写业务数据；反馈与设置请改 config/*.yaml。
+</div>
+</div></body></html>
