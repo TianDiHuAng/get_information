@@ -72,6 +72,11 @@ def main() -> None:
         text = re.sub(r'(href|src)="/(?!get_information/)([a-zA-Z0-9_.\-/]+\.(?:html|xml|txt|png|svg|ico|js|css|json))"',
                       rf'\1="{base}/\2"', text)
 
+        if args.aidd_mode:
+            # AIDD 站用专属 logo（site/aidd 里有 logo-text-aidd*.png，但模板写死了 AI 版）
+            text = text.replace('logo-text-dark.png', 'logo-text-aidd-dark.png')
+            text = text.replace('logo-text.png', 'logo-text-aidd.png')
+
         if not args.keep_admin:
             text = text.replace(f'href="{base}/admin.html"', f'href="{base}/about.html"')
             # 链接已指向 about，文字「后台」改成「说明」，避免名不副实
