@@ -1,0 +1,21 @@
+# 统一屏蔽词规则（来自 freebie-radar 的 blocklist.ts 预设，本地化改造）
+#
+# 用途：一处配置，三处生效——
+#   1. 采集入库送 AI 审核前跳过（省 token）
+#   2. 网页隐藏
+#   3. 推送/日报拦截
+#
+# preset: false 可关掉下面 16 条内置预设词，只保留 rules 里自定义的。
+preset: true
+
+rules: []
+# 示例：
+# rules:
+#   - pattern: 博彩
+#     mode: keyword          # keyword（默认，子串匹配）| regex（正则，较慢）
+#     scope: all             # all / 空 表示全局；填源 id 则只屏蔽该源
+#     note: 赌博广告
+#   - pattern: ^广告|推广合作
+#     mode: regex
+#     scope: linuxdo
+#     note: 指定源的硬广

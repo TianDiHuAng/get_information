@@ -201,7 +201,7 @@ python mcp_server.py        # stdio，一行一个 JSON-RPC
 挂到 Claude Desktop / Cursor：
 
 ```json
-{"mcpServers": {"zbit": {"command": "python", "args": ["D:/AI/project/Get_Information/mcp_server.py"]}}}
+{"mcpServers": {"zbit": {"command": "python", "args": ["E:/ai_project/Get_Information/mcp_server.py"]}}}
 ```
 
 七个工具，工具名 = `<前缀>_<能力>`（前缀在 `config/industry.yaml` 的 `mcp_prefix`）：
@@ -317,6 +317,12 @@ python tools/scan_secrets.py
 ```
 collector/     采集/清洗/判断/打分/渲染/推送
   identity.py  条目身份：URL 规范化、平台原生 ID、标题相似度
+  evidence.py  证据校验：从正文判 claim/promotion/editorial（来自 freebie-radar）
+  obtain.py    获取方式：白嫖/抽奖/试用/推广/付费正交维度（来自 freebie-radar）
+  codes.py     兑换码提取：邀请码/激活码/分段码/大写串（来自 freebie-radar）
+  pricing.py   价格提取：归一化人民币 + 免费判定 + 反例防误判（来自 freebie-radar）
+  noise.py     福利信号词与噪音标题：deal/promo/opensource/urgent（来自 freebie-radar）
+  blocklist.py 统一屏蔽词：关键词/正则双模式、按源屏蔽（来自 freebie-radar）
   extract.py   正文与日期：抓原文页、语义容器选正文、三级日期回退
   store.py     SQLite：跨天去重、已报抑制、评分留痕、事件、LLM 回执、运行阶段
   llm.py       统一 LLM 调用：回执、预算、重试、换模型、结构化解析
@@ -336,10 +342,10 @@ collector/     采集/清洗/判断/打分/渲染/推送
   report.py    周报月报：从日报汇编（规则编排）
   share.py     分享图：1200×630 的头条卡片 + og/分享元信息
   alerts.py    告警：源健康、缺期、预算、失败率
-config/        配置（含 example 模板、评分口径、提示词）
+config/        配置（含 example 模板、评分口径、提示词、blocklist.yaml 屏蔽词）
 data/          运行产物（忽略）
 site/          生成的网站（忽略）
 tests/         单元测试（不联网）
 tools/         辅助脚本（cookie/token 写入、密钥扫描）
-docs/          交接、源覆盖、AIHOT 分析与吸收路线
+docs/          交接、源覆盖、AIHOT 分析与吸收路线、freebie-radar 能力吸收记录
 ```

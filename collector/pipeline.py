@@ -20,17 +20,22 @@ TOPICS_PATH = Path(__file__).parent.parent / "config" / "topics.yaml"
 def _topics() -> dict:
     """优先用行业包里的 topics.yaml，没有再退到全局。
 
-    全局那份是「科技/AI」词表，拿它筛制药新闻会把真新闻挡在门外
-    （11-12 那天 AIDD 61 条里 41 条被拦），所以行业包必须能覆盖它。
+    全局那份是「科技/AI」词表，拿它筛制药新闻会把真新闻挡在门外，
+    所以行业包必须能覆盖它。这里只按路径判断，不去调 industry 模块 ——
+    避免把行业切换的全局状态带进纯函数里。
     """
-    try:
-        from . import industry
+    import os
 
-        data = industry.load("topics.yaml")
-        if data:
-            return data
-    except Exception:
-        pass
+    pack = (os.environ.get("RADAR_PACK") or "").strip()
+    if pack:
+        p = Path(__file__).parent.parent / "industry" / pack / "topics.yaml"
+        if p.is_file():
+            try:
+                data = yaml.safe_load(p.read_text(encoding="utf-8")) or {}
+                if data:
+                    return data
+            except Exception:
+                pass
     try:
         return yaml.safe_load(TOPICS_PATH.read_text(encoding="utf-8")) or {}
     except Exception:

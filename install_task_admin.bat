@@ -5,8 +5,9 @@ chcp 65001 >nul
 set TASK1=GetInfo_Daily_0800
 set TASK2=GetInfo_Daily_2000
 set TASK3=GetInfo_Web
-set RUN=D:\AI\project\Get_Information\run_daily.bat
-set WEB=D:\Anaconda\pythonw.exe D:\AI\project\Get_Information\serve.py
+set "ROOT=%~dp0"
+set RUN=%ROOT%run_daily.bat
+set WEB=D:\Anaconda\pythonw.exe %ROOT%serve.py
 
 schtasks /Create /TN "%TASK1%" /TR "%RUN%" /SC DAILY /ST 08:00 /F
 schtasks /Create /TN "%TASK2%" /TR "%RUN%" /SC DAILY /ST 20:00 /F
