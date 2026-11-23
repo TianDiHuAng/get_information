@@ -439,7 +439,38 @@ def build_hot(day: str | None = None, site_root: Path | None = None) -> dict[str
                  f'<span class="muted small">按独立来源数与时间衰减排序</span></h2>'
                  f'<ul class="compact">{compact}</ul>')
     if not ranked:
-        body = '<p class="muted">还没有聚合出事件。跑一轮 python run.py 就会有。</p>'
+        # 没有跨源事件时，按单条热度给一个「热门条目」兜底榜——
+        # 空页面对读者没有价值；这里诚实标注口径，不伪装成事件聚合。
+        try:
+            from . import store as _store
+            # recent_items 不返回分数：从 items.extra.score / item_days.score 取
+            import json as _json
+            with _store.db() as _conn:
+                _rows = _conn.execute(
+                    "SELECT i.id, i.title, i.extra, d.score AS day_score "
+                    "FROM items i LEFT JOIN item_days d ON d.item_id=i.id "
+                    "ORDER BY COALESCE(d.score,0) DESC, i.last_seen DESC LIMIT 12"
+                ).fetchall()
+            hot_items = []
+            for _r in _rows:
+                try: _extra = _json.loads(_r["extra"] or "{}")
+                except Exception: _extra = {}
+                _score = float(_r["day_score"] or _extra.get("score") or 0)
+                if _score > 0:
+                    hot_items.append({"id": _r["id"], "title": _r["title"], "score": _score})
+            if hot_items:
+                rows_html = "".join(
+                    f'<li><span class="no">{i:02d}</span>'
+                    f'<a href="/items/{int(x["id"])}.html">{theme.esc(str(x.get("title") or "")[:120])}</a>'
+                    f'<span class="heat">{int(float(x.get("score") or 0))}</span></li>'
+                    for i, x in enumerate(hot_items, 1))
+                body = ('<p class="lead">今天还没有跨来源聚合出的事件 —— '
+                        '先按单条热度列出值得看的条目；有多家报道同一件事时会自动合并成事件榜。</p>'
+                        f'<ul class="compact">{rows_html}</ul>')
+            else:
+                body = '<p class="muted">还没有聚合出事件。跑一轮 python run.py 就会有。</p>'
+        except Exception:
+            body = '<p class="muted">还没有聚合出事件。跑一轮 python run.py 就会有。</p>'
     _write(root / "hot.html", theme.page("热点榜", body, active="/hot.html",
                                          own_heading=False, extra_css=HOT_CSS))
     return {"file": str(root / "hot.html"), "events": len(ranked)}
