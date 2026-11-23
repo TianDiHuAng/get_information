@@ -5,10 +5,10 @@
 
 ## 怎么读这个站
 
-- 今日要闻：http://localhost:8123/
-- 今日要闻 RSS：http://localhost:8123/feed.xml
-- 全部动态 RSS：http://localhost:8123/feed-all.xml
-- 结构化数据（JSON）：http://localhost:8123/api/v1/latest.json
+- 今日要闻：http://10.4.2.231:8124/
+- 今日要闻 RSS：http://10.4.2.231:8124/feed.xml
+- 全部动态 RSS：http://10.4.2.231:8124/feed-all.xml
+- 结构化数据（JSON）：http://10.4.2.231:8124/api/v1/latest.json
 
 ## 数据说明
 
@@ -20,7 +20,7 @@
 
 ## 当前规模
 
-- 今日条目：73
+- 今日条目：50
 - 进日报：12
 - 事件数：0
-- 信源数：9
+- 信源数：15

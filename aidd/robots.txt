@@ -5,4 +5,4 @@ Allow: /
 Disallow: /admin
 Disallow: /api/feedback
 
-Sitemap: http://localhost:8123/sitemap.xml
+Sitemap: http://10.4.2.231:8124/sitemap.xml

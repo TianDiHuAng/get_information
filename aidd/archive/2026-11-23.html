@@ -1,0 +1,1081 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Z-Bit · 2026-11-23T16:34</title>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Z-Bit · 2026-11-23">
+<meta property="og:description" content="Causal Event Networks: Entangled Tensor Graphs, Connectome Q">
+<meta property="og:image" content="http://10.4.2.231:8124/og.png">
+<meta property="og:url" content="http://10.4.2.231:8124/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Z-Bit · 2026-11-23">
+<meta name="twitter:image" content="http://10.4.2.231:8124/og.png">
+<link rel="alternate" type="application/rss+xml" title="Z-Bit · 今日要闻" href="/get_information/aidd/feed.xml">
+<link rel="alternate" type="application/rss+xml" title="Z-Bit · 全部动态" href="/get_information/aidd/feed-all.xml">
+<link rel="alternate" type="application/json" title="结构化数据" href="/get_information/aidd/api/v1/latest.json">
+<style>
+  :root { color-scheme: dark; }
+  /* 全站导航条：与 collector/site.py 生成的页面保持一致 */
+  .nav { display:flex; flex-wrap:wrap; gap:14px; align-items:center;
+          padding:11px 20px; border-bottom:1px solid #1f2a37;
+          background:#0d131bf2; position:sticky; top:0; z-index:10; }
+  .nav .brand { font-weight:700; color:#e6edf3; margin-right:8px; }
+  .nav a { font-size:13px; color:#9fb0c0; text-decoration:none; }
+  .nav a:hover { color:#7dd3fc; }
+  .nav a.on { color:#7dd3fc; font-weight:600; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:#0b0f14; color:#e6edf3;
+         font:15px/1.6 -apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; }
+  .wrap { max-width:1180px; margin:0 auto; padding:40px 20px 80px; }
+  header h1 { font-size:30px; margin:0 0 6px; letter-spacing:-.5px; }
+  header .sub { color:#8b98a5; font-size:13px; }
+  .stats { display:flex; gap:26px; margin:24px 0 8px; flex-wrap:wrap; }
+  .stat b { display:block; font-size:24px; font-weight:650; }
+  .stat span { color:#8b98a5; font-size:12px; }
+  .coverage { display:flex; gap:8px; flex-wrap:wrap; margin:18px 0 26px; }
+  .charts { display:grid; grid-template-columns:repeat(auto-fit,minmax(255px,1fr)); gap:14px;
+             margin:26px 0 22px; }
+  .panel { background:#0f151d; border:1px solid #1a2331; border-radius:12px; padding:14px 16px 10px; }
+  .panel h2 { font-size:13px; color:#7d8b99; font-weight:600; letter-spacing:.08em; margin:0 0 6px; }
+  .panel svg { display:block; width:100%; height:auto; }
+  .panel svg text { font-family:inherit; }
+  .lmx { margin:0 0 22px; }
+  .lmx table { width:100%; border-collapse:collapse; font-size:13px; }
+  .lmx th { text-align:left; color:#5f6b78; font-weight:500; font-size:11px;
+             padding:4px 10px; border-bottom:1px solid #1a2331; }
+  .lmx th.s { text-align:right; }
+  .lmx td { padding:7px 10px; border-bottom:1px solid #141d29; }
+  .lmx td.r { color:#8b98a5; width:60px; font-variant-numeric:tabular-nums; }
+  .lmx td.c { width:70px; font-variant-numeric:tabular-nums; }
+  .lmx td.m { font-weight:600; }
+  .lmx td.o { color:#8b98a5; }
+  .lmx td.s { color:#e6edf3; font-variant-numeric:tabular-nums; text-align:right; width:90px; }
+  .chip { font-size:12px; padding:5px 10px; border-radius:999px; border:1px solid #1f2937;
+           background:#111823; color:#9aa7b4; display:inline-flex; gap:6px; align-items:center; }
+  .chip b { font-weight:500; color:#5f6b78; font-size:11px; }
+  .chip.on { border-color:#1d4d3a; background:#0d1f19; color:#a7f3d0; }
+  .chip.on b { color:#34d399; }
+  .chip.off { opacity:.55; }
+  .filters { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px; }
+  .f { cursor:pointer; border:1px solid #1f2937; background:#0f151d; color:#9aa7b4;
+        padding:6px 14px; border-radius:8px; font-size:13px; }
+  .f:hover { border-color:#374151; color:#e6edf3; }
+  .f.active { background:#e6edf3; color:#0b0f14; border-color:#e6edf3; font-weight:600; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:14px; }
+  .zone { margin-bottom:8px; }
+  .zone h2 { font-size:17px; margin:30px 0 2px; display:flex; align-items:baseline; gap:10px; }
+  .zone h2 span { font-size:12px; color:#6b7785; font-weight:400; }
+  .zone-sub { margin:0 0 14px; color:#5f6b78; font-size:12px; }
+  .card { position:relative; display:flex; background:#0f151d; border:1px solid #1a2331;
+           border-radius:12px; overflow:hidden; text-decoration:none; color:inherit;
+           transition:border-color .15s, transform .15s; }
+  .card:hover { border-color:#2f3d50; transform:translateY(-2px); }
+  .bar { width:3px; flex:0 0 3px; }
+  .body { padding:14px 16px; display:flex; flex-direction:column; gap:8px; min-width:0; }
+  .meta { display:flex; gap:8px; align-items:center; flex-wrap:wrap; font-size:11px; }
+  .badge { border:1px solid; padding:1px 7px; border-radius:6px; }  .tag { color:#6b7785; }
+  .time { margin-left:auto; color:#6b7785; }
+  h3 { margin:0; font-size:15px; line-height:1.45; font-weight:600; }
+  p { margin:0; color:#8b98a5; font-size:12.5px; display:-webkit-box; -webkit-line-clamp:2;
+       -webkit-box-orient:vertical; overflow:hidden; }
+  .foot { display:flex; gap:12px; align-items:center; font-size:11px; color:#6b7785; margin-top:auto; }
+  .score { margin-left:auto; }
+  /* 反馈按钮：点一下就记，不用登录也不用刷新 */
+  .fb { cursor:pointer; opacity:.35; font-size:13px; line-height:1; padding:2px 4px; border-radius:5px;
+         user-select:none; transition:opacity .15s, background .15s; }
+  .fb:hover { opacity:.9; background:#ffffff14; }
+  .fb.on { opacity:1; background:#22c55e26; }
+  .hero { background:linear-gradient(135deg,#101a26,#0d141d); border:1px solid #1d2a3a;
+           border-radius:14px; padding:6px 18px; margin-bottom:22px; }
+  .hero h2 { font-size:13px; color:#7d8b99; font-weight:600; letter-spacing:.08em; margin:14px 0 6px; }
+  .hero-item { display:flex; gap:12px; align-items:baseline; padding:9px 0; text-decoration:none;
+                color:inherit; border-bottom:1px solid #16202c; }
+  .hero-item:last-child { border-bottom:0; }
+  .hero-item:hover .ht { color:#7dd3fc; }
+  .num { color:#3b4b5e; font-variant-numeric:tabular-nums; font-size:12px; }
+  .ht { font-size:14.5px; font-weight:600; flex:1; }
+  .hs { color:#5f6b78; font-size:11px; white-space:nowrap; }
+  .chip.bad { border-color:#5c1f1f; background:#1d0f0f; color:#fca5a5; }
+  .chip.bad b { color:#ef4444; }
+  .chip.warn { border-color:#5c441f; background:#1d160f; color:#fcd34d; }
+  .chip.warn b { color:#f59e0b; }
+  footer { margin-top:40px; color:#4b5563; font-size:12px; }
+  @media (max-width:520px) { .grid { grid-template-columns:1fr; } }
+</style>
+<style>
+:root{color-scheme:light;
+ --bg:#faf9f6;--bg-sunk:#f3f3ef;--bg-muted:#e9ede9;--well:#f3f3ef;
+ --surface:#fff;--surface-2:#fdfdfb;--raised:#fff;--sidebar:#fdfdfb;--daybar:#f0f2ee;
+ --ink:#202a30;--ink-2:#303c42;--ink-3:#59656b;--ink-4:#657176;
+ --line:#dfe4e1;--line-strong:#d1d9d5;--line-soft:#e9ede9;
+ --accent:#176b75;--accent-ink:#145f68;--accent-soft:rgba(23,107,117,.08);
+ --accent-softer:rgba(23,107,117,.05);--note:#526f72;--hot:#b3402a;--hot-soft:rgba(179,64,42,.08);
+ --ok:#2f7d5c;--rank-1:#b3402a;--rank-2:#a3642f;--rank-3:#96702e;--rank-rest:#6b7684;
+ --r-mark:5px;--r-control:8px;--r-tile:10px;--r-card:12px;--r-panel:14px;
+ --font-sans:system-ui,-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+ --font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+[data-theme="dark"]{color-scheme:dark;
+ --bg:#13191c;--bg-sunk:#182024;--bg-muted:#202a2f;--well:rgba(32,42,47,.6);
+ --surface:#1a2226;--surface-2:#1d272b;--raised:#202a2f;--sidebar:#161e21;--daybar:#182024;
+ --ink:#e7eceb;--ink-2:#d2dada;--ink-3:#a5b0b3;--ink-4:#89979d;
+ --line:rgba(255,255,255,.08);--line-strong:rgba(255,255,255,.12);--line-soft:rgba(255,255,255,.06);
+ --accent:#12ccd8;--accent-ink:#2ce2e8;--accent-soft:rgba(18,204,216,.12);
+ --accent-softer:rgba(18,204,216,.06);--note:#8fb8a8;--hot:#d86a52;--hot-soft:rgba(216,106,82,.12);
+ --ok:#5fc79a;--rank-1:#d86a52;--rank-2:#d18a5e;--rank-3:#d3b26a;--rank-rest:#7b869a}
+body{background:var(--bg) !important;color:var(--ink) !important;
+     font-family:var(--font-sans) !important;
+     /* 老页面没有 .shell 外壳：让 body 自己充当 flex 容器，侧栏和内容并排 */
+     display:flex !important;min-height:100dvh}
+.wrap{flex:1;min-width:0;max-width:max(1200px,calc(270dvh - 236px)) !important;
+      margin:0 auto !important;padding:0 0 72px !important}
+@media(min-width:700px){.wrap{padding:24px 20px 72px !important}}
+@media(min-width:941px){.wrap{padding:24px 28px 72px !important}}
+h1,h2,h3{color:var(--ink) !important;font-family:var(--font-sans) !important}
+a{color:var(--accent) !important}
+.card,.tile{background:var(--surface) !important;border-color:var(--line) !important;
+            color:var(--ink) !important}
+.muted,.sub,.k,.h,.bn,.bl{color:var(--ink-3) !important}
+footer{color:var(--ink-4) !important}
+table th{color:var(--ink-4) !important;border-color:var(--line) !important}
+table td{border-color:var(--line-soft) !important}
+</style>
+</head>
+<body>
+<aside class="side"><a class="brand" href="@@ROOT@@/" aria-label="Z-Bit AIDD 首页"><img class="brand-mark" src="@@ROOT@@/get_information/aidd/get_information/logo-mark.png" alt="Z-Bit AIDD"><img class="brand-full brand-light" src="@@ROOT@@/get_information/aidd/get_information/logo-text.png" alt="Z-Bit AIDD"><img class="brand-full brand-dark" src="@@ROOT@@/get_information/aidd/get_information/logo-text-dark.png" alt="Z-Bit AIDD"></a><div class="grp"><div class="sec-title">内容</div><a class="item on" href="/get_information/aidd/"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4.5 13.5H11l-1 8.5 8.5-11.5H12l1-8.5Z"/></svg></span><span class="lbl">精选</span></a><a class="item" href="/get_information/aidd/all.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></span><span class="lbl">全部动态</span></a><a class="item" href="/get_information/aidd/hot.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2c1 4-2 5-2 8a2 2 0 0 0 4 0c0-1-.5-2-.5-2S17 11 17 15a5 5 0 0 1-10 0c0-5 5-6 5-13Z"/></svg></span><span class="lbl">热点榜</span></a><a class="item" href="/get_information/aidd/daily.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M9 13h6M9 17h4"/></svg></span><span class="lbl">日报</span></a><a class="item" href="/get_information/aidd/topics.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span><span class="lbl">主题</span></a><a class="item" href="/get_information/aidd/starred.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21 12 16 5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2Z"/></svg></span><span class="lbl">收藏</span></a></div><div class="grp"><div class="sec-title">模型</div><a class="item" href="/get_information/aidd/monthly.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M9 13h6M9 17h4"/></svg></span><span class="lbl">月报</span></a><a class="item" href="/get_information/aidd/timeline.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="lbl">时间线</span></a><a class="item" href="/get_information/aidd/leaderboard.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg></span><span class="lbl">模型榜</span></a></div><div class="grp"><div class="sec-title">更多</div><a class="item" href="/get_information/aidd/agent.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22v-5"/><path d="M9 8V2M15 8V2"/><path d="M6 8h12v3a6 6 0 0 1-12 0Z"/></svg></span><span class="lbl">Agent 接入</span></a><a class="item" href="/get_information/aidd/about.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 5.6a5 5 0 0 0-7.1 0L12 7.3l-1.7-1.7a5 5 0 1 0-7.1 7.1L12 21.5l8.8-8.8a5 5 0 0 0 0-7.1Z"/></svg></span><span class="lbl">关于</span></a><a class="item" href="/get_information/aidd/changelog.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 8v5l4 2"/></svg></span><span class="lbl">更新日志</span></a><a class="item" href="/get_information/aidd/feedback.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/></svg></span><span class="lbl">反馈</span></a><a class="item" href="/get_information/aidd/board.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span><span class="lbl">运行看板</span></a><a class="item" href="/get_information/aidd/about.html"><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span><span class="lbl">后台</span></a></div><div class="foot"><a class="gh" href="https://github.com/TianDiHuAng/get_information" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> GitHub 开源</a><button class="themebtn" type="button" id="themebtn">◐ 跟随系统</button></div></aside><div class="bnav"><a href="/get_information/aidd/" class="on"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4.5 13.5H11l-1 8.5 8.5-11.5H12l1-8.5Z"/></svg>精选</a><a href="/get_information/aidd/hot.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2c1 4-2 5-2 8a2 2 0 0 0 4 0c0-1-.5-2-.5-2S17 11 17 15a5 5 0 0 1-10 0c0-5 5-6 5-13Z"/></svg>热点</a><a href="/get_information/aidd/daily.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M9 13h6M9 17h4"/></svg>日报</a><a href="/get_information/aidd/more.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg>我的</a></div>
+<div class="wrap">
+  <header>
+    <h1>Z-Bit</h1>
+    <div class="sub">生成于 2026-11-23 16:34:14 · 每 78 个源中已启用 55 个 · 代理 可用</div>
+    <div class="stats">
+      <div class="stat"><b>50</b><span>去重后条目</span></div>
+      <div class="stat"><b>44</b><span>国外</span></div>
+      <div class="stat"><b>6</b><span>国内</span></div>
+      <div class="stat"><b>15</b><span>本次可用源</span></div>
+      <div class="stat"><b>4</b><span>失败源</span></div>
+    </div>
+    <div class="coverage"><span class="chip off" title="直连 · ok">smol.ai AINews<b>ok</b></span><span class="chip off" title="直连 · ok">The Batch<b>ok</b></span><span class="chip off" title="代理 · ok">HF Daily Papers<b>ok</b></span><span class="chip on" title="代理 · ok">OpenRouter 免费模型<b>ok</b></span><span class="chip warn" title="直连 · 失败 1 次">XFeed AI 创作者<b>失败 1 次</b></span><span class="chip off" title="直连 · ok">Hacker News<b>ok</b></span><span class="chip off" title="直连 · ok">GitHub 新项目<b>ok</b></span><span class="chip off" title="直连 · ok">B站科技区<b>ok</b></span><span class="chip off" title="直连 · ok">头条热榜<b>ok</b></span><span class="chip off" title="直连 · ok">arXiv cs.AI/CL<b>ok</b></span><span class="chip off" title="直连 · ok">36氪<b>ok</b></span><span class="chip off" title="直连 · ok">少数派<b>ok</b></span><span class="chip off" title="代理 · ok">Google News 搜索<b>ok</b></span><span class="chip off" title="代理 · ok">羊毛情报<b>ok</b></span><span class="chip off" title="代理 · ok">AI Agent 用例<b>ok</b></span><span class="chip off" title="参考页 · 无公开 API">alphaXiv<b>无公开 API</b></span><span class="chip off" title="参考页 · 403 受限">LMArena<b>403 受限</b></span><span class="chip off" title="参考页 · 无公开 API">Artificial Analysis<b>无公开 API</b></span><span class="chip off" title="Cookie · 需 Cookie">微博热搜<b>需 Cookie</b></span><span class="chip off" title="Cookie · 需 Cookie">知乎热榜<b>需 Cookie</b></span><span class="chip off" title="fxtwitter · ok">X / Twitter<b>ok</b></span><span class="chip off" title="代理 · ok">Telegram 频道<b>ok</b></span><span class="chip off" title="代理 · 403 受限">Reddit<b>403 受限</b></span><span class="chip off" title="代理 · 429 限流">GDELT 全球新闻<b>429 限流</b></span><span class="chip off" title="直连 · 不可达">V2EX<b>不可达</b></span><span class="chip on" title="代理 · ok">Endpoints News<b>ok</b></span><span class="chip on" title="代理 · ok">STAT<b>ok</b></span><span class="chip on" title="代理 · ok">GEN<b>ok</b></span><span class="chip on" title="代理 · ok">BioPharma Dive<b>ok</b></span><span class="chip on" title="代理 · ok">Labiotech<b>ok</b></span><span class="chip on" title="代理 · ok">Nature Biotechnology<b>ok</b></span><span class="chip on" title="代理 · ok">Nature Reviews Drug Discovery<b>ok</b></span><span class="chip on" title="代理 · ok">arXiv q-bio<b>ok</b></span><span class="chip on" title="代理 · ok">bioRxiv<b>ok</b></span><span class="chip on" title="代理 · ok">ScienceDaily 药学<b>ok</b></span><span class="chip on" title="代理 · ok">腾讯 智慧医疗（Google 新闻）<b>ok</b></span><span class="chip on" title="代理 · ok">AI 制药（Google 新闻）<b>ok</b></span><span class="chip on" title="代理 · ok">AI 药物发现（Google 新闻）<b>ok</b></span><span class="chip on" title="代理 · ok">医疗 AI 大模型（Google 新闻）<b>ok</b></span><span class="chip on" title="直连 · ok">AI 药物发现（PubMed）<b>ok</b></span><span class="chip on" title="直连 · ok">LLM × 生物医药（PubMed）<b>ok</b></span><span class="chip on" title="直连 · ok">生成式分子/蛋白设计（PubMed）<b>ok</b></span><span class="chip warn" title="代理 · 失败 1 次">medRxiv 预印本<b>失败 1 次</b></span><span class="chip on" title="代理 · ok">Nature Machine Intelligence<b>ok</b></span><span class="chip on" title="代理 · ok">Nature Chemical Biology<b>ok</b></span><span class="chip on" title="代理 · ok">Nature Communications<b>ok</b></span><span class="chip warn" title="代理 · 失败 1 次">Reddit r/drugdiscovery<b>失败 1 次</b></span><span class="chip warn" title="代理 · 失败 1 次">Reddit r/bioinformatics<b>失败 1 次</b></span><span class="chip on" title="代理 · ok">BioTechniques<b>ok</b></span><span class="chip on" title="直连 · ok">药渡头条<b>ok</b></span><span class="chip on" title="代理 · ok">JCIM 计算药物化学（PubMed）<b>ok</b></span><span class="chip on" title="代理 · ok">J. Med. Chem.（PubMed）<b>ok</b></span><span class="chip on" title="代理 · ok">Nature Methods<b>ok</b></span><span class="chip on" title="代理 · ok">npj Drug Discovery<b>ok</b></span><span class="chip on" title="代理 · ok">Nature<b>ok</b></span><span class="chip on" title="代理 · ok">Science News<b>ok</b></span><span class="chip on" title="代理 · ok">Chan Zuckerberg Biohub<b>ok</b></span><span class="chip on" title="代理 · ok">Google DeepMind<b>ok</b></span><span class="chip on" title="代理 · ok">NVIDIA 生成式 AI 博客<b>ok</b></span><span class="chip on" title="代理 · ok">PharmaVoice<b>ok</b></span><span class="chip on" title="代理 · ok">MIT News · AI<b>ok</b></span><span class="chip on" title="代理 · ok">npj Digital Medicine<b>ok</b></span><span class="chip on" title="代理 · ok">Microsoft Research 博客<b>ok</b></span><span class="chip on" title="代理 · ok">Owl Posting<b>ok</b></span><span class="chip on" title="直连 · ok">晶泰科技<b>ok</b></span><span class="chip on" title="代理 · ok">GEN<b>ok</b></span><span class="chip on" title="代理 · ok">PharmaTimes<b>ok</b></span><span class="chip on" title="代理 · ok">Nature · 计算生物学<b>ok</b></span><span class="chip on" title="代理 · ok">Nature · 机器学习<b>ok</b></span><span class="chip on" title="代理 · ok">Nature · 药物发现<b>ok</b></span><span class="chip on" title="代理 · ok">Cradle 博客<b>ok</b></span><span class="chip on" title="代理 · ok">bioRxiv 药理与毒理<b>ok</b></span><span class="chip on" title="代理 · ok">Nature Computational Science<b>ok</b></span><span class="chip on" title="代理 · ok">Google Research 博客<b>ok</b></span><span class="chip on" title="代理 · ok">PharmaFile<b>ok</b></span><span class="chip on" title="代理 · ok">Manufacturing Chemist<b>ok</b></span><span class="chip on" title="代理 · ok">PLOS Computational Biology<b>ok</b></span><span class="chip on" title="代理 · ok">PLOS Digital Health<b>ok</b></span></div>
+  </header>
+  <section class="charts"><div class="panel"><h2>条目层级分布</h2><svg viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg" role="img" preserveAspectRatio="xMidYMid meet"><circle cx="82" cy="110.0" r="68" fill="none" stroke="#f472b6" stroke-width="16" stroke-dasharray="333.26 94.00" stroke-dashoffset="-0.00" transform="rotate(-90 82 110.0)" /><circle cx="82" cy="110.0" r="68" fill="none" stroke="#38bdf8" stroke-width="16" stroke-dasharray="42.73 384.53" stroke-dashoffset="-333.26" transform="rotate(-90 82 110.0)" /><circle cx="82" cy="110.0" r="68" fill="none" stroke="#a78bfa" stroke-width="16" stroke-dasharray="51.27 375.99" stroke-dashoffset="-375.99" transform="rotate(-90 82 110.0)" /><text x="82" y="111.0" text-anchor="middle" fill="#e6edf3" font-size="24" font-weight="650">50</text><text x="82" y="131.0" text-anchor="middle" fill="#f472b6" font-size="10">AI 相关 7</text><rect x="172" y="76.0" width="10" height="10" rx="3" fill="#f472b6" /><text x="188" y="84.0" fill="#8b98a5" font-size="11">一手 39</text><rect x="172" y="102.0" width="10" height="10" rx="3" fill="#38bdf8" /><text x="188" y="110.0" fill="#8b98a5" font-size="11">广谱 5</text><rect x="172" y="128.0" width="10" height="10" rx="3" fill="#a78bfa" /><text x="188" y="136.0" fill="#8b98a5" font-size="11">搜索 6</text></svg></div><div class="panel"><h2>各源条目数</h2><svg viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg" role="img" preserveAspectRatio="xMidYMid meet"><text x="82" y="21" text-anchor="end" fill="#8b98a5" font-size="11">arxiv_qbio</text><rect x="92" y="12" width="192" height="11" rx="3" fill="#131c27" /><rect x="92" y="12" width="192.0" height="11" rx="3" fill="#f472b6" /><text x="316" y="21" text-anchor="end" fill="#6b7785" font-size="10">15</text><text x="82" y="40" text-anchor="end" fill="#8b98a5" font-size="11">endpoints</text><rect x="92" y="31" width="192" height="11" rx="3" fill="#131c27" /><rect x="92" y="31" width="153.6" height="11" rx="3" fill="#f472b6" /><text x="316" y="40" text-anchor="end" fill="#6b7785" font-size="10">12</text><text x="82" y="59" text-anchor="end" fill="#8b98a5" font-size="11">pubmed_aidd_dl</text><rect x="92" y="50" width="192" height="11" rx="3" fill="#131c27" /><rect x="92" y="50" width="153.6" height="11" rx="3" fill="#f472b6" /><text x="316" y="59" text-anchor="end" fill="#6b7785" font-size="10">12</text><text x="82" y="78" text-anchor="end" fill="#8b98a5" font-size="11">stat</text><rect x="92" y="69" width="192" height="11" rx="3" fill="#131c27" /><rect x="92" y="69" width="153.6" height="11" rx="3" fill="#f472b6" /><text x="316" y="78" text-anchor="end" fill="#6b7785" font-size="10">12</text><text x="82" y="97" text-anchor="end" fill="#8b98a5" font-size="11">pubmed_aidd_llm</text><rect x="92" y="88" width="192" height="11" rx="3" fill="#131c27" /><rect x="92" y="88" width="153.6" height="11" rx="3" fill="#f472b6" /><text x="316" y="97" text-anchor="end" fill="#6b7785" font-size="10">12</text><text x="82" y="116" text-anchor="end" fill="#8b98a5" font-size="11">pubmed_jcim</text><rect x="92" y="107" width="192" height="11" rx="3" fill="#131c27" /><rect x="92" y="107" width="153.6" height="11" rx="3" fill="#f472b6" /><text x="316" y="116" text-anchor="end" fill="#6b7785" font-size="10">12</text><text x="82" y="135" text-anchor="end" fill="#8b98a5" font-size="11">pubmed_aidd_design</text><rect x="92" y="126" width="192" height="11" rx="3" fill="#131c27" /><rect x="92" y="126" width="153.6" height="11" rx="3" fill="#f472b6" /><text x="316" y="135" text-anchor="end" fill="#6b7785" font-size="10">12</text><text x="82" y="154" text-anchor="end" fill="#8b98a5" font-size="11">pubmed_jmedchem</text><rect x="92" y="145" width="192" height="11" rx="3" fill="#131c27" /><rect x="92" y="145" width="153.6" height="11" rx="3" fill="#f472b6" /><text x="316" y="154" text-anchor="end" fill="#6b7785" font-size="10">12</text><text x="82" y="173" text-anchor="end" fill="#8b98a5" font-size="11">gn_tencent_med2</text><rect x="92" y="164" width="192" height="11" rx="3" fill="#131c27" /><rect x="92" y="164" width="153.6" height="11" rx="3" fill="#a78bfa" /><text x="316" y="173" text-anchor="end" fill="#6b7785" font-size="10">12</text><text x="82" y="192" text-anchor="end" fill="#8b98a5" font-size="11">gn_aidd_rd</text><rect x="92" y="183" width="192" height="11" rx="3" fill="#131c27" /><rect x="92" y="183" width="153.6" height="11" rx="3" fill="#a78bfa" /><text x="316" y="192" text-anchor="end" fill="#6b7785" font-size="10">12</text><text x="82" y="211" text-anchor="end" fill="#8b98a5" font-size="11">gn_med_llm</text><rect x="92" y="202" width="192" height="11" rx="3" fill="#131c27" /><rect x="92" y="202" width="153.6" height="11" rx="3" fill="#a78bfa" /><text x="316" y="211" text-anchor="end" fill="#6b7785" font-size="10">12</text></svg></div><div class="panel"><h2>近 72h 发布节奏</h2><svg viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg" role="img" preserveAspectRatio="xMidYMid meet"><line x1="8" y1="200" x2="312" y2="200" stroke="#1a2331" /><rect x="33.3" y="190.6" width="19.3" height="9.4" rx="3" fill="#38bdf8" opacity="0.85" /><text x="43.0" y="186.6" text-anchor="middle" fill="#8b98a5" font-size="9">1</text><rect x="58.7" y="143.3" width="19.3" height="56.7" rx="3" fill="#38bdf8" opacity="0.85" /><text x="68.3" y="139.3" text-anchor="middle" fill="#8b98a5" font-size="9">6</text><rect x="84.0" y="171.7" width="19.3" height="28.3" rx="3" fill="#38bdf8" opacity="0.85" /><text x="93.7" y="167.7" text-anchor="middle" fill="#8b98a5" font-size="9">3</text><rect x="109.3" y="171.7" width="19.3" height="28.3" rx="3" fill="#38bdf8" opacity="0.85" /><text x="119.0" y="167.7" text-anchor="middle" fill="#8b98a5" font-size="9">3</text><rect x="160.0" y="171.7" width="19.3" height="28.3" rx="3" fill="#38bdf8" opacity="0.85" /><text x="169.7" y="167.7" text-anchor="middle" fill="#8b98a5" font-size="9">3</text><rect x="185.3" y="190.6" width="19.3" height="9.4" rx="3" fill="#38bdf8" opacity="0.85" /><text x="195.0" y="186.6" text-anchor="middle" fill="#8b98a5" font-size="9">1</text><rect x="210.7" y="181.1" width="19.3" height="18.9" rx="3" fill="#38bdf8" opacity="0.85" /><text x="220.3" y="177.1" text-anchor="middle" fill="#8b98a5" font-size="9">2</text><rect x="236.0" y="190.6" width="19.3" height="9.4" rx="3" fill="#38bdf8" opacity="0.85" /><text x="245.7" y="186.6" text-anchor="middle" fill="#8b98a5" font-size="9">1</text><rect x="261.3" y="86.7" width="19.3" height="113.3" rx="3" fill="#38bdf8" opacity="0.85" /><text x="271.0" y="82.7" text-anchor="middle" fill="#8b98a5" font-size="9">12</text><rect x="286.7" y="30.0" width="19.3" height="170.0" rx="3" fill="#38bdf8" opacity="0.85" /><text x="296.3" y="26.0" text-anchor="middle" fill="#8b98a5" font-size="9">18</text><text x="17.7" y="216" text-anchor="middle" fill="#6b7785" font-size="10">-72h</text><text x="119.0" y="216" text-anchor="middle" fill="#6b7785" font-size="10">-48h</text><text x="220.3" y="216" text-anchor="middle" fill="#6b7785" font-size="10">-24h</text><text x="296.3" y="216" text-anchor="middle" fill="#6b7785" font-size="10">现在</text></svg></div><div class="panel"><h2>近 7 天趋势</h2><svg viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg" role="img" preserveAspectRatio="xMidYMid meet"><text x="160.0" y="100.0" text-anchor="middle" fill="#6b7785" font-size="12">已积累 1 天数据</text><text x="160.0" y="120.0" text-anchor="middle" fill="#6b7785" font-size="11">趋势图从第 2 天开始绘制</text></svg></div></section>
+  <section class="panel lmx"><h2>LMArena 总榜 Top 10 · 数据 2026-11-22</h2><table><thead><tr><th>排名</th><th>变化</th><th>模型</th><th>组织</th><th class="s">评分</th></tr></thead><tbody><tr><td class="r">1</td><td class="c" style="color:#38bdf8">新</td><td class="m">Gemini 4 Carbon (High)</td><td class="o">google</td><td class="s">1538.9</td></tr><tr><td class="r">2</td><td class="c" style="color:#38bdf8">新</td><td class="m">Gemini 4 Argon (High)</td><td class="o">google</td><td class="s">1527.7</td></tr><tr><td class="r">3</td><td class="c" style="color:#38bdf8">新</td><td class="m">Gemini 4 Neon (High)</td><td class="o">google</td><td class="s">1522.9</td></tr><tr><td class="r">4</td><td class="c" style="color:#38bdf8">新</td><td class="m">Claude Opus 5.5 (High)</td><td class="o">anthropic</td><td class="s">1514.1</td></tr><tr><td class="r">5</td><td class="c" style="color:#38bdf8">新</td><td class="m">Claude Fable 5.1 (Max)</td><td class="o">anthropic</td><td class="s">1511.8</td></tr><tr><td class="r">6</td><td class="c" style="color:#38bdf8">新</td><td class="m">Claude Opus 5 (Max)</td><td class="o">anthropic</td><td class="s">1506.2</td></tr><tr><td class="r">7</td><td class="c" style="color:#38bdf8">新</td><td class="m">Muse Wonder (Max)</td><td class="o">meta</td><td class="s">1503.7</td></tr><tr><td class="r">8</td><td class="c" style="color:#38bdf8">新</td><td class="m">Claude Opus 5 (High)</td><td class="o">anthropic</td><td class="s">1502.2</td></tr><tr><td class="r">9</td><td class="c" style="color:#38bdf8">新</td><td class="m">Gemini 4 Hydrogen (High)</td><td class="o">google</td><td class="s">1502.1</td></tr><tr><td class="r">10</td><td class="c" style="color:#38bdf8">新</td><td class="m">Claude Opus 4.6 (High)</td><td class="o">anthropic</td><td class="s">1501.5</td></tr></tbody></table></section>
+  
+  <section class="hero">
+    <h2>今日必看</h2>
+    <a class="hero-item" href="/get_information/aidd/items/29.html" target="_blank" rel="noopener"><span class="num">01</span><span class="ht">Capricor&#x27;s Duchenne therapy is rejected again, as FDA cites significant issues with trial</span><span class="hs">endpoints</span></a><a class="hero-item" href="/get_information/aidd/items/31.html" target="_blank" rel="noopener"><span class="num">02</span><span class="ht">ECG foundation models for cardiovascular screening in a cohort of young competitive athletes</span><span class="hs">npj_digital_med</span></a><a class="hero-item" href="/get_information/aidd/items/44.html" target="_blank" rel="noopener"><span class="num">03</span><span class="ht">FDA again turns back Capricor Duchenne cell therapy</span><span class="hs">biopharmadive</span></a><a class="hero-item" href="/get_information/aidd/items/1.html" target="_blank" rel="noopener"><span class="num">04</span><span class="ht">Causal Event Networks: Entangled Tensor Graphs, Connectome Quotient Topology, and Subjective Experience as Geometric Dual</span><span class="hs">arxiv_qbio</span></a><a class="hero-item" href="/get_information/aidd/items/2.html" target="_blank" rel="noopener"><span class="num">05</span><span class="ht">Integrated Stress Responses and ABCB11 Repression in Drug-Exposed Human Hepatocytes</span><span class="hs">arxiv_qbio</span></a>
+  </section>
+  <div class="filters"><button class="f active" data-f="all">全部 50</button><button class="f" data-f="topic" style="--c:#f472b6">AI 相关 7</button><button class="f" data-f="deal" style="--c:#f59e0b">羊毛福利 1</button><button class="f" data-f="overseas">国外 44</button><button class="f" data-f="domestic">国内 6</button><button class="f" data-f="primary" style="--c:#f472b6">一手 39</button><button class="f" data-f="search" style="--c:#a78bfa">搜索 6</button><button class="f" data-f="broad" style="--c:#38bdf8">广谱 5</button></div>
+  
+  <section class="zone" data-zone="overseas"><h2>国外 · 一手与社区<span>44 条</span></h2><p class="zone-sub">Horizon 式渠道：论文 / HN / GitHub / X / 长文分析</p><div class="grid">
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="arxiv_qbio" href="/get_information/aidd/items/1.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">arxiv_qbio</span>
+            
+            
+            <span class="time">3 小时前</span>
+          </div>
+          <h3>Causal Event Networks: Entangled Tensor Graphs, Connectome Quotient Topology, and Subjective Experience as Geometric Dual</h3>
+          <p>arXiv:2611.26646v1 Announce Type: new Abstract: We introduce a chromatically constrained tensor-product construction that generates sparse recurrent computational graphs whose colo</p>
+          <div class="foot"><span class="score">权重 75.0</span><span class="fb" data-kind="up" data-url="https://arxiv.org/abs/2611.26646" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://arxiv.org/abs/2611.26646" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="arxiv_qbio" href="/get_information/aidd/items/2.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">arxiv_qbio</span>
+            
+            
+            <span class="time">3 小时前</span>
+          </div>
+          <h3>Integrated Stress Responses and ABCB11 Repression in Drug-Exposed Human Hepatocytes</h3>
+          <p>arXiv:2611.26651v1 Announce Type: new Abstract: Drug-safety information systems must distinguish direct bile salt export pump (BSEP) inhibition from transcriptional changes in hepa</p>
+          <div class="foot"><span class="score">权重 75.0</span><span class="fb" data-kind="up" data-url="https://arxiv.org/abs/2611.26651" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://arxiv.org/abs/2611.26651" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="arxiv_qbio" href="/get_information/aidd/items/3.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">arxiv_qbio</span>
+            
+            
+            <span class="time">3 小时前</span>
+          </div>
+          <h3>Infection Spreading and Stochastic Extinction in Finite Spatially Inhomogeneous Susceptible-Infected-Susceptible and Susceptible-Infected-Recovered Systems</h3>
+          <p>arXiv:2611.26792v1 Announce Type: new Abstract: Demographic fluctuations can drive finite epidemic populations into an absorbing disease-free state even when the corresponding infi</p>
+          <div class="foot"><span class="score">权重 75.0</span><span class="fb" data-kind="up" data-url="https://arxiv.org/abs/2611.26792" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://arxiv.org/abs/2611.26792" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="arxiv_qbio" href="/get_information/aidd/items/4.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">arxiv_qbio</span>
+            
+            
+            <span class="time">3 小时前</span>
+          </div>
+          <h3>Surface Cues Over Structure: Probing LLM Behavior on Brain Connectivity Graphs</h3>
+          <p>arXiv:2611.26913v1 Announce Type: new Abstract: Resting-state functional magnetic resonance imaging (rs-fMRI) provides a noninvasive view of functional interactions across the brai</p>
+          <div class="foot"><span class="score">权重 75.0</span><span class="fb" data-kind="up" data-url="https://arxiv.org/abs/2611.26913" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://arxiv.org/abs/2611.26913" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="arxiv_qbio" href="/get_information/aidd/items/5.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">arxiv_qbio</span>
+            
+            
+            <span class="time">3 小时前</span>
+          </div>
+          <h3>Topology-only Local Network Alignment, Part 2. DijSLA: Stochastic Greedy Extension for Cross-Species GO Annotation Prediction</h3>
+          <p>arXiv:2611.26926v1 Announce Type: new Abstract: Sequence similarity has long been a strong signal for protein function prediction, whereas the predictive value of network topology </p>
+          <div class="foot"><span class="score">权重 75.0</span><span class="fb" data-kind="up" data-url="https://arxiv.org/abs/2611.26926" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://arxiv.org/abs/2611.26926" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="arxiv_qbio" href="/get_information/aidd/items/6.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">arxiv_qbio</span>
+            
+            
+            <span class="time">3 小时前</span>
+          </div>
+          <h3>Serial Dependence Emerges from Optimizing Vision for Noise Robustness</h3>
+          <p>arXiv:2611.26949v1 Announce Type: new Abstract: Human visual perception is dynamically shaped by the recent past, a phenomenon known as serial dependence. Mechanistic models show t</p>
+          <div class="foot"><span class="score">权重 75.0</span><span class="fb" data-kind="up" data-url="https://arxiv.org/abs/2611.26949" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://arxiv.org/abs/2611.26949" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="arxiv_qbio" href="/get_information/aidd/items/7.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">arxiv_qbio</span>
+            
+            
+            <span class="time">3 小时前</span>
+          </div>
+          <h3>Semi-regular admixed arrays: asymptotic enumeration and when information is additive</h3>
+          <p>arXiv:2611.26990v1 Announce Type: new Abstract: In genomic data analysis, admixed arrays are pairs of matrices recording the local ancestry and the allele at each position of the h</p>
+          <div class="foot"><span class="score">权重 75.0</span><span class="fb" data-kind="up" data-url="https://arxiv.org/abs/2611.26990" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://arxiv.org/abs/2611.26990" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="arxiv_qbio" href="/get_information/aidd/items/8.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">arxiv_qbio</span>
+            
+            
+            <span class="time">3 小时前</span>
+          </div>
+          <h3>Classical visual illusions in vision-language models under an instruction ladder</h3>
+          <p>arXiv:2611.27242v1 Announce Type: new Abstract: Vision-language models (VLMs) often name the &quot;illusory&quot; answer when shown a classical visual illusion, but it is unclear whether tha</p>
+          <div class="foot"><span class="score">权重 75.0</span><span class="fb" data-kind="up" data-url="https://arxiv.org/abs/2611.27242" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://arxiv.org/abs/2611.27242" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="arxiv_qbio" href="/get_information/aidd/items/9.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">arxiv_qbio</span>
+            
+            
+            <span class="time">3 小时前</span>
+          </div>
+          <h3>One-Step Self-Assembling Lipopolymer Coatings Enable Direct Longitudinal Biosensing in Native Biological Matrices</h3>
+          <p>arXiv:2611.27422v1 Announce Type: new Abstract: Sample-driven cross-reactivity remains a fundamental bottleneck for sensitive and selective biosensing in complex biological environ</p>
+          <div class="foot"><span class="score">权重 75.0</span><span class="fb" data-kind="up" data-url="https://arxiv.org/abs/2611.27422" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://arxiv.org/abs/2611.27422" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="arxiv_qbio" href="/get_information/aidd/items/10.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">arxiv_qbio</span>
+            
+            
+            <span class="time">3 小时前</span>
+          </div>
+          <h3>Nutrient limitation drives Turing instabilities in cross-feeding microbial communities</h3>
+          <p>arXiv:2611.27534v1 Announce Type: new Abstract: Microbial communities are shaped by metabolic interactions, often in the form of cross-feeding in which microbes exchange metabolite</p>
+          <div class="foot"><span class="score">权重 75.0</span><span class="fb" data-kind="up" data-url="https://arxiv.org/abs/2611.27534" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://arxiv.org/abs/2611.27534" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="arxiv_qbio" href="/get_information/aidd/items/11.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">arxiv_qbio</span>
+            
+            
+            <span class="time">3 小时前</span>
+          </div>
+          <h3>Critical slowing down in hive temperature does not provide actionable early warnings of honey bee colony collapse</h3>
+          <p>arXiv:2611.27766v1 Announce Type: new Abstract: Early warning signals (EWS) based on critical slowing down (CSD) have been proposed as model-independent indicators of approaching e</p>
+          <div class="foot"><span class="score">权重 75.0</span><span class="fb" data-kind="up" data-url="https://arxiv.org/abs/2611.27766" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://arxiv.org/abs/2611.27766" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="arxiv_qbio" href="/get_information/aidd/items/12.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">arxiv_qbio</span>
+            
+            
+            <span class="time">3 小时前</span>
+          </div>
+          <h3>The Four-Step Action Loop with Feedback: A teachable perception-action framework for everyday self-regulation</h3>
+          <p>arXiv:2611.27795v1 Announce Type: new Abstract: Everyday stress is largely a learned pattern: a familiar cue, a fast reading of threat, an automatic reaction and a body that stays </p>
+          <div class="foot"><span class="score">权重 75.0</span><span class="fb" data-kind="up" data-url="https://arxiv.org/abs/2611.27795" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://arxiv.org/abs/2611.27795" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="arxiv_qbio" href="/get_information/aidd/items/13.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">arxiv_qbio</span>
+            
+            
+            <span class="time">3 小时前</span>
+          </div>
+          <h3>Self-organized fractional silencing of pyramidal neurons under global depolarization in a spatial neuron-glial microcircuit model</h3>
+          <p>arXiv:2611.27847v1 Announce Type: new Abstract: Pathological transitions in nervous tissue, including epileptiform discharges and cortical spreading depolarization, depend on the i</p>
+          <div class="foot"><span class="score">权重 75.0</span><span class="fb" data-kind="up" data-url="https://arxiv.org/abs/2611.27847" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://arxiv.org/abs/2611.27847" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="arxiv_qbio" href="/get_information/aidd/items/14.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">arxiv_qbio</span>
+            
+            
+            <span class="time">3 小时前</span>
+          </div>
+          <h3>Spatial model of neurogliovascular unit: arachidonic acid can control the stability</h3>
+          <p>arXiv:2611.27888v1 Announce Type: new Abstract: Arachidonic acid metabolites can have both vasoconstrictor and vasodilator effects, thereby influencing neuronal activity. In this w</p>
+          <div class="foot"><span class="score">权重 75.0</span><span class="fb" data-kind="up" data-url="https://arxiv.org/abs/2611.27888" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://arxiv.org/abs/2611.27888" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="arxiv_qbio" href="/get_information/aidd/items/15.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">arxiv_qbio</span>
+            
+            
+            <span class="time">3 小时前</span>
+          </div>
+          <h3>Mammalian gonadal development: origins, specification and differentiation of ovary and testis cell lineages</h3>
+          <p>arXiv:2611.27933v1 Announce Type: new Abstract: Testicular and ovarian development requires the coordinated formation and assembly of multiple cell types that enable these organs t</p>
+          <div class="foot"><span class="score">权重 75.0</span><span class="fb" data-kind="up" data-url="https://arxiv.org/abs/2611.27933" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://arxiv.org/abs/2611.27933" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="mit_news_ai" href="/get_information/aidd/items/16.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">mit_news_ai</span>
+            
+            
+            <span class="time">3 小时前</span>
+          </div>
+          <h3>AI-driven technique could help engineers design analog chips faster and with less expense</h3>
+          <p>The “SLIC” training method enables a small LLM to compete with much more resource-intensive models in complex circuit design tasks.</p>
+          <div class="foot"><span class="score">权重 75.0</span><span class="fb" data-kind="up" data-url="https://news.mit.edu/2026/ai-driven-technique-could-help-engineers-design-analog-chips-faster-and-less-expensive-1123" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://news.mit.edu/2026/ai-driven-technique-could-help-engineers-design-analog-chips-faster-and-less-expensive-1123" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="nature_compbio" href="/get_information/aidd/items/17.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">nature_compbio</span><span class="tag">+nature_drugdisc_aidd</span>
+            
+            
+            <span class="time">8 小时前</span>
+          </div>
+          <h3>Machine learning-guided virtual screening of the comprehensive marine natural products database identifies steroidal androgen receptor binder candidates</h3>
+          <p></p>
+          <div class="foot"><span class="score">权重 73.6</span><span class="fb" data-kind="up" data-url="https://www.nature.com/articles/s41598-026-81932-w" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://www.nature.com/articles/s41598-026-81932-w" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="nature_compbio" href="/get_information/aidd/items/18.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">nature_compbio</span>
+            
+            
+            <span class="time">8 小时前</span>
+          </div>
+          <h3>Health-state instability and progression in longitudinal clinical records reveal heterogeneous ageing trajectories</h3>
+          <p></p>
+          <div class="foot"><span class="score">权重 73.6</span><span class="fb" data-kind="up" data-url="https://www.nature.com/articles/s41746-026-03482-9" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://www.nature.com/articles/s41746-026-03482-9" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="nature_compbio" href="/get_information/aidd/items/19.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">nature_compbio</span>
+            
+            
+            <span class="time">8 小时前</span>
+          </div>
+          <h3>An AI-based framework for assessing physical fitness, energy metabolism, and biomechanical efficiency in sprinting and hurdle events</h3>
+          <p></p>
+          <div class="foot"><span class="score">权重 73.6</span><span class="fb" data-kind="up" data-url="https://www.nature.com/articles/s41598-026-80990-4" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://www.nature.com/articles/s41598-026-80990-4" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="nature_compbio" href="/get_information/aidd/items/20.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">nature_compbio</span>
+            
+            
+            <span class="time">8 小时前</span>
+          </div>
+          <h3>Computational design of a mutation-inclusive multi-epitope vaccine targeting major immune-escape variants of hepatitis B surface antigen</h3>
+          <p></p>
+          <div class="foot"><span class="score">权重 73.6</span><span class="fb" data-kind="up" data-url="https://www.nature.com/articles/s41598-026-79802-6" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://www.nature.com/articles/s41598-026-79802-6" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="nature_compbio" href="/get_information/aidd/items/21.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">nature_compbio</span>
+            
+            
+            <span class="time">8 小时前</span>
+          </div>
+          <h3>A simple centroid-size classifier remains competitive with more complex PointNet-based deep learning for sex estimation from CT-derived 3D patellar models</h3>
+          <p></p>
+          <div class="foot"><span class="score">权重 73.6</span><span class="fb" data-kind="up" data-url="https://www.nature.com/articles/s41598-026-81644-1" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://www.nature.com/articles/s41598-026-81644-1" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="nature_compbio" href="/get_information/aidd/items/22.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">nature_compbio</span>
+            
+            
+            <span class="time">8 小时前</span>
+          </div>
+          <h3>A comparative study on vision-language models for image captioning in Lithuanian</h3>
+          <p></p>
+          <div class="foot"><span class="score">权重 73.6</span><span class="fb" data-kind="up" data-url="https://www.nature.com/articles/s41598-026-81406-z" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://www.nature.com/articles/s41598-026-81406-z" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="nature_compbio" href="/get_information/aidd/items/23.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">nature_compbio</span>
+            
+            
+            <span class="time">8 小时前</span>
+          </div>
+          <h3>A machine learning framework for human activity recognition and confidence-based atypical pattern assessment for remote physiotherapy monitoring</h3>
+          <p></p>
+          <div class="foot"><span class="score">权重 73.6</span><span class="fb" data-kind="up" data-url="https://www.nature.com/articles/s41598-026-79824-0" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://www.nature.com/articles/s41598-026-79824-0" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="nature_compbio" href="/get_information/aidd/items/24.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">nature_compbio</span><span class="tag">+nature_drugdisc_aidd</span>
+            
+            
+            <span class="time">8 小时前</span>
+          </div>
+          <h3>Unraveling the anti-inflammatory activities of Angelicae Sinensis Radix and Cyperi Rhizoma using network pharmacology, molecular docking, and in vitro experiments</h3>
+          <p></p>
+          <div class="foot"><span class="score">权重 73.6</span><span class="fb" data-kind="up" data-url="https://www.nature.com/articles/s41598-026-58960-7" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://www.nature.com/articles/s41598-026-58960-7" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="nature_compbio" href="/get_information/aidd/items/25.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">nature_compbio</span>
+            
+            
+            <span class="time">8 小时前</span>
+          </div>
+          <h3>Dataset-dependent patient-overlap bias in breast thermography deep learning</h3>
+          <p></p>
+          <div class="foot"><span class="score">权重 73.6</span><span class="fb" data-kind="up" data-url="https://www.nature.com/articles/s41598-026-64646-x" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://www.nature.com/articles/s41598-026-64646-x" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="nature_drugdisc_aidd" href="/get_information/aidd/items/26.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">nature_drugdisc_aidd</span>
+            
+            
+            <span class="time">8 小时前</span>
+          </div>
+          <h3>Piperine induces ROS-associated mitochondrial dysfunction with differential cytotoxic potential against oral cancer and non-malignant cells</h3>
+          <p></p>
+          <div class="foot"><span class="score">权重 73.6</span><span class="fb" data-kind="up" data-url="https://www.nature.com/articles/s41598-026-72741-2" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://www.nature.com/articles/s41598-026-72741-2" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="gen" href="/get_information/aidd/items/27.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">gen</span><span class="tag">+gen_aidd</span>
+            
+            
+            <span class="time">13 小时前</span>
+          </div>
+          <h3>StockWatch: Insmed Jumps on Report of Takeover Interest by Sanofi, as Analysts Conclude a Deal Would Make Sense</h3>
+          <p>Bloomberg News cited unnamed sources in reporting that Sanofi (Euronext Paris: SAN and Nasdaq: SNY) was weighing whether to acquire Insmed, in a potential blockbuster deal that the</p>
+          <div class="foot"><span class="score">权重 72.2</span><span class="fb" data-kind="up" data-url="https://www.genengnews.com/topics/translational-medicine/stockwatch-insmed-jumps-on-report-of-takeover-interest-by-sanofi-as-analysts-conclude-a-deal-would-make-sense" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://www.genengnews.com/topics/translational-medicine/stockwatch-insmed-jumps-on-report-of-takeover-interest-by-sanofi-as-analysts-conclude-a-deal-would-make-sense" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="broad" data-topic="0" data-source="biotechniques" href="/get_information/aidd/items/28.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#38bdf8"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#38bdf8;border-color:#38bdf833;background:#38bdf814">广谱</span>
+            <span class="tag">biotechniques</span>
+            
+            
+            <span class="time">24 分钟前</span>
+          </div>
+          <h3>Building the first single-cell transcriptome atlas for an adult vertebrate</h3>
+          <p>Original story from the Massachusetts Institute of Technology (MIT; MA, USA). Researchers mapped gene activity across the entire body of a tiny fish, creating a resource for studyi</p>
+          <div class="foot"><span class="score">权重 70.8</span><span class="fb" data-kind="up" data-url="https://www.biotechniques.com/cell-and-tissue-biology/building-the-first-single-cell-transcriptome-atlas-for-an-adult-vertebrate" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://www.biotechniques.com/cell-and-tissue-biology/building-the-first-single-cell-transcriptome-atlas-for-an-adult-vertebrate" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="1" data-source="endpoints" href="/get_information/aidd/items/29.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">endpoints</span>
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">AI</span>
+            
+            <span class="time">2 天前</span>
+          </div>
+          <h3>Capricor&#x27;s Duchenne therapy is rejected again, as FDA cites significant issues with trial</h3>
+          <p>Capricor Therapeutics’ deramiocel cell therapy was rejected for a second time by the FDA on Friday, despite the company&#x27;s pivot to a narrower indication within Duchenne muscular dy</p>
+          <div class="foot"><span class="score">权重 70.4</span><span class="fb" data-kind="up" data-url="https://endpoints.news/capricors-duchenne-therapy-is-rejected-again-as-fda-cites-significant-issues-with-trial" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://endpoints.news/capricors-duchenne-therapy-is-rejected-again-as-fda-cites-significant-issues-with-trial" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="1" data-source="npj_digital_med" href="/get_information/aidd/items/31.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">npj_digital_med</span>
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">AI</span>
+            
+            <span class="time">2 天前</span>
+          </div>
+          <h3>ECG foundation models for cardiovascular screening in a cohort of young competitive athletes</h3>
+          <p></p>
+          <div class="foot"><span class="score">权重 68.4</span><span class="fb" data-kind="up" data-url="https://www.nature.com/articles/s41746-026-03474-9" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://www.nature.com/articles/s41746-026-03474-9" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="nature_compbio" href="/get_information/aidd/items/33.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">nature_compbio</span>
+            
+            
+            <span class="time">1 天前</span>
+          </div>
+          <h3>DLFL-TLDNet: hybrid AI model integrating deep learning and fuzzy logic for tomato leaf disease classification and severity estimation</h3>
+          <p></p>
+          <div class="foot"><span class="score">权重 67.6</span><span class="fb" data-kind="up" data-url="https://www.nature.com/articles/s41598-026-81392-2" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://www.nature.com/articles/s41598-026-81392-2" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="broad" data-topic="0" data-source="sciencedaily_pharm" href="/get_information/aidd/items/34.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#38bdf8"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#38bdf8;border-color:#38bdf833;background:#38bdf814">广谱</span>
+            <span class="tag">sciencedaily_pharm</span>
+            
+            
+            <span class="time">10 小时前</span>
+          </div>
+          <h3>Common medications may secretly rewire your gut, with effects lasting for years</h3>
+          <p>Medications taken years or even long ago may leave lasting changes in your gut microbiome, according to a study of more than 2,500 people. Researchers discovered that common drugs,</p>
+          <div class="foot"><span class="score">权重 65.1</span><span class="fb" data-kind="up" data-url="https://www.sciencedaily.com/releases/2026/11/261120071501.htm" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://www.sciencedaily.com/releases/2026/11/261120071501.htm" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="stat" href="/get_information/aidd/items/35.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">stat</span>
+            
+            
+            <span class="time">1 天前</span>
+          </div>
+          <h3>Opinion: When should medical school start?</h3>
+          <p>STAT readers weigh in on shortening medical school, fixing pediatric emergency care, and more.</p>
+          <div class="foot"><span class="score">权重 65.0</span><span class="fb" data-kind="up" data-url="https://www.statnews.com/2026/11/21/stat-letters-to-editor-medical-school-pediatric-emergency-care" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://www.statnews.com/2026/11/21/stat-letters-to-editor-medical-school-pediatric-emergency-care" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="endpoints" href="/get_information/aidd/items/36.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">endpoints</span>
+            
+            
+            <span class="time">1 天前</span>
+          </div>
+          <h3>It’s Over-ton; Thoughts on Isomorphic’s latest haul; and more</h3>
+          <p>Welcome back to another edition of Endpoints Weekly! All the tech outages this week can’t stop us from bringing you the latest in biopharma news. The biggest news this week came fr</p>
+          <div class="foot"><span class="score">权重 64.8</span><span class="fb" data-kind="up" data-url="https://endpoints.news/its-over-ton-thoughts-on-isomorphics-latest-haul-and-more" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://endpoints.news/its-over-ton-thoughts-on-isomorphics-latest-haul-and-more" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="stat" href="/get_information/aidd/items/37.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">stat</span>
+            
+            
+            <span class="time">1 天前</span>
+          </div>
+          <h3>Opinion: How Kennedy and MAHA could help stop measles</h3>
+          <p>Kennedy and MAHA say they aren’t anti-vaccine. They can prove it by promoting the MMR vaccine, writes Brinda Adhikari.</p>
+          <div class="foot"><span class="score">权重 64.5</span><span class="fb" data-kind="up" data-url="https://www.statnews.com/2026/11/21/rfk-jr-maha-measles-outbreak-elimination-status-promote-mmr-vaccine" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://www.statnews.com/2026/11/21/rfk-jr-maha-measles-outbreak-elimination-status-promote-mmr-vaccine" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="pubmed_aidd_dl" href="/get_information/aidd/items/38.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">pubmed_aidd_dl</span>
+            
+            
+            <span class="time">2 天前</span>
+          </div>
+          <h3>Targeting protein degradation strategies in drug discovery: integrating PROTACs, ubiquitination biology, and AI-driven design.</h3>
+          <p>Molecular biomedicine. Targeted protein degradation (TPD) has emerged as a transformative therapeutic strategy for eliminating disease-associated proteins, including targets that remain challenging to modulate using conventional occupancy-driven inhibitors. Among TPD approaches, proteolysis-targeting chimeras (PROTACs) exploit the ubiquitin-proteasome system (UPS) to induce selective and event-driven degradation of prot</p>
+          <div class="foot"><span class="score">权重 64.3</span><span class="fb" data-kind="up" data-url="https://pubmed.ncbi.nlm.nih.gov/43066850" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://pubmed.ncbi.nlm.nih.gov/43066850" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="pubmed_aidd_dl" href="/get_information/aidd/items/39.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">pubmed_aidd_dl</span>
+            
+            
+            <span class="time">16 小时前</span>
+          </div>
+          <h3>Protein-Compound Binding Site Prediction via Machine Learning: Methods and Advances.</h3>
+          <p>Methods in molecular biology (Clifton, N.J.). Finding and characterizing protein-ligand binding sites accurately is the foundation of structure-based drug design, protein function analysis, and understanding molecular recognition. As the drug industry moves from accidental discovery to rational design, we urgently need computer methods that can find &quot;druggable&quot; targets fast and correctly. This paper reviews the history of binding site predict</p>
+          <div class="foot"><span class="score">权重 64.3</span><span class="fb" data-kind="up" data-url="https://pubmed.ncbi.nlm.nih.gov/43052659" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://pubmed.ncbi.nlm.nih.gov/43052659" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="nature_ml" href="/get_information/aidd/items/40.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">nature_ml</span>
+            
+            
+            <span class="time">2 天前</span>
+          </div>
+          <h3>A global atlas of digital dermatology to map innovation and disparities</h3>
+          <p></p>
+          <div class="foot"><span class="score">权重 62.6</span><span class="fb" data-kind="up" data-url="https://www.nature.com/articles/s41467-026-78602-w" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://www.nature.com/articles/s41467-026-78602-w" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="nature_drugdisc_aidd" href="/get_information/aidd/items/41.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">nature_drugdisc_aidd</span>
+            
+            
+            <span class="time">2 天前</span>
+          </div>
+          <h3>Structural insight into dynamic switching mechanism o​f the SAM-IV riboswitch revealed by molecular simulations</h3>
+          <p></p>
+          <div class="foot"><span class="score">权重 62.6</span><span class="fb" data-kind="up" data-url="https://www.nature.com/articles/s41598-026-78252-4" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://www.nature.com/articles/s41598-026-78252-4" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="nature_drugdisc_aidd" href="/get_information/aidd/items/42.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">nature_drugdisc_aidd</span>
+            
+            
+            <span class="time">2 天前</span>
+          </div>
+          <h3>A label-free domain-knowledge-informed framework for transferability evaluation of synthetic accessibility scoring in energetic chemical space</h3>
+          <p></p>
+          <div class="foot"><span class="score">权重 62.6</span><span class="fb" data-kind="up" data-url="https://www.nature.com/articles/s41524-026-02396-0" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://www.nature.com/articles/s41524-026-02396-0" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="primary" data-topic="0" data-source="nature_drugdisc_aidd" href="/get_information/aidd/items/43.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#f472b6"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">一手</span>
+            <span class="tag">nature_drugdisc_aidd</span>
+            
+            
+            <span class="time">2 天前</span>
+          </div>
+          <h3>Antiviral activity of Clinacanthus siamensis Bremek ethanolic extract against dengue virus serotype 2 infection</h3>
+          <p></p>
+          <div class="foot"><span class="score">权重 62.6</span><span class="fb" data-kind="up" data-url="https://www.nature.com/articles/s41598-026-80262-1" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://www.nature.com/articles/s41598-026-80262-1" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="broad" data-topic="1" data-source="biopharmadive" href="/get_information/aidd/items/44.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#38bdf8"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#38bdf8;border-color:#38bdf833;background:#38bdf814">广谱</span>
+            <span class="tag">biopharmadive</span>
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">AI</span>
+            
+            <span class="time">1 天前</span>
+          </div>
+          <h3>FDA again turns back Capricor Duchenne cell therapy</h3>
+          <p>In an unusual statement, the FDA accused Capricor of “serious data integrity violations” that compromised its study findings and led to deramiocel’s second rejection since 2025.</p>
+          <div class="foot"><span class="score">权重 61.4</span><span class="fb" data-kind="up" data-url="https://www.biopharmadive.com/news/capricor-fda-duchenne-cell-therapy-deramiocel/875384" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://www.biopharmadive.com/news/capricor-fda-duchenne-cell-therapy-deramiocel/875384" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="broad" data-topic="0" data-source="sciencedaily_pharm" href="/get_information/aidd/items/45.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#38bdf8"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#38bdf8;border-color:#38bdf833;background:#38bdf814">广谱</span>
+            <span class="tag">sciencedaily_pharm</span>
+            
+            
+            <span class="time">1 天前</span>
+          </div>
+          <h3>Alzheimer’s breakthrough exposes a hidden flaw in the brain’s cleanup system</h3>
+          <p>Scientists have identified a gene that helps the brain’s immune cells contain harmful plaques linked to Alzheimer’s, potentially revealing a new way to fight the disease. When the </p>
+          <div class="foot"><span class="score">权重 57.1</span><span class="fb" data-kind="up" data-url="https://www.sciencedaily.com/releases/2026/11/261120075600.htm" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://www.sciencedaily.com/releases/2026/11/261120075600.htm" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="overseas" data-deal="0" data-layer="broad" data-topic="0" data-source="sciencedaily_pharm" href="/get_information/aidd/items/46.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#38bdf8"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#38bdf8;border-color:#38bdf833;background:#38bdf814">广谱</span>
+            <span class="tag">sciencedaily_pharm</span>
+            
+            
+            <span class="time">1 天前</span>
+          </div>
+          <h3>A common blood pressure drug has a surprising effect on calorie-burning brown fat</h3>
+          <p>Scientists have discovered that a common blood pressure drug can activate calorie-burning brown fat in mice, potentially opening a new path toward improving metabolic health. An an</p>
+          <div class="foot"><span class="score">权重 56.7</span><span class="fb" data-kind="up" data-url="https://www.sciencedaily.com/releases/2026/11/261119194558.htm" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://www.sciencedaily.com/releases/2026/11/261119194558.htm" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a></div></section>
+  <section class="zone" data-zone="domestic"><h2>国内 · 热榜与媒体<span>6 条</span></h2><p class="zone-sub">TrendRadar 式渠道：热榜与科技媒体</p><div class="grid">
+      <a class="card" data-region="domestic" data-deal="0" data-layer="search" data-topic="0" data-source="gn_aidd_rd" href="/get_information/aidd/items/30.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#a78bfa"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#a78bfa;border-color:#a78bfa33;background:#a78bfa14">搜索</span>
+            <span class="tag">gn_aidd_rd</span>
+            
+            
+            <span class="time">1 小时前</span>
+          </div>
+          <h3>科创创新药ETF汇添富（589120）标的指数强势拉升！创新药为何回调？原因与逻辑拆解-证券之星 - 证券之星</h3>
+          <p>科创创新药ETF汇添富（589120）标的指数强势拉升！创新药为何回调？原因与逻辑拆解-证券之星 证券之星</p>
+          <div class="foot"><span class="score">权重 69.3</span><span class="fb" data-kind="up" data-url="https://news.google.com/rss/articles/CBMiXkFVX3lxTE85MUpKYy1TQ0dfV0J1SmFHTnhLZDNGRlBEbXRnVGExSWVJMTFleUQteXM4SmtRZTdaYURISVJkRXNTQm1jUEdLZkRNaUcxSVBReng4WTRBbnh1cDMtWVE?oc=5" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://news.google.com/rss/articles/CBMiXkFVX3lxTE85MUpKYy1TQ0dfV0J1SmFHTnhLZDNGRlBEbXRnVGExSWVJMTFleUQteXM4SmtRZTdaYURISVJkRXNTQm1jUEdLZkRNaUcxSVBReng4WTRBbnh1cDMtWVE?oc=5" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="domestic" data-deal="0" data-layer="search" data-topic="1" data-source="gn_aidd_rd" href="/get_information/aidd/items/32.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#a78bfa"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#a78bfa;border-color:#a78bfa33;background:#a78bfa14">搜索</span>
+            <span class="tag">gn_aidd_rd</span>
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">AI</span>
+            
+            <span class="time">8 小时前</span>
+          </div>
+          <h3>AI制药提速！研发周期最多缩短一半 多股明年业绩可期(名单) - 中金在线</h3>
+          <p>AI制药提速！研发周期最多缩短一半 多股明年业绩可期(名单) 中金在线</p>
+          <div class="foot"><span class="score">权重 68.2</span><span class="fb" data-kind="up" data-url="https://news.google.com/rss/articles/CBMiakFVX3lxTFBJMkt5Mks4UlNIZmRvRi1JdEkxWEtzc2JDa3pMalYyUE14VnJpdEdScjNVQ044ZE5JaGNjd2pMb29PQzdkdU56a3dOdlM0VTR3b2k4YmRpYjVGdE9VYWFHOHNYT0hlVTY4cUE?oc=5" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://news.google.com/rss/articles/CBMiakFVX3lxTFBJMkt5Mks4UlNIZmRvRi1JdEkxWEtzc2JDa3pMalYyUE14VnJpdEdScjNVQ044ZE5JaGNjd2pMb29PQzdkdU56a3dOdlM0VTR3b2k4YmRpYjVGdE9VYWFHOHNYT0hlVTY4cUE?oc=5" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="domestic" data-deal="1" data-layer="search" data-topic="1" data-source="gn_aidd_rd" href="/get_information/aidd/items/47.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#a78bfa"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#a78bfa;border-color:#a78bfa33;background:#a78bfa14">搜索</span>
+            <span class="tag">gn_aidd_rd</span><span class="tag">+gn_aidd_discover</span>
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">AI</span>
+            <span class="badge" style="color:#f59e0b;border-color:#f59e0b33;background:#f59e0b14">羊毛</span>
+            <span class="time">20 小时前</span>
+          </div>
+          <h3>白线观察｜AI 制药获 50 亿美元融资，药企研发提速仍待临床验证 - 吴说</h3>
+          <p>白线观察｜AI 制药获 50 亿美元融资，药企研发提速仍待临床验证 吴说</p>
+          <div class="foot"><span class="score">权重 56.0</span><span class="fb" data-kind="up" data-url="https://news.google.com/rss/articles/CBMivAFBVV95cUxOa0dSWU1uc2ZCRGpWbzBpallYYUlMSnczazBjUldQb1JsWDFiT0xweGxCRmV6Qkg2WkpLckQzUmtYbkwyWlNFQXJEZU50Ry16TTQzZktZT2lLeXZ0ZFlGaUI0UWtoNWxsenp1VzZZVnp5b29wOTluRnNxX1hkQnc1d2taUm41MGtKM242aGw0dTZpZEdHSUZGQW90aWtQX3Rxa2pWeHMzUk9LeE1GazB2YkJBUWg3b1BVQUVuMw?oc=5" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://news.google.com/rss/articles/CBMivAFBVV95cUxOa0dSWU1uc2ZCRGpWbzBpallYYUlMSnczazBjUldQb1JsWDFiT0xweGxCRmV6Qkg2WkpLckQzUmtYbkwyWlNFQXJEZU50Ry16TTQzZktZT2lLeXZ0ZFlGaUI0UWtoNWxsenp1VzZZVnp5b29wOTluRnNxX1hkQnc1d2taUm41MGtKM242aGw0dTZpZEdHSUZGQW90aWtQX3Rxa2pWeHMzUk9LeE1GazB2YkJBUWg3b1BVQUVuMw?oc=5" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="domestic" data-deal="0" data-layer="search" data-topic="0" data-source="gn_med_llm" href="/get_information/aidd/items/48.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#a78bfa"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#a78bfa;border-color:#a78bfa33;background:#a78bfa14">搜索</span>
+            <span class="tag">gn_med_llm</span>
+            
+            
+            <span class="time">20 小时前</span>
+          </div>
+          <h3>蚂蚁靠金融补贴、京东靠卖药兜底：大厂绕开医保的医疗AI试验 - 36氪</h3>
+          <p>蚂蚁靠金融补贴、京东靠卖药兜底：大厂绕开医保的医疗AI试验 36氪</p>
+          <div class="foot"><span class="score">权重 50.1</span><span class="fb" data-kind="up" data-url="https://news.google.com/rss/articles/CBMiTkFVX3lxTFBTZzBqUEhkelFSd1NZb3A5VVp4QkVwT0VfYzI5azYxOWxJcERURGk1SjlXcjJEaDk3TmJxQ3dVbXRYaVJrSE5mdkNQd1pLUQ?oc=5" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://news.google.com/rss/articles/CBMiTkFVX3lxTFBTZzBqUEhkelFSd1NZb3A5VVp4QkVwT0VfYzI5azYxOWxJcERURGk1SjlXcjJEaDk3TmJxQ3dVbXRYaVJrSE5mdkNQd1pLUQ?oc=5" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="domestic" data-deal="0" data-layer="search" data-topic="1" data-source="gn_aidd_rd" href="/get_information/aidd/items/49.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#a78bfa"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#a78bfa;border-color:#a78bfa33;background:#a78bfa14">搜索</span>
+            <span class="tag">gn_aidd_rd</span>
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">AI</span>
+            
+            <span class="time">2 天前</span>
+          </div>
+          <h3>把AI制药做成Token生意，MIT初创融了1.1亿美元 - 麻省理工科技评论</h3>
+          <p>把AI制药做成Token生意，MIT初创融了1.1亿美元 麻省理工科技评论</p>
+          <div class="foot"><span class="score">权重 41.9</span><span class="fb" data-kind="up" data-url="https://news.google.com/rss/articles/CBMiV0FVX3lxTE95dWJNV1VPZF9tRGdESHZCdjlXbWZIeEdGZTNQQmdLRjk3NC10bF96Q1RtZVhGVzhRYjVrSEk3WEw3ZTRMQVREcXBOcHE3U19PdW5wcTBOYw?oc=5" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://news.google.com/rss/articles/CBMiV0FVX3lxTE95dWJNV1VPZF9tRGdESHZCdjlXbWZIeEdGZTNQQmdLRjk3NC10bF96Q1RtZVhGVzhRYjVrSEk3WEw3ZTRMQVREcXBOcHE3U19PdW5wcTBOYw?oc=5" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a>
+      <a class="card" data-region="domestic" data-deal="0" data-layer="search" data-topic="1" data-source="gn_aidd_rd" href="/get_information/aidd/items/50.html" target="_blank" rel="noopener">
+        <div class="bar" style="background:#a78bfa"></div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge" style="color:#a78bfa;border-color:#a78bfa33;background:#a78bfa14">搜索</span>
+            <span class="tag">gn_aidd_rd</span>
+            <span class="badge" style="color:#f472b6;border-color:#f472b633;background:#f472b614">AI</span>
+            
+            <span class="time">2 天前</span>
+          </div>
+          <h3>AI制药的定价时刻：分子值多少钱，谁说了算？【影响力对谈第二期】 - 动脉网</h3>
+          <p>AI制药的定价时刻：分子值多少钱，谁说了算？【影响力对谈第二期】 动脉网</p>
+          <div class="foot"><span class="score">权重 40.9</span><span class="fb" data-kind="up" data-url="https://news.google.com/rss/articles/CBMiR0FVX3lxTE9vSHhiTXc2VkVpaHVlOUJIejBpaVFMYlFmZGp2Zk1LMmxubW9zSTJwbHQxQVVSX09Ea2NjaE5UcXRBRGdRYjhZ?oc=5" title="有用：以后多推这类">👍</span><span class="fb" data-kind="down" data-url="https://news.google.com/rss/articles/CBMiR0FVX3lxTE9vSHhiTXc2VkVpaHVlOUJIejBpaVFMYlFmZGp2Zk1LMmxubW9zSTJwbHQxQVVSX09Ea2NjaE5UcXRBRGdRYjhZ?oc=5" title="没用：以后少推这类">👎</span></div>
+        </div>
+      </a></div></section>
+  <footer>覆盖层级：榜单 = 热度信号 · 广谱 = 稳定订阅 · 搜索 = 长尾兜底 · 社媒 = 人。悬停源标签可看通道与状态 · <a href="/get_information/aidd/topics.html" style="color:#7dd3fc;text-decoration:none;">主题 →</a> · <a href="/get_information/aidd/board.html" style="color:#7dd3fc;text-decoration:none;">运行看板 →</a> · <a href="/get_information/aidd/timeline.html" style="color:#7dd3fc;text-decoration:none;">时间线 →</a> · <a href="/archive/" style="color:#7dd3fc;text-decoration:none;">历史归档 →</a></footer>
+</div>
+<script>
+const cards = [...document.querySelectorAll('.card')];
+const zones = [...document.querySelectorAll('.zone')];
+function apply(f) {
+  cards.forEach(c => {
+    let ok;
+    if (f === 'all') ok = true;
+    else if (f === 'topic') ok = c.dataset.topic === '1';
+    else if (f === 'deal') ok = c.dataset.deal === '1';
+    else if (f === 'overseas' || f === 'domestic') ok = c.dataset.region === f;
+    else ok = c.dataset.layer === f;
+    c.style.display = ok ? '' : 'none';
+  });
+  zones.forEach(z => {
+    const any = [...z.querySelectorAll('.card')].some(c => c.style.display !== 'none');
+    z.style.display = any ? '' : 'none';
+  });
+}
+document.querySelectorAll('.f').forEach(btn => btn.addEventListener('click', () => {
+  document.querySelectorAll('.f').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  apply(btn.dataset.f);
+}));
+// 反馈：卡片是 <a>，必须拦住跳转，否则点一下按钮就打开了原文
+document.addEventListener('click', (e) => {
+  const el = e.target.closest('.fb');
+  if (!el) return;
+  e.preventDefault();
+  e.stopPropagation();
+  const url = el.dataset.url, kind = el.dataset.kind;
+  fetch('/api/feedback', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ url: url, kind: kind })
+  }).then(r => r.json()).then(j => {
+    if (!j.ok) return;
+    const card = el.closest('.card');
+    card.querySelectorAll('.fb').forEach(b => b.classList.remove('on'));
+    el.classList.add('on');
+  }).catch(() => {});
+});
+</script>
+
+<script>
+// 双站无刷新切换：AI 主站 ⇄ AIDD 子站
+// 注入到两个站的所有 HTML 页面，拦截 .switcher 里 AI/AIDD 的点击，
+// fetch 目标页并替换 <style> + <body>，用 history.pushState 改地址栏，
+// 从而像本地 serve.py 那样在同一个页面内切换，不整页刷新。
+//
+// 同时负责修正切换器 UI：两站模板不一致（AI 新模板、AIDD 旧模板），
+// 统一由本脚本接管渲染，保证位置与样式一致。
+
+(function () {
+  "use strict";
+
+  var AI_BASE = "/get_information/";
+  var AIDD_BASE = "/get_information/aidd/";
+
+  // 当前是否在 AIDD 视图：以地址栏路径为准
+  function inAidd() {
+    return location.pathname.indexOf("/get_information/aidd") === 0;
+  }
+
+  // 统一渲染切换器：插到 body 顶部，两站长一样
+  function renderSwitcher() {
+    var oldSwitcher = document.querySelector(".switcher");
+    if (oldSwitcher) oldSwitcher.remove();
+
+    var bar = document.createElement("div");
+    bar.className = "switcher zbit-switcher";
+    bar.style.cssText =
+      "position:sticky;top:0;z-index:9999;display:flex;gap:14px;align-items:center;" +
+      "padding:8px 16px;background:rgba(251,250,248,.92);backdrop-filter:blur(8px);" +
+      "border-bottom:1px solid #eeeae2;font-size:13px;line-height:1.4";
+    var cur = inAidd() ? "aidd" : "ai";
+    [
+      ["ai", "AI", AI_BASE],
+      ["aidd", "AIDD", AIDD_BASE],
+    ].forEach(function (item) {
+      var a = document.createElement("a");
+      a.href = item[2];
+      a.textContent = item[1];
+      a.dataset.zbitSwitch = item[0];
+      a.style.cssText =
+        "text-decoration:none;color:" +
+        (item[0] === cur ? "#4a4ac4;font-weight:700" : "#6b665e") +
+        ";cursor:pointer";
+      bar.appendChild(a);
+    });
+    document.body.insertBefore(bar, document.body.firstChild);
+  }
+
+  function swap(url, push) {
+    fetch(url, { credentials: "same-origin" })
+      .then(function (r) {
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.text();
+      })
+      .then(function (html) {
+        var doc = new DOMParser().parseFromString(html, "text/html");
+
+        // 换标题
+        document.title = doc.title;
+
+        // 换样式：两站都是单页内嵌 <style>
+        var oldStyle = document.querySelector("head style");
+        var newStyle = doc.querySelector("head style");
+        if (newStyle) {
+          if (oldStyle) oldStyle.parentNode.replaceChild(newStyle, oldStyle);
+          else document.head.appendChild(newStyle);
+        }
+
+        // 换正文
+        document.body.innerHTML = doc.body.innerHTML;
+
+        // 地址栏（不触发跳转）
+        if (push) history.pushState({ zbit: 1 }, "", url);
+
+        // 重新渲染并绑定切换器
+        renderSwitcher();
+        window.scrollTo(0, 0);
+      })
+      .catch(function (err) {
+        // 拉取失败就退回整页跳转，保证可用
+        console.warn("[zbit-switch] fetch 失败，回退整页跳转", err);
+        location.href = url;
+      });
+  }
+
+  function onClick(e) {
+    var a = e.target.closest("a[data-zbit-switch]");
+    if (!a) return;
+    // 允许新标签页打开
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+    e.preventDefault();
+    swap(a.getAttribute("href"), true);
+  }
+
+  // 浏览器前进/后退
+  function onPop() {
+    swap(location.href, false);
+  }
+
+  function init() {
+    renderSwitcher();
+    document.addEventListener("click", onClick);
+    window.addEventListener("popstate", onPop);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+
+</script>
+</body>
+</html>
