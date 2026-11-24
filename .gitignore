@@ -29,6 +29,7 @@ Thumbs.db
 .vscode/
 
 # ===== 归档 / 临时目录 =====
+.backup/
 .zcode/
 research/
 .tmp_*/

@@ -183,7 +183,12 @@ def email_html(payload: dict, ai_text: str | None, lmarena: dict | None = None,
         src = _h.escape(SOURCE_LABEL.get(it["source"], it["source"]))
         title = _h.escape(it["title"] or "")
         url = _h.escape(it["url"] or "", quote=True)
-        summary = _h.escape((it.get("summary") or "").strip()[:140])
+        raw_sum = (it.get("summary") or "").strip()
+        # 中文信息密度高，给 180 字；英文给 200 字符。超长补省略号，读者可点标题看全文。
+        limit = 180 if re.search(r"[\u4e00-\u9fff]", raw_sum) else 200
+        summary = _h.escape(raw_sum[:limit])
+        if len(raw_sum) > limit:
+            summary += "…"
         num_html = (
             f'<span style="color:#c1c9d3;font-size:14px;font-weight:700;'
             f'margin-right:8px;">{num:02d}</span>' if num else ""
@@ -205,8 +210,9 @@ def email_html(payload: dict, ai_text: str | None, lmarena: dict | None = None,
         if not rows:
             return ""
         return (
-            f'<h2 style="font-size:15px;color:#111827;margin:26px 0 12px;'
-            f'padding-bottom:8px;border-bottom:1px solid #e5e7eb;">{title}</h2>{rows}'
+            f'<h2 style="font-size:15px;color:#111827;margin:28px 0 14px;'
+            f'padding:0 0 8px 10px;border-bottom:2px solid #e5e7eb;'
+            f'border-left:3px solid #2563eb;">{title}</h2>{rows}'
         )
 
     ai_html = ""
