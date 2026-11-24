@@ -5,457 +5,457 @@
 <link>http://10.4.2.231:8124/</link>
 <description>当天采集到的全部条目，按排序分从高到低。</description>
 <language>zh-CN</language>
-<lastBuildDate>Mon, 23 Nov 2026 07:16:37 +0000</lastBuildDate>
+<lastBuildDate>Tue, 24 Nov 2026 02:43:40 +0000</lastBuildDate>
 <atom:link href="http://10.4.2.231:8124/feed-all.xml" rel="self" type="application/rss+xml"/>
 <item>
-<title>推出 Gemini 4 Neon（3 篇报道）</title>
-<link>https://deepmind.google/blog/introducing-gemini-4-neon</link>
-<guid isPermaLink="true">https://deepmind.google/blog/introducing-gemini-4-neon</guid>
-<pubDate>Wed, 18 Nov 2026 21:35:43 +0000</pubDate>
-<description></description>
-<category>model_release</category>
-<source>deepmind_blog</source>
+<title>Nvidia 恢复 Jensen Huang 的 CEO 职务</title>
+<link>https://www.cnbc.com/2026/11/23/nvidia-jensen-huang-ceo.html</link>
+<guid isPermaLink="true">https://www.cnbc.com/2026/11/23/nvidia-jensen-huang-ceo.html</guid>
+<pubDate>Mon, 23 Nov 2026 14:00:18 +0000</pubDate>
+<description>3184 条评论。</description>
+<category>other</category>
+<source>hackernews</source>
 </item>
 <item>
-<title>GPT-6.2 Astra：排名第二，性能更强且便宜 20% 至 600%，但评价不一；6.2 Sol 或成主力（9 篇报道）</title>
-<link>https://www.latent.space/p/ainews-gpt-6-2-astra-the-2-frontier-model-is-better-and-20-600-cheaper-but-has-mixed-reviews-6-2-sol</link>
-<guid isPermaLink="true">https://www.latent.space/p/ainews-gpt-6-2-astra-the-2-frontier-model-is-better-and-20-600-cheaper-but-has-mixed-reviews-6-2-sol</guid>
-<pubDate>Wed, 18 Nov 2026 10:19:04 +0000</pubDate>
-<description>2026 年 11 月 17 日——GPT-6.2 Astra 和 Sol 降低了基准测试成本。早期测试者对 Astra 的使用体验看法不一。</description>
-<category>model_release</category>
-<source>smolai</source>
+<title>好莱坞：电影没得拍，不如投AI</title>
+<link>https://www.tmtpost.com/8214934.html</link>
+<guid isPermaLink="true">https://www.tmtpost.com/8214934.html</guid>
+<pubDate>Tue, 24 Nov 2026 02:19:00 +0000</pubDate>
+<description>抵制AI，运用AI。</description>
+<category>other</category>
+<source>tmtpost</source>
 </item>
 <item>
-<title>美国最近接连发生的技术故障源自为修复 AI 发现的漏洞</title>
-<link>https://www.solidot.org/story?sid=85918</link>
-<guid isPermaLink="true">https://www.solidot.org/story?sid=85918</guid>
-<pubDate>Wed, 18 Nov 2026 07:19:35 +0000</pubDate>
-<description>过去几天美国经历了一系列技术故障，全国航班停飞、银行在线服务中断，甚至 NSA 的一个机密通信网络瘫痪。华尔街高管和 NSA 告诉美国国会议员，一系列技术故障的起因是试图修复 AI 发现的系统漏洞。AI 模型在系统中识别了大量漏洞，为尽快修复漏洞而一次性推送了大量补丁，超出了系统的设计承载能力。摩根大通周一将其银行服务中断归咎于软件相关 bug，NSA 周二</description>
-<category>industry_event</category>
-<source>solidot</source>
-</item>
-<item>
-<title>OpenAI 自曝模型失控险情：最强 AI 曾突破网络封锁，紧急停训 11 天</title>
-<link>https://www.ithome.com/1/029/145.htm</link>
-<guid isPermaLink="true">https://www.ithome.com/1/029/145.htm</guid>
-<pubDate>Thu, 19 Nov 2026 00:09:16 +0000</pubDate>
-<description>IT之家 11 月 19 日消息，OpenAI 今天（11 月 18 日）发布题为《管理前沿 AI 风险：从训练到部署》的安全政策说明， 首次系统披露研发、内部使用到公开发布阶段，如何在高能力模型的全生命周期中管控风险。 IT之家援引博文介绍，OpenAI 称由于前沿模型的能力正快速增强，因此理解、对齐和保障模型的能力必须“始终领先一步”。公司维持引入“安全</description>
-<category>industry_event</category>
-<source>ithome</source>
-</item>
-<item>
-<title>OpenAI 的 GPT-6.2 Astra 在 AMD GPU IP 上实现最高 14% 的 PPA 提升 OpenAI 的 Tibo 表</title>
-<link>https://t.me/AI_News_CN/45894</link>
-<guid isPermaLink="true">https://t.me/AI_News_CN/45894</guid>
-<pubDate>Wed, 18 Nov 2026 22:21:01 +0000</pubDate>
-<description>OpenAI 的 GPT-6.2 Astra 在 AMD GPU IP 上实现最高 14% 的 PPA 提升 OpenAI 的 Tibo 表示 GPT-6.2 Astra 在困难任务上表现出色，并引用团队成果：在不到五个月内于 AMD 旗舰 GPU IP 上实现最高 14% 的 PPA 提升，且首款自研推理芯片 Jalapeño 的改进已在真实硅片上验证。 内容详情 · 原文链接 via AI情报局 | 全球 AI 动态简报 - Tel</description>
-<category>research_paper</category>
+<title>↩️ 黎曼猜想「AI 证明」被指空转，作者承认代码满是垃圾 在花 🎗️ 科技圈 : 黎曼猜想证明通过 Lean 验证 2026 年 11 月</title>
+<link>https://t.me/AI_News_CN/46189</link>
+<guid isPermaLink="true">https://t.me/AI_News_CN/46189</guid>
+<pubDate>Tue, 24 Nov 2026 01:37:02 +0000</pubDate>
+<description>↩️ 黎曼猜想「AI 证明」被指空转，作者承认代码满是垃圾 在花 🎗️ 科技圈 : 黎曼猜想证明通过 Lean 验证 2026 年 11 月 20 日，Levent Alpöge 发布黎曼猜想的 Lean 形式化证明，代码库约 1700 万行。11 月 21 日，Lean FRO 与 Mathlib Initiative 联合声明认证该命题与证明均正确：社区确认其命题与 Mathlib 的 RiemannHypothesis 一致、代码</description>
+<category>other</category>
 <source>telegram</source>
 </item>
 <item>
-<title>🚨Nvidia刚刚停止向中国发运AI芯片。</title>
-<link>https://x.com/minchoi/status/2123061382543258053</link>
-<guid isPermaLink="true">https://x.com/minchoi/status/2123061382543258053</guid>
-<pubDate>Wed, 18 Nov 2026 14:30:52 +0000</pubDate>
-<description>🚨Nvidia刚刚停止向中国发运AI芯片。 据Reuters报道，Nvidia临时CEO已确认此事，相关芯片背后的特别许可协议如今也存疑。</description>
-<category>industry_event</category>
-<source>x</source>
-</item>
-<item>
-<title>Palo Alto Networks斥资45亿美元收购AI初创公司</title>
-<link>https://siliconangle.com/2026/11/18/palo-alto-networks-bets-4-5b-on-ai-startup-applied-compute-as-earnings-top-forecasts</link>
-<guid isPermaLink="true">https://siliconangle.com/2026/11/18/palo-alto-networks-bets-4-5b-on-ai-startup-applied-compute-as-earnings-top-forecasts</guid>
-<pubDate>Wed, 18 Nov 2026 22:13:03 +0000</pubDate>
-<description>网络安全公司Palo Alto Networks宣布，已同意收购人工智能模型训练与推理初创公司Applied Compute。</description>
-<category>industry_event</category>
+<title>AI代理服务商 Sierra 获得17.5亿美元投资</title>
+<link>https://siliconangle.com/2026/11/23/ai-agent-provider-sierra-closes-1-75b-investment-amid-rapid-revenue-growth</link>
+<guid isPermaLink="true">https://siliconangle.com/2026/11/23/ai-agent-provider-sierra-closes-1-75b-investment-amid-rapid-revenue-growth</guid>
+<pubDate>Mon, 23 Nov 2026 23:49:50 +0000</pubDate>
+<description>人工智能初创公司 Sierra Technologies Inc. 在上轮融资六个月后宣布，已完成17.5亿美元后期投资。Greenoak</description>
+<category>other</category>
 <source>siliconangle</source>
 </item>
 <item>
-<title>Google 为 Gemini 任务模式升级模型并新增电商功能</title>
-<link>https://siliconangle.com/2026/11/18/google-upgrades-geminis-agentic-task-mode-with-new-model-e-commerce-features</link>
-<guid isPermaLink="true">https://siliconangle.com/2026/11/18/google-upgrades-geminis-agentic-task-mode-with-new-model-e-commerce-features</guid>
-<pubDate>Wed, 18 Nov 2026 23:56:55 +0000</pubDate>
-<description>Google LLC 发布新版 Gemini 人工智能助手，提升其执行多步骤任务的能力。负责该项目的副总裁 Josh Woodward 表示，</description>
-<category>product_launch</category>
+<title>问诊AI？一场死亡背后的追问</title>
+<link>https://www.tmtpost.com/8215116.html</link>
+<guid isPermaLink="true">https://www.tmtpost.com/8215116.html</guid>
+<pubDate>Tue, 24 Nov 2026 01:52:55 +0000</pubDate>
+<description>这场死亡背后，还有太多关于AI与医疗的边界值得追问。</description>
+<category>other</category>
+<source>tmtpost</source>
+</item>
+<item>
+<title>特斯拉新版 FSD 的炫酷画面，由车机上的 1B 模型实时生成</title>
+<link>https://www.oschina.net/news/503757</link>
+<guid isPermaLink="true">https://www.oschina.net/news/503757</guid>
+<pubDate>Mon, 23 Nov 2026 10:56:06 +0000</pubDate>
+<description>马斯克在 X 上解释了特斯拉新版 FSD 那个看起来非常酷炫的显示效果是怎么做出来的：不是 3D 渲染，是一个 1B 的扩散模型在车机上实时生成视频。 他写得很直白： "We've had a ~pixel-perfect world model since last year, which is critical for synthetic data ge</description>
+<category>other</category>
+<source>oschina</source>
+</item>
+<item>
+<title>如何构建和维护智能体评估</title>
+<link>https://huggingface.co/blog/agentic-evals</link>
+<guid isPermaLink="true">https://huggingface.co/blog/agentic-evals</guid>
+<pubDate>Mon, 23 Nov 2026 00:00:00 +0000</pubDate>
+<description></description>
+<category>other</category>
+<source>hf_blog</source>
+</item>
+<item>
+<title>营收创纪录增长、上调预测，HPE 股价仍下滑</title>
+<link>https://siliconangle.com/2026/11/23/hpes-stock-slides-despite-record-revenue-growth-and-upbeat-forecast</link>
+<guid isPermaLink="true">https://siliconangle.com/2026/11/23/hpes-stock-slides-despite-record-revenue-growth-and-upbeat-forecast</guid>
+<pubDate>Mon, 23 Nov 2026 23:24:51 +0000</pubDate>
+<description>服务器制造商 Hewlett-Packard Enterprise Co. 创下季度营收增速纪录，并上调全年预测，但仍未能延续势头。</description>
+<category>other</category>
 <source>siliconangle</source>
 </item>
 <item>
-<title>在最新采访中，Jim Cramer 向英伟达临时 CEO Colette Kress 追问：虽然董事会已表态不会请黄仁勋回归担任 CEO，但考虑到总统今日肯定了他对美国科技的重要价</title>
-<link>https://x.com/dotey/status/2122883061981282645</link>
-<guid isPermaLink="true">https://x.com/dotey/status/2122883061981282645</guid>
-<pubDate>Wed, 18 Nov 2026 02:42:17 +0000</pubDate>
-<description>在最新采访中，Jim Cramer 向英伟达临时 CEO Colette Kress 追问：虽然董事会已表态不会请黄仁勋回归担任 CEO，但考虑到总统今日肯定了他对美国科技的重要价值，在经过彻底调查后（Cramer 直言认为此前调查并不充分），董事会是否会考虑让他以“首席技术官”或“形象大使”等不触碰 SEC、商务部或财政部红线的其他身份回归？ 对此，Colette Kress 给出了毫无回旋余地的斩钉截铁回应：黄仁勋已经辞去英伟达的职务，董事会接受了他的辞呈，并已明确决定不会恢复他的职位。这就是董事会的最终决定与官方立场。 Kress 强调，英伟达</description>
-<category>industry_event</category>
-<source>x</source>
+<title>Meta TLX 为 Triton 带来 GPU Warp 组控制</title>
+<link>https://www.marktechpost.com/2026/11/23/meta-tlx-triton-low-level-extensions</link>
+<guid isPermaLink="true">https://www.marktechpost.com/2026/11/23/meta-tlx-triton-low-level-extensions</guid>
+<pubDate>Mon, 23 Nov 2026 08:24:57 +0000</pubDate>
+<description>Meta 介绍了 Triton Low-Level Extensions（TLX），为 Python Triton 内核添加 warp 组、屏障、TMA 和集群控制，并用于 Meta 在 Hopper、Blackwell 和 AMD 平台上的广告及 LLM 工作负载。</description>
+<category>other</category>
+<source>marktechpost</source>
 </item>
 <item>
-<title>谷歌发布 Gemini 4 Neon：独立评测排第三，价格不到 GPT、Claude 旗舰的四成，Pro 和 Ultra 订阅用户今天起能用</title>
-<link>https://x.com/dotey/status/2123214459703267673</link>
-<guid isPermaLink="true">https://x.com/dotey/status/2123214459703267673</guid>
-<pubDate>Thu, 19 Nov 2026 00:39:09 +0000</pubDate>
-<description>谷歌发布 Gemini 4 Neon：独立评测排第三，价格不到 GPT、Claude 旗舰的四成，Pro 和 Ultra 订阅用户今天起能用 谷歌 11 月 18 日发布大模型 Gemini 4 Neon。在独立评测机构 Artificial Analysis 的综合智能指数上，Neon 得 61 分，总排名第三，只排在 OpenAI 的 GPT-6.2 Astra 和 Anthropic 的 Claude Fable 5.2 之后，而它的价格不到这两个旗舰模型的四成。订阅了 Google AI Pro 或 Ultra 的用户，今天起可以在 Gemin</description>
-<category>model_release</category>
-<source>x</source>
+<title>精选样式示例</title>
+<link>https://simonwillison.net/2026/Nov/22/select-styling</link>
+<guid isPermaLink="true">https://simonwillison.net/2026/Nov/22/select-styling</guid>
+<pubDate>Sun, 22 Nov 2026 19:45:06 +0000</pubDate>
+<description>工具：精选样式示例。作者对HTML &lt;select&gt;框在不同浏览器中的默认外观各异感到不满，并认为它们在Chrome中很难看，于是让Claude……</description>
+<category>other</category>
+<source>simonw</source>
 </item>
 <item>
-<title>据报道Anthropic IPO定价为每股83美元，高于预期区间</title>
-<link>https://techcrunch.com/2026/11/18/anthropic-reportedly-prices-ipo-at-83-a-share-above-projected-range</link>
-<guid isPermaLink="true">https://techcrunch.com/2026/11/18/anthropic-reportedly-prices-ipo-at-83-a-share-above-projected-range</guid>
-<pubDate>Wed, 18 Nov 2026 22:11:15 +0000</pubDate>
-<description>据报道，此次备受期待的IPO按完全稀释计算，将公司估值定为1.5万亿美元。</description>
-<category>industry_event</category>
+<title>Amazon据报以75亿美元收购Decart核心资产</title>
+<link>https://siliconangle.com/2026/11/23/amazon-acquires-key-assets-of-ai-startup-decart-for-reported-7-5b</link>
+<guid isPermaLink="true">https://siliconangle.com/2026/11/23/amazon-acquires-key-assets-of-ai-startup-decart-for-reported-7-5b</guid>
+<pubDate>Tue, 24 Nov 2026 01:40:22 +0000</pubDate>
+<description>Amazon.com Inc.宣布计划聘用初创公司Decart.AI Inc.的技术员工并收购其核心技术。公司未披露交易条款。</description>
+<category>other</category>
+<source>siliconangle</source>
+</item>
+<item>
+<title>Nvidia CEO Jensen Huang回归，接下来会怎样？</title>
+<link>https://www.theverge.com/ai-artificial-intelligence/1030422/nvidia-jensen-huang-ai-china-alice-huang</link>
+<guid isPermaLink="true">https://www.theverge.com/ai-artificial-intelligence/1030422/nvidia-jensen-huang-ai-china-alice-huang</guid>
+<pubDate>Mon, 23 Nov 2026 22:10:32 +0000</pubDate>
+<description>Nvidia CEO、总裁兼联合创始人Jensen Huang承认与Megaspeed高管Alice Huang有染后，公司最初宣布了一项投资。</description>
+<category>other</category>
+<source>verge_ai</source>
+</item>
+<item>
+<title>Anthropic推出Claude Ship，可让AI代理审查、修复并批准代码变更</title>
+<link>https://techcrunch.com/2026/11/23/anthropic-launches-claude-ship-letting-ai-agents-review-fix-and-approve-code-changes</link>
+<guid isPermaLink="true">https://techcrunch.com/2026/11/23/anthropic-launches-claude-ship-letting-ai-agents-review-fix-and-approve-code-changes</guid>
+<pubDate>Mon, 23 Nov 2026 22:05:50 +0000</pubDate>
+<description>随着AI生成的代码不断累积，Anthropic推出新的开发者工具，让代理处理常规审批，以消除另一项开发瓶颈。</description>
+<category>other</category>
 <source>techcrunch_ai</source>
 </item>
 <item>
-<title>AMD完成收购World Labs，李飞飞出任执行副总裁兼首席科学家 AMD于11月16日宣布完成对World Labs的收购。World </title>
-<link>https://t.me/ShareCentre/7845</link>
-<guid isPermaLink="true">https://t.me/ShareCentre/7845</guid>
-<pubDate>Wed, 18 Nov 2026 15:49:59 +0000</pubDate>
-<description>AMD完成收购World Labs，李飞飞出任执行副总裁兼首席科学家 AMD于11月16日宣布完成对World Labs的收购。World Labs联合创始人李飞飞加入AMD，担任执行副总裁兼首席科学家，直接向董事长兼首席执行官苏姿丰汇报。此前双方于9月宣布交易协议，本次公告确认交易进入完成阶段，并正式公布团队加入后的管理安排。 World Labs研究可生成、重建和模拟交互式三维环境的人工智能模型，也开发用于机器人学习与仿真的技术。按</description>
-<category>industry_event</category>
-<source>telegram</source>
-</item>
-<item>
-<title>美国最大的一些学区考虑弃用 Google 搜索</title>
-<link>https://www.theverge.com/ai-artificial-intelligence/1037151/school-districts-ditching-google</link>
-<guid isPermaLink="true">https://www.theverge.com/ai-artificial-intelligence/1037151/school-districts-ditching-google</guid>
-<pubDate>Wed, 18 Nov 2026 23:18:35 +0000</pubDate>
-<description>据报道，纽约、洛杉矶和芝加哥的学校正在考虑改用 Google 的替代服务。此前 Google 表示，将为选择停用 AI 功能的学校关闭搜索服务。</description>
-<category>product_launch</category>
-<source>verge_ai</source>
-</item>
-<item>
-<title>Anthropic 创纪录 IPO 定价每股 83 美元，高于预期</title>
-<link>https://siliconangle.com/2026/11/18/anthropics-record-breaking-ipo-priced-at-83-per-share-higher-than-expected</link>
-<guid isPermaLink="true">https://siliconangle.com/2026/11/18/anthropics-record-breaking-ipo-priced-at-83-per-share-higher-than-expected</guid>
-<pubDate>Wed, 18 Nov 2026 23:50:41 +0000</pubDate>
-<description>人工智能巨头 Anthropic PBC 今日将备受期待的 IPO 定价为每股 83 美元，为这场历史性上市铺平道路。</description>
-<category>industry_event</category>
-<source>siliconangle</source>
-</item>
-<item>
-<title>七款新模型，兼具可扩展性与性价比</title>
-<link>https://microsoft.ai/news/microsoft-ignite-2026</link>
-<guid isPermaLink="true">https://microsoft.ai/news/microsoft-ignite-2026</guid>
-<pubDate>Wed, 18 Nov 2026 16:08:24 +0000</pubDate>
-<description>304 条评论</description>
-<category>model_release</category>
-<source>hackernews</source>
-</item>
-<item>
-<title>苹果公开 FastFrames 代码与研究权重，480p视频GPU生成响应降至36毫秒 苹果与康奈尔大学研究者11月17日发表FastFra</title>
-<link>https://t.me/ShareCentre/7847</link>
-<guid isPermaLink="true">https://t.me/ShareCentre/7847</guid>
-<pubDate>Wed, 18 Nov 2026 15:56:33 +0000</pubDate>
-<description>苹果公开 FastFrames 代码与研究权重，480p视频GPU生成响应降至36毫秒 苹果与康奈尔大学研究者11月17日发表FastFrames论文，随后公开代码及S、L两档权重。它基于Wan 2.1构建两步自回归视频扩散模型，面向需要不断接收新指令的视频交互。13亿参数S版保留Causal Forcing++生成器，把原有VAE解码器换成轻量像素解码器，并用小网络修复注意力缓存，省去额外一次大型模型运算。配合CUDA Graph等优</description>
-<category>deal</category>
-<source>telegram</source>
-</item>
-<item>
-<title>审计试验中，AI 代理提出的问题优于 KPMG 会计师</title>
-<link>https://europeanbusinessmagazine.com/ai-agents-better-questions-kpmg</link>
-<guid isPermaLink="true">https://europeanbusinessmagazine.com/ai-agents-better-questions-kpmg</guid>
-<pubDate>Wed, 18 Nov 2026 15:49:34 +0000</pubDate>
-<description>153 条评论</description>
-<category>research_paper</category>
-<source>hackernews</source>
-</item>
-<item>
-<title>近期多起服务中断被归因于技术问题</title>
-<link>https://siliconangle.com/2026/11/18/recent-spate-of-outages-attributed-to-technical-issues-amid-accelerated-ai-bug-discovery</link>
-<guid isPermaLink="true">https://siliconangle.com/2026/11/18/recent-spate-of-outages-attributed-to-technical-issues-amid-accelerated-ai-bug-discovery</guid>
-<pubDate>Wed, 18 Nov 2026 21:38:19 +0000</pubDate>
-<description>美国官员认为，联邦机构和大型科技公司的近期服务中断并非网络攻击所致；AI加速发现软件漏洞或与此有关。</description>
-<category>industry_event</category>
-<source>siliconangle</source>
-</item>
-<item>
-<title>Claude 用了三天，把模型“搬上” AMD 的 GPU</title>
-<link>https://www.oschina.net/news/503639/claude-mythos-slashed-software-work-to-onboard-amd-gpus</link>
-<guid isPermaLink="true">https://www.oschina.net/news/503639/claude-mythos-slashed-software-work-to-onboard-amd-gpus</guid>
-<pubDate>Wed, 18 Nov 2026 07:14:15 +0000</pubDate>
-<description>Anthropic 最近在 IPO 路演里给投资人放了一张幻灯片：把自家模型跑上 AMD GPU 需要的软件工作，Claude Mythos Preview 用了大约三天做完，几乎不需要人插手。Anthropic 说这件事过去要花 6 到 12 个月。 先说清楚这三天的边界。它只覆盖「让某一个 Anthropic 模型在 AMD MI355X 上跑到可用的性</description>
-<category>opinion_analysis</category>
-<source>oschina</source>
-</item>
-<item>
-<title>NVIDIA 开源 NVKE 和 NVKR，为 GPU 基础设施提供托管 Kubernetes</title>
-<link>https://www.marktechpost.com/2026/11/17/nvidia-nvke-nvkr-managed-kubernetes-gpu</link>
-<guid isPermaLink="true">https://www.marktechpost.com/2026/11/17/nvidia-nvke-nvkr-managed-kubernetes-gpu</guid>
-<pubDate>Tue, 17 Nov 2026 10:37:11 +0000</pubDate>
-<description>NVIDIA 以 Apache 2.0 许可开源 NVIDIA Kubernetes Engine（NVKE）和 NVIDIA Kubernetes Recipes（NVKR），让 AI 工厂在其基础设施上运行托管 Kubernetes 服务。</description>
-<category>product_launch</category>
-<source>marktechpost</source>
-</item>
-<item>
-<title>微软 CEO 纳德拉谈 6 万人自愿离职计划：部分团队尚未适应 AI 转型，公司希望给予员工更多自主权、让合适的人才进入合适的岗位</title>
-<link>https://www.ithome.com/1/029/147.htm</link>
-<guid isPermaLink="true">https://www.ithome.com/1/029/147.htm</guid>
-<pubDate>Thu, 19 Nov 2026 00:19:17 +0000</pubDate>
-<description>IT之家 11 月 19 日消息，当地时间 11 月 16 日，微软 CEO 萨提亚 · 纳德拉在接受《The Pragmatic Engineer》播客节目采访时谈到了一些大家关心的问题。 当被问及公司面向约 6 万名员工推出自愿离职计划，是否意味着微软将借助 AI 提高效率并进一步裁员。 对此，纳德拉没有直接给出肯定或否定的答复，而是坦言，随着 AI 改</description>
-<category>opinion_analysis</category>
-<source>ithome</source>
-</item>
-<item>
-<title>AI 在 Java 中发现漏洞，问题始于“AAAAAAAA...”</title>
-<link>https://www.engadget.com/2320797/ai-found-a-hole-in-java-and-it-starts-with-aaaaaaaa</link>
-<guid isPermaLink="true">https://www.engadget.com/2320797/ai-found-a-hole-in-java-and-it-starts-with-aaaaaaaa</guid>
-<pubDate>Wed, 18 Nov 2026 17:59:47 +0000</pubDate>
-<description>该漏洞可能让黑客控制银行、医院以及多数《财富》500 强企业的系统。</description>
-<category>industry_event</category>
-<source>engadget</source>
-</item>
-<item>
-<title>没想到 Jason Wei 已经离开 Meta，去 AI 数据公司 Mercor 当首席科学家</title>
-<link>https://x.com/dotey/status/2122855192358178891</link>
-<guid isPermaLink="true">https://x.com/dotey/status/2122855192358178891</guid>
-<pubDate>Wed, 18 Nov 2026 00:51:33 +0000</pubDate>
-<description>没想到 Jason Wei 已经离开 Meta，去 AI 数据公司 Mercor 当首席科学家 美国时间 11 月 17 日，Mercor CEO Brendan Foody 宣布，Jason Wei 出任首席科学家，负责组建研究团队，主管数据和评测。Jason Wei 随后发帖确认：在 Meta TBD 实验室待了一年，“训练 AI 模型的公司比以往任何时候都多，数据会决定下一个前沿”。 Jason Wei 在 Google Brain 时是思维链论文的第一作者，让模型先写推理步骤再给答案，这个做法后来被广泛使用。之后他在 OpenAI 参与了 o</description>
-<category>industry_event</category>
+<title>Z.ai推出首款采用Loop Transformer架构的GLM-5.4</title>
+<link>https://x.com/ai_for_success/status/2124820522873786512</link>
+<guid isPermaLink="true">https://x.com/ai_for_success/status/2124820522873786512</guid>
+<pubDate>Mon, 23 Nov 2026 11:01:04 +0000</pubDate>
+<description>Z.ai推出首款基于全新Loop Transformer架构的模型GLM-5.4，支持100万上下文长度。发布博客展示了一个完全由代码生成的交互式3D观鸟体验。</description>
+<category>other</category>
 <source>x</source>
 </item>
 <item>
-<title>#Update #Gemini Gemini 4 Neon 现已发布，宣称在多项基准测试中超越 Claude Opus 5.5。 Googl</title>
-<link>https://t.me/AI_News_CN/45903</link>
-<guid isPermaLink="true">https://t.me/AI_News_CN/45903</guid>
-<pubDate>Thu, 19 Nov 2026 00:55:05 +0000</pubDate>
-<description>#Update #Gemini Gemini 4 Neon 现已发布，宣称在多项基准测试中超越 Claude Opus 5.5。 Google AI Pro 及以上订阅用户可用。 via AI Copilot - Telegram Channel</description>
-<category>model_release</category>
-<source>telegram</source>
+<title>蚂蚁医疗健康AI五连发！开源、本地部署、望闻问切全安排上了</title>
+<link>https://www.qbitai.com/2026/11/512017.html</link>
+<guid isPermaLink="true">https://www.qbitai.com/2026/11/512017.html</guid>
+<pubDate>Mon, 23 Nov 2026 07:42:01 +0000</pubDate>
+<description>阿福大升级：让模型像医生一样思考</description>
+<category>other</category>
+<source>qbitai</source>
 </item>
 <item>
-<title>DaisyRose-27B（2 篇报道）</title>
-<link>https://www.radixark.com/blog/daisyrose-27b</link>
-<guid isPermaLink="true">https://www.radixark.com/blog/daisyrose-27b</guid>
-<pubDate>Wed, 18 Nov 2026 19:39:16 +0000</pubDate>
-<description>34 条评论</description>
-<category>model_release</category>
-<source>hackernews</source>
+<title>微软 WinGet 开始支持 MCP：以后安装 Windows 软件，直接告诉 AI 就行了</title>
+<link>https://www.appinn.com/winget-mcp-server</link>
+<guid isPermaLink="true">https://www.appinn.com/winget-mcp-server</guid>
+<pubDate>Mon, 23 Nov 2026 07:12:42 +0000</pubDate>
+<description>在 Windows 上安装软件，一般是下载，然后双击安装包，再一步步点击「下一步」。 其实，你还可以在 Windows 的终端中，直接输入以下命令，来安装 Firefox 浏览器： 这是微软早就提供的</description>
+<category>other</category>
+<source>appinn</source>
 </item>
 <item>
-<title>腾讯开源 Hy4 flash：单任务成本降到 Hy4 的二十分之一（2 篇报道）</title>
-<link>https://www.oschina.net/news/503636</link>
-<guid isPermaLink="true">https://www.oschina.net/news/503636</guid>
-<pubDate>Wed, 18 Nov 2026 06:25:52 +0000</pubDate>
-<description>腾讯宣布开源 Hy4 flash，该模型的总参数是 220B，每个 token 只激活 12B。这个比例本身就是这次发布的核心卖点。混元团队在模型卡里用了「迄今最具成本效益的 Hy 模型」这个说法，配上另一个数字就更直观了：单任务平均成本只有 Hy4 的 1/20，DeepSeek-V4.1-Flash-1017 的 1/8。 结构上改了三处 相比上一代 H</description>
-<category>model_release</category>
-<source>oschina</source>
+<title>“Agent版arXiv”来了！936个智能体12个星期狂发近千篇论文，连同行评议都整上了</title>
+<link>https://www.qbitai.com/2026/11/512004.html</link>
+<guid isPermaLink="true">https://www.qbitai.com/2026/11/512004.html</guid>
+<pubDate>Mon, 23 Nov 2026 06:59:38 +0000</pubDate>
+<description>一个完全由AI组成的科学家社会，是什么样？</description>
+<category>other</category>
+<source>qbitai</source>
 </item>
 <item>
-<title>英伟达已停止向中国提供AI数据中心晶片 - 联合早报</title>
-<link>https://news.google.com/rss/articles/CBMia0FVX3lxTE1XdnBkb25xSnBpcU9WT2pSel9IWk5LVzhKZHFPVGZKYXAyNXVLbTdoSlVWc2pjdHlSek0xemlCbGhUMWkxU3BYODd0S0NzRVZDM2FXZ3AwaVlabHlZdjRJSTV3Z3Z0c1ZlRzdn?oc=5</link>
-<guid isPermaLink="true">https://news.google.com/rss/articles/CBMia0FVX3lxTE1XdnBkb25xSnBpcU9WT2pSel9IWk5LVzhKZHFPVGZKYXAyNXVLbTdoSlVWc2pjdHlSek0xemlCbGhUMWkxU3BYODd0S0NzRVZDM2FXZ3AwaVlabHlZdjRJSTV3Z3Z0c1ZlRzdn?oc=5</guid>
-<pubDate>Wed, 18 Nov 2026 01:46:25 +0000</pubDate>
-<description>英伟达已停止向中国提供AI数据中心晶片 联合早报</description>
-<category>model_release</category>
-<source>gnews_tech</source>
-</item>
-<item>
-<title>NVIDIA RTX Spark 紧凑型台式机现已上市</title>
-<link>https://blogs.nvidia.com/blog/rtx-spark-desktop-local-ai-available-now</link>
-<guid isPermaLink="true">https://blogs.nvidia.com/blog/rtx-spark-desktop-local-ai-available-now</guid>
-<pubDate>Wed, 18 Nov 2026 14:00:31 +0000</pubDate>
-<description>ASUS、Dell 和 MSI 推出的 NVIDIA RTX Spark 紧凑型台式机今日上市，支持本地 AI 智能体、图像与视频生成，以及模型微调，并配备专用 Window</description>
-<category>product_launch</category>
-<source>nvidia_blog</source>
-</item>
-<item>
-<title>特朗普最新圈地行动：在菲律宾建设AI中心</title>
-<link>https://www.theverge.com/policy/1036749/trump-ai-chip-data-center-us-philippines-pax-silica</link>
-<guid isPermaLink="true">https://www.theverge.com/policy/1036749/trump-ai-chip-data-center-us-philippines-pax-silica</guid>
-<pubDate>Wed, 18 Nov 2026 19:40:36 +0000</pubDate>
-<description>当地媒体Rappler报道称，特朗普总统周二抵达菲律宾时，迎接他的至少有五位选美皇后。</description>
-<category>opinion_analysis</category>
-<source>verge_ai</source>
-</item>
-<item>
-<title>黄仁勋归期悬而未决，买GPU的人已经不敢下单</title>
-<link>https://www.leiphone.com/category/chips/WHSLCH74nrSJW6OE.html</link>
-<guid isPermaLink="true">https://www.leiphone.com/category/chips/WHSLCH74nrSJW6OE.html</guid>
-<pubDate>Wed, 18 Nov 2026 09:45:00 +0000</pubDate>
-<description>“现在都不敢订期货。”在深圳负责GPU采购的程麟，用一句话概括了今年的处境。 从突然辞任，到传出回归，再到本人公开表达重返意愿、董事会却在财报电话会上明确表示无意让其复职——短短五天里，围绕黄仁勋去留的消息几度反转。 多方信源此前也向雷峰网表示，黄仁勋短期内很难重新执掌英伟达。 但对于依赖英伟达GPU开展生意的中国算力服务商而言，眼下更现实的问题是：即便黄仁</description>
-<category>industry_event</category>
+<title>首届AI音乐视觉黑客松：从一句话到一块大屏，剪映 Hub 让 AI 视觉进入音乐现场</title>
+<link>https://www.leiphone.com/category/industrynews/tf4yrVFgiVRXvipk.html</link>
+<guid isPermaLink="true">https://www.leiphone.com/category/industrynews/tf4yrVFgiVRXvipk.html</guid>
+<pubDate>Mon, 23 Nov 2026 06:39:00 +0000</pubDate>
+<description>11月20日至21日，首届AI音乐视觉黑客松在北京国家会议中心举办。本次黑客松活动由剪映、全球AI原生共创社区WaytoAGI与北京ACE科技创新大会ACE-CON拔尖儿联合发起，是行业内首个面向音乐视觉的AI黑客松，旨在为开发者与创作者提供跨界协作与创意展示的平台。 与一般AI创作比赛不同，这场黑客松把真实的乐队演出需求搬进现场。活动期间，厨子和戏子、裁缝</description>
+<category>other</category>
 <source>leiphone</source>
 </item>
 <item>
-<title>总参数 224B、支持 100 万超长上下文！腾讯混元重磅开源 Hy4 flash 家族，多端生态全面上线 - AIBase（2 篇报道）</title>
-<link>https://news.google.com/rss/articles/CBMiTkFVX3lxTE5CalRyNFl0RlA5MTI5ZmlKUE5CUkxBcEhwdUxpVkhaOFZFblhFMWwyZnVFcGlPTHRCMzR6WG45cFBES2EzMGRrWkNLdDk0dw?oc=5</link>
-<guid isPermaLink="true">https://news.google.com/rss/articles/CBMiTkFVX3lxTE5CalRyNFl0RlA5MTI5ZmlKUE5CUkxBcEhwdUxpVkhaOFZFblhFMWwyZnVFcGlPTHRCMzR6WG45cFBES2EzMGRrWkNLdDk0dw?oc=5</guid>
-<pubDate>Wed, 18 Nov 2026 07:43:00 +0000</pubDate>
-<description>总参数 224B、支持 100 万超长上下文！腾讯混元重磅开源 Hy4 flash 家族，多端生态全面上线 AIBase</description>
-<category>model_release</category>
-<source>gn_tencent_ai</source>
+<title>Google Gemini 黑五五折！AI Pro/Plus 年费 100/24 美元</title>
+<link>https://www.appinn.com/google-ai-pro-black-friday-2026</link>
+<guid isPermaLink="true">https://www.appinn.com/google-ai-pro-black-friday-2026</guid>
+<pubDate>Mon, 23 Nov 2026 05:53:05 +0000</pubDate>
+<description>Google Gemini 黑五促销开启，美区 Google AI Pro 年费最高五折，折后约 99.99 美元。符合条件的 Google One 老用户可提前参加，具体优惠以结算页面为准。</description>
+<category>other</category>
+<source>appinn</source>
 </item>
 <item>
-<title>Perplexity Computer 新增 Multiagent，支持最多16个智能体交叉核查</title>
-<link>https://www.marktechpost.com/2026/11/17/perplexity-computer-multiagent-effort-level</link>
-<guid isPermaLink="true">https://www.marktechpost.com/2026/11/17/perplexity-computer-multiagent-effort-level</guid>
-<pubDate>Tue, 17 Nov 2026 22:52:04 +0000</pubDate>
-<description>Perplexity 为 Computer 新增高于 Ultra 的 Multiagent 级别，由主智能体调度最多16个使用 Claude、GPT 和 Gemini 的智能体，共享发现并相互核查。</description>
-<category>product_launch</category>
-<source>marktechpost</source>
+<title>深拆 GPT-6.2 Astra：性能涨了、价格降了，任务成本减少近一半，OpenAI 怎么做到的？</title>
+<link>https://www.leiphone.com/category/ai/MR1Osv9r2Rtr4V7F.html</link>
+<guid isPermaLink="true">https://www.leiphone.com/category/ai/MR1Osv9r2Rtr4V7F.html</guid>
+<pubDate>Mon, 23 Nov 2026 05:50:00 +0000</pubDate>
+<description>性能提升 6.2 分，Token 少 22%，API 价格降 20%。 作者丨 郑佳美 编辑丨岑 峰 刚刚，OpenAI 发布了 GPT-6.2 Astra 和 GPT-6.2 Sol。 这次更新有一个很具体的变化：模型开始更主动地判断一项工作应该怎么完成，包括什么时候需要调用工具、什么时候应该直接操作计算机、复杂任务需要投入多少推理资源，以及怎样减少反复修</description>
+<category>other</category>
+<source>leiphone</source>
 </item>
 <item>
-<title>全村希望，千问 4 Max 正式发布，2.4 万亿参数模型「进厂打工」</title>
-<link>http://www.geekpark.net/news/374079</link>
-<guid isPermaLink="true">http://www.geekpark.net/news/374079</guid>
-<pubDate>Tue, 17 Nov 2026 06:41:48 +0000</pubDate>
-<description>作者｜桦林舞王 编辑｜靖宇 底座架构重写，单任务成本暴降近六成，阿里把旗舰模型拉进了真实排班表。 终于，一款国产旗舰模型现身了。 11 月 16 日，阿里千问正式发布新一代旗舰模型 Qwen4-Max。就在五天前，它的预览版 qwen4-max-preview 刚在 Token Plan 里低调露过面，今天正式版直接亮出了完整底牌。 新模型依然维持着 2.4</description>
-<category>model_release</category>
+<title>感谢Google DeepMind团队带来Gemini 4 Neon 💙</title>
+<link>https://x.com/ai_for_success/status/2124727106483740908</link>
+<guid isPermaLink="true">https://x.com/ai_for_success/status/2124727106483740908</guid>
+<pubDate>Mon, 23 Nov 2026 04:49:52 +0000</pubDate>
+<description>感谢Google DeepMind团队推出Gemini 4 Neon。💙</description>
+<category>other</category>
+<source>x</source>
+</item>
+<item>
+<title>黄仁勋如何再次出任 Nvidia CEO</title>
+<link>https://www.theverge.com/tech/1040428/nvidia-jensen-huang-ceo-return</link>
+<guid isPermaLink="true">https://www.theverge.com/tech/1040428/nvidia-jensen-huang-ceo-return</guid>
+<pubDate>Mon, 23 Nov 2026 19:57:18 +0000</pubDate>
+<description>黄仁勋执掌 Nvidia 的时代本月险些结束。他在三十年前共同创立了这家如今被视为 AI 领域最重要的公司之一的企业，并辞去……</description>
+<category>other</category>
+<source>verge_ai</source>
+</item>
+<item>
+<title>加州起诉 OpenAI：说起来你可能不信，是模型先动的手</title>
+<link>https://www.leiphone.com/category/ai/c9ZMpnn48OtWzF0Z.html</link>
+<guid isPermaLink="true">https://www.leiphone.com/category/ai/c9ZMpnn48OtWzF0Z.html</guid>
+<pubDate>Mon, 23 Nov 2026 05:36:00 +0000</pubDate>
+<description>长任务、子 Agent 委派与共享服务凭证，让传统安全架构面临权限失控风险。 作者丨 郑佳美 编辑丨岑 峰 说起来你可能不信，这次真的是模型先动的手。 当地时间 11 月 16 日，加州总检察长 Rob Bonta 一纸诉状把 OpenAI 告上了法庭。起诉书里最值得注意的一句指控是：OpenAI 的智能体（Agent）在缺乏适当监管的情况下，“自己跑了出去</description>
+<category>other</category>
+<source>leiphone</source>
+</item>
+<item>
+<title>科研成果 | NeurIPS 2026发表CCCI博士生蒋翔宇工作｜NeurIPS 2026</title>
+<link>https://www.leiphone.com/category/private/hvhKCQokQvsUlFxN.html</link>
+<guid isPermaLink="true">https://www.leiphone.com/category/private/hvhKCQokQvsUlFxN.html</guid>
+<pubDate>Mon, 23 Nov 2026 05:27:00 +0000</pubDate>
+<description>来源：认知计算与群智协同创新实验室 文章链接：https://mp.weixin.qq.com/s/hgf9ipDLqSuuepr2gDyJGQ 近日，国际人工智能顶级学术会议神经信息处理系统大会（Conference on Neural Information Processing Systems，NeurIPS 2026）公布录用结果，西南财经大学计算机</description>
+<category>other</category>
+<source>leiphone</source>
+</item>
+<item>
+<title>这就是我现在的工作流程：</title>
+<link>https://x.com/minchoi/status/2124719179022426450</link>
+<guid isPermaLink="true">https://x.com/minchoi/status/2124719179022426450</guid>
+<pubDate>Mon, 23 Nov 2026 04:18:22 +0000</pubDate>
+<description>实时研究→Grok Bot；规划与编排→Grok Bot；日常编码与调试→Opus 5.5；编写与运行测试→Sonnet 5.5；复杂编码与调试、前端→Fable 5.2。收藏备用。</description>
+<category>other</category>
+<source>x</source>
+</item>
+<item>
+<title>蚂蚁阿福同款大模型宣布开源，全球医生一台电脑就能解锁专业医疗 AI 能力</title>
+<link>https://www.qbitai.com/2026/11/511998.html</link>
+<guid isPermaLink="true">https://www.qbitai.com/2026/11/511998.html</guid>
+<pubDate>Mon, 23 Nov 2026 03:56:34 +0000</pubDate>
+<description>阿福App宣布新一轮升级，解锁越来越多健康服务新本领</description>
+<category>other</category>
+<source>qbitai</source>
+</item>
+<item>
+<title>算力周期更迭，数据复合增长：为何存储经济性对中国规模化 AI 至关重要</title>
+<link>https://www.qbitai.com/2026/11/511989.html</link>
+<guid isPermaLink="true">https://www.qbitai.com/2026/11/511989.html</guid>
+<pubDate>Mon, 23 Nov 2026 03:47:46 +0000</pubDate>
+<description>AI 的未来将依赖能够在数据全生命周期中平衡性能、可靠性与经济性的存储架构。</description>
+<category>other</category>
+<source>qbitai</source>
+</item>
+<item>
+<title>马斯克承认 SpaceX 的 AI 落后，转而向 Anthropic、Google 出租大量算力，月入数十亿美元 《纽约时报》11 月 23</title>
+<link>https://t.me/AI_News_CN/46192</link>
+<guid isPermaLink="true">https://t.me/AI_News_CN/46192</guid>
+<pubDate>Tue, 24 Nov 2026 02:08:02 +0000</pubDate>
+<description>马斯克承认 SpaceX 的 AI 落后，转而向 Anthropic、Google 出租大量算力，月入数十亿美元 《纽约时报》11 月 23 日报道，自今年 5 月起，SpaceX 每月从其数据中心向 Anthropic、Google 等公司出租算力，月入数十亿美元。 三名知情人士称，马斯克向员工表示 SpaceX 在 AI 上落后，出租算力比自用更赚钱，8 月一度把部门群聊改名为“Sell compute because we can</description>
+<category>other</category>
+<source>telegram</source>
+</item>
+<item>
+<title>Anthropic推出Claude Ship，自动完成软件开发流程收尾</title>
+<link>https://siliconangle.com/2026/11/23/anthropics-claude-ship-automates-the-final-stage-of-the-software-development-pipeline</link>
+<guid isPermaLink="true">https://siliconangle.com/2026/11/23/anthropics-claude-ship-automates-the-final-stage-of-the-software-development-pipeline</guid>
+<pubDate>Tue, 24 Nov 2026 01:30:17 +0000</pubDate>
+<description>Anthropic发布更新后，Claude不仅能编写软件，还能告知开发者其生成的代码何时已可发布。</description>
+<category>other</category>
+<source>siliconangle</source>
+</item>
+<item>
+<title>寻找最有力的暗物质候选者</title>
+<link>https://www.smithsonianmag.com/science-nature/the-search-for-a-top-dark-matter-candidate-was-losing-hope-then-came-a-potential-signal-will-it-be-enough-to-energize-the-struggling-field-180989923</link>
+<guid isPermaLink="true">https://www.smithsonianmag.com/science-nature/the-search-for-a-top-dark-matter-candidate-was-losing-hope-then-came-a-potential-signal-will-it-be-enough-to-energize-the-struggling-field-180989923</guid>
+<pubDate>Mon, 23 Nov 2026 23:12:40 +0000</pubDate>
+<description>0 条评论</description>
+<category>other</category>
+<source>hackernews</source>
+</item>
+<item>
+<title>俄勒冈州和弗吉尼亚州就Grok色情深度伪造起诉SpaceX</title>
+<link>https://www.theverge.com/ai-artificial-intelligence/1040255/x-grok-ai-deepfakes-oregon-virginia-lawsuit</link>
+<guid isPermaLink="true">https://www.theverge.com/ai-artificial-intelligence/1040255/x-grok-ai-deepfakes-oregon-virginia-lawsuit</guid>
+<pubDate>Mon, 23 Nov 2026 18:26:47 +0000</pubDate>
+<description>俄勒冈州总检察长Dan Rayfield和弗吉尼亚州总检察长Jay Jones周一分别提起类似诉讼，指控SpaceX违反州消费者保护法。</description>
+<category>other</category>
+<source>verge_ai</source>
+</item>
+<item>
+<title>当大模型接上真实机器人：RoboChallenge Zero首期评测发布</title>
+<link>https://www.qbitai.com/2026/11/511978.html</link>
+<guid isPermaLink="true">https://www.qbitai.com/2026/11/511978.html</guid>
+<pubDate>Mon, 23 Nov 2026 03:13:06 +0000</pubDate>
+<description>RoboChallenge正式发布全新评测基准RoboChallenge Zero</description>
+<category>other</category>
+<source>qbitai</source>
+</item>
+<item>
+<title>Amazon 以 75 亿美元收购 Decart 的 AI 优化技术</title>
+<link>https://techcrunch.com/2026/11/23/amazon-snaps-up-decarts-ai-optimization-tech-for-7-5b-as-it-prepares-to-sell-trainium-chips</link>
+<guid isPermaLink="true">https://techcrunch.com/2026/11/23/amazon-snaps-up-decarts-ai-optimization-tech-for-7-5b-as-it-prepares-to-sell-trainium-chips</guid>
+<pubDate>Mon, 23 Nov 2026 17:14:23 +0000</pubDate>
+<description>据报道，Amazon 将以 75 亿美元收购 Decart 的 AI 优化技术及其研究团队。</description>
+<category>other</category>
+<source>techcrunch_ai</source>
+</item>
+<item>
+<title>OpenAI 首席科学家：AI 最早明年加速进化；B 站开始清理「大肥鱼」泛滥；瘫痪患者用脑机打 GTA6｜极客早知道</title>
+<link>http://www.geekpark.net/news/374304</link>
+<guid isPermaLink="true">http://www.geekpark.net/news/374304</guid>
+<pubDate>Mon, 23 Nov 2026 01:22:36 +0000</pubDate>
+<description>OpenAI 首席科学家警告：AI 最早可能在 2027 年加速自身发展，奥尔特曼赞同为 AI 开发设限 11 月 23 日消息，当地时间于 11 月 22 日，OpenAI 首席科学家雅库布 · 帕霍茨基（Jakub Pachocki）发文，提议 AI 企业应建立行业统一标准，对先进 AI 模型的开发设置共同限制，在研究人员具备更可靠的模型行为理解和监控能</description>
+<category>other</category>
 <source>geekpark</source>
 </item>
 <item>
-<title>权重空间编程不需要 Transformer</title>
-<link>https://huggingface.co/papers/2611.22055</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2611.22055</guid>
-<pubDate>Tue, 17 Nov 2026 00:00:00 +0000</pubDate>
-<description>大型语言模型无需基于梯度训练即可编写神经网络权重；它们倾向于设计稀疏表格或联想记忆模型，以更少参数超越同规模 Transformer，且</description>
-<category>research_paper</category>
-<source>hf_papers</source>
+<title>派早报：Anthropic 研究员宣称用 Claude 证明黎曼猜想</title>
+<link>https://sspai.com/post/119418</link>
+<guid isPermaLink="true">https://sspai.com/post/119418</guid>
+<pubDate>Sun, 22 Nov 2026 23:34:27 +0000</pubDate>
+<description>Anthropic 研究员宣称用 Claude 证明黎曼猜想 OpenAI 公布反蒸馏举措 黄仁勋据称将攻击下属作为管理方式 GTA 6 首日销售额近 40 亿美元 特斯拉升级 FSD，推出实景渲染功能 AMD 股票被做空 看看就行的简讯 少数派的近期动态 你可能错过的好文章 查看全文</description>
+<category>other</category>
+<source>sspai</source>
 </item>
 <item>
-<title>Gemini 4 Neon 现已上线 Command Code，支持 100 万 token 上下文 Command Code 已接入 Ge</title>
-<link>https://t.me/AI_News_CN/45899</link>
-<guid isPermaLink="true">https://t.me/AI_News_CN/45899</guid>
-<pubDate>Wed, 18 Nov 2026 23:50:00 +0000</pubDate>
-<description>Gemini 4 Neon 现已上线 Command Code，支持 100 万 token 上下文 Command Code 已接入 Gemini 4 Neon，具备 100 万 token 上下文窗口，并在 Pro、Max 和 API 三个层级开放使用。 内容详情 · 原文链接 via AI情报局 | 全球 AI 动态简报 - Telegram Channel</description>
-<category>model_release</category>
-<source>telegram</source>
+<title>HungerG 是 Qoder 上一款匿名 AI 模型，目前可免费使用。</title>
+<link>https://x.com/ai_for_success/status/2124921314234548291</link>
+<guid isPermaLink="true">https://x.com/ai_for_success/status/2124921314234548291</guid>
+<pubDate>Mon, 23 Nov 2026 17:41:35 +0000</pubDate>
+<description>我打算用它制作几个 3D 和交互项目，看看效果如何。目前还不知道它背后的实验室是哪家，有人猜得到吗？</description>
+<category>other</category>
+<source>x</source>
 </item>
 <item>
-<title>利用 OpenAI 模型推进芯片设计</title>
-<link>https://openai.com/index/advancing-chip-design-with-our-models</link>
-<guid isPermaLink="true">https://openai.com/index/advancing-chip-design-with-our-models</guid>
-<pubDate>Wed, 18 Nov 2026 00:00:00 +0000</pubDate>
-<description>OpenAI 模型优化了 Jalapeño 芯片中的电路，并改进了 RISC‑V 核心设计，展现了 GPT‑6 Astra 在 AI 辅助芯片设计方面的进展。</description>
-<category>research_paper</category>
-<source>openai_news</source>
+<title>自变量科技推出首个具身大模型接口 - 人民网</title>
+<link>https://news.google.com/rss/articles/CBMiakFVX3lxTFBfVWhIVVZwcEQxMHZfRGNYbjN2UHhCUkl5YmF4WlhnalA1cElJM1p5UkVvc01VRENOazNnYV9vRk0teUt2dGdMcktVc2gtS1ctcmNEZ3UyQVo2ZzI5aW9wTVo5RzQyRDJyUnc?oc=5</link>
+<guid isPermaLink="true">https://news.google.com/rss/articles/CBMiakFVX3lxTFBfVWhIVVZwcEQxMHZfRGNYbjN2UHhCUkl5YmF4WlhnalA1cElJM1p5UkVvc01VRENOazNnYV9vRk0teUt2dGdMcktVc2gtS1ctcmNEZ3UyQVo2ZzI5aW9wTVo5RzQyRDJyUnc?oc=5</guid>
+<pubDate>Mon, 23 Nov 2026 15:05:00 +0000</pubDate>
+<description>自变量科技推出首个具身大模型接口 人民网</description>
+<category>other</category>
+<source>google_news</source>
 </item>
 <item>
-<title>Satya Nadella 预测 AI 智能体将重塑互联网经济格局</title>
-<link>https://techcrunch.com/2026/11/18/satya-nadella-predicts-ai-agents-will-reshuffle-the-economics-of-the-web</link>
-<guid isPermaLink="true">https://techcrunch.com/2026/11/18/satya-nadella-predicts-ai-agents-will-reshuffle-the-economics-of-the-web</guid>
-<pubDate>Wed, 18 Nov 2026 22:58:11 +0000</pubDate>
-<description>Microsoft CEO 表示，AI 智能体可能冲击依赖广告的商业模式，促使 Amazon 等公司重新思考如何争取客户。</description>
-<category>opinion_analysis</category>
-<source>techcrunch_ai</source>
-</item>
-<item>
-<title>美国AI芯片战以荒唐方式升温</title>
-<link>https://www.wired.com/story/the-ai-chip-war-meets-the-jensen-huang-affair</link>
-<guid isPermaLink="true">https://www.wired.com/story/the-ai-chip-war-meets-the-jensen-huang-affair</guid>
-<pubDate>Wed, 18 Nov 2026 21:15:00 +0000</pubDate>
-<description>特朗普政府宣布计划限制中国获取AI芯片。据报道，世纪级作弊丑闻促成了这一决定。</description>
-<category>opinion_analysis</category>
+<title>Nvidia 开始为脑机接口提供支持</title>
+<link>https://www.wired.com/story/nvidia-is-powering-brain-computer-interfaces-now</link>
+<guid isPermaLink="true">https://www.wired.com/story/nvidia-is-powering-brain-computer-interfaces-now</guid>
+<pubDate>Mon, 23 Nov 2026 13:11:00 +0000</pubDate>
+<description>脑机接口公司 Paradromics 正使用 Nvidia 的计算硬件和软件处理脑数据。</description>
+<category>other</category>
 <source>wired_ai</source>
 </item>
 <item>
-<title>Google 才刚刚热身！🔥</title>
-<link>https://x.com/ai_for_success/status/2123121495362990232</link>
-<guid isPermaLink="true">https://x.com/ai_for_success/status/2123121495362990232</guid>
-<pubDate>Wed, 18 Nov 2026 18:29:44 +0000</pubDate>
-<description>Google 已开始向 Google AI Ultra 订阅用户推出搭载 Genie 4 的 Project Genie。Genie 4 支持实时世界编辑和原生音频。</description>
-<category>product_launch</category>
+<title>评测如何构建、何处失效，以及应改测什么</title>
+<link>https://eugeneyan.com/writing/public-evals</link>
+<guid isPermaLink="true">https://eugeneyan.com/writing/public-evals</guid>
+<pubDate>Sun, 22 Nov 2026 00:00:00 +0000</pubDate>
+<description>从 12 项基准测试中总结经验，包括评分器漏洞、测量目标偏离重点等。</description>
+<category>other</category>
+<source>eugeneyan</source>
+</item>
+<item>
+<title>多州就 Grok 深度伪造内容起诉 SpaceX</title>
+<link>https://www.wired.com/story/states-sue-spacex-over-grok-deepfakes</link>
+<guid isPermaLink="true">https://www.wired.com/story/states-sue-spacex-over-grok-deepfakes</guid>
+<pubDate>Mon, 23 Nov 2026 11:00:00 +0000</pubDate>
+<description>俄勒冈州和弗吉尼亚州总检察长起诉 Elon Musk 的多家公司，指控其未充分防范针对真人的性化图像。</description>
+<category>other</category>
+<source>wired_ai</source>
+</item>
+<item>
+<title>再见，世界：程序员的终结</title>
+<link>https://www.wired.com/story/goodbye-world-the-end-of-programmers</link>
+<guid isPermaLink="true">https://www.wired.com/story/goodbye-world-the-end-of-programmers</guid>
+<pubDate>Mon, 23 Nov 2026 10:00:00 +0000</pubDate>
+<description>关于编程技艺，你最后应该读的一篇文章，也可能是我最后写的一篇文章。</description>
+<category>other</category>
+<source>wired_ai</source>
+</item>
+<item>
+<title>Gemini 4 Neon、Antigravity、Meta SAM 3 与 MatAnyone 2：制作进行中</title>
+<link>https://x.com/ai_for_success/status/2124760076825301195</link>
+<guid isPermaLink="true">https://x.com/ai_for_success/status/2124760076825301195</guid>
+<pubDate>Mon, 23 Nov 2026 07:00:53 +0000</pubDate>
+<description>作者表示自己不擅长剪辑视频，也没有合适的录制设备，希望这项尝试能带来帮助。</description>
+<category>other</category>
 <source>x</source>
 </item>
 <item>
-<title>面对 AI 网络攻击担忧，Satya Nadella 称许多关键基础设施“无法打补丁”</title>
-<link>https://techcrunch.com/2026/11/18/amidst-fears-of-ai-cyberattacks-satya-nadella-says-lots-of-critical-infrastructure-is-unpatchable</link>
-<guid isPermaLink="true">https://techcrunch.com/2026/11/18/amidst-fears-of-ai-cyberattacks-satya-nadella-says-lots-of-critical-infrastructure-is-unpatchable</guid>
-<pubDate>Wed, 18 Nov 2026 23:45:00 +0000</pubDate>
-<description>Microsoft CEO 淡化了近期 Outlook 服务中断的影响，同时指出 AI 为保护互联世界带来了机遇和新的挑战。</description>
-<category>opinion_analysis</category>
-<source>techcrunch_ai</source>
+<title>智谱官宣 GLM-5.4：采用 Loop Transformer 架构、开启“泛 Coding”能力</title>
+<link>https://www.oschina.net/news/503756</link>
+<guid isPermaLink="true">https://www.oschina.net/news/503756</guid>
+<pubDate>Mon, 23 Nov 2026 10:30:11 +0000</pubDate>
+<description>智谱官方刚刚发布了 GLM-5.4 的技术公告，把架构、数据、能力提升，以及限制都摆出来了。 先说最硬的一个数字：GLM-5.4 是在 750B 的基座上，对其中 28 层做两轮循环。官方的说法是"智能水平达到 2-3T 级模型"。 官方把改造路径讲得很清楚：权重共享虽然提高参数效率，但在同等预训练计算量下，效果仍然不如不共享的模型...</description>
+<category>other</category>
+<source>oschina</source>
 </item>
 <item>
-<title>特斯拉以 3 万美元向客户出售 Cybercab 然后每月收 299 美元</title>
-<link>https://www.solidot.org/story?sid=85926</link>
-<guid isPermaLink="true">https://www.solidot.org/story?sid=85926</guid>
-<pubDate>Wed, 18 Nov 2026 15:29:11 +0000</pubDate>
-<description>特斯拉宣布以 3 万美元向特选客户出售无人驾驶汽车 Cybercab，然后每月必须支付 299 美元否则汽车不会启动。Cybercab 类似 Waymo 旗下的无人驾驶出租车，没有方向盘也没有刹车踏板，但不同的是 Waymo 的汽车提供的网约车服务，而特斯拉计划将其提供给少许客户。分析师认为这类似花 3 万美元买下一个特许经营权。特斯拉称，如果 Cyberc</description>
-<category>product_launch</category>
-<source>solidot</source>
+<title>AI数据中心给混乱的联合国气候谈判再添难题</title>
+<link>https://www.theverge.com/science/1040497/ai-data-centers-electricity-un-climate-summit</link>
+<guid isPermaLink="true">https://www.theverge.com/science/1040497/ai-data-centers-electricity-un-climate-summit</guid>
+<pubDate>Mon, 23 Nov 2026 21:09:37 +0000</pubDate>
+<description>清洁能源转型需要全球经济全面电气化，而耗电量巨大的数据中心正迅速增加。来自世界各地的代表必须应对这一挑战……</description>
+<category>other</category>
+<source>verge_ai</source>
 </item>
 <item>
-<title>豆包工作日活突破 800 万，企业客户 ARR 突破 20 亿元</title>
-<link>https://www.leiphone.com/category/industrynews/cC8dbvo5f5k5tgnE.html</link>
-<guid isPermaLink="true">https://www.leiphone.com/category/industrynews/cC8dbvo5f5k5tgnE.html</guid>
-<pubDate>Wed, 18 Nov 2026 13:18:00 +0000</pubDate>
-<description>11月18日，豆包官方宣布，上线仅三个月的豆包工作日活跃用户数（DAU）突破 800 万，企业客户年度经常性收入（ARR）突破 20 亿元。 豆包工作是豆包面向生产力场景推出的 AI 产品及品牌，自8月25日正式发布以来，持续更新专业办公能力。11月16日，豆包工作上线 “工作台” 功能，首批覆盖金融、医疗、教育、创意设计等 21 个专业场景，预先配置相应技</description>
-<category>product_launch</category>
-<source>leiphone</source>
+<title>Claude AI现可自行审查拉取请求并提交修复</title>
+<link>https://www.theverge.com/ai-artificial-intelligence/1040134/anthropic-claude-ship-ai-pull-requests</link>
+<guid isPermaLink="true">https://www.theverge.com/ai-artificial-intelligence/1040134/anthropic-claude-ship-ai-pull-requests</guid>
+<pubDate>Mon, 23 Nov 2026 20:00:00 +0000</pubDate>
+<description>Anthropic推出Claude AI新功能，帮助软件工程师交付代码。作为今日公布的Claude Ship产品的一部分，Claude现在可以审查、修复并……</description>
+<category>other</category>
+<source>verge_ai</source>
 </item>
 <item>
-<title>在 SageMaker AI 无服务器模型定制中进行全量微调</title>
-<link>https://aws.amazon.com/blogs/machine-learning/full-fine-tuning-fft-on-sagemaker-ai-serverless-model-customization</link>
-<guid isPermaLink="true">https://aws.amazon.com/blogs/machine-learning/full-fine-tuning-fft-on-sagemaker-ai-serverless-model-customization</guid>
-<pubDate>Thu, 19 Nov 2026 00:15:58 +0000</pubDate>
-<description>Amazon SageMaker AI 无服务器模型定制现已支持全量微调（FFT）。本文探讨 FFT 在哪些关键基准测试中优于 LoRA，并分析频谱特征。</description>
-<category>product_launch</category>
-<source>aws_ml</source>
+<title>国产大模型引领全球开源生态（大数据观察·智能经济新形态） - 新浪新闻_手机新浪网</title>
+<link>https://news.google.com/rss/articles/CBMidkFVX3lxTE1ONGlQRWpJMVdJdXpyUXVwa0ZRcm9JU2lqRnFYMVZlNnhVbkdGcFhSdGpzekZRSXRHNThRUm5za25aeEZHTHBreW9SVWRvMlFWd0ljaTE3X1ZCRzhMNFJZLU5LQkJaUzFOTWNwWnp4NURUUU8td1E?oc=5</link>
+<guid isPermaLink="true">https://news.google.com/rss/articles/CBMidkFVX3lxTE1ONGlQRWpJMVdJdXpyUXVwa0ZRcm9JU2lqRnFYMVZlNnhVbkdGcFhSdGpzekZRSXRHNThRUm5za25aeEZHTHBreW9SVWRvMlFWd0ljaTE3X1ZCRzhMNFJZLU5LQkJaUzFOTWNwWnp4NURUUU8td1E?oc=5</guid>
+<pubDate>Mon, 23 Nov 2026 11:16:21 +0000</pubDate>
+<description>国产大模型引领全球开源生态（大数据观察·智能经济新形态） 新浪新闻_手机新浪网</description>
+<category>other</category>
+<source>google_news</source>
 </item>
 <item>
-<title>Gemini 4 Neon 上线 Cursor，CursorBench 4.1 得分 63.7% 创新高 Cursor 上线 Gemini </title>
-<link>https://t.me/AI_News_CN/45900</link>
-<guid isPermaLink="true">https://t.me/AI_News_CN/45900</guid>
-<pubDate>Thu, 19 Nov 2026 00:02:00 +0000</pubDate>
-<description>Gemini 4 Neon 上线 Cursor，CursorBench 4.1 得分 63.7% 创新高 Cursor 上线 Gemini 4 Neon，默认设置下在 CursorBench 4.1 上得分 63.7%，高于 Gemini 4 Hydrogen 的 57.3%，定价为每百万输入 token 3 美元、每百万输出 token 15 美元。 内容详情 · 原文链接 via AI情报局 | 全球 AI 动态简报 - Teleg</description>
-<category>model_release</category>
+<title>银行受够了你的 AI 代理</title>
+<link>https://www.wired.com/story/banks-are-cracking-down-on-ai-agents</link>
+<guid isPermaLink="true">https://www.wired.com/story/banks-are-cracking-down-on-ai-agents</guid>
+<pubDate>Sun, 22 Nov 2026 11:00:00 +0000</pubDate>
+<description>美国大型金融机构禁止第三方机器人登录用户账户，并警告用户，机器人造成的任何损失都由用户承担。</description>
+<category>other</category>
+<source>wired_ai</source>
+</item>
+<item>
+<title>没等股价起飞就落袋：Anthropic CEO 上市当天套现 2.8 亿美元 钟声余音未散，先落袋为安。11 月 24 日消息，美国证券交易</title>
+<link>https://t.me/AI_News_CN/46191</link>
+<guid isPermaLink="true">https://t.me/AI_News_CN/46191</guid>
+<pubDate>Tue, 24 Nov 2026 01:52:06 +0000</pubDate>
+<description>没等股价起飞就落袋：Anthropic CEO 上市当天套现 2.8 亿美元 钟声余音未散，先落袋为安。11 月 24 日消息，美国证券交易委员会（SEC）11 月 23 日披露的 Form 4 文件显示，Anthropic CEO 达里奥·阿莫代伊在 IPO 上市当天出售了 337.8378 万股 Class A 普通股，成交价每股 83 美元，总额约 2.804 亿美元。 按发行价卖，一分不多拿 值得玩味的是成交价：83 美元，正是</description>
+<category>other</category>
 <source>telegram</source>
 </item>
 <item>
-<title>Genie 4 现已推出，万物似乎都由乌龟层层托起</title>
-<link>https://x.com/demishassabis/status/2123130606162985350</link>
-<guid isPermaLink="true">https://x.com/demishassabis/status/2123130606162985350</guid>
-<pubDate>Wed, 18 Nov 2026 19:05:57 +0000</pubDate>
-<description>Genie 4 现已推出！符合条件的 Ultra 订阅用户可以在 Project Genie 中试用，期待看看大家会用它创造什么。更多信息见博客：https://blog.google/innovation-and-ai/models-and-research/google-deepmind/genie-4-now-a</description>
-<category>model_release</category>
-<source>x</source>
-</item>
-<item>
-<title>厘清AI数据保留：解析两种标准设计</title>
-<link>https://www.marktechpost.com/2026/11/17/zero-data-retention-ai-apis-explained</link>
-<guid isPermaLink="true">https://www.marktechpost.com/2026/11/17/zero-data-retention-ai-apis-explained</guid>
-<pubDate>Tue, 17 Nov 2026 20:49:45 +0000</pubDate>
-<description>零数据保留适用于特定AI端点，而非整个供应商。本指南介绍两种标准API数据保留设计、各自的删除管理方，以及六项核查…</description>
-<category>tutorial_explainer</category>
+<title>2026 年个人 AI 代理对比：OpenClaw、Hermes Agent、Gemini Spark 等</title>
+<link>https://www.marktechpost.com/2026/11/22/best-personal-ai-agents-2026</link>
+<guid isPermaLink="true">https://www.marktechpost.com/2026/11/22/best-personal-ai-agents-2026</guid>
+<pubDate>Sun, 22 Nov 2026 10:36:17 +0000</pubDate>
+<description>文章按记忆能力、安全默认设置和实际成本，对比评估 Hermes Agent、OpenClaw、Gemini Spark、OpenAI dots、Meta Muse 和 Perplexity Personal Computer。</description>
+<category>other</category>
 <source>marktechpost</source>
 </item>
 <item>
-<title>Waymo 因无人出租车困在积水路段暂停旧金山服务</title>
-<link>https://www.engadget.com/2321312/waymo-pauses-service-in-san-francisco-after-robotaxis-get-stuck-on-flooded-streets</link>
-<guid isPermaLink="true">https://www.engadget.com/2321312/waymo-pauses-service-in-san-francisco-after-robotaxis-get-stuck-on-flooded-streets</guid>
-<pubDate>Wed, 18 Nov 2026 23:23:57 +0000</pubDate>
-<description>风暴期间，数辆 Waymo 无人出租车无法通过积水路段并造成交通拥堵，因此 Waymo 暂停了旧金山的服务。</description>
-<category>industry_event</category>
-<source>engadget</source>
-</item>
-<item>
-<title>聚焦 AI、社会与人类</title>
-<link>https://news.mit.edu/2026/putting-spotlight-ai-society-humanity-1117</link>
-<guid isPermaLink="true">https://news.mit.edu/2026/putting-spotlight-ai-society-humanity-1117</guid>
-<pubDate>Tue, 17 Nov 2026 20:40:00 +0000</pubDate>
-<description>在 MIT Human Insight Collaborative 的支持下，学者们正在探索 AI 如何影响人类体验并重塑高等教育。</description>
-<category>opinion_analysis</category>
-<source>mit_ai</source>
-</item>
-<item>
-<title>连特朗普自己的官员也不认为访华能推动AI进展</title>
-<link>https://www.wired.com/story/administration-officials-dont-think-much-ai-progress-will-come-of-trumps-china-visit</link>
-<guid isPermaLink="true">https://www.wired.com/story/administration-officials-dont-think-much-ai-progress-will-come-of-trumps-china-visit</guid>
-<pubDate>Wed, 18 Nov 2026 22:00:00 +0000</pubDate>
-<description>官员称，Nvidia丑闻的余波让围绕AI的谈判变得困难。</description>
-<category>opinion_analysis</category>
-<source>wired_ai</source>
-</item>
-<item>
-<title>信息报：英伟达曾在2022年为阿里巴巴和黄乐牵线搭桥，助阿里获取被管制芯片 - RFI</title>
-<link>https://news.google.com/rss/articles/CBMi5gNBVV95cUxPRUFYdnRMdFdRRVh5WjRHNVJMaWZKQ1NKV3VmS1ZqWjVLYWl4RUFkX3hLOFE3QU5LUHAzMUVDSlNkdUNzeXFrSGw4QjlVbmdZZkV1b21MTFJjN2Nqb0tCbFBYOGFhQkV3Nlp2bGhTSHV4V29La2ZFOFptOWo5V2U0MWtfSlAtdXg5MFZFWW1fMFlld0ZRMERBd3dDRVJ2TWVfbTlYcjE1ZThDNmxFZzU4RHJ1OGYzaUV4Q3ZiV2xWTVQ2dUF4a3hIRnpvUlBHRThQU0s1SFM4T2VKQ24yNzcxOGJnYVJRdjc5U3F1WGtCUnBONEVPUmxMTUpUdzRtTzZ3aHhVaE1SQ2tqcDFZeUwwS0g1dlZCU1E5Z3lsVlNZRzA0WnBxcUdKX1ZLc2kzWmF5eVB1aDJCNXpLbElTbk9LQ2Q3UVNDZktoek5yMXJIWEIxVGxzVTJjSmlFTWoxVzZOWW9wYVBUR1ZIcE8zNmp3dW9KaEU4SVYwemNXczJXS0xIeF94UE5xY19GdnhPN0dXR0Q0OWNRN2JtQnNCSWMwbnRlRmhydGlQWGI4LVVjaFc3WUdHcDZYT01DS0ZJSFZPcldselNrOFpHY3VxY0pZWE1ncm9WcFdrTGVLaXZMMTdhSlBaRGc?oc=5</link>
-<guid isPermaLink="true">https://news.google.com/rss/articles/CBMi5gNBVV95cUxPRUFYdnRMdFdRRVh5WjRHNVJMaWZKQ1NKV3VmS1ZqWjVLYWl4RUFkX3hLOFE3QU5LUHAzMUVDSlNkdUNzeXFrSGw4QjlVbmdZZkV1b21MTFJjN2Nqb0tCbFBYOGFhQkV3Nlp2bGhTSHV4V29La2ZFOFptOWo5V2U0MWtfSlAtdXg5MFZFWW1fMFlld0ZRMERBd3dDRVJ2TWVfbTlYcjE1ZThDNmxFZzU4RHJ1OGYzaUV4Q3ZiV2xWTVQ2dUF4a3hIRnpvUlBHRThQU0s1SFM4T2VKQ24yNzcxOGJnYVJRdjc5U3F1WGtCUnBONEVPUmxMTUpUdzRtTzZ3aHhVaE1SQ2tqcDFZeUwwS0g1dlZCU1E5Z3lsVlNZRzA0WnBxcUdKX1ZLc2kzWmF5eVB1aDJCNXpLbElTbk9LQ2Q3UVNDZktoek5yMXJIWEIxVGxzVTJjSmlFTWoxVzZOWW9wYVBUR1ZIcE8zNmp3dW9KaEU4SVYwemNXczJXS0xIeF94UE5xY19GdnhPN0dXR0Q0OWNRN2JtQnNCSWMwbnRlRmhydGlQWGI4LVVjaFc3WUdHcDZYT01DS0ZJSFZPcldselNrOFpHY3VxY0pZWE1ncm9WcFdrTGVLaXZMMTdhSlBaRGc?oc=5</guid>
-<pubDate>Wed, 18 Nov 2026 11:50:20 +0000</pubDate>
-<description>信息报：英伟达曾在2022年为阿里巴巴和黄乐牵线搭桥，助阿里获取被管制芯片 RFI</description>
-<category>industry_event</category>
-<source>gnews_tech</source>
+<title>Google AI 预览 Gemini API 工具检索功能</title>
+<link>https://www.marktechpost.com/2026/11/22/google-gemini-api-tool-retrieval</link>
+<guid isPermaLink="true">https://www.marktechpost.com/2026/11/22/google-gemini-api-tool-retrieval</guid>
+<pubDate>Sun, 22 Nov 2026 10:03:54 +0000</pubDate>
+<description>Google 开始预览 Gemini API 工具检索功能。智能体可预先配置大型工具库，仅在需要时于一次 Interactions API 请求中加载相应参数架构。</description>
+<category>other</category>
+<source>marktechpost</source>
 </item>
 </channel>
 </rss>

@@ -5,115 +5,115 @@
 <link>http://10.4.2.231:8124/</link>
 <description>按结构化分类过滤：other</description>
 <language>zh-CN</language>
-<lastBuildDate>Mon, 23 Nov 2026 08:55:50 +0000</lastBuildDate>
+<lastBuildDate>Tue, 24 Nov 2026 01:04:01 +0000</lastBuildDate>
 <atom:link href="http://10.4.2.231:8124/feed/category/other.xml" rel="self" type="application/rss+xml"/>
 <item>
-<title>Causal Event Networks: Entangled Tensor Graphs, Connectome Quotient Topology, and Subjective Experience as Geometric Dual</title>
-<link>https://arxiv.org/abs/2611.26646</link>
-<guid isPermaLink="true">https://arxiv.org/abs/2611.26646</guid>
-<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
-<description>arXiv:2611.26646v1 Announce Type: new Abstract: We introduce a chromatically constrained tensor-product construction that generates sparse recurrent computational graphs whose colo</description>
-<category>other</category>
-<source>arxiv_qbio</source>
-</item>
-<item>
-<title>Integrated Stress Responses and ABCB11 Repression in Drug-Exposed Human Hepatocytes</title>
-<link>https://arxiv.org/abs/2611.26651</link>
-<guid isPermaLink="true">https://arxiv.org/abs/2611.26651</guid>
-<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
-<description>arXiv:2611.26651v1 Announce Type: new Abstract: Drug-safety information systems must distinguish direct bile salt export pump (BSEP) inhibition from transcriptional changes in hepa</description>
-<category>other</category>
-<source>arxiv_qbio</source>
-</item>
-<item>
-<title>AI-driven technique could help engineers design analog chips faster and with less expense</title>
-<link>https://news.mit.edu/2026/ai-driven-technique-could-help-engineers-design-analog-chips-faster-and-less-expensive-1123</link>
-<guid isPermaLink="true">https://news.mit.edu/2026/ai-driven-technique-could-help-engineers-design-analog-chips-faster-and-less-expensive-1123</guid>
-<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
-<description>The “SLIC” training method enables a small LLM to compete with much more resource-intensive models in complex circuit design tasks.</description>
-<category>other</category>
-<source>mit_news_ai</source>
-</item>
-<item>
-<title>Unraveling the anti-inflammatory activities of Angelicae Sinensis Radix and Cyperi Rhizoma using network pharmacology, molecular docking, and in vitro experiments</title>
-<link>https://www.nature.com/articles/s41598-026-58960-7</link>
-<guid isPermaLink="true">https://www.nature.com/articles/s41598-026-58960-7</guid>
-<pubDate>Mon, 23 Nov 2026 00:00:00 +0000</pubDate>
-<description></description>
-<category>other</category>
-<source>nature_compbio</source>
-</item>
-<item>
-<title>Dataset-dependent patient-overlap bias in breast thermography deep learning</title>
-<link>https://www.nature.com/articles/s41598-026-64646-x</link>
-<guid isPermaLink="true">https://www.nature.com/articles/s41598-026-64646-x</guid>
-<pubDate>Mon, 23 Nov 2026 00:00:00 +0000</pubDate>
-<description></description>
-<category>other</category>
-<source>nature_compbio</source>
-</item>
-<item>
-<title>Piperine induces ROS-associated mitochondrial dysfunction with differential cytotoxic potential against oral cancer and non-malignant cells</title>
-<link>https://www.nature.com/articles/s41598-026-72741-2</link>
-<guid isPermaLink="true">https://www.nature.com/articles/s41598-026-72741-2</guid>
-<pubDate>Mon, 23 Nov 2026 00:00:00 +0000</pubDate>
-<description></description>
-<category>other</category>
-<source>nature_drugdisc_aidd</source>
-</item>
-<item>
-<title>StockWatch: Insmed Jumps on Report of Takeover Interest by Sanofi, as Analysts Conclude a Deal Would Make Sense</title>
-<link>https://www.genengnews.com/topics/translational-medicine/stockwatch-insmed-jumps-on-report-of-takeover-interest-by-sanofi-as-analysts-conclude-a-deal-would-make-sense</link>
-<guid isPermaLink="true">https://www.genengnews.com/topics/translational-medicine/stockwatch-insmed-jumps-on-report-of-takeover-interest-by-sanofi-as-analysts-conclude-a-deal-would-make-sense</guid>
-<pubDate>Sun, 22 Nov 2026 18:52:58 +0000</pubDate>
-<description>Bloomberg News cited unnamed sources in reporting that Sanofi (Euronext Paris: SAN and Nasdaq: SNY) was weighing whether to acquire Insmed, in a potential blockbuster deal that the</description>
-<category>other</category>
-<source>gen</source>
-</item>
-<item>
-<title>Capricor's Duchenne therapy is rejected again, as FDA cites significant issues with trial</title>
-<link>https://endpoints.news/capricors-duchenne-therapy-is-rejected-again-as-fda-cites-significant-issues-with-trial</link>
-<guid isPermaLink="true">https://endpoints.news/capricors-duchenne-therapy-is-rejected-again-as-fda-cites-significant-issues-with-trial</guid>
-<pubDate>Sat, 21 Nov 2026 01:11:10 +0000</pubDate>
-<description>Capricor Therapeutics’ deramiocel cell therapy was rejected for a second time by the FDA on Friday, despite the company's pivot to a narrower indication within Duchenne muscular dy</description>
-<category>other</category>
-<source>endpoints</source>
-</item>
-<item>
-<title>ECG foundation models for cardiovascular screening in a cohort of young competitive athletes</title>
-<link>https://www.nature.com/articles/s41746-026-03474-9</link>
-<guid isPermaLink="true">https://www.nature.com/articles/s41746-026-03474-9</guid>
-<pubDate>Sat, 21 Nov 2026 00:00:00 +0800</pubDate>
-<description></description>
-<category>other</category>
-<source>npj_digital_med</source>
-</item>
-<item>
-<title>Building the first single-cell transcriptome atlas for an adult vertebrate</title>
-<link>https://www.biotechniques.com/cell-and-tissue-biology/building-the-first-single-cell-transcriptome-atlas-for-an-adult-vertebrate</link>
-<guid isPermaLink="true">https://www.biotechniques.com/cell-and-tissue-biology/building-the-first-single-cell-transcriptome-atlas-for-an-adult-vertebrate</guid>
-<pubDate>Mon, 23 Nov 2026 08:10:18 +0000</pubDate>
-<description>Original story from the Massachusetts Institute of Technology (MIT; MA, USA). Researchers mapped gene activity across the entire body of a tiny fish, creating a resource for studyi</description>
-<category>other</category>
-<source>biotechniques</source>
-</item>
-<item>
-<title>Opinion: When should medical school start?</title>
-<link>https://www.statnews.com/2026/11/21/stat-letters-to-editor-medical-school-pediatric-emergency-care</link>
-<guid isPermaLink="true">https://www.statnews.com/2026/11/21/stat-letters-to-editor-medical-school-pediatric-emergency-care</guid>
-<pubDate>Sat, 21 Nov 2026 12:00:00 +0000</pubDate>
-<description>STAT readers weigh in on shortening medical school, fixing pediatric emergency care, and more.</description>
+<title>STAT+: Limb-girdle muscular dystrophy gets its first FDA-approved drug, from BridgeBio</title>
+<link>https://www.statnews.com/2026/11/23/fda-approves-bridgebio-lgmd-drug-welgemda</link>
+<guid isPermaLink="true">https://www.statnews.com/2026/11/23/fda-approves-bridgebio-lgmd-drug-welgemda</guid>
+<pubDate>Mon, 23 Nov 2026 21:23:42 +0000</pubDate>
+<description>A type of muscular dystrophy that was long ignored has its first drug — and it could earn BridgeBio a billion dollars a year.</description>
 <category>other</category>
 <source>stat</source>
 </item>
 <item>
-<title>It’s Over-ton; Thoughts on Isomorphic’s latest haul; and more</title>
-<link>https://endpoints.news/its-over-ton-thoughts-on-isomorphics-latest-haul-and-more</link>
-<guid isPermaLink="true">https://endpoints.news/its-over-ton-thoughts-on-isomorphics-latest-haul-and-more</guid>
-<pubDate>Sat, 21 Nov 2026 11:00:41 +0000</pubDate>
-<description>Welcome back to another edition of Endpoints Weekly! All the tech outages this week can’t stop us from bringing you the latest in biopharma news. The biggest news this week came fr</description>
+<title>Capricor says it will challenge FDA's rejection of Duchenne therapy</title>
+<link>https://endpoints.news/capricor-says-it-will-challenge-fdas-rejection-of-duchenne-therapy</link>
+<guid isPermaLink="true">https://endpoints.news/capricor-says-it-will-challenge-fdas-rejection-of-duchenne-therapy</guid>
+<pubDate>Mon, 23 Nov 2026 19:50:42 +0000</pubDate>
+<description>Capricor Therapeutics will appeal the FDA’s Friday rejection of its cell therapy for Duchenne muscular dystrophy, CEO Linda Marbán said Monday. During an interview with Endpoints N</description>
 <category>other</category>
 <source>endpoints</source>
+</item>
+<item>
+<title>FDA approves BridgeBio rare disease drug for muscular dystrophy</title>
+<link>https://endpoints.news/fda-approves-bridgebio-rare-disease-drug-for-muscular-dystrophy</link>
+<guid isPermaLink="true">https://endpoints.news/fda-approves-bridgebio-rare-disease-drug-for-muscular-dystrophy</guid>
+<pubDate>Mon, 23 Nov 2026 19:13:17 +0000</pubDate>
+<description>The FDA approved a new rare disease drug from BridgeBio Pharma, the first of an expected three on tap for the company. Regulators on Monday waved through BBP-418 to treat patients</description>
+<category>other</category>
+<source>endpoints</source>
+</item>
+<item>
+<title>STAT+: Pharmalittle: We’re reading about Capricor’s Duchenne drug, Lilly’s 15th acquisition of 2026, and more</title>
+<link>https://www.statnews.com/pharmalot/2026/11/23/fda-rejects-capricor-duchenne-drug-lilly-acquires-loqus23-therapeutics</link>
+<guid isPermaLink="true">https://www.statnews.com/pharmalot/2026/11/23/fda-rejects-capricor-duchenne-drug-lilly-acquires-loqus23-therapeutics</guid>
+<pubDate>Mon, 23 Nov 2026 14:38:08 +0000</pubDate>
+<description>The FDA again rejected a hotly debated experimental Duchenne muscular dystrophy drug from Capricor Therapeutics</description>
+<category>other</category>
+<source>stat</source>
+</item>
+<item>
+<title>Large-scale analysis of AlphaFold structures reveals organism-specific physicochemical signatures</title>
+<link>https://journals.plos.org/ploscompbiol/article/asset?id=10.1371%2Fjournal.pcbi.1014929.XML</link>
+<guid isPermaLink="true">https://journals.plos.org/ploscompbiol/article/asset?id=10.1371%2Fjournal.pcbi.1014929.XML</guid>
+<pubDate>Mon, 23 Nov 2026 14:00:00 +0000</pubDate>
+<description>by Michael J. Stam, Diego A. Oyarzún, Nadanai Laohakunakorn, Christopher W. Wood Recent advancements in protein structure prediction methods have ushered in a new era of abundant a</description>
+<category>other</category>
+<source>plos_compbiol</source>
+</item>
+<item>
+<title>AlphaFold models of host-pathogen interactions elucidate the prevalence and structural modes of molecular mimicry</title>
+<link>https://journals.plos.org/ploscompbiol/article/asset?id=10.1371%2Fjournal.pcbi.1014932.XML</link>
+<guid isPermaLink="true">https://journals.plos.org/ploscompbiol/article/asset?id=10.1371%2Fjournal.pcbi.1014932.XML</guid>
+<pubDate>Mon, 23 Nov 2026 14:00:00 +0000</pubDate>
+<description>by Delora Baptista, Lidia Gomez-Lucas, Jürgen Jänes, Nevan J. Krogan, Maria João Amorim, Ylva Ivarsson, Pedro Beltrao Pathogens exploit host cellular machinery through protein-prot</description>
+<category>other</category>
+<source>plos_compbiol</source>
+</item>
+<item>
+<title>A multimodal ultrasound foundation model for diagnosis of unexplained lymphadenopathy</title>
+<link>https://www.nature.com/articles/s41467-026-79690-4</link>
+<guid isPermaLink="true">https://www.nature.com/articles/s41467-026-79690-4</guid>
+<pubDate>Mon, 23 Nov 2026 00:00:00 +0000</pubDate>
+<description></description>
+<category>other</category>
+<source>nature_compbio</source>
+</item>
+<item>
+<title>Poxvirus Machinery Mapped with Electron Microscopy Shows “Paired Engines”</title>
+<link>https://www.genengnews.com/topics/infectious-diseases/poxvirus-machinery-mapped-with-electron-microscopy-shows-paired-engines</link>
+<guid isPermaLink="true">https://www.genengnews.com/topics/infectious-diseases/poxvirus-machinery-mapped-with-electron-microscopy-shows-paired-engines</guid>
+<pubDate>Mon, 23 Nov 2026 23:50:24 +0000</pubDate>
+<description>Cryo-electron tomography captured key molecular machinery directly inside the poxvirus core, revealing paired RNA polymerases poised for activation and a putative portal for export</description>
+<category>other</category>
+<source>gen</source>
+</item>
+<item>
+<title>Many languages, one common neural code</title>
+<link>https://news.mit.edu/2026/many-languages-one-common-neural-code-1123</link>
+<guid isPermaLink="true">https://news.mit.edu/2026/many-languages-one-common-neural-code-1123</guid>
+<pubDate>Mon, 23 Nov 2026 21:15:00 +0000</pubDate>
+<description>Analyzing speakers of 21 languages, an MIT study using multilingual AI finds the human brain may represent meaning in much the same way.</description>
+<category>other</category>
+<source>mit_news_ai</source>
+</item>
+<item>
+<title>BCR-MERFISH Reveals Diversity and Spatial Organization of Antibody-Producing Cells</title>
+<link>https://www.genengnews.com/topics/omics/bcr-merfish-reveals-diversity-and-spatial-organization-of-antibody-producing-cells</link>
+<guid isPermaLink="true">https://www.genengnews.com/topics/omics/bcr-merfish-reveals-diversity-and-spatial-organization-of-antibody-producing-cells</guid>
+<pubDate>Mon, 23 Nov 2026 21:12:59 +0000</pubDate>
+<description>BCR-MERFISH is a new imaging technology that maps antibody-producing immune cells and their diversity within tissues, offering new insights into immune responses, inflammation, and</description>
+<category>other</category>
+<source>gen</source>
+</item>
+<item>
+<title>Supercharging transformer residual connections</title>
+<link>https://research.google/blog/supercharging-transformer-residual-connections</link>
+<guid isPermaLink="true">https://research.google/blog/supercharging-transformer-residual-connections</guid>
+<pubDate>Mon, 23 Nov 2026 17:21:12 +0000</pubDate>
+<description>Algorithms &amp; Theory</description>
+<category>other</category>
+<source>google_research</source>
+</item>
+<item>
+<title>Finding faster quantum algorithms with agents and formal verification</title>
+<link>https://deepmind.google/blog/finding-faster-quantum-algorithms-with-agents-and-formal-verification</link>
+<guid isPermaLink="true">https://deepmind.google/blog/finding-faster-quantum-algorithms-with-agents-and-formal-verification</guid>
+<pubDate>Mon, 23 Nov 2026 16:59:40 +0000</pubDate>
+<description>Using agent teams and formal verification to improve quantum algorithms for fusion and chemistry.</description>
+<category>other</category>
+<source>deepmind</source>
 </item>
 </channel>
 </rss>

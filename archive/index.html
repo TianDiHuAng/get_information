@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>情报雷达 · 历史归档</title>
+<style>
+  :root{color-scheme:dark} *{box-sizing:border-box}
+  body{margin:0;background:#0b0f14;color:#e6edf3;font:15px/1.6 -apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+  .wrap{max-width:760px;margin:0 auto;padding:48px 20px 80px}
+  h1{font-size:26px;margin:0 0 6px}
+  .sub{color:#8b98a5;font-size:13px;margin-bottom:26px}
+  a.back{color:#7dd3fc;text-decoration:none;font-size:13px}
+  ul{list-style:none;padding:0;margin:22px 0 0;border-top:1px solid #1a2331}
+  li{border-bottom:1px solid #1a2331}
+  li a{display:flex;justify-content:space-between;gap:12px;padding:14px 4px;color:#e6edf3;text-decoration:none}
+  li a:hover{background:#0f151d;color:#7dd3fc}
+  li b{font-weight:600;font-variant-numeric:tabular-nums}
+  li span{color:#6b7785;font-size:12px}
+  li.empty{color:#6b7785;padding:14px 4px}
+</style></head>
+<body><div class="wrap">
+  <h1>历史归档</h1>
+  <div class="sub">每天一份页面快照 + 全量条目。点日期回看当天。</div>
+  <a class="back" href="/get_information/">← 返回今日</a>
+  <ul><li><a href="2026-11-24.html"><b>2026-11-24</b><span>221 条 · 336 KB</span></a></li></ul>
+</div><script>
+// 双站无刷新切换：AI 主站 ⇄ AIDD 子站
+// 注入到两个站的所有 HTML 页面，拦截 .switcher 里 AI/AIDD 的点击，
+// fetch 目标页并替换 <style> + <body>，用 history.pushState 改地址栏，
+// 从而像本地 serve.py 那样在同一个页面内切换，不整页刷新。
+//
+// 同时负责修正切换器 UI：两站模板不一致（AI 新模板、AIDD 旧模板），
+// 统一由本脚本接管渲染，保证位置与样式一致。
+
+(function () {
+  "use strict";
+
+  var AI_BASE = "/get_information/";
+  var AIDD_BASE = "/get_information/aidd/";
+
+  // 当前是否在 AIDD 视图：以地址栏路径为准
+  function inAidd() {
+    return location.pathname.indexOf("/get_information/aidd") === 0;
+  }
+
+  // 统一渲染切换器：插到 body 顶部，两站长一样
+  function renderSwitcher() {
+    var oldSwitcher = document.querySelector(".switcher");
+    if (oldSwitcher) oldSwitcher.remove();
+
+    var bar = document.createElement("div");
+    bar.className = "switcher zbit-switcher";
+    bar.style.cssText =
+      "position:sticky;top:0;z-index:9999;display:flex;gap:14px;align-items:center;" +
+      "padding:8px 16px;background:rgba(251,250,248,.92);backdrop-filter:blur(8px);" +
+      "border-bottom:1px solid #eeeae2;font-size:13px;line-height:1.4";
+    var cur = inAidd() ? "aidd" : "ai";
+    [
+      ["ai", "AI", AI_BASE],
+      ["aidd", "AIDD", AIDD_BASE],
+    ].forEach(function (item) {
+      var a = document.createElement("a");
+      a.href = item[2];
+      a.textContent = item[1];
+      a.dataset.zbitSwitch = item[0];
+      a.style.cssText =
+        "text-decoration:none;color:" +
+        (item[0] === cur ? "#4a4ac4;font-weight:700" : "#6b665e") +
+        ";cursor:pointer";
+      bar.appendChild(a);
+    });
+    document.body.insertBefore(bar, document.body.firstChild);
+  }
+
+  function swap(url, push) {
+    fetch(url, { credentials: "same-origin" })
+      .then(function (r) {
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.text();
+      })
+      .then(function (html) {
+        var doc = new DOMParser().parseFromString(html, "text/html");
+
+        // 换标题
+        document.title = doc.title;
+
+        // 换样式：两站都是单页内嵌 <style>
+        var oldStyle = document.querySelector("head style");
+        var newStyle = doc.querySelector("head style");
+        if (newStyle) {
+          if (oldStyle) oldStyle.parentNode.replaceChild(newStyle, oldStyle);
+          else document.head.appendChild(newStyle);
+        }
+
+        // 换正文
+        document.body.innerHTML = doc.body.innerHTML;
+
+        // 地址栏（不触发跳转）
+        if (push) history.pushState({ zbit: 1 }, "", url);
+
+        // 重新渲染并绑定切换器
+        renderSwitcher();
+        window.scrollTo(0, 0);
+      })
+      .catch(function (err) {
+        // 拉取失败就退回整页跳转，保证可用
+        console.warn("[zbit-switch] fetch 失败，回退整页跳转", err);
+        location.href = url;
+      });
+  }
+
+  function onClick(e) {
+    var a = e.target.closest("a[data-zbit-switch]");
+    if (!a) return;
+    // 允许新标签页打开
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+    e.preventDefault();
+    swap(a.getAttribute("href"), true);
+  }
+
+  // 浏览器前进/后退
+  function onPop() {
+    swap(location.href, false);
+  }
+
+  function init() {
+    renderSwitcher();
+    document.addEventListener("click", onClick);
+    window.addEventListener("popstate", onPop);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+
+</script>
+</body></html>

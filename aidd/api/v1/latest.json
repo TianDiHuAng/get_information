@@ -1,95 +1,24 @@
 {
  "version": "1",
- "generated_at": "2026-11-23T16:34:14+08:00",
- "count": 50,
+ "generated_at": "2026-11-24T10:45:57+08:00",
+ "count": 101,
  "items": [
   {
-   "title": "Causal Event Networks: Entangled Tensor Graphs, Connectome Quotient Topology, and Subjective Experience as Geometric Dual",
-   "url": "https://arxiv.org/abs/2611.26646",
-   "source": "arxiv_qbio",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-23T05:00:00+00:00",
-   "summary": "arXiv:2611.26646v1 Announce Type: new Abstract: We introduce a chromatically constrained tensor-product construction that generates sparse recurrent computational graphs whose colo",
-   "score": 75.0,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "Integrated Stress Responses and ABCB11 Repression in Drug-Exposed Human Hepatocytes",
-   "url": "https://arxiv.org/abs/2611.26651",
-   "source": "arxiv_qbio",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-23T05:00:00+00:00",
-   "summary": "arXiv:2611.26651v1 Announce Type: new Abstract: Drug-safety information systems must distinguish direct bile salt export pump (BSEP) inhibition from transcriptional changes in hepa",
-   "score": 75.0,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "Infection Spreading and Stochastic Extinction in Finite Spatially Inhomogeneous Susceptible-Infected-Susceptible and Susceptible-Infected-Recovered Systems",
-   "url": "https://arxiv.org/abs/2611.26792",
-   "source": "arxiv_qbio",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-23T05:00:00+00:00",
-   "summary": "arXiv:2611.26792v1 Announce Type: new Abstract: Demographic fluctuations can drive finite epidemic populations into an absorbing disease-free state even when the corresponding infi",
-   "score": 75.0,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "Surface Cues Over Structure: Probing LLM Behavior on Brain Connectivity Graphs",
-   "url": "https://arxiv.org/abs/2611.26913",
-   "source": "arxiv_qbio",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-23T05:00:00+00:00",
-   "summary": "arXiv:2611.26913v1 Announce Type: new Abstract: Resting-state functional magnetic resonance imaging (rs-fMRI) provides a noninvasive view of functional interactions across the brai",
-   "score": 75.0,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "Topology-only Local Network Alignment, Part 2. DijSLA: Stochastic Greedy Extension for Cross-Species GO Annotation Prediction",
+   "title": "仅基于拓扑的局部网络对齐（第二部分）：DijSLA——用于跨物种GO注释预测的随机贪心扩展",
    "url": "https://arxiv.org/abs/2611.26926",
    "source": "arxiv_qbio",
    "layer": "primary",
    "region": "overseas",
    "published": "2026-11-23T05:00:00+00:00",
-   "summary": "arXiv:2611.26926v1 Announce Type: new Abstract: Sequence similarity has long been a strong signal for protein function prediction, whereas the predictive value of network topology",
-   "score": 75.0,
+   "summary": "序列相似性长期以来一直是蛋白质功能预测的重要信号，而网络拓扑的预测价值……",
+   "score": 70.2,
    "attention": null,
-   "structure": null,
+   "structure": {
+    "category": "research_paper",
+    "tags": [],
+    "subjects": [],
+    "scope": "single"
+   },
    "event": {
     "id": null,
     "size": 1,
@@ -99,414 +28,195 @@
    }
   },
   {
-   "title": "Serial Dependence Emerges from Optimizing Vision for Noise Robustness",
-   "url": "https://arxiv.org/abs/2611.26949",
-   "source": "arxiv_qbio",
+   "title": "肢带型肌营养不良迎来首款FDA批准药物",
+   "url": "https://www.statnews.com/2026/11/23/fda-approves-bridgebio-lgmd-drug-welgemda",
+   "source": "stat",
    "layer": "primary",
    "region": "overseas",
-   "published": "2026-11-23T05:00:00+00:00",
-   "summary": "arXiv:2611.26949v1 Announce Type: new Abstract: Human visual perception is dynamically shaped by the recent past, a phenomenon known as serial dependence. Mechanistic models show t",
-   "score": 75.0,
-   "attention": null,
-   "structure": null,
+   "published": "2026-11-23T21:23:42+00:00",
+   "summary": "长期被忽视的一种肌营养不良症终于有了首款药物，预计每年可为BridgeBio带来10亿美元收入。",
+   "score": 71.1,
+   "attention": {
+    "score": 68,
+    "threshold": 36,
+    "selected": true,
+    "itype": "regulatory",
+    "axes": {
+     "sig": 7.5,
+     "nov": 5.5,
+     "cred": 7.0,
+     "reson": 6.5,
+     "act": 2.0
+    },
+    "reason": "FDA 首次批准 LGMD 2i/R9 治疗药物，是罕见病领域的重要监管与商业化里程碑；材料明确给出适用亚型、患者规模和"
+   },
+   "structure": {
+    "category": "industry_event",
+    "tags": [
+     "医疗",
+     "价格"
+    ],
+    "subjects": [
+     "BridgeBio",
+     "美国食品药品监督管理局"
+    ],
+    "scope": "single"
+   },
    "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
+    "id": 1,
+    "size": 2,
+    "sources": 2,
+    "heat": 1.65,
+    "representative": false
    }
   },
   {
-   "title": "Semi-regular admixed arrays: asymptotic enumeration and when information is additive",
-   "url": "https://arxiv.org/abs/2611.26990",
-   "source": "arxiv_qbio",
-   "layer": "primary",
+   "title": "Capricor的杜氏肌营养不良细胞疗法再次遭FDA拒绝",
+   "url": "https://www.manufacturingchemist.com/capricor-second-fda-rejection-duchenne-cell-therapy-trial-data",
+   "source": "manufacturingchemist",
+   "layer": "broad",
    "region": "overseas",
-   "published": "2026-11-23T05:00:00+00:00",
-   "summary": "arXiv:2611.26990v1 Announce Type: new Abstract: In genomic data analysis, admixed arrays are pairs of matrices recording the local ancestry and the allele at each position of the h",
-   "score": 75.0,
-   "attention": null,
-   "structure": null,
+   "published": "2026-11-23T11:21:00+00:00",
+   "summary": "FDA第二次就deramiocel发出完整回应函，指出关键HOPE-3研究存在严重的临床试验数据完整性缺陷。",
+   "score": 68.5,
+   "attention": {
+    "score": 68,
+    "threshold": 46,
+    "selected": true,
+    "itype": "regulatory",
+    "axes": {
+     "sig": 7.0,
+     "nov": 6.0,
+     "cred": 7.0,
+     "reson": 7.0,
+     "act": 2.0
+    },
+    "reason": "FDA 第二次拒批并指出关键 III 期试验存在无法事后补救的数据完整性问题，显著影响该疗法的审批前景，也为临床证据可信"
+   },
+   "structure": {
+    "category": "industry_event",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [
+     "Capricor Therapeutics",
+     "美国食品药品监督管理局"
+    ],
+    "scope": "single"
+   },
    "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
+    "id": 2,
+    "size": 4,
+    "sources": 2,
+    "heat": 1.45,
+    "representative": false
    }
   },
   {
-   "title": "Classical visual illusions in vision-language models under an instruction ladder",
-   "url": "https://arxiv.org/abs/2611.27242",
-   "source": "arxiv_qbio",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-23T05:00:00+00:00",
-   "summary": "arXiv:2611.27242v1 Announce Type: new Abstract: Vision-language models (VLMs) often name the \"illusory\" answer when shown a classical visual illusion, but it is unclear whether tha",
-   "score": 75.0,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "One-Step Self-Assembling Lipopolymer Coatings Enable Direct Longitudinal Biosensing in Native Biological Matrices",
-   "url": "https://arxiv.org/abs/2611.27422",
-   "source": "arxiv_qbio",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-23T05:00:00+00:00",
-   "summary": "arXiv:2611.27422v1 Announce Type: new Abstract: Sample-driven cross-reactivity remains a fundamental bottleneck for sensitive and selective biosensing in complex biological environ",
-   "score": 75.0,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "Nutrient limitation drives Turing instabilities in cross-feeding microbial communities",
-   "url": "https://arxiv.org/abs/2611.27534",
-   "source": "arxiv_qbio",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-23T05:00:00+00:00",
-   "summary": "arXiv:2611.27534v1 Announce Type: new Abstract: Microbial communities are shaped by metabolic interactions, often in the form of cross-feeding in which microbes exchange metabolite",
-   "score": 75.0,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "Critical slowing down in hive temperature does not provide actionable early warnings of honey bee colony collapse",
-   "url": "https://arxiv.org/abs/2611.27766",
-   "source": "arxiv_qbio",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-23T05:00:00+00:00",
-   "summary": "arXiv:2611.27766v1 Announce Type: new Abstract: Early warning signals (EWS) based on critical slowing down (CSD) have been proposed as model-independent indicators of approaching e",
-   "score": 75.0,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "The Four-Step Action Loop with Feedback: A teachable perception-action framework for everyday self-regulation",
-   "url": "https://arxiv.org/abs/2611.27795",
-   "source": "arxiv_qbio",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-23T05:00:00+00:00",
-   "summary": "arXiv:2611.27795v1 Announce Type: new Abstract: Everyday stress is largely a learned pattern: a familiar cue, a fast reading of threat, an automatic reaction and a body that stays",
-   "score": 75.0,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "Self-organized fractional silencing of pyramidal neurons under global depolarization in a spatial neuron-glial microcircuit model",
-   "url": "https://arxiv.org/abs/2611.27847",
-   "source": "arxiv_qbio",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-23T05:00:00+00:00",
-   "summary": "arXiv:2611.27847v1 Announce Type: new Abstract: Pathological transitions in nervous tissue, including epileptiform discharges and cortical spreading depolarization, depend on the i",
-   "score": 75.0,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "Spatial model of neurogliovascular unit: arachidonic acid can control the stability",
-   "url": "https://arxiv.org/abs/2611.27888",
-   "source": "arxiv_qbio",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-23T05:00:00+00:00",
-   "summary": "arXiv:2611.27888v1 Announce Type: new Abstract: Arachidonic acid metabolites can have both vasoconstrictor and vasodilator effects, thereby influencing neuronal activity. In this w",
-   "score": 75.0,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "Mammalian gonadal development: origins, specification and differentiation of ovary and testis cell lineages",
-   "url": "https://arxiv.org/abs/2611.27933",
-   "source": "arxiv_qbio",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-23T05:00:00+00:00",
-   "summary": "arXiv:2611.27933v1 Announce Type: new Abstract: Testicular and ovarian development requires the coordinated formation and assembly of multiple cell types that enable these organs t",
-   "score": 75.0,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "AI-driven technique could help engineers design analog chips faster and with less expense",
-   "url": "https://news.mit.edu/2026/ai-driven-technique-could-help-engineers-design-analog-chips-faster-and-less-expensive-1123",
-   "source": "mit_news_ai",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-23T05:00:00+00:00",
-   "summary": "The “SLIC” training method enables a small LLM to compete with much more resource-intensive models in complex circuit design tasks.",
-   "score": 75.0,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "Machine learning-guided virtual screening of the comprehensive marine natural products database identifies steroidal androgen receptor binder candidates",
-   "url": "https://www.nature.com/articles/s41598-026-81932-w",
-   "source": "nature_compbio",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-23T00:00:00+00:00",
-   "summary": null,
-   "score": 73.6,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "Health-state instability and progression in longitudinal clinical records reveal heterogeneous ageing trajectories",
-   "url": "https://www.nature.com/articles/s41746-026-03482-9",
-   "source": "nature_compbio",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-23T00:00:00+00:00",
-   "summary": null,
-   "score": 73.6,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "An AI-based framework for assessing physical fitness, energy metabolism, and biomechanical efficiency in sprinting and hurdle events",
-   "url": "https://www.nature.com/articles/s41598-026-80990-4",
-   "source": "nature_compbio",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-23T00:00:00+00:00",
-   "summary": null,
-   "score": 73.6,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "Computational design of a mutation-inclusive multi-epitope vaccine targeting major immune-escape variants of hepatitis B surface antigen",
-   "url": "https://www.nature.com/articles/s41598-026-79802-6",
-   "source": "nature_compbio",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-23T00:00:00+00:00",
-   "summary": null,
-   "score": 73.6,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "A simple centroid-size classifier remains competitive with more complex PointNet-based deep learning for sex estimation from CT-derived 3D patellar models",
-   "url": "https://www.nature.com/articles/s41598-026-81644-1",
-   "source": "nature_compbio",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-23T00:00:00+00:00",
-   "summary": null,
-   "score": 73.6,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "A comparative study on vision-language models for image captioning in Lithuanian",
-   "url": "https://www.nature.com/articles/s41598-026-81406-z",
-   "source": "nature_compbio",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-23T00:00:00+00:00",
-   "summary": null,
-   "score": 73.6,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "A machine learning framework for human activity recognition and confidence-based atypical pattern assessment for remote physiotherapy monitoring",
-   "url": "https://www.nature.com/articles/s41598-026-79824-0",
-   "source": "nature_compbio",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-23T00:00:00+00:00",
-   "summary": null,
-   "score": 73.6,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "Unraveling the anti-inflammatory activities of Angelicae Sinensis Radix and Cyperi Rhizoma using network pharmacology, molecular docking, and in vitro experiments",
-   "url": "https://www.nature.com/articles/s41598-026-58960-7",
-   "source": "nature_compbio",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-23T00:00:00+00:00",
-   "summary": null,
-   "score": 73.6,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "Dataset-dependent patient-overlap bias in breast thermography deep learning",
-   "url": "https://www.nature.com/articles/s41598-026-64646-x",
-   "source": "nature_compbio",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-23T00:00:00+00:00",
-   "summary": null,
-   "score": 73.6,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "Piperine induces ROS-associated mitochondrial dysfunction with differential cytotoxic potential against oral cancer and non-malignant cells",
-   "url": "https://www.nature.com/articles/s41598-026-72741-2",
-   "source": "nature_drugdisc_aidd",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-23T00:00:00+00:00",
-   "summary": null,
-   "score": 73.6,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "StockWatch: Insmed Jumps on Report of Takeover Interest by Sanofi, as Analysts Conclude a Deal Would Make Sense",
-   "url": "https://www.genengnews.com/topics/translational-medicine/stockwatch-insmed-jumps-on-report-of-takeover-interest-by-sanofi-as-analysts-conclude-a-deal-would-make-sense",
+   "title": "BCR-MERFISH揭示抗体生成细胞的多样性与空间分布",
+   "url": "https://www.genengnews.com/topics/omics/bcr-merfish-reveals-diversity-and-spatial-organization-of-antibody-producing-cells",
    "source": "gen",
    "layer": "primary",
    "region": "overseas",
-   "published": "2026-11-22T18:52:58+00:00",
-   "summary": "Bloomberg News cited unnamed sources in reporting that Sanofi (Euronext Paris: SAN and Nasdaq: SNY) was weighing whether to acquire Insmed, in a potential blockbuster deal that the",
-   "score": 72.2,
-   "attention": null,
+   "published": "2026-11-23T21:12:59+00:00",
+   "summary": "BCR-MERFISH是一种新型成像技术，可绘制组织中抗体生成免疫细胞的分布与多样性，为研究免疫反应和炎症提供信息。",
+   "score": 66.9,
+   "attention": {
+    "score": 65,
+    "threshold": 36,
+    "selected": true,
+    "itype": "research_paper",
+    "axes": {
+     "sig": 5.0,
+     "nov": 7.5,
+     "cred": 8.0,
+     "reson": 6.0,
+     "act": 4.0
+    },
+    "reason": "Nature Methods论文以小鼠肠道超过30万细胞、434个浆细胞群的实测展示了BCR-MERFISH对抗体细胞克"
+   },
+   "structure": {
+    "category": "research_paper",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [
+     "Boston Children’s Hospital"
+    ],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "STAT+：Kymera Therapeutics湿疹中期试验成功，挑战Dupixent",
+   "url": "https://www.statnews.com/2026/11/23/kymera-therapeutics-eczema-trial-success-potential-dupixent-rival",
+   "source": "stat",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T12:00:00+00:00",
+   "summary": "Kymera Therapeutics周一宣布，其试验性疗法能有效且安全地治疗湿疹患者皮肤瘙痒和炎症。",
+   "score": 66.4,
+   "attention": {
+    "score": 65,
+    "threshold": 36,
+    "selected": true,
+    "itype": "clinical_data",
+    "axes": {
+     "sig": 7.0,
+     "nov": 6.0,
+     "cred": 6.0,
+     "reson": 7.0,
+     "act": 2.0
+    },
+    "reason": "II期在三种剂量下均达主要及次要终点，并报告疗效和安全性数字，是重要临床信号；但材料未给样本量且主要依据公司公告，证据强"
+   },
+   "structure": {
+    "category": "research_paper",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [
+     "Kymera Therapeutics"
+    ],
+    "scope": "single"
+   },
+   "event": {
+    "id": 4,
+    "size": 3,
+    "sources": 2,
+    "heat": 1.407,
+    "representative": true
+   }
+  },
+  {
+   "title": "STAT+：新生物技术公司拟开发下一代多发性骨髓瘤CAR-T疗法",
+   "url": "https://www.statnews.com/2026/11/23/caronilex-dual-targeting-car-t-overcomes-myeloma-resistance",
+   "source": "stat",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T09:30:00+00:00",
+   "summary": "多发性骨髓瘤常会复发。一种新型CAR-T疗法计划增加一个靶点，以避开肿瘤。",
+   "score": 66.3,
+   "attention": {
+    "score": 65,
+    "threshold": 36,
+    "selected": true,
+    "itype": "clinical_data",
+    "axes": {
+     "sig": 7.0,
+     "nov": 6.0,
+     "cred": 6.0,
+     "reson": 7.0,
+     "act": 2.0
+    },
+    "reason": "早期试验报告 TriPRIL 在 15 名复发或难治性多发性骨髓瘤患者中有 12 名出现癌症迹象减少或消失，且不少人既往"
+   },
    "structure": null,
    "event": {
     "id": null,
@@ -517,16 +227,488 @@
    }
   },
   {
-   "title": "Capricor's Duchenne therapy is rejected again, as FDA cites significant issues with trial",
-   "url": "https://endpoints.news/capricors-duchenne-therapy-is-rejected-again-as-fda-cites-significant-issues-with-trial",
+   "title": "Lilly acquires LoQus23 for up to $725m to advance Huntington’s disease drug",
+   "url": "https://www.manufacturingchemist.com/lilly-acquires-loqus23-725m-huntington-s-disease-drug",
+   "source": "manufacturingchemist",
+   "layer": "broad",
+   "region": "overseas",
+   "published": "2026-11-23T10:55:00+00:00",
+   "summary": "The acquisition gives Eli Lilly control of LQT-23, a preclinical oral MSH3 inhibitor designed to slow disease-associated DNA repeat expansion, with clinical development preparation",
+   "score": 64.6,
+   "attention": {
+    "score": 65,
+    "threshold": 46,
+    "selected": true,
+    "itype": "industry_event",
+    "axes": {
+     "sig": 7.0,
+     "nov": 5.0,
+     "cred": 5.5,
+     "reson": 7.0,
+     "act": 2.0
+    },
+    "reason": "礼来以最高7.25亿美元收购LoQus23及其临床前口服MSH3抑制剂，体现对亨廷顿病DNA重复扩增路线的实质押注，但尚"
+   },
+   "structure": {
+    "category": "industry_event",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [
+     "Eli Lilly",
+     "LoQus23"
+    ],
+    "scope": "single"
+   },
+   "event": {
+    "id": 5,
+    "size": 3,
+    "sources": 3,
+    "heat": 1.968,
+    "representative": false
+   }
+  },
+  {
+   "title": "环糊精结合常数的三级噪声下限及其对描述符预测的意义",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/43070958",
+   "source": "pubmed_jcim",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23",
+   "summary": "环糊精包合常数的回归和机器学习模型常报告接近0.9的交叉验证Q²，但训练数据汇编结果的可重复性尚未量化。研究对其进行三级噪声下限量化。",
+   "score": 64.3,
+   "attention": null,
+   "structure": {
+    "category": "research_paper",
+    "tags": [],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "人工智能辅助设计具有定制二级结构基序的肽",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/43070950",
+   "source": "pubmed_jcim",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23",
+   "summary": "《化学信息与建模杂志》刊载。蛋白质的氨基酸序列决定其折叠结构及功能。研究探讨利用人工智能设计具有定制二级结构基序、且采用精简氨基酸字母表的肽。",
+   "score": 64.3,
+   "attention": null,
+   "structure": {
+    "category": "research_paper",
+    "tags": [],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "STAT+：Medicare预计第三轮药价谈判可节省92亿美元",
+   "url": "https://www.statnews.com/2026/11/23/medicare-drug-price-negotiations-announcement-third-round",
+   "source": "stat",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-24T00:19:48+00:00",
+   "summary": "特朗普政府称，由于药价谈判，联邦政府明年通过Medicare采购药物预计可节省92亿美元。",
+   "score": 65.5,
+   "attention": {
+    "score": 63,
+    "threshold": 36,
+    "selected": true,
+    "itype": "regulatory",
+    "axes": {
+     "sig": 6.5,
+     "nov": 5.5,
+     "cred": 6.0,
+     "reson": 7.0,
+     "act": 3.5
+    },
+    "reason": "第三轮 Medicare 药价谈判首次纳入 Part B 医生诊疗用药，并披露预计节省 92 亿美元，显示美国支付端对药"
+   },
+   "structure": null,
+   "event": {
+    "id": 3,
+    "size": 2,
+    "sources": 2,
+    "heat": 1.865,
+    "representative": true
+   }
+  },
+  {
+   "title": "EU approves olezarsen for broader severe sHTG population",
+   "url": "https://pharmafile.com/news/eu-approves-olezarsen-for-broader-severe-shtg-population",
+   "source": "pharmafile",
+   "layer": "broad",
+   "region": "overseas",
+   "published": "2026-11-23T09:00:00+00:00",
+   "summary": "The European Commission has approved olezarsen (Tryngolza) as an adjunct to diet and other lipid-lowering therapies for adults with severe hypertriglyceridaemia (sHTG) and fasting",
+   "score": 58.8,
+   "attention": {
+    "score": 58,
+    "threshold": 46,
+    "selected": true,
+    "itype": "regulatory",
+    "axes": {
+     "sig": 6.5,
+     "nov": 4.0,
+     "cred": 6.0,
+     "reson": 6.0,
+     "act": 2.5
+    },
+    "reason": "欧盟批准 olezarsen 扩大至更广泛的重度高甘油三酯血症成人适应证，是明确的监管与商业化里程碑，但材料未提供临床终"
+   },
+   "structure": {
+    "category": "industry_event",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [
+     "European Commission"
+    ],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "STAT+：Invivyd报告新冠抗体艰难研发取得积极结果",
+   "url": "https://www.statnews.com/2026/11/23/invivyd-covid-monoclonal-antibody-declaration-trial-vyd2311",
+   "source": "stat",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T12:01:00+00:00",
+   "summary": "生物技术公司Invivyd报告，其单克隆抗体能有效保护人们免受新冠感染。该抗体是否存在市场需求仍待观察。",
+   "score": 58.4,
+   "attention": {
+    "score": 55,
+    "threshold": 36,
+    "selected": true,
+    "itype": "clinical_data",
+    "axes": {
+     "sig": 6.0,
+     "nov": 5.0,
+     "cred": 5.0,
+     "reson": 6.0,
+     "act": 2.0
+    },
+    "reason": "逾2,300人试验报告单抗预防新冠有70%至90%保护效果并计划申请加速审批，具有临床与管线意义，但目前仅有公司新闻稿披"
+   },
+   "structure": {
+    "category": "research_paper",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [
+     "Invivyd"
+    ],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "Zolgensma肿瘤调查再引基因疗法安全关注",
+   "url": "https://www.pharmavoice.com/news/zolgensma-tumor-investigation-gene-therapy-safety/875539",
+   "source": "pharmavoice",
+   "layer": "broad",
+   "region": "overseas",
+   "published": "2026-11-23T15:00:00+00:00",
+   "summary": "FDA调查Novartis的SMA重磅药物之际，药物研发者重新面对永久性基因药物的风险问题，尤其是常见疾病治疗。",
+   "score": 56.1,
+   "attention": {
+    "score": 52,
+    "threshold": 46,
+    "selected": true,
+    "itype": "clinical_data",
+    "axes": {
+     "sig": 5.0,
+     "nov": 4.5,
+     "cred": 6.0,
+     "reson": 5.5,
+     "act": 2.0
+    },
+    "reason": "FDA 正调查 Zolgensma 治疗后儿童肿瘤报告，可能影响基因疗法的长期风险评估，但目前尚无因果结论或监管行动，且"
+   },
+   "structure": {
+    "category": "industry_event",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [
+     "FDA",
+     "Novartis"
+    ],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "借助智能体和形式化验证寻找更快的量子算法",
+   "url": "https://deepmind.google/blog/finding-faster-quantum-algorithms-with-agents-and-formal-verification",
+   "source": "deepmind",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T16:59:40+00:00",
+   "summary": "研究人员利用智能体团队和形式化验证，改进用于聚变和化学领域的量子算法。",
+   "score": 54.7,
+   "attention": {
+    "score": 50,
+    "threshold": 36,
+    "selected": true,
+    "itype": "research_paper",
+    "axes": {
+     "sig": 3.5,
+     "nov": 5.5,
+     "cred": 6.0,
+     "reson": 4.0,
+     "act": 5.0
+    },
+    "reason": "工作展示了智能体结合 Lean 形式化验证优化量子算法并开放相关工具，但对药物发现只是远期计算潜力，且片段未给出具体资源"
+   },
+   "structure": {
+    "category": "research_paper",
+    "tags": [
+     "智能体",
+     "开源"
+    ],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "STAT+：抗癌药接连取得成功，Genmab开启新篇章",
+   "url": "https://www.statnews.com/2026/11/23/genmab-cancer-drugs-oncology-clinical-trials",
+   "source": "stat",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T09:30:00+00:00",
+   "summary": "丹麦生物技术公司Genmab在抗癌药研发方面势头良好，一个月内三项后期临床试验取得成功。",
+   "score": 53.5,
+   "attention": {
+    "score": 49,
+    "threshold": 36,
+    "selected": true,
+    "itype": "clinical_data",
+    "axes": {
+     "sig": 6.0,
+     "nov": 3.0,
+     "cred": 4.5,
+     "reson": 6.5,
+     "act": 1.5
+    },
+    "reason": "三款抗癌药在一个月内相继通过关键性临床试验具有较高产业意义，但正文缺少终点、样本量和具体药物数据，且内容主要聚焦商业化执"
+   },
+   "structure": {
+    "category": "opinion_analysis",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [
+     "Genmab"
+    ],
+    "scope": "composite"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "研究发现肝病潜在治疗靶点",
+   "url": "https://www.genengnews.com/topics/drug-discovery/metabolic-pathway-identified-as-potential-target-for-liver-diseases",
+   "source": "gen",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T20:55:58+00:00",
+   "summary": "研究发现，晚期纤维化小鼠和患者的肝脏中EPHX1酶水平升高，并显示EPHX1会降低EET水平，从而促进肝纤维化。",
+   "score": 51.7,
+   "attention": {
+    "score": 46,
+    "threshold": 36,
+    "selected": true,
+    "itype": "research_paper",
+    "axes": {
+     "sig": 3.5,
+     "nov": 5.0,
+     "cred": 6.0,
+     "reson": 5.5,
+     "act": 2.5
+    },
+    "reason": "研究结合患者样本与小鼠敲除实验提示 EPHX1 通过降低 EET 促进肝纤维化，为潜在靶点提供了机制证据，但尚无药物干预"
+   },
+   "structure": {
+    "category": "research_paper",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [
+     "大阪公立大学"
+    ],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "Roche乳腺癌药片获FDA第二项批准，市场空间扩大",
+   "url": "https://endpoints.news/roche-wins-second-fda-approval-for-breast-cancer-pill-opening-up-bigger-market",
    "source": "endpoints",
    "layer": "primary",
    "region": "overseas",
-   "published": "2026-11-21T01:11:10+00:00",
-   "summary": "Capricor Therapeutics’ deramiocel cell therapy was rejected for a second time by the FDA on Friday, despite the company's pivot to a narrower indication within Duchenne muscular dy",
-   "score": 70.4,
-   "attention": null,
-   "structure": null,
+   "published": "2026-11-23T17:44:26+00:00",
+   "summary": "Roche的乳腺癌药物giredestrant周一获得FDA第二项批准，为这家瑞士药企打开早期疾病领域更大的潜在市场。",
+   "score": 53.3,
+   "attention": {
+    "score": 46,
+    "threshold": 36,
+    "selected": true,
+    "itype": "regulatory",
+    "axes": {
+     "sig": 5.5,
+     "nov": 2.5,
+     "cred": 5.0,
+     "reson": 4.5,
+     "act": 1.0
+    },
+    "reason": "giredestrant获得FDA新增适应症批准并扩大早期乳腺癌市场，属于重要商业化里程碑，但与AIDD直接关联有限，且"
+   },
+   "structure": {
+    "category": "industry_event",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [
+     "Roche"
+    ],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "Kymera的STAT6降解剂在特应性皮炎中期试验达标",
+   "url": "https://endpoints.news/kymeras-stat6-degrader-clears-mid-stage-test-in-atopic-dermatitis",
+   "source": "endpoints",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T12:00:56+00:00",
+   "summary": "Kymera Therapeutics计划明年开展口服湿疹药物的3期试验。该药在中期研究中的结果超过华尔街的成功预期。",
+   "score": 51.2,
+   "attention": {
+    "score": 46,
+    "threshold": 36,
+    "selected": true,
+    "itype": "clinical_data",
+    "axes": {
+     "sig": 6.0,
+     "nov": 3.0,
+     "cred": 3.5,
+     "reson": 6.5,
+     "act": 1.5
+    },
+    "reason": "STAT6 降解剂计划推进至 III 期是有分量的管线节点，但所给材料没有中期试验的疗效、安全性或样本量数据，无法判断读"
+   },
+   "structure": {
+    "category": "research_paper",
+    "tags": [],
+    "subjects": [
+     "Kymera Therapeutics"
+    ],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "Pharmalittle：Capricor杜氏肌营养不良药物、Lilly 2026年第15笔收购等",
+   "url": "https://www.statnews.com/pharmalot/2026/11/23/fda-rejects-capricor-duchenne-drug-lilly-acquires-loqus23-therapeutics",
+   "source": "stat",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T14:38:08+00:00",
+   "summary": "FDA再次拒绝了Capricor Therapeutics一款备受争议的实验性杜氏肌营养不良药物。",
+   "score": 52.3,
+   "attention": {
+    "score": 45,
+    "threshold": 36,
+    "selected": true,
+    "itype": "industry_event",
+    "axes": {
+     "sig": 3.0,
+     "nov": 3.0,
+     "cred": 4.5,
+     "reson": 6.0,
+     "act": 1.5
+    },
+    "reason": "这是一篇多条药企新闻的资讯合集，包含 FDA 再次拒绝杜氏肌营养不良症药物、礼来最高 7.25 亿美元收购及 II 期积"
+   },
+   "structure": {
+    "category": "industry_event",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [
+     "Capricor Therapeutics",
+     "Eli Lilly",
+     "Kymera"
+    ],
+    "scope": "composite"
+   },
    "event": {
     "id": null,
     "size": 1,
@@ -543,9 +725,1892 @@
    "region": "overseas",
    "published": "2026-11-23T08:10:18+00:00",
    "summary": "Original story from the Massachusetts Institute of Technology (MIT; MA, USA). Researchers mapped gene activity across the entire body of a tiny fish, creating a resource for studyi",
-   "score": 70.8,
+   "score": 46.7,
+   "attention": {
+    "score": 43,
+    "threshold": 46,
+    "selected": false,
+    "itype": "research_paper",
+    "axes": {
+     "sig": 4.0,
+     "nov": 5.5,
+     "cred": 4.0,
+     "reson": 5.0,
+     "act": 3.0
+    },
+    "reason": "全身性成年脊椎动物单细胞转录组图谱是有潜在基础研究和靶点发现价值的数据资源，但现有摘要缺少样本、覆盖范围、验证和可下载信"
+   },
+   "structure": {
+    "category": "research_paper",
+    "tags": [],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "大规模分析AlphaFold结构揭示生物体特异性理化特征",
+   "url": "https://journals.plos.org/ploscompbiol/article/asset?id=10.1371%2Fjournal.pcbi.1014929.XML",
+   "source": "plos_compbiol",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T14:00:00+00:00",
+   "summary": "Michael J. Stam等人分析了大量蛋白质结构预测结果，研究不同生物体的特异性理化特征。",
+   "score": 40.6,
    "attention": null,
    "structure": null,
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "BFEE3：用于绝对结合自由能计算的AI辅助综合平台",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/43070961",
+   "source": "pubmed_jcim",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23",
+   "summary": "基于分子模拟的蛋白质-配体及蛋白质-蛋白质复合物绝对结合自由能（ABFE）计算，已成为药物设计和蛋白质工程的重要工具。BFEE3提供AI辅助的计算平台。",
+   "score": 44.9,
+   "attention": {
+    "score": 40,
+    "threshold": 36,
+    "selected": true,
+    "itype": "research_paper",
+    "axes": {
+     "sig": 3.5,
+     "nov": 4.0,
+     "cred": 4.0,
+     "reson": 5.0,
+     "act": 4.5
+    },
+    "reason": "论文介绍用于绝对结合自由能计算的 AI 辅助平台，可能简化模拟流程，但摘要内容不完整，未见基准或实验验证，也无法确认工具"
+   },
+   "structure": null,
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "Intra-Cellular以140亿美元成功后，Sharon Mates创办新公司Ritzey Therapeutics",
+   "url": "https://endpoints.news/after-14b-intra-cellular-success-sharon-mates-returns-with-new-biotech-ritzey-therapeutics",
+   "source": "endpoints",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T12:00:11+00:00",
+   "summary": "Sharon Mates成立了新的神经和代谢药物开发初创公司，并获得1.125亿美元资金，计划验证能否复制此前生物技术公司的成功。",
+   "score": 45.6,
+   "attention": {
+    "score": 39,
+    "threshold": 36,
+    "selected": true,
+    "itype": "industry_event",
+    "axes": {
+     "sig": 3.0,
+     "nov": 2.0,
+     "cred": 4.0,
+     "reson": 5.0,
+     "act": 1.0
+    },
+    "reason": "Ritzey 获得 1.125 亿美元启动资金且创始人有显著过往成功，值得关注，但目前没有具体管线、技术路线或临床数据，"
+   },
+   "structure": {
+    "category": "industry_event",
+    "tags": [],
+    "subjects": [
+     "Sharon Mates",
+     "Ritzey Therapeutics"
+    ],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "观点：中国研究机构依据《信息自由法》索取我的科研成果，我不得不提供",
+   "url": "https://www.statnews.com/2026/11/23/foia-scientific-research-china-legal-loophole",
+   "source": "stat",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T09:30:00+00:00",
+   "summary": "只需支付25美元并在线提交简单的《信息自由法》申请，一名中国“顾问”便获得了作者的科学研究成果。",
+   "score": 45.5,
+   "attention": {
+    "score": 39,
+    "threshold": 36,
+    "selected": true,
+    "itype": "regulatory",
+    "axes": {
+     "sig": 3.0,
+     "nov": 3.5,
+     "cred": 4.5,
+     "reson": 5.5,
+     "act": 2.0
+    },
+    "reason": "文章以作者亲历和 NIH 请求数量提出政府资助研究可经 FOIA 被境外申请者获取的政策漏洞，但属于观点评论，未提供足以"
+   },
+   "structure": {
+    "category": "opinion_analysis",
+    "tags": [
+     "隐私合规"
+    ],
+    "subjects": [
+     "NIH"
+    ],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "用于诊断不明原因淋巴结肿大的多模态超声基础模型",
+   "url": "https://www.nature.com/articles/s41467-026-79690-4",
+   "source": "nature_compbio",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T00:00:00+00:00",
+   "summary": null,
+   "score": 38.6,
+   "attention": null,
+   "structure": {
+    "category": "research_paper",
+    "tags": [
+     "多模态",
+     "医疗"
+    ],
+    "subjects": [
+     "复旦大学",
+     "兰州大学第二医院",
+     "四川大学华西医院"
+    ],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "电子显微镜绘制痘病毒机制图，发现成对“引擎”",
+   "url": "https://www.genengnews.com/topics/infectious-diseases/poxvirus-machinery-mapped-with-electron-microscopy-shows-paired-engines",
+   "source": "gen",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T23:50:24+00:00",
+   "summary": "冷冻电子断层成像直接捕捉到痘病毒核心内的关键分子机制，发现成对的RNA聚合酶及一种可能用于物质输出的通道。",
+   "score": 37.6,
+   "attention": null,
+   "structure": {
+    "category": "research_paper",
+    "tags": [],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "Optum Rx首席执行官押注消费者愿为处方药比价",
+   "url": "https://endpoints.news/optum-rx-ceo-bets-people-are-ready-to-shop-for-their-prescriptions",
+   "source": "endpoints",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T18:30:25+00:00",
+   "summary": "UnitedHealth Group旗下Optum Rx正为更多消费者货比三家购买医疗服务的未来做准备，其中可能包括使用个人AI代理寻找合适选择。",
+   "score": 36.9,
+   "attention": null,
+   "structure": {
+    "category": "opinion_analysis",
+    "tags": [
+     "智能体",
+     "医疗"
+    ],
+    "subjects": [
+     "Optum Rx",
+     "UnitedHealth Group"
+    ],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "报告称医疗保健领域AI支出超过其他行业",
+   "url": "https://endpoints.news/healthcare-spending-on-ai-surpasses-other-sectors-report-says",
+   "source": "endpoints",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T18:05:58+00:00",
+   "summary": "医疗保健领域的AI支出在2026年达到37亿美元，高于2025年的15亿美元。Menlo Ventures报告称，该行业的AI支出超过其他行业。",
+   "score": 36.8,
+   "attention": null,
+   "structure": null,
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "增强 Transformer 残差连接",
+   "url": "https://research.google/blog/supercharging-transformer-residual-connections",
+   "source": "google_research",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T17:21:12+00:00",
+   "summary": "算法与理论",
+   "score": 36.7,
+   "attention": null,
+   "structure": {
+    "category": "research_paper",
+    "tags": [
+     "训练"
+    ],
+    "subjects": [
+     "Google Research"
+    ],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "德国2024至2025季呼吸道疾病活动的多模型预测",
+   "url": "https://journals.plos.org/ploscompbiol/article/asset?id=10.1371%2Fjournal.pcbi.1014985.XML",
+   "source": "plos_compbiol",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T14:00:00+00:00",
+   "summary": "研究者利用多模型方法，预测德国2024至2025季的呼吸道疾病活动。",
+   "score": 36.2,
+   "attention": null,
+   "structure": {
+    "category": "research_paper",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "资源有限地区HIV女性宫颈癌筛查意识的对话式AI技术",
+   "url": "https://journals.plos.org/digitalhealth/article/asset?id=10.1371%2Fjournal.pdig.0001837.XML",
+   "source": "plos_digitalhealth",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T14:00:00+00:00",
+   "summary": "研究采用共同设计方法，开发面向资源有限地区HIV女性的对话式人工智能宫颈癌筛查宣传技术。",
+   "score": 36.2,
+   "attention": null,
+   "structure": {
+    "category": "research_paper",
+    "tags": [
+     "医疗",
+     "智能体"
+    ],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "一年多来首次预防服务小组会议以秘密投票进行",
+   "url": "https://www.statnews.com/2026/11/23/health-news-preventive-services-panel-votes-cast-in-private",
+   "source": "stat",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T13:04:19+00:00",
+   "summary": "该医学专家小组自2025年以来首次召开会议，讨论RFK Jr.对科学和医学带来的变化，并以秘密方式投票。",
+   "score": 36.1,
+   "attention": null,
+   "structure": {
+    "category": "industry_event",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [
+     "U.S. Preventive Services Task Force",
+     "Robert F. Kennedy Jr."
+    ],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "因果事件网络：纠缠张量图、连接组商拓扑与主观体验的几何对偶",
+   "url": "https://arxiv.org/abs/2611.26646",
+   "source": "arxiv_qbio",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T05:00:00+00:00",
+   "summary": "论文提出一种受色彩约束的张量积构造，可生成稀疏循环计算图，其颜色……",
+   "score": 35.1,
+   "attention": null,
+   "structure": {
+    "category": "research_paper",
+    "tags": [],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "有限空间异质易感-感染-易感及易感-感染-康复系统中的感染传播与随机灭绝",
+   "url": "https://arxiv.org/abs/2611.26792",
+   "source": "arxiv_qbio",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T05:00:00+00:00",
+   "summary": "人口波动可能使有限规模的疫情种群进入无病吸收态，即使对应的无限种群……",
+   "score": 35.1,
+   "attention": null,
+   "structure": {
+    "category": "research_paper",
+    "tags": [],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "表面线索胜过结构：探测LLM在脑连接图上的表现",
+   "url": "https://arxiv.org/abs/2611.26913",
+   "source": "arxiv_qbio",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T05:00:00+00:00",
+   "summary": "静息态功能磁共振成像（rs-fMRI）可无创呈现大脑不同区域间的功能交互。",
+   "score": 35.1,
+   "attention": null,
+   "structure": {
+    "category": "research_paper",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "优化视觉抗噪性会产生序列依赖",
+   "url": "https://arxiv.org/abs/2611.26949",
+   "source": "arxiv_qbio",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T05:00:00+00:00",
+   "summary": "研究探讨视觉系统近期经历如何塑造当前感知，并提出视觉抗噪性优化可产生序列依赖。",
+   "score": 35.1,
+   "attention": null,
+   "structure": {
+    "category": "research_paper",
+    "tags": [],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "半规则混合数组的渐近计数与信息可加性",
+   "url": "https://arxiv.org/abs/2611.26990",
+   "source": "arxiv_qbio",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T05:00:00+00:00",
+   "summary": "研究基因组数据中的混合数组，即记录各位置局部祖源和等位基因的矩阵对，并分析其渐近计数及信息何时可加。",
+   "score": 35.1,
+   "attention": null,
+   "structure": {
+    "category": "research_paper",
+    "tags": [],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "指令阶梯下视觉语言模型的经典视觉错觉",
+   "url": "https://arxiv.org/abs/2611.27242",
+   "source": "arxiv_qbio",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T05:00:00+00:00",
+   "summary": "研究考察视觉语言模型面对经典视觉错觉时的回答，并通过逐步变化的指令探查模型判断错觉的能力。",
+   "score": 35.1,
+   "attention": null,
+   "structure": {
+    "category": "research_paper",
+    "tags": [
+     "多模态"
+    ],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "一步自组装脂质聚合物涂层实现原生样本连续生物传感",
+   "url": "https://arxiv.org/abs/2611.27422",
+   "source": "arxiv_qbio",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T05:00:00+00:00",
+   "summary": "研究提出一步自组装脂质聚合物涂层，用于复杂生物样本中的直接连续生物传感，以应对交叉反应问题。",
+   "score": 35.1,
+   "attention": null,
+   "structure": {
+    "category": "research_paper",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "营养限制驱动交叉喂养微生物群落中的图灵不稳定性",
+   "url": "https://arxiv.org/abs/2611.27534",
+   "source": "arxiv_qbio",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T05:00:00+00:00",
+   "summary": "研究分析营养限制如何在通过代谢物交换形成的微生物群落中引发图灵不稳定性。",
+   "score": 35.1,
+   "attention": null,
+   "structure": {
+    "category": "research_paper",
+    "tags": [],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "蜂巢温度的临界减速无法预警蜂群崩溃",
+   "url": "https://arxiv.org/abs/2611.27766",
+   "source": "arxiv_qbio",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T05:00:00+00:00",
+   "summary": "研究发现，基于临界减速的早期预警信号无法为蜜蜂蜂群崩溃提供可操作的预警。",
+   "score": 35.1,
+   "attention": null,
+   "structure": {
+    "category": "research_paper",
+    "tags": [],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "带反馈的四步行动循环：日常自我调节框架",
+   "url": "https://arxiv.org/abs/2611.27795",
+   "source": "arxiv_qbio",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T05:00:00+00:00",
+   "summary": "论文提出一种可教学的感知—行动框架，描述日常压力如何由熟悉线索、快速威胁判断、自动反应及身体持续反应形成。",
+   "score": 35.1,
+   "attention": null,
+   "structure": {
+    "category": "research_paper",
+    "tags": [],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "空间神经元—胶质细胞微环路模型中的分数沉默",
+   "url": "https://arxiv.org/abs/2611.27847",
+   "source": "arxiv_qbio",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T05:00:00+00:00",
+   "summary": "研究空间神经元—胶质细胞微环路模型在整体去极化下，锥体神经元自组织分数沉默的现象，探讨其与神经组织病理性转变的关联。",
+   "score": 35.1,
+   "attention": null,
+   "structure": {
+    "category": "research_paper",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "神经—胶质—血管单元的空间模型",
+   "url": "https://arxiv.org/abs/2611.27888",
+   "source": "arxiv_qbio",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T05:00:00+00:00",
+   "summary": "花生四烯酸代谢物可引起血管收缩或舒张，进而影响神经元活动。论文研究花生四烯酸对神经—胶质—血管单元稳定性的调控作用。",
+   "score": 35.1,
+   "attention": null,
+   "structure": {
+    "category": "research_paper",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "哺乳动物性腺发育：卵巢与睾丸细胞谱系",
+   "url": "https://arxiv.org/abs/2611.27933",
+   "source": "arxiv_qbio",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T05:00:00+00:00",
+   "summary": "睾丸和卵巢的发育需要多种细胞类型协同形成并组装。论文综述相关细胞谱系的起源、命运指定与分化。",
+   "score": 35.1,
+   "attention": null,
+   "structure": {
+    "category": "research_paper",
+    "tags": [],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "医疗AI烧钱十年，凭什么医渡科技(02158)先赚到了钱？-证券之星 - 证券之星",
+   "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE0tOGxhbk1pWnE3WHMwYWdvejFEN3Z6NTRnaGlCempMbzAwMVh0UUx5ZU1KRjRNa25DcXF1Z2VCNENiZ19JUWtYeUdQWnRrVTQ5VGJIMi0tLUEwLUN0ZHc?oc=5",
+   "source": "gn_med_llm",
+   "layer": "search",
+   "region": "domestic",
+   "published": "2026-11-24T01:38:23+00:00",
+   "summary": "医疗AI烧钱十年，凭什么医渡科技(02158)先赚到了钱？-证券之星 证券之星",
+   "score": 35.1,
+   "attention": null,
+   "structure": {
+    "category": "opinion_analysis",
+    "tags": [
+     "医疗",
+     "金融"
+    ],
+    "subjects": [
+     "医渡科技"
+    ],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "基于深度学习的番茄叶片病害检测",
+   "url": "https://www.nature.com/articles/s41598-026-63301-9",
+   "source": "nature_compbio",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T00:00:00+00:00",
+   "summary": "研究面向精准农业的番茄叶片病害检测，并比较 EfficientNetB0 与 MobileNetV2 的表现。",
+   "score": 34.5,
+   "attention": null,
+   "structure": {
+    "category": "research_paper",
+    "tags": [],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "使用真实数据与模拟数据比较评估 GEE 和 QLS",
+   "url": "https://www.nature.com/articles/s41598-026-78508-z",
+   "source": "nature_compbio",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T00:00:00+00:00",
+   "summary": "论文使用真实数据和模拟数据，对纵向数据分析中的 GEE 与 QLS 进行比较评估。",
+   "score": 34.5,
+   "attention": null,
+   "structure": {
+    "category": "research_paper",
+    "tags": [],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "图状态空间模型联合预测发酵过程中的光密度与酪氨酸浓度",
+   "url": "https://www.nature.com/articles/s41598-026-81441-w",
+   "source": "nature_compbio",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T00:00:00+00:00",
+   "summary": null,
+   "score": 34.5,
+   "attention": null,
+   "structure": {
+    "category": "research_paper",
+    "tags": [],
+    "subjects": [],
+    "scope": "unknown"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "基于图的残差细化方法改进层次文本分类的局部预测",
+   "url": "https://www.nature.com/articles/s41598-026-81015-w",
+   "source": "nature_compbio",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T00:00:00+00:00",
+   "summary": null,
+   "score": 34.5,
+   "attention": null,
+   "structure": {
+    "category": "research_paper",
+    "tags": [],
+    "subjects": [],
+    "scope": "unknown"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "图表显示，AI冲击正扰乱新一代数学家",
+   "url": "https://www.nature.com/articles/d41586-026-03795-5",
+   "source": "nature_ml",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T00:00:00+00:00",
+   "summary": null,
+   "score": 34.5,
+   "attention": null,
+   "structure": {
+    "category": "opinion_analysis",
+    "tags": [],
+    "subjects": [],
+    "scope": "unknown"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "壳聚糖通过多靶点催化酶结合和静电膜破坏，对淡色库蚊产生双重杀虫作用",
+   "url": "https://www.nature.com/articles/s41598-026-76064-0",
+   "source": "nature_drugdisc_aidd",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T00:00:00+00:00",
+   "summary": null,
+   "score": 34.5,
+   "attention": null,
+   "structure": {
+    "category": "research_paper",
+    "tags": [],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "Why today’s leading drug developers are fine-tuning open models on their own data",
+   "url": "https://www.biopharmadive.com/spons/why-todays-leading-drug-developers-are-fine-tuning-open-models-on-their-ow/875153",
+   "source": "biopharmadive",
+   "layer": "broad",
+   "region": "overseas",
+   "published": "2026-11-23T10:00:00+00:00",
+   "summary": "Open or proprietary AI models? What drug developers should weigh before they fine-tune.",
+   "score": 39.7,
+   "attention": {
+    "score": 34,
+    "threshold": 46,
+    "selected": false,
+    "itype": "industry_event",
+    "axes": {
+     "sig": 2.0,
+     "nov": 2.0,
+     "cred": 2.0,
+     "reson": 5.5,
+     "act": 2.5
+    },
+    "reason": "标题和摘要只提出开发者选择开放或专有模型及微调的考量，未给出具体数据、方法或可复现结果。"
+   },
+   "structure": {
+    "category": "tutorial_explainer",
+    "tags": [
+     "微调",
+     "医疗"
+    ],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "高能斯特-爱因斯坦电导率二氰胺阴离子离子液体的逆向设计",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/43070976",
+   "source": "pubmed_jcim",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23",
+   "summary": "离子液体具有宽电化学窗口、低挥发性和设计灵活等特点，是新一代储能器件的潜在电解质，但其庞大的设计空间使传统试错法难以应对。",
+   "score": 32.1,
+   "attention": null,
+   "structure": {
+    "category": "research_paper",
+    "tags": [],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "用于合成路线评估的专家增强深度学习方法",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/43070963",
+   "source": "pubmed_jcim",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23",
+   "summary": "多步合成路线选择是计算机辅助合成规划的主要瓶颈，原因包括高质量负样本稀缺，且单条已报道路线无法充分评估路线质量。研究提出一种专家增强方法。",
+   "score": 32.1,
+   "attention": null,
+   "structure": {
+    "category": "research_paper",
+    "tags": [
+     "训练"
+    ],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "分子堆积如何控制π堆积自由基二聚体的电子结构",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/43070953",
+   "source": "pubmed_jcim",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23",
+   "summary": "《化学信息与建模杂志》刊载。π堆积自由基的电子性质对分子堆积的细微变化高度敏感。研究结合密度泛函理论计算与描述符机器学习，探究控制这些相互作用的结构特征。",
+   "score": 32.1,
+   "attention": null,
+   "structure": {
+    "category": "research_paper",
+    "tags": [],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "患者服务自动化遇到异常时谁来接手？",
+   "url": "https://pharmatimes.com/thought_leadership/bedside-manners",
+   "source": "pharmatimes",
+   "layer": "broad",
+   "region": "overseas",
+   "published": "2026-11-23T14:49:50+00:00",
+   "summary": "当患者援助自动化流程遇到异常时，由谁接手处理？",
+   "score": 32.4,
+   "attention": null,
+   "structure": {
+    "category": "opinion_analysis",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [],
+    "scope": "unknown"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "众议院委员会发布美中生物技术竞争最终报告",
+   "url": "https://endpoints.news/house-committee-issues-final-report-on-us-china-biotech-race",
+   "source": "endpoints",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T16:00:13+00:00",
+   "summary": "一个专注于对华经济竞争的众议院小组警告称，中国生物技术实力不断增强，加上美国存在多项低效问题，正改变竞争格局。",
+   "score": 39.4,
+   "attention": {
+    "score": 31,
+    "threshold": 36,
+    "selected": false,
+    "itype": "regulatory",
+    "axes": {
+     "sig": 2.5,
+     "nov": 2.0,
+     "cred": 3.0,
+     "reson": 5.5,
+     "act": 1.5
+    },
+    "reason": "这是国会小组发布报告的行业与政策动态，但现有摘要未展示具体建议或证据，难以判断其对药物研发流程的实际影响。"
+   },
+   "structure": {
+    "category": "opinion_analysis",
+    "tags": [],
+    "subjects": [
+     "House panel"
+    ],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "定量深度学习框架揭示转录因子染色质敏感性的连续谱",
+   "url": "https://www.nature.com/articles/s41467-026-79404-w",
+   "source": "nature_ml",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-22T00:00:00+00:00",
+   "summary": null,
+   "score": 31.9,
+   "attention": null,
+   "structure": {
+    "category": "research_paper",
+    "tags": [],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "Vacuu-brand推出强劲高效的模块化本地真空网络",
+   "url": "https://www.manufacturingchemist.com/powerful-and-efficient-modular-local-vacuum-networks-from",
+   "source": "manufacturingchemist",
+   "layer": "broad",
+   "region": "overseas",
+   "published": "2026-11-23T12:23:00+00:00",
+   "summary": "优化设计的真空供应是许多实验室成功的关键因素。VACUU·LAN支持液体抽吸、过滤、蒸发和蒸馏等多种应用。",
+   "score": 31.8,
+   "attention": null,
+   "structure": {
+    "category": "tutorial_explainer",
+    "tags": [],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "与Labtex共同解决难题！",
+   "url": "https://www.manufacturingchemist.com/a-problem-shared-with-labtex-is-a-problem",
+   "source": "manufacturingchemist",
+   "layer": "broad",
+   "region": "overseas",
+   "published": "2026-11-23T12:21:00+00:00",
+   "summary": "联系Labtex，获取重新构想的规模化生产和中试工厂解决方案。",
+   "score": 31.8,
+   "attention": null,
+   "structure": {
+    "category": "product_launch",
+    "tags": [],
+    "subjects": [
+     "Labtex"
+    ],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "Sicco手套箱、干燥器和干燥柜，助您妥善收纳",
+   "url": "https://www.manufacturingchemist.com/box-clever-with-sicco-glove-boxes-desiccators-and",
+   "source": "manufacturingchemist",
+   "layer": "broad",
+   "region": "overseas",
+   "published": "2026-11-23T12:09:00+00:00",
+   "summary": "全新综合指南现已推出，涵盖SICCO干燥器、干燥柜和手套箱。",
+   "score": 31.7,
+   "attention": null,
+   "structure": {
+    "category": "tutorial_explainer",
+    "tags": [],
+    "subjects": [
+     "SICCO"
+    ],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "SRD Search launches on VIDAL with first pharmaceutical company – Pfizer",
+   "url": "https://pharmatimes.com/uncategorized/srd-search-launches-on-vidal-with-first-pharmaceutical-company-pfizer",
+   "source": "pharmatimes",
+   "layer": "broad",
+   "region": "overseas",
+   "published": "2026-11-23T11:01:03+00:00",
+   "summary": "Pharma gains route to French HCPs as SRD Search launches on VIDAL, with Pfizer first to join",
+   "score": 31.4,
+   "attention": null,
+   "structure": {
+    "category": "product_launch",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [
+     "VIDAL",
+     "Pfizer"
+    ],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "利用异构网络与基于核的深度学习，大规模系统预测ADMET性质",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/43070964",
+   "source": "pubmed_jcim",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23",
+   "summary": "《Journal of Chemical Information and Modeling》提出统一的多任务学习方法，以预测吸收、分布、代谢、排泄和毒性性质，尤其针对研究不足的天然产物。",
+   "score": 37.6,
+   "attention": {
+    "score": 29,
+    "threshold": 36,
+    "selected": false,
+    "itype": "research_paper",
+    "axes": {
+     "sig": 3.0,
+     "nov": 3.0,
+     "cred": 3.0,
+     "reson": 4.5,
+     "act": 2.0
+    },
+    "reason": "提出整合异构网络嵌入与核方法深度学习的多任务 ADMET 预测框架，方向与药物筛选相关，但摘要截断且未提供具体结果、实验"
+   },
+   "structure": {
+    "category": "research_paper",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "白线观察｜AI 制药获 50 亿美元融资，药企研发提速仍待临床验证 - 吴说",
+   "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxOa0dSWU1uc2ZCRGpWbzBpallYYUlMSnczazBjUldQb1JsWDFiT0xweGxCRmV6Qkg2WkpLckQzUmtYbkwyWlNFQXJEZU50Ry16TTQzZktZT2lLeXZ0ZFlGaUI0UWtoNWxsenp1VzZZVnp5b29wOTluRnNxX1hkQnc1d2taUm41MGtKM242aGw0dTZpZEdHSUZGQW90aWtQX3Rxa2pWeHMzUk9LeE1GazB2YkJBUWg3b1BVQUVuMw?oc=5",
+   "source": "gn_aidd_discover",
+   "layer": "search",
+   "region": "domestic",
+   "published": "2026-11-22T11:48:00+00:00",
+   "summary": "白线观察｜AI 制药获 50 亿美元融资，药企研发提速仍待临床验证 吴说",
+   "score": 32.4,
+   "attention": {
+    "score": 29,
+    "threshold": 50,
+    "selected": false,
+    "itype": "industry_event",
+    "axes": {
+     "sig": 2.0,
+     "nov": 1.5,
+     "cred": 2.0,
+     "reson": 4.5,
+     "act": 1.0
+    },
+    "reason": "仅有行业观察标题与摘要，未提供 50 亿美元融资的具体构成或临床证据，属于资讯性综述，尚不足以证明研发提速或改变药物开发"
+   },
+   "structure": {
+    "category": "industry_event",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "Arcus终止CD73抑制剂三期试验，Leqvio降低心脏事件风险",
+   "url": "https://endpoints.news/arcus-stops-phase-3-study-of-cd73-inhibitor-novartis-leqvio-eases-heart-event-risk",
+   "source": "endpoints",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T15:51:54+00:00",
+   "summary": "另有IQVIA、Quotient Sciences、CARsgen、Arnatar Therapeutics和Invivyd相关消息。Arcus Biosciences终止了后期三期试验PRISM-1。",
+   "score": 37.0,
+   "attention": {
+    "score": 28,
+    "threshold": 36,
+    "selected": false,
+    "itype": "clinical_data",
+    "axes": {
+     "sig": 3.0,
+     "nov": 2.0,
+     "cred": 3.0,
+     "reson": 4.5,
+     "act": 1.0
+    },
+    "reason": "合集片段提到 Arcus 终止一项 CD73 抑制剂 III 期研究及 Leqvio 心血管获益，但缺少终止原因、试验数"
+   },
+   "structure": {
+    "category": "industry_event",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [
+     "Arcus Biosciences",
+     "IQVIA",
+     "Quotient Sciences"
+    ],
+    "scope": "composite"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "AlphaFold宿主—病原体相互作用模型揭示分子模拟的普遍性与结构模式",
+   "url": "https://journals.plos.org/ploscompbiol/article/asset?id=10.1371%2Fjournal.pcbi.1014932.XML",
+   "source": "plos_compbiol",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T14:00:00+00:00",
+   "summary": "Delora Baptista等人指出，病原体通过蛋白质相互作用利用宿主细胞机制。",
+   "score": 38.6,
+   "attention": {
+    "score": 28,
+    "threshold": 36,
+    "selected": false,
+    "itype": "research_paper",
+    "axes": {
+     "sig": 3.0,
+     "nov": 3.5,
+     "cred": 2.5,
+     "reson": 4.0,
+     "act": 1.5
+    },
+    "reason": "研究用 AlphaFold 分析宿主—病原体分子模拟的结构模式，可能补充机制认知，但现有摘要信息不完整，未见具体结果或可"
+   },
+   "structure": {
+    "category": "research_paper",
+    "tags": [],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "美国糖尿病协会持续动荡，对患者意味着什么？",
+   "url": "https://www.statnews.com/2026/11/23/ada-convention-fallout-will-turmoil-impact-patients-research",
+   "source": "stat",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T09:30:00+00:00",
+   "summary": "美国糖尿病协会过去曾切实改善患者护理。该协会目前的混乱局面令专家担忧其未来。",
+   "score": 36.7,
+   "attention": {
+    "score": 28,
+    "threshold": 36,
+    "selected": false,
+    "itype": "industry_event",
+    "axes": {
+     "sig": 2.0,
+     "nov": 2.0,
+     "cred": 5.0,
+     "reson": 2.5,
+     "act": 0.0
+    },
+    "reason": "报道的是 ADA 内部争议及专家对糖尿病照护未来的担忧，尚无患者结局或具体研究影响数据，对 AIDD 做药方式和可执行工"
+   },
+   "structure": {
+    "category": "opinion_analysis",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [
+     "American Diabetes Association"
+    ],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "Updated data bolster pancreatic cancer programme",
+   "url": "https://pharmatimes.com/uncategorized/updated-data-bolster-pancreatic-cancer-programme",
+   "source": "pharmatimes",
+   "layer": "broad",
+   "region": "overseas",
+   "published": "2026-11-23T11:04:53+00:00",
+   "summary": "Phase 3 trial continues after promising results",
+   "score": 35.0,
+   "attention": {
+    "score": 28,
+    "threshold": 46,
+    "selected": false,
+    "itype": "clinical_data",
+    "axes": {
+     "sig": 3.5,
+     "nov": 1.5,
+     "cred": 2.5,
+     "reson": 3.5,
+     "act": 1.0
+    },
+    "reason": "胰腺癌项目的 III 期试验继续推进有一定管线意义，但摘要未提供疗效、安全性数据或与 AIDD 相关的具体信息，无法判断"
+   },
+   "structure": {
+    "category": "research_paper",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "Avenzo上市，力争挑战Bristol Myers的EGFRxHER3双特异性药物",
+   "url": "https://endpoints.news/avenzo-begins-public-life-seeks-to-rival-bristol-myers-egfrxher3-bispecific",
+   "source": "endpoints",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T15:43:01+00:00",
+   "summary": "四年前率先全面采用中国药物引进模式的美国生物科技公司之一Avenzo Therapeutics，在完成反向合并后于周一开始在纳斯达克交易。",
+   "score": 36.2,
+   "attention": {
+    "score": 27,
+    "threshold": 36,
+    "selected": false,
+    "itype": "platform_release",
+    "axes": {
+     "sig": 2.5,
+     "nov": 2.0,
+     "cred": 3.0,
+     "reson": 3.5,
+     "act": 1.0
+    },
+    "reason": "文章仅显示公司完成反向并购并开始纳斯达克交易、计划竞争 EGFR×HER3 双抗，缺少管线数据或技术细节，对 AIDD "
+   },
+   "structure": {
+    "category": "industry_event",
+    "tags": [],
+    "subjects": [
+     "Avenzo Therapeutics"
+    ],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "深度学习生物分子结构预测：显式添加离子拓展现有限制与新前景",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/43070966",
+   "source": "pubmed_jcim",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23",
+   "summary": "《Journal of Chemical Information and Modeling》介绍，AlphaFold等深度学习工具提升了蛋白质、RNA及其复合物结构预测的准确性与可及性。",
+   "score": 36.0,
+   "attention": {
+    "score": 27,
+    "threshold": 36,
+    "selected": false,
+    "itype": "research_paper",
+    "axes": {
+     "sig": 2.5,
+     "nov": 3.0,
+     "cred": 3.0,
+     "reson": 5.0,
+     "act": 2.0
+    },
+    "reason": "文章关注深度学习结构预测中的离子建模限制，方向与结构生物学和药物发现相关，但摘要不完整且未提供具体方法、数据或验证结果，"
+   },
+   "structure": {
+    "category": "research_paper",
+    "tags": [],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "BlindDDG：盲测评估蛋白质突变稳定性预测方法",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/43070949",
+   "source": "pubmed_jcim",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23",
+   "summary": "《化学信息与建模杂志》刊载。突变引起的蛋白质热力学稳定性变化会显著影响其结构和生物功能。研究提出BlindDDG，通过盲测评估预测蛋白质突变稳定性。",
+   "score": 34.5,
+   "attention": {
+    "score": 27,
+    "threshold": 36,
+    "selected": false,
+    "itype": "research_paper",
+    "axes": {
+     "sig": 3.0,
+     "nov": 2.5,
+     "cred": 3.0,
+     "reson": 4.5,
+     "act": 2.0
+    },
+    "reason": "文章提出基于盲评的蛋白突变稳定性预测方法，但摘要信息不完整且未提供数据、基准或实验结果，暂不足以判断其相对现有方法的增益"
+   },
+   "structure": {
+    "category": "research_paper",
+    "tags": [],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "蚂蚁阿福同款大模型宣布开源，全球医生一台电脑就能解锁专业医疗AI能力 - 上观新闻",
+   "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1jc0RtbVA5eWhRclFJcldZX3hxNUtKb2FvYjFZSmNpRGgwYWszOUgyZ1RZVkk2UjFwZ3FONjBfUDVPYVZIclcwS1VDQW9sY04zeFI5bjNfczZFdw?oc=5",
+   "source": "gn_med_llm",
+   "layer": "search",
+   "region": "domestic",
+   "published": "2026-11-23T04:29:00+00:00",
+   "summary": "蚂蚁阿福同款大模型宣布开源，全球医生一台电脑就能解锁专业医疗AI能力 上观新闻",
+   "score": 27.4,
+   "attention": null,
+   "structure": {
+    "category": "deal",
+    "tags": [
+     "医疗",
+     "开源"
+    ],
+    "subjects": [
+     "蚂蚁"
+    ],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "常见降压药可激活燃烧热量的棕色脂肪",
+   "url": "https://www.sciencedaily.com/releases/2026/11/261119194558.htm",
+   "source": "sciencedaily_pharm",
+   "layer": "broad",
+   "region": "overseas",
+   "published": "2026-11-22T01:54:11+00:00",
+   "summary": "科学家发现，一种常见降压药能激活小鼠体内燃烧热量的棕色脂肪，或为改善代谢健康开辟新途径。一项……",
+   "score": 31.8,
+   "attention": {
+    "score": 27,
+    "threshold": 46,
+    "selected": false,
+    "itype": "clinical_data",
+    "axes": {
+     "sig": 2.5,
+     "nov": 3.0,
+     "cred": 3.0,
+     "reson": 4.0,
+     "act": 1.5
+    },
+    "reason": "这是常见降压药激活小鼠棕色脂肪的临床前发现，但摘要未给出药物名称、实验数据或 AI 方法，尚不足以改变 AIDD 研发实"
+   },
+   "structure": {
+    "category": "research_paper",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "残基接触能统计分析揭示离子通道折叠决定因素",
+   "url": "https://journals.plos.org/ploscompbiol/article/asset?id=10.1371%2Fjournal.pcbi.1014990.XML",
+   "source": "plos_compbiol",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T14:00:00+00:00",
+   "summary": "研究分析四聚体和假四聚体阳离子通道的残基接触能，探讨其折叠决定因素。这些通道是多种药物和毒素的靶点。",
+   "score": 35.3,
+   "attention": {
+    "score": 26,
+    "threshold": 36,
+    "selected": false,
+    "itype": "research_paper",
+    "axes": {
+     "sig": 2.5,
+     "nov": 3.0,
+     "cred": 2.5,
+     "reson": 3.5,
+     "act": 2.0
+    },
+    "reason": "研究用残基接触能分析离子通道折叠决定因素，可能有助于理解药物相关靶点的结构，但摘要不完整且未见具体方法、数据或验证，暂不"
+   },
+   "structure": {
+    "category": "research_paper",
+    "tags": [],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "ADME预测的代理机器学习模型：从合成标签到实验数据",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/43070962",
+   "source": "pubmed_jcim",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23",
+   "summary": "吸收、分布、代谢和排泄（ADME）性质优化是小分子药物发现的核心工作，但常受大型、一致实验数据集获取受限的影响。研究考察模型性能与泛化能力。",
+   "score": 33.7,
+   "attention": {
+    "score": 26,
+    "threshold": 36,
+    "selected": false,
+    "itype": "research_paper",
+    "axes": {
+     "sig": 2.5,
+     "nov": 2.5,
+     "cred": 3.0,
+     "reson": 4.5,
+     "act": 2.0
+    },
+    "reason": "主题与 ADME 建模相关，但摘要不完整且未提供具体方法、数据或验证结果，暂不足以判断其带来的新能力或实际可用性。"
+   },
+   "structure": {
+    "category": "research_paper",
+    "tags": [
+     "医疗",
+     "训练"
+    ],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "基于反对称框架和跨模态信息解耦的错义突变蛋白质-配体结合亲和力变化预测",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/43070959",
+   "source": "pubmed_jcim",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23",
+   "summary": "准确预测错义突变导致的蛋白质-配体结合亲和力变化，有助于理解疾病机制、识别耐药突变并支持精准医疗。研究提出一种反对称框架，并解耦跨模态信息。",
+   "score": 33.7,
+   "attention": {
+    "score": 26,
+    "threshold": 36,
+    "selected": false,
+    "itype": "research_paper",
+    "axes": {
+     "sig": 2.5,
+     "nov": 3.0,
+     "cred": 2.5,
+     "reson": 5.0,
+     "act": 2.0
+    },
+    "reason": "提出面向突变诱导蛋白质—配体亲和力变化预测的计算框架，问题与药物抗性及精准医学相关，但摘要信息不完整且未提供性能数据或实"
+   },
+   "structure": {
+    "category": "research_paper",
+    "tags": [],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "蚂蚁阿福上线“视频看健康”，医疗AI万亿蓝海争夺战打响 - Sohu",
+   "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQWkVEYVlHcjJJM1dJY3o1bEFQcFJVT1NvRndlcjhyNDJ2bm9FZWwxaHpWancxVV9NVEJQc251R3RMWHB6ajdKd1ItTUNVbnh4VDAxTDJnVWZGdVE2QjhDNDFkMXFIa2NpS29hWVlFNTNmUzJ6UmdaOWFLWWxxT3pObmpIcWVlWXdp?oc=5",
+   "source": "gn_med_llm",
+   "layer": "search",
+   "region": "domestic",
+   "published": "2026-11-23T09:33:00+00:00",
+   "summary": "蚂蚁阿福上线“视频看健康”，医疗AI万亿蓝海争夺战打响 Sohu",
+   "score": 26.3,
+   "attention": null,
+   "structure": {
+    "category": "product_launch",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [
+     "蚂蚁阿福"
+    ],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "观点：若AI泡沫破裂，可能给医疗保健带来严重问题",
+   "url": "https://www.statnews.com/2026/11/23/ai-bubble-medical-artificial-intelligence-health",
+   "source": "stat",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T09:30:00+00:00",
+   "summary": "David Adler写道：“一家健康AI公司的市值与其技术的医疗价值是两回事。”",
+   "score": 34.3,
+   "attention": {
+    "score": 25,
+    "threshold": 36,
+    "selected": false,
+    "itype": "platform_release",
+    "axes": {
+     "sig": 2.0,
+     "nov": 2.0,
+     "cred": 3.5,
+     "reson": 4.0,
+     "act": 1.0
+    },
+    "reason": "文章讨论医疗 AI 的融资风险与临床价值评估，提出的提醒对 AIDD 有一定参考意义，但不涉及药物研发进展，且核心论据缺"
+   },
+   "structure": {
+    "category": "opinion_analysis",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "病毒纳米抗体表位预测机器学习模型基准评测",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/43070947",
+   "source": "pubmed_jcim",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23",
+   "summary": "《化学信息与建模杂志》刊载。针对新兴病毒病原体开发疗法，越来越依赖机器学习生成候选结合分子并进行结构验证。研究对病毒纳米抗体表位预测模型进行基准评测。",
+   "score": 32.9,
+   "attention": {
+    "score": 25,
+    "threshold": 36,
+    "selected": false,
+    "itype": "research_paper",
+    "axes": {
+     "sig": 3.0,
+     "nov": 2.0,
+     "cred": 3.0,
+     "reson": 4.0,
+     "act": 1.5
+    },
+    "reason": "研究针对病毒纳米抗体表位预测开展模型基准比较，但摘要未提供具体结果、数据或可复现细节，当前难以判断其带来的方法增量与实际"
+   },
+   "structure": {
+    "category": "research_paper",
+    "tags": [
+     "医疗",
+     "评测榜单"
+    ],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "苯并氧硼杂环靶向CPSF3并通过SUMO依赖途径使其降解",
+   "url": "https://www.nature.com/articles/s41467-026-79400-0",
+   "source": "nature_drugdisc_aidd",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-22T00:00:00+00:00",
+   "summary": null,
+   "score": 32.7,
+   "attention": {
+    "score": 25,
+    "threshold": 36,
+    "selected": false,
+    "itype": "research_paper",
+    "axes": {
+     "sig": 3.0,
+     "nov": 3.0,
+     "cred": 2.0,
+     "reson": 3.0,
+     "act": 1.0
+    },
+    "reason": "标题提示苯并硼唑通过 SUMO 依赖通路促使锥虫 CPSF3 降解，可能补充抗寄生虫药物作用机制认知，但仅凭标题无法核实"
+   },
+   "structure": {
+    "category": "research_paper",
+    "tags": [],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "AbbVie寻求突破免疫治疗的疗效上限",
+   "url": "https://www.pharmavoice.com/news/abbvie-immunology-cell-therapy-drug-combinations/875390",
+   "source": "pharmavoice",
+   "layer": "broad",
+   "region": "overseas",
+   "published": "2026-11-23T14:34:48+00:00",
+   "summary": "这家制药巨头正探索体内细胞疗法和药物组合等新方法，帮助现有疗法无效的患者。",
+   "score": 32.9,
+   "attention": {
+    "score": 25,
+    "threshold": 46,
+    "selected": false,
+    "itype": "platform_release",
+    "axes": {
+     "sig": 2.0,
+     "nov": 2.0,
+     "cred": 3.0,
+     "reson": 4.5,
+     "act": 1.0
+    },
+    "reason": "摘要只概述 AbbVie 探索体内细胞疗法和药物联用的方向，未提供具体项目、数据或里程碑，能引发行业关注但暂不足以判断其"
+   },
+   "structure": {
+    "category": "opinion_analysis",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [],
+    "scope": "single"
+   },
    "event": {
     "id": null,
     "size": 1,
@@ -562,9 +2627,19 @@
    "region": "domestic",
    "published": "2026-11-23T06:44:15+00:00",
    "summary": "科创创新药ETF汇添富（589120）标的指数强势拉升！创新药为何回调？原因与逻辑拆解-证券之星 证券之星",
-   "score": 69.3,
+   "score": 25.2,
    "attention": null,
-   "structure": null,
+   "structure": {
+    "category": "opinion_analysis",
+    "tags": [
+     "医疗",
+     "金融"
+    ],
+    "subjects": [
+     "证券之星"
+    ],
+    "scope": "single"
+   },
    "event": {
     "id": null,
     "size": 1,
@@ -574,282 +2649,36 @@
    }
   },
   {
-   "title": "ECG foundation models for cardiovascular screening in a cohort of young competitive athletes",
-   "url": "https://www.nature.com/articles/s41746-026-03474-9",
-   "source": "npj_digital_med",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-21T00:00:00+08:00",
-   "summary": null,
-   "score": 68.4,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "AI制药提速！研发周期最多缩短一半 多股明年业绩可期(名单) - 中金在线",
-   "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTFBJMkt5Mks4UlNIZmRvRi1JdEkxWEtzc2JDa3pMalYyUE14VnJpdEdScjNVQ044ZE5JaGNjd2pMb29PQzdkdU56a3dOdlM0VTR3b2k4YmRpYjVGdE9VYWFHOHNYT0hlVTY4cUE?oc=5",
-   "source": "gn_aidd_rd",
-   "layer": "search",
-   "region": "domestic",
-   "published": "2026-11-23T00:09:20+00:00",
-   "summary": "AI制药提速！研发周期最多缩短一半 多股明年业绩可期(名单) 中金在线",
-   "score": 68.2,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "DLFL-TLDNet: hybrid AI model integrating deep learning and fuzzy logic for tomato leaf disease classification and severity estimation",
-   "url": "https://www.nature.com/articles/s41598-026-81392-2",
-   "source": "nature_compbio",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-22T00:00:00+00:00",
-   "summary": null,
-   "score": 67.6,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "Opinion: When should medical school start?",
-   "url": "https://www.statnews.com/2026/11/21/stat-letters-to-editor-medical-school-pediatric-emergency-care",
-   "source": "stat",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-21T12:00:00+00:00",
-   "summary": "STAT readers weigh in on shortening medical school, fixing pediatric emergency care, and more.",
-   "score": 65.0,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "Common medications may secretly rewire your gut, with effects lasting for years",
-   "url": "https://www.sciencedaily.com/releases/2026/11/261120071501.htm",
-   "source": "sciencedaily_pharm",
-   "layer": "broad",
-   "region": "overseas",
-   "published": "2026-11-22T21:35:19+00:00",
-   "summary": "Medications taken years or even long ago may leave lasting changes in your gut microbiome, according to a study of more than 2,500 people. Researchers discovered that common drugs,",
-   "score": 65.1,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "Protein-Compound Binding Site Prediction via Machine Learning: Methods and Advances.",
-   "url": "https://pubmed.ncbi.nlm.nih.gov/43052659",
-   "source": "pubmed_aidd_dl",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-23",
-   "summary": "Methods in molecular biology (Clifton, N.J.). Finding and characterizing protein-ligand binding sites accurately is the foundation of structure-based drug design, protein function analysis, and understanding molecular recognition. As the drug industry moves from accidental discovery to rational design, we urgently need computer methods that can find \"druggable\" targets fast and correctly. This paper reviews the history of binding site predict",
-   "score": 64.3,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "It’s Over-ton; Thoughts on Isomorphic’s latest haul; and more",
-   "url": "https://endpoints.news/its-over-ton-thoughts-on-isomorphics-latest-haul-and-more",
-   "source": "endpoints",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-21T11:00:41+00:00",
-   "summary": "Welcome back to another edition of Endpoints Weekly! All the tech outages this week can’t stop us from bringing you the latest in biopharma news. The biggest news this week came fr",
-   "score": 64.8,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "Opinion: How Kennedy and MAHA could help stop measles",
-   "url": "https://www.statnews.com/2026/11/21/rfk-jr-maha-measles-outbreak-elimination-status-promote-mmr-vaccine",
-   "source": "stat",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-21T09:30:00+00:00",
-   "summary": "Kennedy and MAHA say they aren’t anti-vaccine. They can prove it by promoting the MMR vaccine, writes Brinda Adhikari.",
-   "score": 64.5,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "Targeting protein degradation strategies in drug discovery: integrating PROTACs, ubiquitination biology, and AI-driven design.",
-   "url": "https://pubmed.ncbi.nlm.nih.gov/43066850",
-   "source": "pubmed_aidd_dl",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-21",
-   "summary": "Molecular biomedicine. Targeted protein degradation (TPD) has emerged as a transformative therapeutic strategy for eliminating disease-associated proteins, including targets that remain challenging to modulate using conventional occupancy-driven inhibitors. Among TPD approaches, proteolysis-targeting chimeras (PROTACs) exploit the ubiquitin-proteasome system (UPS) to induce selective and event-driven degradation of prot",
-   "score": 64.3,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "A global atlas of digital dermatology to map innovation and disparities",
-   "url": "https://www.nature.com/articles/s41467-026-78602-w",
-   "source": "nature_ml",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-21T00:00:00+00:00",
-   "summary": null,
-   "score": 62.6,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "Structural insight into dynamic switching mechanism o​f the SAM-IV riboswitch revealed by molecular simulations",
-   "url": "https://www.nature.com/articles/s41598-026-78252-4",
-   "source": "nature_drugdisc_aidd",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-21T00:00:00+00:00",
-   "summary": null,
-   "score": 62.6,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "A label-free domain-knowledge-informed framework for transferability evaluation of synthetic accessibility scoring in energetic chemical space",
-   "url": "https://www.nature.com/articles/s41524-026-02396-0",
-   "source": "nature_drugdisc_aidd",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-21T00:00:00+00:00",
-   "summary": null,
-   "score": 62.6,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "Antiviral activity of Clinacanthus siamensis Bremek ethanolic extract against dengue virus serotype 2 infection",
-   "url": "https://www.nature.com/articles/s41598-026-80262-1",
-   "source": "nature_drugdisc_aidd",
-   "layer": "primary",
-   "region": "overseas",
-   "published": "2026-11-21T00:00:00+00:00",
-   "summary": null,
-   "score": 62.6,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "FDA again turns back Capricor Duchenne cell therapy",
-   "url": "https://www.biopharmadive.com/news/capricor-fda-duchenne-cell-therapy-deramiocel/875384",
-   "source": "biopharmadive",
-   "layer": "broad",
-   "region": "overseas",
-   "published": "2026-11-21T20:46:00+00:00",
-   "summary": "In an unusual statement, the FDA accused Capricor of “serious data integrity violations” that compromised its study findings and led to deramiocel’s second rejection since 2025.",
-   "score": 61.4,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "Alzheimer’s breakthrough exposes a hidden flaw in the brain’s cleanup system",
+   "title": "阿尔茨海默病研究揭示大脑清理系统的隐患",
    "url": "https://www.sciencedaily.com/releases/2026/11/261120075600.htm",
    "source": "sciencedaily_pharm",
    "layer": "broad",
    "region": "overseas",
    "published": "2026-11-22T03:00:27+00:00",
-   "summary": "Scientists have identified a gene that helps the brain’s immune cells contain harmful plaques linked to Alzheimer’s, potentially revealing a new way to fight the disease. When the",
-   "score": 57.1,
-   "attention": null,
-   "structure": null,
+   "summary": "科学家发现一种基因有助于大脑免疫细胞控制与阿尔茨海默病相关的有害斑块，或可为治疗该病带来新思路。当……",
+   "score": 30.2,
+   "attention": {
+    "score": 25,
+    "threshold": 46,
+    "selected": false,
+    "itype": "research_paper",
+    "axes": {
+     "sig": 3.0,
+     "nov": 2.5,
+     "cred": 2.0,
+     "reson": 6.0,
+     "act": 1.0
+    },
+    "reason": "摘要仅称发现一个帮助脑免疫细胞控制淀粉样斑块的基因，未提供基因名称、实验数据或药物验证，提示潜在生物学线索但尚不足以改变"
+   },
+   "structure": {
+    "category": "research_paper",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [],
+    "scope": "single"
+   },
    "event": {
     "id": null,
     "size": 1,
@@ -859,35 +2688,36 @@
    }
   },
   {
-   "title": "白线观察｜AI 制药获 50 亿美元融资，药企研发提速仍待临床验证 - 吴说",
-   "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxOa0dSWU1uc2ZCRGpWbzBpallYYUlMSnczazBjUldQb1JsWDFiT0xweGxCRmV6Qkg2WkpLckQzUmtYbkwyWlNFQXJEZU50Ry16TTQzZktZT2lLeXZ0ZFlGaUI0UWtoNWxsenp1VzZZVnp5b29wOTluRnNxX1hkQnc1d2taUm41MGtKM242aGw0dTZpZEdHSUZGQW90aWtQX3Rxa2pWeHMzUk9LeE1GazB2YkJBUWg3b1BVQUVuMw?oc=5",
-   "source": "gn_aidd_rd",
-   "layer": "search",
-   "region": "domestic",
-   "published": "2026-11-22T11:48:00+00:00",
-   "summary": "白线观察｜AI 制药获 50 亿美元融资，药企研发提速仍待临床验证 吴说",
-   "score": 56.0,
-   "attention": null,
-   "structure": null,
-   "event": {
-    "id": null,
-    "size": 1,
-    "sources": 1,
-    "heat": 0.0,
-    "representative": true
-   }
-  },
-  {
-   "title": "A common blood pressure drug has a surprising effect on calorie-burning brown fat",
-   "url": "https://www.sciencedaily.com/releases/2026/11/261119194558.htm",
-   "source": "sciencedaily_pharm",
+   "title": "为何组合产品的缺口常在申报前显现",
+   "url": "https://www.manufacturingchemist.com/why-combination-product-gaps-appear-just-before-submission",
+   "source": "manufacturingchemist",
    "layer": "broad",
    "region": "overseas",
-   "published": "2026-11-22T01:54:11+00:00",
-   "summary": "Scientists have discovered that a common blood pressure drug can activate calorie-burning brown fat in mice, potentially opening a new path toward improving metabolic health. An an",
-   "score": 56.7,
-   "attention": null,
-   "structure": null,
+   "published": "2026-11-23T15:48:00+00:00",
+   "summary": "许多组合产品项目看似进展顺利，直到团队开始准备最终申报材料时才暴露问题。",
+   "score": 32.2,
+   "attention": {
+    "score": 24,
+    "threshold": 46,
+    "selected": false,
+    "itype": "industry_event",
+    "axes": {
+     "sig": 2.0,
+     "nov": 2.0,
+     "cred": 2.0,
+     "reson": 3.0,
+     "act": 2.0
+    },
+    "reason": "仅有标题和一句概述，未提供可核验的具体案例、数据或方法，且主题与 AIDD 的直接关联有限。"
+   },
+   "structure": {
+    "category": "opinion_analysis",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [],
+    "scope": "single"
+   },
    "event": {
     "id": null,
     "size": 1,
@@ -897,16 +2727,93 @@
    }
   },
   {
-   "title": "蚂蚁靠金融补贴、京东靠卖药兜底：大厂绕开医保的医疗AI试验 - 36氪",
-   "url": "https://news.google.com/rss/articles/CBMiTkFVX3lxTFBTZzBqUEhkelFSd1NZb3A5VVp4QkVwT0VfYzI5azYxOWxJcERURGk1SjlXcjJEaDk3TmJxQ3dVbXRYaVJrSE5mdkNQd1pLUQ?oc=5",
+   "title": "GSK旗下全球抗生素生产基地获抗菌素耐药性管理认证",
+   "url": "https://pharmafile.com/news/gsk-secures-amr-manufacturing-kitemark-across-global-antibiotic-sites",
+   "source": "pharmafile",
+   "layer": "broad",
+   "region": "overseas",
+   "published": "2026-11-23T11:30:00+00:00",
+   "summary": "GSK成为首家获得英国标准协会（BSI）Kitemark认证的制药公司，其所有基地均通过认证以降低抗菌素耐药性（AMR）风险。",
+   "score": 31.8,
+   "attention": {
+    "score": 24,
+    "threshold": 46,
+    "selected": false,
+    "itype": "platform_release",
+    "axes": {
+     "sig": 2.0,
+     "nov": 2.0,
+     "cred": 3.0,
+     "reson": 3.5,
+     "act": 1.5
+    },
+    "reason": "这是抗菌药物生产风险管理认证的企业里程碑，摘要仅说明获得认证，未提供具体标准或可验证的效果，对 AIDD 研发流程的直接"
+   },
+   "structure": {
+    "category": "industry_event",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [
+     "GSK"
+    ],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "蚂蚁靠金融补贴、京东靠卖药兜底：大厂绕开医保的医疗AI试验-36氪 - 36kr.com",
+   "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1ZS1FMNTEyMzN6Vlg3M1pwaVNhTFhMS0F4WUhhN3BLUTFpRzBadW15WTR4WkNxay1pWjJuTDhzeHFoaXpmMExjZlNyQ1hER28?oc=5",
    "source": "gn_med_llm",
    "layer": "search",
    "region": "domestic",
-   "published": "2026-11-22T12:02:00+00:00",
-   "summary": "蚂蚁靠金融补贴、京东靠卖药兜底：大厂绕开医保的医疗AI试验 36氪",
-   "score": 50.1,
+   "published": "2026-11-23T04:04:43+00:00",
+   "summary": "蚂蚁靠金融补贴、京东靠卖药兜底：大厂绕开医保的医疗AI试验-36氪 36kr.com",
+   "score": 24.4,
    "attention": null,
-   "structure": null,
+   "structure": {
+    "category": "opinion_analysis",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [
+     "蚂蚁",
+     "京东"
+    ],
+    "scope": "composite"
+   },
+   "event": {
+    "id": 6,
+    "size": 2,
+    "sources": 1,
+    "heat": 0.516,
+    "representative": true
+   }
+  },
+  {
+   "title": "医疗AI模型工厂：影像Token如何驱动标准化生产 - CSDN",
+   "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTFBFaTU1bXd5alR6R05PNHdHT1YyNWVlbkpxODZrYmQwXzlqTE1Vb042RGljYjF2VU1ybXNCQlh1U29JMEdHeGdySnVVLVFfRm5BeHppOHVhcWdMY1Z5bkhr?oc=5",
+   "source": "gn_med_llm",
+   "layer": "search",
+   "region": "domestic",
+   "published": "2026-11-23T03:14:35+00:00",
+   "summary": "医疗AI模型工厂：影像Token如何驱动标准化生产 CSDN",
+   "score": 24.1,
+   "attention": null,
+   "structure": {
+    "category": "tutorial_explainer",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [],
+    "scope": "unknown"
+   },
    "event": {
     "id": null,
     "size": 1,
@@ -916,16 +2823,36 @@
    }
   },
   {
-   "title": "把AI制药做成Token生意，MIT初创融了1.1亿美元 - 麻省理工科技评论",
-   "url": "https://news.google.com/rss/articles/CBMiV0FVX3lxTE95dWJNV1VPZF9tRGdESHZCdjlXbWZIeEdGZTNQQmdLRjk3NC10bF96Q1RtZVhGVzhRYjVrSEk3WEw3ZTRMQVREcXBOcHE3U19PdW5wcTBOYw?oc=5",
-   "source": "gn_aidd_rd",
-   "layer": "search",
-   "region": "domestic",
-   "published": "2026-11-21T04:44:13+00:00",
-   "summary": "把AI制药做成Token生意，MIT初创融了1.1亿美元 麻省理工科技评论",
-   "score": 41.9,
-   "attention": null,
-   "structure": null,
+   "title": "常见药物可能长期改变肠道菌群",
+   "url": "https://www.sciencedaily.com/releases/2026/11/261120071501.htm",
+   "source": "sciencedaily_pharm",
+   "layer": "broad",
+   "region": "overseas",
+   "published": "2026-11-22T21:35:19+00:00",
+   "summary": "一项针对2500多人的研究发现，数年前甚至更早服用的药物可能会对肠道微生物组造成持久影响。研究人员发现，常见药物……",
+   "score": 29.8,
+   "attention": {
+    "score": 23,
+    "threshold": 46,
+    "selected": false,
+    "itype": "research_paper",
+    "axes": {
+     "sig": 2.0,
+     "nov": 2.5,
+     "cred": 3.0,
+     "reson": 4.0,
+     "act": 1.5
+    },
+    "reason": "研究提示常见药物可能对肠道菌群留下长期影响，但摘要信息有限且未呈现具体药物、效应量或验证细节，对 AIDD 管线的直接改"
+   },
+   "structure": {
+    "category": "research_paper",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [],
+    "scope": "single"
+   },
    "event": {
     "id": null,
     "size": 1,
@@ -935,16 +2862,462 @@
    }
   },
   {
-   "title": "AI制药的定价时刻：分子值多少钱，谁说了算？【影响力对谈第二期】 - 动脉网",
-   "url": "https://news.google.com/rss/articles/CBMiR0FVX3lxTE9vSHhiTXc2VkVpaHVlOUJIejBpaVFMYlFmZGp2Zk1LMmxubW9zSTJwbHQxQVVSX09Ea2NjaE5UcXRBRGdRYjhZ?oc=5",
-   "source": "gn_aidd_rd",
-   "layer": "search",
-   "region": "domestic",
-   "published": "2026-11-21T00:00:00+00:00",
-   "summary": "AI制药的定价时刻：分子值多少钱，谁说了算？【影响力对谈第二期】 动脉网",
-   "score": 40.9,
-   "attention": null,
-   "structure": null,
+   "title": "小鼠泛基因组图谱参考草案",
+   "url": "https://www.nature.com/articles/s41588-026-02842-1",
+   "source": "nature_compbio",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T00:00:00+00:00",
+   "summary": null,
+   "score": 31.4,
+   "attention": {
+    "score": 22,
+    "threshold": 36,
+    "selected": false,
+    "itype": "dataset_benchmark",
+    "axes": {
+     "sig": 3.0,
+     "nov": 2.0,
+     "cred": 2.0,
+     "reson": 4.0,
+     "act": 1.0
+    },
+    "reason": "标题显示可能发布小鼠泛基因组图参考资源，但缺少正文与数据细节，无法判断其质量、可用性或对药物研发的实际影响。"
+   },
+   "structure": {
+    "category": "research_paper",
+    "tags": [],
+    "subjects": [],
+    "scope": "unknown"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "药物暴露的人肝细胞中的整合应激反应与ABCB11抑制",
+   "url": "https://arxiv.org/abs/2611.26651",
+   "source": "arxiv_qbio",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T05:00:00+00:00",
+   "summary": "药物安全信息系统需要区分胆盐输出泵（BSEP）的直接抑制与肝细胞中转录变化。",
+   "score": 30.0,
+   "attention": {
+    "score": 20,
+    "threshold": 36,
+    "selected": false,
+    "itype": "research_paper",
+    "axes": {
+     "sig": 2.0,
+     "nov": 2.0,
+     "cred": 2.5,
+     "reson": 3.0,
+     "act": 1.0
+    },
+    "reason": "摘要仅提出区分直接 BSEP 抑制与转录变化这一研究问题，未提供方法、数据或实验结果，暂不足以证明对药物安全评估流程有实"
+   },
+   "structure": {
+    "category": "research_paper",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "机器学习引导虚拟筛选海洋天然产物数据库，发现类固醇雄激素受体结合候选物",
+   "url": "https://www.nature.com/articles/s41598-026-81932-w",
+   "source": "nature_compbio",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T00:00:00+00:00",
+   "summary": null,
+   "score": 29.0,
+   "attention": {
+    "score": 19,
+    "threshold": 36,
+    "selected": false,
+    "itype": "research_paper",
+    "axes": {
+     "sig": 2.0,
+     "nov": 2.0,
+     "cred": 2.0,
+     "reson": 3.0,
+     "act": 1.0
+    },
+    "reason": "仅凭标题可知其进行海洋天然产物虚拟筛选并提出候选结合物，但没有正文、实验验证或数据，难以判断新颖性与实际价值。"
+   },
+   "structure": {
+    "category": "research_paper",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [],
+    "scope": "unknown"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "利用植物细胞作为口服药物递送胶囊协同治疗溃疡性结肠炎",
+   "url": "https://www.nature.com/articles/s41467-026-79509-2",
+   "source": "nature_drugdisc_aidd",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T00:00:00+00:00",
+   "summary": null,
+   "score": 29.0,
+   "attention": {
+    "score": 19,
+    "threshold": 36,
+    "selected": false,
+    "itype": "research_paper",
+    "axes": {
+     "sig": 2.5,
+     "nov": 2.0,
+     "cred": 1.5,
+     "reson": 3.0,
+     "act": 1.0
+    },
+    "reason": "标题提示一种面向溃疡性结肠炎的口服递药思路，但没有正文或数据支持其效果，且与 AI 制药的关联不明确。"
+   },
+   "structure": {
+    "category": "research_paper",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "机器学习预测蛋白质-化合物结合位点的方法与进展",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/43052659",
+   "source": "pubmed_aidd_dl",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-24",
+   "summary": "《分子生物学方法》刊载。准确发现并表征蛋白质-配体结合位点，是基于结构的药物设计、蛋白质功能分析及分子识别研究的基础。本文综述机器学习相关方法与进展。",
+   "score": 27.3,
+   "attention": {
+    "score": 18,
+    "threshold": 36,
+    "selected": false,
+    "itype": "research_paper",
+    "axes": {
+     "sig": 2.0,
+     "nov": 1.0,
+     "cred": 2.0,
+     "reson": 4.0,
+     "act": 1.5
+    },
+    "reason": "这是对蛋白质-化合物结合位点预测方法的综述，摘要未提供新方法、数据或实验验证，对领域有背景参考价值但不构成新的技术进展。"
+   },
+   "structure": {
+    "category": "research_paper",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "更丰富的数据可提升对 T 细胞受体与特定抗原结合的预测",
+   "url": "https://www.nature.com/articles/s43588-026-01109-3",
+   "source": "nature_ml",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T00:00:00+00:00",
+   "summary": null,
+   "score": 27.4,
+   "attention": {
+    "score": 17,
+    "threshold": 36,
+    "selected": false,
+    "itype": "pipeline_progress",
+    "axes": {
+     "sig": 2.0,
+     "nov": 2.0,
+     "cred": 1.0,
+     "reson": 3.5,
+     "act": 1.0
+    },
+    "reason": "标题称更丰富的数据可改善 T 细胞受体与特定抗原结合的预测，但没有摘要、方法或结果数据，无法判断增益大小与可复用性。"
+   },
+   "structure": {
+    "category": "research_paper",
+    "tags": [],
+    "subjects": [],
+    "scope": "unknown"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "胡椒碱诱导活性氧相关的线粒体功能障碍，对口腔癌细胞与非恶性细胞产生不同细胞毒性",
+   "url": "https://www.nature.com/articles/s41598-026-72741-2",
+   "source": "nature_drugdisc_aidd",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T00:00:00+00:00",
+   "summary": null,
+   "score": 27.4,
+   "attention": {
+    "score": 17,
+    "threshold": 36,
+    "selected": false,
+    "itype": "research_paper",
+    "axes": {
+     "sig": 2.0,
+     "nov": 2.0,
+     "cred": 1.5,
+     "reson": 2.5,
+     "act": 1.0
+    },
+    "reason": "标题仅提示胡椒碱对口腔癌与非恶性细胞的差异性细胞毒作用，缺少实验数据与正文支撑，且与 AIDD 工作流的直接关联有限。"
+   },
+   "structure": {
+    "category": "research_paper",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [],
+    "scope": "unknown"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "报道称赛诺菲有意收购，Insmed股价大涨",
+   "url": "https://www.genengnews.com/topics/translational-medicine/stockwatch-insmed-jumps-on-report-of-takeover-interest-by-sanofi-as-analysts-conclude-a-deal-would-make-sense",
+   "source": "gen",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-22T18:52:58+00:00",
+   "summary": "彭博新闻援引匿名消息人士称，赛诺菲（巴黎泛欧交易所代码：SAN，纳斯达克代码：SNY）正评估是否收购Insmed。",
+   "score": 27.2,
+   "attention": {
+    "score": 17,
+    "threshold": 36,
+    "selected": false,
+    "itype": "industry_event",
+    "axes": {
+     "sig": 2.0,
+     "nov": 1.5,
+     "cred": 2.0,
+     "reson": 2.0,
+     "act": 0.0
+    },
+    "reason": "这是一则援引匿名消息源的潜在收购传闻，未获确认且与 AIDD 的具体技术或研发进展无关。"
+   },
+   "structure": {
+    "category": "industry_event",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [
+     "Sanofi",
+     "Insmed"
+    ],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "在位点留出评估下，局部序列上下文对 TP53 突变亚型预测的局限",
+   "url": "https://www.nature.com/articles/s41598-026-78765-y",
+   "source": "nature_compbio",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T00:00:00+00:00",
+   "summary": null,
+   "score": 26.6,
+   "attention": {
+    "score": 16,
+    "threshold": 36,
+    "selected": false,
+    "itype": "research_paper",
+    "axes": {
+     "sig": 2.0,
+     "nov": 2.0,
+     "cred": 1.0,
+     "reson": 3.0,
+     "act": 1.0
+    },
+    "reason": "标题显示研究考察 TP53 突变亚型预测在位点留出评估下的局限，但没有摘要、数据或正文，无法判断结果的新颖性与证据强度。"
+   },
+   "structure": {
+    "category": "research_paper",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "昆虫病原真菌 Akanthomyces pseudonoctuidarum BCC 69011 的代谢物分析与生物活性：体内外联合研究",
+   "url": "https://www.nature.com/articles/s41598-026-80190-0",
+   "source": "nature_drugdisc_aidd",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T00:00:00+00:00",
+   "summary": null,
+   "score": 26.6,
+   "attention": {
+    "score": 16,
+    "threshold": 36,
+    "selected": false,
+    "itype": "research_paper",
+    "axes": {
+     "sig": 1.0,
+     "nov": 2.0,
+     "cred": 2.0,
+     "reson": 1.5,
+     "act": 1.0
+    },
+    "reason": "仅凭标题可知这是针对昆虫病原真菌的代谢物谱与体内外活性研究，可能提供天然产物线索，但缺少摘要、数据和实验细节，无法判断其"
+   },
+   "structure": {
+    "category": "research_paper",
+    "tags": [],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "运用网络药理学、分子对接和体外实验解析当归与香附的抗炎活性",
+   "url": "https://www.nature.com/articles/s41598-026-58960-7",
+   "source": "nature_drugdisc_aidd",
+   "layer": "primary",
+   "region": "overseas",
+   "published": "2026-11-23T00:00:00+00:00",
+   "summary": null,
+   "score": 26.6,
+   "attention": {
+    "score": 16,
+    "threshold": 36,
+    "selected": false,
+    "itype": "research_paper",
+    "axes": {
+     "sig": 1.5,
+     "nov": 2.0,
+     "cred": 1.5,
+     "reson": 2.5,
+     "act": 1.0
+    },
+    "reason": "标题显示这是中药抗炎机制研究，涉及网络药理学、分子对接和体外实验，但缺少摘要与正文，无法判断数据或方法是否对 AIDD "
+   },
+   "structure": {
+    "category": "research_paper",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [],
+    "scope": "single"
+   },
+   "event": {
+    "id": null,
+    "size": 1,
+    "sources": 1,
+    "heat": 0.0,
+    "representative": true
+   }
+  },
+  {
+   "title": "牙龈疾病新疗法杀灭有害细菌并保护有益菌",
+   "url": "https://www.sciencedaily.com/releases/2026/11/261123005356.htm",
+   "source": "sciencedaily_pharm",
+   "layer": "broad",
+   "region": "overseas",
+   "published": "2026-11-23T11:55:17+00:00",
+   "summary": "日本研究人员开发出一种创新疗法，利用蛋黄抗体和近红外光消灭有害细菌，同时不伤害有益细菌。",
+   "score": 24.7,
+   "attention": {
+    "score": 15,
+    "threshold": 46,
+    "selected": false,
+    "itype": "platform_release",
+    "axes": {
+     "sig": 1.0,
+     "nov": 2.0,
+     "cred": 2.0,
+     "reson": 2.0,
+     "act": 0.5
+    },
+    "reason": "这是与 AIDD 关联不明的牙周病治疗研究摘要，虽提出蛋黄抗体结合近红外光的方案，但没有实验数据或临床证据支撑其效果。"
+   },
+   "structure": {
+    "category": "research_paper",
+    "tags": [
+     "医疗"
+    ],
+    "subjects": [],
+    "scope": "single"
+   },
    "event": {
     "id": null,
     "size": 1,

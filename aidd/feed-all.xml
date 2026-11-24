@@ -5,259 +5,178 @@
 <link>http://10.4.2.231:8124/</link>
 <description>当天采集到的全部条目，按排序分从高到低。</description>
 <language>zh-CN</language>
-<lastBuildDate>Mon, 23 Nov 2026 08:55:50 +0000</lastBuildDate>
+<lastBuildDate>Tue, 24 Nov 2026 03:05:52 +0000</lastBuildDate>
 <atom:link href="http://10.4.2.231:8124/feed-all.xml" rel="self" type="application/rss+xml"/>
 <item>
-<title>Causal Event Networks: Entangled Tensor Graphs, Connectome Quotient Topology, and Subjective Experience as Geometric Dual</title>
-<link>https://arxiv.org/abs/2611.26646</link>
-<guid isPermaLink="true">https://arxiv.org/abs/2611.26646</guid>
-<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
-<description>arXiv:2611.26646v1 Announce Type: new Abstract: We introduce a chromatically constrained tensor-product construction that generates sparse recurrent computational graphs whose colo</description>
-<category>other</category>
-<source>arxiv_qbio</source>
-</item>
-<item>
-<title>Integrated Stress Responses and ABCB11 Repression in Drug-Exposed Human Hepatocytes</title>
-<link>https://arxiv.org/abs/2611.26651</link>
-<guid isPermaLink="true">https://arxiv.org/abs/2611.26651</guid>
-<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
-<description>arXiv:2611.26651v1 Announce Type: new Abstract: Drug-safety information systems must distinguish direct bile salt export pump (BSEP) inhibition from transcriptional changes in hepa</description>
-<category>other</category>
-<source>arxiv_qbio</source>
-</item>
-<item>
-<title>Infection Spreading and Stochastic Extinction in Finite Spatially Inhomogeneous Susceptible-Infected-Susceptible and Susceptible-Infected-Recovered Systems</title>
-<link>https://arxiv.org/abs/2611.26792</link>
-<guid isPermaLink="true">https://arxiv.org/abs/2611.26792</guid>
-<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
-<description>arXiv:2611.26792v1 Announce Type: new Abstract: Demographic fluctuations can drive finite epidemic populations into an absorbing disease-free state even when the corresponding infi</description>
-<category>other</category>
-<source>arxiv_qbio</source>
-</item>
-<item>
-<title>Surface Cues Over Structure: Probing LLM Behavior on Brain Connectivity Graphs</title>
-<link>https://arxiv.org/abs/2611.26913</link>
-<guid isPermaLink="true">https://arxiv.org/abs/2611.26913</guid>
-<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
-<description>arXiv:2611.26913v1 Announce Type: new Abstract: Resting-state functional magnetic resonance imaging (rs-fMRI) provides a noninvasive view of functional interactions across the brai</description>
-<category>other</category>
-<source>arxiv_qbio</source>
-</item>
-<item>
-<title>Topology-only Local Network Alignment, Part 2. DijSLA: Stochastic Greedy Extension for Cross-Species GO Annotation Prediction</title>
+<title>仅基于拓扑的局部网络对齐（第二部分）：DijSLA——用于跨物种GO注释预测的随机贪心扩展</title>
 <link>https://arxiv.org/abs/2611.26926</link>
 <guid isPermaLink="true">https://arxiv.org/abs/2611.26926</guid>
 <pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
-<description>arXiv:2611.26926v1 Announce Type: new Abstract: Sequence similarity has long been a strong signal for protein function prediction, whereas the predictive value of network topology</description>
-<category>other</category>
+<description>序列相似性长期以来一直是蛋白质功能预测的重要信号，而网络拓扑的预测价值……</description>
+<category>research_paper</category>
 <source>arxiv_qbio</source>
 </item>
 <item>
-<title>Serial Dependence Emerges from Optimizing Vision for Noise Robustness</title>
-<link>https://arxiv.org/abs/2611.26949</link>
-<guid isPermaLink="true">https://arxiv.org/abs/2611.26949</guid>
-<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
-<description>arXiv:2611.26949v1 Announce Type: new Abstract: Human visual perception is dynamically shaped by the recent past, a phenomenon known as serial dependence. Mechanistic models show t</description>
-<category>other</category>
-<source>arxiv_qbio</source>
+<title>肢带型肌营养不良迎来首款FDA批准药物（2 篇报道）</title>
+<link>https://www.statnews.com/2026/11/23/fda-approves-bridgebio-lgmd-drug-welgemda</link>
+<guid isPermaLink="true">https://www.statnews.com/2026/11/23/fda-approves-bridgebio-lgmd-drug-welgemda</guid>
+<pubDate>Mon, 23 Nov 2026 21:23:42 +0000</pubDate>
+<description>长期被忽视的一种肌营养不良症终于有了首款药物，预计每年可为BridgeBio带来10亿美元收入。</description>
+<category>industry_event</category>
+<source>stat</source>
 </item>
 <item>
-<title>Semi-regular admixed arrays: asymptotic enumeration and when information is additive</title>
-<link>https://arxiv.org/abs/2611.26990</link>
-<guid isPermaLink="true">https://arxiv.org/abs/2611.26990</guid>
-<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
-<description>arXiv:2611.26990v1 Announce Type: new Abstract: In genomic data analysis, admixed arrays are pairs of matrices recording the local ancestry and the allele at each position of the h</description>
-<category>other</category>
-<source>arxiv_qbio</source>
+<title>Capricor的杜氏肌营养不良细胞疗法再次遭FDA拒绝（4 篇报道）</title>
+<link>https://www.manufacturingchemist.com/capricor-second-fda-rejection-duchenne-cell-therapy-trial-data</link>
+<guid isPermaLink="true">https://www.manufacturingchemist.com/capricor-second-fda-rejection-duchenne-cell-therapy-trial-data</guid>
+<pubDate>Mon, 23 Nov 2026 11:21:00 +0000</pubDate>
+<description>FDA第二次就deramiocel发出完整回应函，指出关键HOPE-3研究存在严重的临床试验数据完整性缺陷。</description>
+<category>industry_event</category>
+<source>manufacturingchemist</source>
 </item>
 <item>
-<title>Classical visual illusions in vision-language models under an instruction ladder</title>
-<link>https://arxiv.org/abs/2611.27242</link>
-<guid isPermaLink="true">https://arxiv.org/abs/2611.27242</guid>
-<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
-<description>arXiv:2611.27242v1 Announce Type: new Abstract: Vision-language models (VLMs) often name the "illusory" answer when shown a classical visual illusion, but it is unclear whether tha</description>
-<category>other</category>
-<source>arxiv_qbio</source>
-</item>
-<item>
-<title>One-Step Self-Assembling Lipopolymer Coatings Enable Direct Longitudinal Biosensing in Native Biological Matrices</title>
-<link>https://arxiv.org/abs/2611.27422</link>
-<guid isPermaLink="true">https://arxiv.org/abs/2611.27422</guid>
-<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
-<description>arXiv:2611.27422v1 Announce Type: new Abstract: Sample-driven cross-reactivity remains a fundamental bottleneck for sensitive and selective biosensing in complex biological environ</description>
-<category>other</category>
-<source>arxiv_qbio</source>
-</item>
-<item>
-<title>Nutrient limitation drives Turing instabilities in cross-feeding microbial communities</title>
-<link>https://arxiv.org/abs/2611.27534</link>
-<guid isPermaLink="true">https://arxiv.org/abs/2611.27534</guid>
-<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
-<description>arXiv:2611.27534v1 Announce Type: new Abstract: Microbial communities are shaped by metabolic interactions, often in the form of cross-feeding in which microbes exchange metabolite</description>
-<category>other</category>
-<source>arxiv_qbio</source>
-</item>
-<item>
-<title>Critical slowing down in hive temperature does not provide actionable early warnings of honey bee colony collapse</title>
-<link>https://arxiv.org/abs/2611.27766</link>
-<guid isPermaLink="true">https://arxiv.org/abs/2611.27766</guid>
-<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
-<description>arXiv:2611.27766v1 Announce Type: new Abstract: Early warning signals (EWS) based on critical slowing down (CSD) have been proposed as model-independent indicators of approaching e</description>
-<category>other</category>
-<source>arxiv_qbio</source>
-</item>
-<item>
-<title>The Four-Step Action Loop with Feedback: A teachable perception-action framework for everyday self-regulation</title>
-<link>https://arxiv.org/abs/2611.27795</link>
-<guid isPermaLink="true">https://arxiv.org/abs/2611.27795</guid>
-<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
-<description>arXiv:2611.27795v1 Announce Type: new Abstract: Everyday stress is largely a learned pattern: a familiar cue, a fast reading of threat, an automatic reaction and a body that stays</description>
-<category>other</category>
-<source>arxiv_qbio</source>
-</item>
-<item>
-<title>Self-organized fractional silencing of pyramidal neurons under global depolarization in a spatial neuron-glial microcircuit model</title>
-<link>https://arxiv.org/abs/2611.27847</link>
-<guid isPermaLink="true">https://arxiv.org/abs/2611.27847</guid>
-<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
-<description>arXiv:2611.27847v1 Announce Type: new Abstract: Pathological transitions in nervous tissue, including epileptiform discharges and cortical spreading depolarization, depend on the i</description>
-<category>other</category>
-<source>arxiv_qbio</source>
-</item>
-<item>
-<title>Spatial model of neurogliovascular unit: arachidonic acid can control the stability</title>
-<link>https://arxiv.org/abs/2611.27888</link>
-<guid isPermaLink="true">https://arxiv.org/abs/2611.27888</guid>
-<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
-<description>arXiv:2611.27888v1 Announce Type: new Abstract: Arachidonic acid metabolites can have both vasoconstrictor and vasodilator effects, thereby influencing neuronal activity. In this w</description>
-<category>other</category>
-<source>arxiv_qbio</source>
-</item>
-<item>
-<title>Mammalian gonadal development: origins, specification and differentiation of ovary and testis cell lineages</title>
-<link>https://arxiv.org/abs/2611.27933</link>
-<guid isPermaLink="true">https://arxiv.org/abs/2611.27933</guid>
-<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
-<description>arXiv:2611.27933v1 Announce Type: new Abstract: Testicular and ovarian development requires the coordinated formation and assembly of multiple cell types that enable these organs t</description>
-<category>other</category>
-<source>arxiv_qbio</source>
-</item>
-<item>
-<title>AI-driven technique could help engineers design analog chips faster and with less expense</title>
-<link>https://news.mit.edu/2026/ai-driven-technique-could-help-engineers-design-analog-chips-faster-and-less-expensive-1123</link>
-<guid isPermaLink="true">https://news.mit.edu/2026/ai-driven-technique-could-help-engineers-design-analog-chips-faster-and-less-expensive-1123</guid>
-<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
-<description>The “SLIC” training method enables a small LLM to compete with much more resource-intensive models in complex circuit design tasks.</description>
-<category>other</category>
-<source>mit_news_ai</source>
-</item>
-<item>
-<title>Machine learning-guided virtual screening of the comprehensive marine natural products database identifies steroidal androgen receptor binder candidates</title>
-<link>https://www.nature.com/articles/s41598-026-81932-w</link>
-<guid isPermaLink="true">https://www.nature.com/articles/s41598-026-81932-w</guid>
-<pubDate>Mon, 23 Nov 2026 00:00:00 +0000</pubDate>
-<description></description>
-<category>other</category>
-<source>nature_compbio</source>
-</item>
-<item>
-<title>Health-state instability and progression in longitudinal clinical records reveal heterogeneous ageing trajectories</title>
-<link>https://www.nature.com/articles/s41746-026-03482-9</link>
-<guid isPermaLink="true">https://www.nature.com/articles/s41746-026-03482-9</guid>
-<pubDate>Mon, 23 Nov 2026 00:00:00 +0000</pubDate>
-<description></description>
-<category>other</category>
-<source>nature_compbio</source>
-</item>
-<item>
-<title>An AI-based framework for assessing physical fitness, energy metabolism, and biomechanical efficiency in sprinting and hurdle events</title>
-<link>https://www.nature.com/articles/s41598-026-80990-4</link>
-<guid isPermaLink="true">https://www.nature.com/articles/s41598-026-80990-4</guid>
-<pubDate>Mon, 23 Nov 2026 00:00:00 +0000</pubDate>
-<description></description>
-<category>other</category>
-<source>nature_compbio</source>
-</item>
-<item>
-<title>Computational design of a mutation-inclusive multi-epitope vaccine targeting major immune-escape variants of hepatitis B surface antigen</title>
-<link>https://www.nature.com/articles/s41598-026-79802-6</link>
-<guid isPermaLink="true">https://www.nature.com/articles/s41598-026-79802-6</guid>
-<pubDate>Mon, 23 Nov 2026 00:00:00 +0000</pubDate>
-<description></description>
-<category>other</category>
-<source>nature_compbio</source>
-</item>
-<item>
-<title>A simple centroid-size classifier remains competitive with more complex PointNet-based deep learning for sex estimation from CT-derived 3D patellar models</title>
-<link>https://www.nature.com/articles/s41598-026-81644-1</link>
-<guid isPermaLink="true">https://www.nature.com/articles/s41598-026-81644-1</guid>
-<pubDate>Mon, 23 Nov 2026 00:00:00 +0000</pubDate>
-<description></description>
-<category>other</category>
-<source>nature_compbio</source>
-</item>
-<item>
-<title>A comparative study on vision-language models for image captioning in Lithuanian</title>
-<link>https://www.nature.com/articles/s41598-026-81406-z</link>
-<guid isPermaLink="true">https://www.nature.com/articles/s41598-026-81406-z</guid>
-<pubDate>Mon, 23 Nov 2026 00:00:00 +0000</pubDate>
-<description></description>
-<category>other</category>
-<source>nature_compbio</source>
-</item>
-<item>
-<title>A machine learning framework for human activity recognition and confidence-based atypical pattern assessment for remote physiotherapy monitoring</title>
-<link>https://www.nature.com/articles/s41598-026-79824-0</link>
-<guid isPermaLink="true">https://www.nature.com/articles/s41598-026-79824-0</guid>
-<pubDate>Mon, 23 Nov 2026 00:00:00 +0000</pubDate>
-<description></description>
-<category>other</category>
-<source>nature_compbio</source>
-</item>
-<item>
-<title>Unraveling the anti-inflammatory activities of Angelicae Sinensis Radix and Cyperi Rhizoma using network pharmacology, molecular docking, and in vitro experiments</title>
-<link>https://www.nature.com/articles/s41598-026-58960-7</link>
-<guid isPermaLink="true">https://www.nature.com/articles/s41598-026-58960-7</guid>
-<pubDate>Mon, 23 Nov 2026 00:00:00 +0000</pubDate>
-<description></description>
-<category>other</category>
-<source>nature_compbio</source>
-</item>
-<item>
-<title>Dataset-dependent patient-overlap bias in breast thermography deep learning</title>
-<link>https://www.nature.com/articles/s41598-026-64646-x</link>
-<guid isPermaLink="true">https://www.nature.com/articles/s41598-026-64646-x</guid>
-<pubDate>Mon, 23 Nov 2026 00:00:00 +0000</pubDate>
-<description></description>
-<category>other</category>
-<source>nature_compbio</source>
-</item>
-<item>
-<title>Piperine induces ROS-associated mitochondrial dysfunction with differential cytotoxic potential against oral cancer and non-malignant cells</title>
-<link>https://www.nature.com/articles/s41598-026-72741-2</link>
-<guid isPermaLink="true">https://www.nature.com/articles/s41598-026-72741-2</guid>
-<pubDate>Mon, 23 Nov 2026 00:00:00 +0000</pubDate>
-<description></description>
-<category>other</category>
-<source>nature_drugdisc_aidd</source>
-</item>
-<item>
-<title>StockWatch: Insmed Jumps on Report of Takeover Interest by Sanofi, as Analysts Conclude a Deal Would Make Sense</title>
-<link>https://www.genengnews.com/topics/translational-medicine/stockwatch-insmed-jumps-on-report-of-takeover-interest-by-sanofi-as-analysts-conclude-a-deal-would-make-sense</link>
-<guid isPermaLink="true">https://www.genengnews.com/topics/translational-medicine/stockwatch-insmed-jumps-on-report-of-takeover-interest-by-sanofi-as-analysts-conclude-a-deal-would-make-sense</guid>
-<pubDate>Sun, 22 Nov 2026 18:52:58 +0000</pubDate>
-<description>Bloomberg News cited unnamed sources in reporting that Sanofi (Euronext Paris: SAN and Nasdaq: SNY) was weighing whether to acquire Insmed, in a potential blockbuster deal that the</description>
-<category>other</category>
+<title>BCR-MERFISH揭示抗体生成细胞的多样性与空间分布</title>
+<link>https://www.genengnews.com/topics/omics/bcr-merfish-reveals-diversity-and-spatial-organization-of-antibody-producing-cells</link>
+<guid isPermaLink="true">https://www.genengnews.com/topics/omics/bcr-merfish-reveals-diversity-and-spatial-organization-of-antibody-producing-cells</guid>
+<pubDate>Mon, 23 Nov 2026 21:12:59 +0000</pubDate>
+<description>BCR-MERFISH是一种新型成像技术，可绘制组织中抗体生成免疫细胞的分布与多样性，为研究免疫反应和炎症提供信息。</description>
+<category>research_paper</category>
 <source>gen</source>
 </item>
 <item>
-<title>Capricor's Duchenne therapy is rejected again, as FDA cites significant issues with trial</title>
-<link>https://endpoints.news/capricors-duchenne-therapy-is-rejected-again-as-fda-cites-significant-issues-with-trial</link>
-<guid isPermaLink="true">https://endpoints.news/capricors-duchenne-therapy-is-rejected-again-as-fda-cites-significant-issues-with-trial</guid>
-<pubDate>Sat, 21 Nov 2026 01:11:10 +0000</pubDate>
-<description>Capricor Therapeutics’ deramiocel cell therapy was rejected for a second time by the FDA on Friday, despite the company's pivot to a narrower indication within Duchenne muscular dy</description>
+<title>STAT+：Kymera Therapeutics湿疹中期试验成功，挑战Dupixent（3 篇报道）</title>
+<link>https://www.statnews.com/2026/11/23/kymera-therapeutics-eczema-trial-success-potential-dupixent-rival</link>
+<guid isPermaLink="true">https://www.statnews.com/2026/11/23/kymera-therapeutics-eczema-trial-success-potential-dupixent-rival</guid>
+<pubDate>Mon, 23 Nov 2026 12:00:00 +0000</pubDate>
+<description>Kymera Therapeutics周一宣布，其试验性疗法能有效且安全地治疗湿疹患者皮肤瘙痒和炎症。</description>
+<category>research_paper</category>
+<source>stat</source>
+</item>
+<item>
+<title>STAT+：新生物技术公司拟开发下一代多发性骨髓瘤CAR-T疗法</title>
+<link>https://www.statnews.com/2026/11/23/caronilex-dual-targeting-car-t-overcomes-myeloma-resistance</link>
+<guid isPermaLink="true">https://www.statnews.com/2026/11/23/caronilex-dual-targeting-car-t-overcomes-myeloma-resistance</guid>
+<pubDate>Mon, 23 Nov 2026 09:30:00 +0000</pubDate>
+<description>多发性骨髓瘤常会复发。一种新型CAR-T疗法计划增加一个靶点，以避开肿瘤。</description>
 <category>other</category>
+<source>stat</source>
+</item>
+<item>
+<title>Lilly acquires LoQus23 for up to $725m to advance Huntington’s disease drug（3 篇报道）</title>
+<link>https://www.manufacturingchemist.com/lilly-acquires-loqus23-725m-huntington-s-disease-drug</link>
+<guid isPermaLink="true">https://www.manufacturingchemist.com/lilly-acquires-loqus23-725m-huntington-s-disease-drug</guid>
+<pubDate>Mon, 23 Nov 2026 10:55:00 +0000</pubDate>
+<description>The acquisition gives Eli Lilly control of LQT-23, a preclinical oral MSH3 inhibitor designed to slow disease-associated DNA repeat expansion, with clinical development preparation</description>
+<category>industry_event</category>
+<source>manufacturingchemist</source>
+</item>
+<item>
+<title>环糊精结合常数的三级噪声下限及其对描述符预测的意义</title>
+<link>https://pubmed.ncbi.nlm.nih.gov/43070958</link>
+<guid isPermaLink="true">https://pubmed.ncbi.nlm.nih.gov/43070958</guid>
+<pubDate>Mon, 23 Nov 2026 00:00:00 +0000</pubDate>
+<description>环糊精包合常数的回归和机器学习模型常报告接近0.9的交叉验证Q²，但训练数据汇编结果的可重复性尚未量化。研究对其进行三级噪声下限量化。</description>
+<category>research_paper</category>
+<source>pubmed_jcim</source>
+</item>
+<item>
+<title>人工智能辅助设计具有定制二级结构基序的肽</title>
+<link>https://pubmed.ncbi.nlm.nih.gov/43070950</link>
+<guid isPermaLink="true">https://pubmed.ncbi.nlm.nih.gov/43070950</guid>
+<pubDate>Mon, 23 Nov 2026 00:00:00 +0000</pubDate>
+<description>《化学信息与建模杂志》刊载。蛋白质的氨基酸序列决定其折叠结构及功能。研究探讨利用人工智能设计具有定制二级结构基序、且采用精简氨基酸字母表的肽。</description>
+<category>research_paper</category>
+<source>pubmed_jcim</source>
+</item>
+<item>
+<title>STAT+：Medicare预计第三轮药价谈判可节省92亿美元（2 篇报道）</title>
+<link>https://www.statnews.com/2026/11/23/medicare-drug-price-negotiations-announcement-third-round</link>
+<guid isPermaLink="true">https://www.statnews.com/2026/11/23/medicare-drug-price-negotiations-announcement-third-round</guid>
+<pubDate>Tue, 24 Nov 2026 00:19:48 +0000</pubDate>
+<description>特朗普政府称，由于药价谈判，联邦政府明年通过Medicare采购药物预计可节省92亿美元。</description>
+<category>other</category>
+<source>stat</source>
+</item>
+<item>
+<title>EU approves olezarsen for broader severe sHTG population</title>
+<link>https://pharmafile.com/news/eu-approves-olezarsen-for-broader-severe-shtg-population</link>
+<guid isPermaLink="true">https://pharmafile.com/news/eu-approves-olezarsen-for-broader-severe-shtg-population</guid>
+<pubDate>Mon, 23 Nov 2026 09:00:00 +0000</pubDate>
+<description>The European Commission has approved olezarsen (Tryngolza) as an adjunct to diet and other lipid-lowering therapies for adults with severe hypertriglyceridaemia (sHTG) and fasting</description>
+<category>industry_event</category>
+<source>pharmafile</source>
+</item>
+<item>
+<title>STAT+：Invivyd报告新冠抗体艰难研发取得积极结果</title>
+<link>https://www.statnews.com/2026/11/23/invivyd-covid-monoclonal-antibody-declaration-trial-vyd2311</link>
+<guid isPermaLink="true">https://www.statnews.com/2026/11/23/invivyd-covid-monoclonal-antibody-declaration-trial-vyd2311</guid>
+<pubDate>Mon, 23 Nov 2026 12:01:00 +0000</pubDate>
+<description>生物技术公司Invivyd报告，其单克隆抗体能有效保护人们免受新冠感染。该抗体是否存在市场需求仍待观察。</description>
+<category>research_paper</category>
+<source>stat</source>
+</item>
+<item>
+<title>Zolgensma肿瘤调查再引基因疗法安全关注</title>
+<link>https://www.pharmavoice.com/news/zolgensma-tumor-investigation-gene-therapy-safety/875539</link>
+<guid isPermaLink="true">https://www.pharmavoice.com/news/zolgensma-tumor-investigation-gene-therapy-safety/875539</guid>
+<pubDate>Mon, 23 Nov 2026 15:00:00 +0000</pubDate>
+<description>FDA调查Novartis的SMA重磅药物之际，药物研发者重新面对永久性基因药物的风险问题，尤其是常见疾病治疗。</description>
+<category>industry_event</category>
+<source>pharmavoice</source>
+</item>
+<item>
+<title>借助智能体和形式化验证寻找更快的量子算法</title>
+<link>https://deepmind.google/blog/finding-faster-quantum-algorithms-with-agents-and-formal-verification</link>
+<guid isPermaLink="true">https://deepmind.google/blog/finding-faster-quantum-algorithms-with-agents-and-formal-verification</guid>
+<pubDate>Mon, 23 Nov 2026 16:59:40 +0000</pubDate>
+<description>研究人员利用智能体团队和形式化验证，改进用于聚变和化学领域的量子算法。</description>
+<category>research_paper</category>
+<source>deepmind</source>
+</item>
+<item>
+<title>STAT+：抗癌药接连取得成功，Genmab开启新篇章</title>
+<link>https://www.statnews.com/2026/11/23/genmab-cancer-drugs-oncology-clinical-trials</link>
+<guid isPermaLink="true">https://www.statnews.com/2026/11/23/genmab-cancer-drugs-oncology-clinical-trials</guid>
+<pubDate>Mon, 23 Nov 2026 09:30:00 +0000</pubDate>
+<description>丹麦生物技术公司Genmab在抗癌药研发方面势头良好，一个月内三项后期临床试验取得成功。</description>
+<category>opinion_analysis</category>
+<source>stat</source>
+</item>
+<item>
+<title>研究发现肝病潜在治疗靶点</title>
+<link>https://www.genengnews.com/topics/drug-discovery/metabolic-pathway-identified-as-potential-target-for-liver-diseases</link>
+<guid isPermaLink="true">https://www.genengnews.com/topics/drug-discovery/metabolic-pathway-identified-as-potential-target-for-liver-diseases</guid>
+<pubDate>Mon, 23 Nov 2026 20:55:58 +0000</pubDate>
+<description>研究发现，晚期纤维化小鼠和患者的肝脏中EPHX1酶水平升高，并显示EPHX1会降低EET水平，从而促进肝纤维化。</description>
+<category>research_paper</category>
+<source>gen</source>
+</item>
+<item>
+<title>Roche乳腺癌药片获FDA第二项批准，市场空间扩大</title>
+<link>https://endpoints.news/roche-wins-second-fda-approval-for-breast-cancer-pill-opening-up-bigger-market</link>
+<guid isPermaLink="true">https://endpoints.news/roche-wins-second-fda-approval-for-breast-cancer-pill-opening-up-bigger-market</guid>
+<pubDate>Mon, 23 Nov 2026 17:44:26 +0000</pubDate>
+<description>Roche的乳腺癌药物giredestrant周一获得FDA第二项批准，为这家瑞士药企打开早期疾病领域更大的潜在市场。</description>
+<category>industry_event</category>
 <source>endpoints</source>
+</item>
+<item>
+<title>Kymera的STAT6降解剂在特应性皮炎中期试验达标</title>
+<link>https://endpoints.news/kymeras-stat6-degrader-clears-mid-stage-test-in-atopic-dermatitis</link>
+<guid isPermaLink="true">https://endpoints.news/kymeras-stat6-degrader-clears-mid-stage-test-in-atopic-dermatitis</guid>
+<pubDate>Mon, 23 Nov 2026 12:00:56 +0000</pubDate>
+<description>Kymera Therapeutics计划明年开展口服湿疹药物的3期试验。该药在中期研究中的结果超过华尔街的成功预期。</description>
+<category>research_paper</category>
+<source>endpoints</source>
+</item>
+<item>
+<title>Pharmalittle：Capricor杜氏肌营养不良药物、Lilly 2026年第15笔收购等</title>
+<link>https://www.statnews.com/pharmalot/2026/11/23/fda-rejects-capricor-duchenne-drug-lilly-acquires-loqus23-therapeutics</link>
+<guid isPermaLink="true">https://www.statnews.com/pharmalot/2026/11/23/fda-rejects-capricor-duchenne-drug-lilly-acquires-loqus23-therapeutics</guid>
+<pubDate>Mon, 23 Nov 2026 14:38:08 +0000</pubDate>
+<description>FDA再次拒绝了Capricor Therapeutics一款备受争议的实验性杜氏肌营养不良药物。</description>
+<category>industry_event</category>
+<source>stat</source>
 </item>
 <item>
 <title>Building the first single-cell transcriptome atlas for an adult vertebrate</title>
@@ -265,197 +184,278 @@
 <guid isPermaLink="true">https://www.biotechniques.com/cell-and-tissue-biology/building-the-first-single-cell-transcriptome-atlas-for-an-adult-vertebrate</guid>
 <pubDate>Mon, 23 Nov 2026 08:10:18 +0000</pubDate>
 <description>Original story from the Massachusetts Institute of Technology (MIT; MA, USA). Researchers mapped gene activity across the entire body of a tiny fish, creating a resource for studyi</description>
-<category>other</category>
+<category>research_paper</category>
 <source>biotechniques</source>
 </item>
 <item>
-<title>科创创新药ETF汇添富（589120）标的指数强势拉升！创新药为何回调？原因与逻辑拆解-证券之星 - 证券之星</title>
-<link>https://news.google.com/rss/articles/CBMiXkFVX3lxTE85MUpKYy1TQ0dfV0J1SmFHTnhLZDNGRlBEbXRnVGExSWVJMTFleUQteXM4SmtRZTdaYURISVJkRXNTQm1jUEdLZkRNaUcxSVBReng4WTRBbnh1cDMtWVE?oc=5</link>
-<guid isPermaLink="true">https://news.google.com/rss/articles/CBMiXkFVX3lxTE85MUpKYy1TQ0dfV0J1SmFHTnhLZDNGRlBEbXRnVGExSWVJMTFleUQteXM4SmtRZTdaYURISVJkRXNTQm1jUEdLZkRNaUcxSVBReng4WTRBbnh1cDMtWVE?oc=5</guid>
-<pubDate>Mon, 23 Nov 2026 06:44:15 +0000</pubDate>
-<description>科创创新药ETF汇添富（589120）标的指数强势拉升！创新药为何回调？原因与逻辑拆解-证券之星 证券之星</description>
+<title>大规模分析AlphaFold结构揭示生物体特异性理化特征</title>
+<link>https://journals.plos.org/ploscompbiol/article/asset?id=10.1371%2Fjournal.pcbi.1014929.XML</link>
+<guid isPermaLink="true">https://journals.plos.org/ploscompbiol/article/asset?id=10.1371%2Fjournal.pcbi.1014929.XML</guid>
+<pubDate>Mon, 23 Nov 2026 14:00:00 +0000</pubDate>
+<description>Michael J. Stam等人分析了大量蛋白质结构预测结果，研究不同生物体的特异性理化特征。</description>
 <category>other</category>
-<source>gn_aidd_rd</source>
+<source>plos_compbiol</source>
 </item>
 <item>
-<title>ECG foundation models for cardiovascular screening in a cohort of young competitive athletes</title>
-<link>https://www.nature.com/articles/s41746-026-03474-9</link>
-<guid isPermaLink="true">https://www.nature.com/articles/s41746-026-03474-9</guid>
-<pubDate>Sat, 21 Nov 2026 00:00:00 +0800</pubDate>
-<description></description>
+<title>BFEE3：用于绝对结合自由能计算的AI辅助综合平台</title>
+<link>https://pubmed.ncbi.nlm.nih.gov/43070961</link>
+<guid isPermaLink="true">https://pubmed.ncbi.nlm.nih.gov/43070961</guid>
+<pubDate>Mon, 23 Nov 2026 00:00:00 +0000</pubDate>
+<description>基于分子模拟的蛋白质-配体及蛋白质-蛋白质复合物绝对结合自由能（ABFE）计算，已成为药物设计和蛋白质工程的重要工具。BFEE3提供AI辅助的计算平台。</description>
 <category>other</category>
-<source>npj_digital_med</source>
+<source>pubmed_jcim</source>
 </item>
 <item>
-<title>AI制药提速！研发周期最多缩短一半 多股明年业绩可期(名单) - 中金在线</title>
-<link>https://news.google.com/rss/articles/CBMiakFVX3lxTFBJMkt5Mks4UlNIZmRvRi1JdEkxWEtzc2JDa3pMalYyUE14VnJpdEdScjNVQ044ZE5JaGNjd2pMb29PQzdkdU56a3dOdlM0VTR3b2k4YmRpYjVGdE9VYWFHOHNYT0hlVTY4cUE?oc=5</link>
-<guid isPermaLink="true">https://news.google.com/rss/articles/CBMiakFVX3lxTFBJMkt5Mks4UlNIZmRvRi1JdEkxWEtzc2JDa3pMalYyUE14VnJpdEdScjNVQ044ZE5JaGNjd2pMb29PQzdkdU56a3dOdlM0VTR3b2k4YmRpYjVGdE9VYWFHOHNYT0hlVTY4cUE?oc=5</guid>
-<pubDate>Mon, 23 Nov 2026 00:09:20 +0000</pubDate>
-<description>AI制药提速！研发周期最多缩短一半 多股明年业绩可期(名单) 中金在线</description>
-<category>other</category>
-<source>gn_aidd_rd</source>
+<title>Intra-Cellular以140亿美元成功后，Sharon Mates创办新公司Ritzey Therapeutics</title>
+<link>https://endpoints.news/after-14b-intra-cellular-success-sharon-mates-returns-with-new-biotech-ritzey-therapeutics</link>
+<guid isPermaLink="true">https://endpoints.news/after-14b-intra-cellular-success-sharon-mates-returns-with-new-biotech-ritzey-therapeutics</guid>
+<pubDate>Mon, 23 Nov 2026 12:00:11 +0000</pubDate>
+<description>Sharon Mates成立了新的神经和代谢药物开发初创公司，并获得1.125亿美元资金，计划验证能否复制此前生物技术公司的成功。</description>
+<category>industry_event</category>
+<source>endpoints</source>
 </item>
 <item>
-<title>DLFL-TLDNet: hybrid AI model integrating deep learning and fuzzy logic for tomato leaf disease classification and severity estimation</title>
-<link>https://www.nature.com/articles/s41598-026-81392-2</link>
-<guid isPermaLink="true">https://www.nature.com/articles/s41598-026-81392-2</guid>
-<pubDate>Sun, 22 Nov 2026 00:00:00 +0000</pubDate>
-<description></description>
-<category>other</category>
-<source>nature_compbio</source>
-</item>
-<item>
-<title>Opinion: When should medical school start?</title>
-<link>https://www.statnews.com/2026/11/21/stat-letters-to-editor-medical-school-pediatric-emergency-care</link>
-<guid isPermaLink="true">https://www.statnews.com/2026/11/21/stat-letters-to-editor-medical-school-pediatric-emergency-care</guid>
-<pubDate>Sat, 21 Nov 2026 12:00:00 +0000</pubDate>
-<description>STAT readers weigh in on shortening medical school, fixing pediatric emergency care, and more.</description>
-<category>other</category>
+<title>观点：中国研究机构依据《信息自由法》索取我的科研成果，我不得不提供</title>
+<link>https://www.statnews.com/2026/11/23/foia-scientific-research-china-legal-loophole</link>
+<guid isPermaLink="true">https://www.statnews.com/2026/11/23/foia-scientific-research-china-legal-loophole</guid>
+<pubDate>Mon, 23 Nov 2026 09:30:00 +0000</pubDate>
+<description>只需支付25美元并在线提交简单的《信息自由法》申请，一名中国“顾问”便获得了作者的科学研究成果。</description>
+<category>opinion_analysis</category>
 <source>stat</source>
 </item>
 <item>
-<title>Common medications may secretly rewire your gut, with effects lasting for years</title>
-<link>https://www.sciencedaily.com/releases/2026/11/261120071501.htm</link>
-<guid isPermaLink="true">https://www.sciencedaily.com/releases/2026/11/261120071501.htm</guid>
-<pubDate>Sun, 22 Nov 2026 21:35:19 +0000</pubDate>
-<description>Medications taken years or even long ago may leave lasting changes in your gut microbiome, according to a study of more than 2,500 people. Researchers discovered that common drugs,</description>
-<category>other</category>
-<source>sciencedaily_pharm</source>
-</item>
-<item>
-<title>Protein-Compound Binding Site Prediction via Machine Learning: Methods and Advances.</title>
-<link>https://pubmed.ncbi.nlm.nih.gov/43052659</link>
-<guid isPermaLink="true">https://pubmed.ncbi.nlm.nih.gov/43052659</guid>
+<title>用于诊断不明原因淋巴结肿大的多模态超声基础模型</title>
+<link>https://www.nature.com/articles/s41467-026-79690-4</link>
+<guid isPermaLink="true">https://www.nature.com/articles/s41467-026-79690-4</guid>
 <pubDate>Mon, 23 Nov 2026 00:00:00 +0000</pubDate>
-<description>Methods in molecular biology (Clifton, N.J.). Finding and characterizing protein-ligand binding sites accurately is the foundation of structure-based drug design, protein function analysis, and understanding molecular recognition. As the drug industry moves from accidental discovery to rational desi</description>
-<category>other</category>
-<source>pubmed_aidd_dl</source>
+<description></description>
+<category>research_paper</category>
+<source>nature_compbio</source>
 </item>
 <item>
-<title>It’s Over-ton; Thoughts on Isomorphic’s latest haul; and more</title>
-<link>https://endpoints.news/its-over-ton-thoughts-on-isomorphics-latest-haul-and-more</link>
-<guid isPermaLink="true">https://endpoints.news/its-over-ton-thoughts-on-isomorphics-latest-haul-and-more</guid>
-<pubDate>Sat, 21 Nov 2026 11:00:41 +0000</pubDate>
-<description>Welcome back to another edition of Endpoints Weekly! All the tech outages this week can’t stop us from bringing you the latest in biopharma news. The biggest news this week came fr</description>
+<title>电子显微镜绘制痘病毒机制图，发现成对“引擎”</title>
+<link>https://www.genengnews.com/topics/infectious-diseases/poxvirus-machinery-mapped-with-electron-microscopy-shows-paired-engines</link>
+<guid isPermaLink="true">https://www.genengnews.com/topics/infectious-diseases/poxvirus-machinery-mapped-with-electron-microscopy-shows-paired-engines</guid>
+<pubDate>Mon, 23 Nov 2026 23:50:24 +0000</pubDate>
+<description>冷冻电子断层成像直接捕捉到痘病毒核心内的关键分子机制，发现成对的RNA聚合酶及一种可能用于物质输出的通道。</description>
+<category>research_paper</category>
+<source>gen</source>
+</item>
+<item>
+<title>Optum Rx首席执行官押注消费者愿为处方药比价</title>
+<link>https://endpoints.news/optum-rx-ceo-bets-people-are-ready-to-shop-for-their-prescriptions</link>
+<guid isPermaLink="true">https://endpoints.news/optum-rx-ceo-bets-people-are-ready-to-shop-for-their-prescriptions</guid>
+<pubDate>Mon, 23 Nov 2026 18:30:25 +0000</pubDate>
+<description>UnitedHealth Group旗下Optum Rx正为更多消费者货比三家购买医疗服务的未来做准备，其中可能包括使用个人AI代理寻找合适选择。</description>
+<category>opinion_analysis</category>
+<source>endpoints</source>
+</item>
+<item>
+<title>报告称医疗保健领域AI支出超过其他行业</title>
+<link>https://endpoints.news/healthcare-spending-on-ai-surpasses-other-sectors-report-says</link>
+<guid isPermaLink="true">https://endpoints.news/healthcare-spending-on-ai-surpasses-other-sectors-report-says</guid>
+<pubDate>Mon, 23 Nov 2026 18:05:58 +0000</pubDate>
+<description>医疗保健领域的AI支出在2026年达到37亿美元，高于2025年的15亿美元。Menlo Ventures报告称，该行业的AI支出超过其他行业。</description>
 <category>other</category>
 <source>endpoints</source>
 </item>
 <item>
-<title>Opinion: How Kennedy and MAHA could help stop measles</title>
-<link>https://www.statnews.com/2026/11/21/rfk-jr-maha-measles-outbreak-elimination-status-promote-mmr-vaccine</link>
-<guid isPermaLink="true">https://www.statnews.com/2026/11/21/rfk-jr-maha-measles-outbreak-elimination-status-promote-mmr-vaccine</guid>
-<pubDate>Sat, 21 Nov 2026 09:30:00 +0000</pubDate>
-<description>Kennedy and MAHA say they aren’t anti-vaccine. They can prove it by promoting the MMR vaccine, writes Brinda Adhikari.</description>
-<category>other</category>
+<title>增强 Transformer 残差连接</title>
+<link>https://research.google/blog/supercharging-transformer-residual-connections</link>
+<guid isPermaLink="true">https://research.google/blog/supercharging-transformer-residual-connections</guid>
+<pubDate>Mon, 23 Nov 2026 17:21:12 +0000</pubDate>
+<description>算法与理论</description>
+<category>research_paper</category>
+<source>google_research</source>
+</item>
+<item>
+<title>德国2024至2025季呼吸道疾病活动的多模型预测</title>
+<link>https://journals.plos.org/ploscompbiol/article/asset?id=10.1371%2Fjournal.pcbi.1014985.XML</link>
+<guid isPermaLink="true">https://journals.plos.org/ploscompbiol/article/asset?id=10.1371%2Fjournal.pcbi.1014985.XML</guid>
+<pubDate>Mon, 23 Nov 2026 14:00:00 +0000</pubDate>
+<description>研究者利用多模型方法，预测德国2024至2025季的呼吸道疾病活动。</description>
+<category>research_paper</category>
+<source>plos_compbiol</source>
+</item>
+<item>
+<title>资源有限地区HIV女性宫颈癌筛查意识的对话式AI技术</title>
+<link>https://journals.plos.org/digitalhealth/article/asset?id=10.1371%2Fjournal.pdig.0001837.XML</link>
+<guid isPermaLink="true">https://journals.plos.org/digitalhealth/article/asset?id=10.1371%2Fjournal.pdig.0001837.XML</guid>
+<pubDate>Mon, 23 Nov 2026 14:00:00 +0000</pubDate>
+<description>研究采用共同设计方法，开发面向资源有限地区HIV女性的对话式人工智能宫颈癌筛查宣传技术。</description>
+<category>research_paper</category>
+<source>plos_digitalhealth</source>
+</item>
+<item>
+<title>一年多来首次预防服务小组会议以秘密投票进行</title>
+<link>https://www.statnews.com/2026/11/23/health-news-preventive-services-panel-votes-cast-in-private</link>
+<guid isPermaLink="true">https://www.statnews.com/2026/11/23/health-news-preventive-services-panel-votes-cast-in-private</guid>
+<pubDate>Mon, 23 Nov 2026 13:04:19 +0000</pubDate>
+<description>该医学专家小组自2025年以来首次召开会议，讨论RFK Jr.对科学和医学带来的变化，并以秘密方式投票。</description>
+<category>industry_event</category>
 <source>stat</source>
 </item>
 <item>
-<title>Targeting protein degradation strategies in drug discovery: integrating PROTACs, ubiquitination biology, and AI-driven design.</title>
-<link>https://pubmed.ncbi.nlm.nih.gov/43066850</link>
-<guid isPermaLink="true">https://pubmed.ncbi.nlm.nih.gov/43066850</guid>
-<pubDate>Sat, 21 Nov 2026 00:00:00 +0000</pubDate>
-<description>Molecular biomedicine. Targeted protein degradation (TPD) has emerged as a transformative therapeutic strategy for eliminating disease-associated proteins, including targets that remain challenging to modulate using conventional occupancy-driven inhibitors. Among TPD approaches, proteolysis-targetin</description>
-<category>other</category>
-<source>pubmed_aidd_dl</source>
+<title>因果事件网络：纠缠张量图、连接组商拓扑与主观体验的几何对偶</title>
+<link>https://arxiv.org/abs/2611.26646</link>
+<guid isPermaLink="true">https://arxiv.org/abs/2611.26646</guid>
+<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
+<description>论文提出一种受色彩约束的张量积构造，可生成稀疏循环计算图，其颜色……</description>
+<category>research_paper</category>
+<source>arxiv_qbio</source>
 </item>
 <item>
-<title>A global atlas of digital dermatology to map innovation and disparities</title>
-<link>https://www.nature.com/articles/s41467-026-78602-w</link>
-<guid isPermaLink="true">https://www.nature.com/articles/s41467-026-78602-w</guid>
-<pubDate>Sat, 21 Nov 2026 00:00:00 +0000</pubDate>
-<description></description>
-<category>other</category>
-<source>nature_ml</source>
+<title>有限空间异质易感-感染-易感及易感-感染-康复系统中的感染传播与随机灭绝</title>
+<link>https://arxiv.org/abs/2611.26792</link>
+<guid isPermaLink="true">https://arxiv.org/abs/2611.26792</guid>
+<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
+<description>人口波动可能使有限规模的疫情种群进入无病吸收态，即使对应的无限种群……</description>
+<category>research_paper</category>
+<source>arxiv_qbio</source>
 </item>
 <item>
-<title>Structural insight into dynamic switching mechanism o​f the SAM-IV riboswitch revealed by molecular simulations</title>
-<link>https://www.nature.com/articles/s41598-026-78252-4</link>
-<guid isPermaLink="true">https://www.nature.com/articles/s41598-026-78252-4</guid>
-<pubDate>Sat, 21 Nov 2026 00:00:00 +0000</pubDate>
-<description></description>
-<category>other</category>
-<source>nature_drugdisc_aidd</source>
+<title>表面线索胜过结构：探测LLM在脑连接图上的表现</title>
+<link>https://arxiv.org/abs/2611.26913</link>
+<guid isPermaLink="true">https://arxiv.org/abs/2611.26913</guid>
+<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
+<description>静息态功能磁共振成像（rs-fMRI）可无创呈现大脑不同区域间的功能交互。</description>
+<category>research_paper</category>
+<source>arxiv_qbio</source>
 </item>
 <item>
-<title>A label-free domain-knowledge-informed framework for transferability evaluation of synthetic accessibility scoring in energetic chemical space</title>
-<link>https://www.nature.com/articles/s41524-026-02396-0</link>
-<guid isPermaLink="true">https://www.nature.com/articles/s41524-026-02396-0</guid>
-<pubDate>Sat, 21 Nov 2026 00:00:00 +0000</pubDate>
-<description></description>
-<category>other</category>
-<source>nature_drugdisc_aidd</source>
+<title>优化视觉抗噪性会产生序列依赖</title>
+<link>https://arxiv.org/abs/2611.26949</link>
+<guid isPermaLink="true">https://arxiv.org/abs/2611.26949</guid>
+<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
+<description>研究探讨视觉系统近期经历如何塑造当前感知，并提出视觉抗噪性优化可产生序列依赖。</description>
+<category>research_paper</category>
+<source>arxiv_qbio</source>
 </item>
 <item>
-<title>Antiviral activity of Clinacanthus siamensis Bremek ethanolic extract against dengue virus serotype 2 infection</title>
-<link>https://www.nature.com/articles/s41598-026-80262-1</link>
-<guid isPermaLink="true">https://www.nature.com/articles/s41598-026-80262-1</guid>
-<pubDate>Sat, 21 Nov 2026 00:00:00 +0000</pubDate>
-<description></description>
-<category>other</category>
-<source>nature_drugdisc_aidd</source>
+<title>半规则混合数组的渐近计数与信息可加性</title>
+<link>https://arxiv.org/abs/2611.26990</link>
+<guid isPermaLink="true">https://arxiv.org/abs/2611.26990</guid>
+<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
+<description>研究基因组数据中的混合数组，即记录各位置局部祖源和等位基因的矩阵对，并分析其渐近计数及信息何时可加。</description>
+<category>research_paper</category>
+<source>arxiv_qbio</source>
 </item>
 <item>
-<title>FDA again turns back Capricor Duchenne cell therapy</title>
-<link>https://www.biopharmadive.com/news/capricor-fda-duchenne-cell-therapy-deramiocel/875384</link>
-<guid isPermaLink="true">https://www.biopharmadive.com/news/capricor-fda-duchenne-cell-therapy-deramiocel/875384</guid>
-<pubDate>Sat, 21 Nov 2026 20:46:00 +0000</pubDate>
-<description>In an unusual statement, the FDA accused Capricor of “serious data integrity violations” that compromised its study findings and led to deramiocel’s second rejection since 2025.</description>
-<category>other</category>
-<source>biopharmadive</source>
+<title>指令阶梯下视觉语言模型的经典视觉错觉</title>
+<link>https://arxiv.org/abs/2611.27242</link>
+<guid isPermaLink="true">https://arxiv.org/abs/2611.27242</guid>
+<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
+<description>研究考察视觉语言模型面对经典视觉错觉时的回答，并通过逐步变化的指令探查模型判断错觉的能力。</description>
+<category>research_paper</category>
+<source>arxiv_qbio</source>
 </item>
 <item>
-<title>Alzheimer’s breakthrough exposes a hidden flaw in the brain’s cleanup system</title>
-<link>https://www.sciencedaily.com/releases/2026/11/261120075600.htm</link>
-<guid isPermaLink="true">https://www.sciencedaily.com/releases/2026/11/261120075600.htm</guid>
-<pubDate>Sun, 22 Nov 2026 03:00:27 +0000</pubDate>
-<description>Scientists have identified a gene that helps the brain’s immune cells contain harmful plaques linked to Alzheimer’s, potentially revealing a new way to fight the disease. When the</description>
-<category>other</category>
-<source>sciencedaily_pharm</source>
+<title>一步自组装脂质聚合物涂层实现原生样本连续生物传感</title>
+<link>https://arxiv.org/abs/2611.27422</link>
+<guid isPermaLink="true">https://arxiv.org/abs/2611.27422</guid>
+<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
+<description>研究提出一步自组装脂质聚合物涂层，用于复杂生物样本中的直接连续生物传感，以应对交叉反应问题。</description>
+<category>research_paper</category>
+<source>arxiv_qbio</source>
 </item>
 <item>
-<title>白线观察｜AI 制药获 50 亿美元融资，药企研发提速仍待临床验证 - 吴说</title>
-<link>https://news.google.com/rss/articles/CBMivAFBVV95cUxOa0dSWU1uc2ZCRGpWbzBpallYYUlMSnczazBjUldQb1JsWDFiT0xweGxCRmV6Qkg2WkpLckQzUmtYbkwyWlNFQXJEZU50Ry16TTQzZktZT2lLeXZ0ZFlGaUI0UWtoNWxsenp1VzZZVnp5b29wOTluRnNxX1hkQnc1d2taUm41MGtKM242aGw0dTZpZEdHSUZGQW90aWtQX3Rxa2pWeHMzUk9LeE1GazB2YkJBUWg3b1BVQUVuMw?oc=5</link>
-<guid isPermaLink="true">https://news.google.com/rss/articles/CBMivAFBVV95cUxOa0dSWU1uc2ZCRGpWbzBpallYYUlMSnczazBjUldQb1JsWDFiT0xweGxCRmV6Qkg2WkpLckQzUmtYbkwyWlNFQXJEZU50Ry16TTQzZktZT2lLeXZ0ZFlGaUI0UWtoNWxsenp1VzZZVnp5b29wOTluRnNxX1hkQnc1d2taUm41MGtKM242aGw0dTZpZEdHSUZGQW90aWtQX3Rxa2pWeHMzUk9LeE1GazB2YkJBUWg3b1BVQUVuMw?oc=5</guid>
-<pubDate>Sun, 22 Nov 2026 11:48:00 +0000</pubDate>
-<description>白线观察｜AI 制药获 50 亿美元融资，药企研发提速仍待临床验证 吴说</description>
-<category>other</category>
-<source>gn_aidd_rd</source>
+<title>营养限制驱动交叉喂养微生物群落中的图灵不稳定性</title>
+<link>https://arxiv.org/abs/2611.27534</link>
+<guid isPermaLink="true">https://arxiv.org/abs/2611.27534</guid>
+<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
+<description>研究分析营养限制如何在通过代谢物交换形成的微生物群落中引发图灵不稳定性。</description>
+<category>research_paper</category>
+<source>arxiv_qbio</source>
 </item>
 <item>
-<title>A common blood pressure drug has a surprising effect on calorie-burning brown fat</title>
-<link>https://www.sciencedaily.com/releases/2026/11/261119194558.htm</link>
-<guid isPermaLink="true">https://www.sciencedaily.com/releases/2026/11/261119194558.htm</guid>
-<pubDate>Sun, 22 Nov 2026 01:54:11 +0000</pubDate>
-<description>Scientists have discovered that a common blood pressure drug can activate calorie-burning brown fat in mice, potentially opening a new path toward improving metabolic health. An an</description>
-<category>other</category>
-<source>sciencedaily_pharm</source>
+<title>蜂巢温度的临界减速无法预警蜂群崩溃</title>
+<link>https://arxiv.org/abs/2611.27766</link>
+<guid isPermaLink="true">https://arxiv.org/abs/2611.27766</guid>
+<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
+<description>研究发现，基于临界减速的早期预警信号无法为蜜蜂蜂群崩溃提供可操作的预警。</description>
+<category>research_paper</category>
+<source>arxiv_qbio</source>
 </item>
 <item>
-<title>蚂蚁靠金融补贴、京东靠卖药兜底：大厂绕开医保的医疗AI试验 - 36氪</title>
-<link>https://news.google.com/rss/articles/CBMiTkFVX3lxTFBTZzBqUEhkelFSd1NZb3A5VVp4QkVwT0VfYzI5azYxOWxJcERURGk1SjlXcjJEaDk3TmJxQ3dVbXRYaVJrSE5mdkNQd1pLUQ?oc=5</link>
-<guid isPermaLink="true">https://news.google.com/rss/articles/CBMiTkFVX3lxTFBTZzBqUEhkelFSd1NZb3A5VVp4QkVwT0VfYzI5azYxOWxJcERURGk1SjlXcjJEaDk3TmJxQ3dVbXRYaVJrSE5mdkNQd1pLUQ?oc=5</guid>
-<pubDate>Sun, 22 Nov 2026 12:02:00 +0000</pubDate>
-<description>蚂蚁靠金融补贴、京东靠卖药兜底：大厂绕开医保的医疗AI试验 36氪</description>
-<category>other</category>
+<title>带反馈的四步行动循环：日常自我调节框架</title>
+<link>https://arxiv.org/abs/2611.27795</link>
+<guid isPermaLink="true">https://arxiv.org/abs/2611.27795</guid>
+<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
+<description>论文提出一种可教学的感知—行动框架，描述日常压力如何由熟悉线索、快速威胁判断、自动反应及身体持续反应形成。</description>
+<category>research_paper</category>
+<source>arxiv_qbio</source>
+</item>
+<item>
+<title>空间神经元—胶质细胞微环路模型中的分数沉默</title>
+<link>https://arxiv.org/abs/2611.27847</link>
+<guid isPermaLink="true">https://arxiv.org/abs/2611.27847</guid>
+<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
+<description>研究空间神经元—胶质细胞微环路模型在整体去极化下，锥体神经元自组织分数沉默的现象，探讨其与神经组织病理性转变的关联。</description>
+<category>research_paper</category>
+<source>arxiv_qbio</source>
+</item>
+<item>
+<title>神经—胶质—血管单元的空间模型</title>
+<link>https://arxiv.org/abs/2611.27888</link>
+<guid isPermaLink="true">https://arxiv.org/abs/2611.27888</guid>
+<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
+<description>花生四烯酸代谢物可引起血管收缩或舒张，进而影响神经元活动。论文研究花生四烯酸对神经—胶质—血管单元稳定性的调控作用。</description>
+<category>research_paper</category>
+<source>arxiv_qbio</source>
+</item>
+<item>
+<title>哺乳动物性腺发育：卵巢与睾丸细胞谱系</title>
+<link>https://arxiv.org/abs/2611.27933</link>
+<guid isPermaLink="true">https://arxiv.org/abs/2611.27933</guid>
+<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
+<description>睾丸和卵巢的发育需要多种细胞类型协同形成并组装。论文综述相关细胞谱系的起源、命运指定与分化。</description>
+<category>research_paper</category>
+<source>arxiv_qbio</source>
+</item>
+<item>
+<title>医疗AI烧钱十年，凭什么医渡科技(02158)先赚到了钱？-证券之星 - 证券之星</title>
+<link>https://news.google.com/rss/articles/CBMiXkFVX3lxTE0tOGxhbk1pWnE3WHMwYWdvejFEN3Z6NTRnaGlCempMbzAwMVh0UUx5ZU1KRjRNa25DcXF1Z2VCNENiZ19JUWtYeUdQWnRrVTQ5VGJIMi0tLUEwLUN0ZHc?oc=5</link>
+<guid isPermaLink="true">https://news.google.com/rss/articles/CBMiXkFVX3lxTE0tOGxhbk1pWnE3WHMwYWdvejFEN3Z6NTRnaGlCempMbzAwMVh0UUx5ZU1KRjRNa25DcXF1Z2VCNENiZ19JUWtYeUdQWnRrVTQ5VGJIMi0tLUEwLUN0ZHc?oc=5</guid>
+<pubDate>Tue, 24 Nov 2026 01:38:23 +0000</pubDate>
+<description>医疗AI烧钱十年，凭什么医渡科技(02158)先赚到了钱？-证券之星 证券之星</description>
+<category>opinion_analysis</category>
 <source>gn_med_llm</source>
 </item>
 <item>
-<title>把AI制药做成Token生意，MIT初创融了1.1亿美元 - 麻省理工科技评论</title>
-<link>https://news.google.com/rss/articles/CBMiV0FVX3lxTE95dWJNV1VPZF9tRGdESHZCdjlXbWZIeEdGZTNQQmdLRjk3NC10bF96Q1RtZVhGVzhRYjVrSEk3WEw3ZTRMQVREcXBOcHE3U19PdW5wcTBOYw?oc=5</link>
-<guid isPermaLink="true">https://news.google.com/rss/articles/CBMiV0FVX3lxTE95dWJNV1VPZF9tRGdESHZCdjlXbWZIeEdGZTNQQmdLRjk3NC10bF96Q1RtZVhGVzhRYjVrSEk3WEw3ZTRMQVREcXBOcHE3U19PdW5wcTBOYw?oc=5</guid>
-<pubDate>Sat, 21 Nov 2026 04:44:13 +0000</pubDate>
-<description>把AI制药做成Token生意，MIT初创融了1.1亿美元 麻省理工科技评论</description>
-<category>other</category>
-<source>gn_aidd_rd</source>
+<title>基于深度学习的番茄叶片病害检测</title>
+<link>https://www.nature.com/articles/s41598-026-63301-9</link>
+<guid isPermaLink="true">https://www.nature.com/articles/s41598-026-63301-9</guid>
+<pubDate>Mon, 23 Nov 2026 00:00:00 +0000</pubDate>
+<description>研究面向精准农业的番茄叶片病害检测，并比较 EfficientNetB0 与 MobileNetV2 的表现。</description>
+<category>research_paper</category>
+<source>nature_compbio</source>
 </item>
 <item>
-<title>AI制药的定价时刻：分子值多少钱，谁说了算？【影响力对谈第二期】 - 动脉网</title>
-<link>https://news.google.com/rss/articles/CBMiR0FVX3lxTE9vSHhiTXc2VkVpaHVlOUJIejBpaVFMYlFmZGp2Zk1LMmxubW9zSTJwbHQxQVVSX09Ea2NjaE5UcXRBRGdRYjhZ?oc=5</link>
-<guid isPermaLink="true">https://news.google.com/rss/articles/CBMiR0FVX3lxTE9vSHhiTXc2VkVpaHVlOUJIejBpaVFMYlFmZGp2Zk1LMmxubW9zSTJwbHQxQVVSX09Ea2NjaE5UcXRBRGdRYjhZ?oc=5</guid>
-<pubDate>Sat, 21 Nov 2026 00:00:00 +0000</pubDate>
-<description>AI制药的定价时刻：分子值多少钱，谁说了算？【影响力对谈第二期】 动脉网</description>
-<category>other</category>
-<source>gn_aidd_rd</source>
+<title>使用真实数据与模拟数据比较评估 GEE 和 QLS</title>
+<link>https://www.nature.com/articles/s41598-026-78508-z</link>
+<guid isPermaLink="true">https://www.nature.com/articles/s41598-026-78508-z</guid>
+<pubDate>Mon, 23 Nov 2026 00:00:00 +0000</pubDate>
+<description>论文使用真实数据和模拟数据，对纵向数据分析中的 GEE 与 QLS 进行比较评估。</description>
+<category>research_paper</category>
+<source>nature_compbio</source>
+</item>
+<item>
+<title>图状态空间模型联合预测发酵过程中的光密度与酪氨酸浓度</title>
+<link>https://www.nature.com/articles/s41598-026-81441-w</link>
+<guid isPermaLink="true">https://www.nature.com/articles/s41598-026-81441-w</guid>
+<pubDate>Mon, 23 Nov 2026 00:00:00 +0000</pubDate>
+<description></description>
+<category>research_paper</category>
+<source>nature_compbio</source>
+</item>
+<item>
+<title>基于图的残差细化方法改进层次文本分类的局部预测</title>
+<link>https://www.nature.com/articles/s41598-026-81015-w</link>
+<guid isPermaLink="true">https://www.nature.com/articles/s41598-026-81015-w</guid>
+<pubDate>Mon, 23 Nov 2026 00:00:00 +0000</pubDate>
+<description></description>
+<category>research_paper</category>
+<source>nature_compbio</source>
 </item>
 </channel>
 </rss>

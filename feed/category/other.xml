@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>Z-Bit · other</title>
+<link>http://10.4.2.231:8124/</link>
+<description>按结构化分类过滤：other</description>
+<language>zh-CN</language>
+<lastBuildDate>Tue, 24 Nov 2026 02:43:40 +0000</lastBuildDate>
+<atom:link href="http://10.4.2.231:8124/feed/category/other.xml" rel="self" type="application/rss+xml"/>
+<item>
+<title>Nvidia 恢复 Jensen Huang 的 CEO 职务</title>
+<link>https://www.cnbc.com/2026/11/23/nvidia-jensen-huang-ceo.html</link>
+<guid isPermaLink="true">https://www.cnbc.com/2026/11/23/nvidia-jensen-huang-ceo.html</guid>
+<pubDate>Mon, 23 Nov 2026 14:00:18 +0000</pubDate>
+<description>3184 条评论。</description>
+<category>other</category>
+<source>hackernews</source>
+</item>
+<item>
+<title>好莱坞：电影没得拍，不如投AI</title>
+<link>https://www.tmtpost.com/8214934.html</link>
+<guid isPermaLink="true">https://www.tmtpost.com/8214934.html</guid>
+<pubDate>Tue, 24 Nov 2026 02:19:00 +0000</pubDate>
+<description>抵制AI，运用AI。</description>
+<category>other</category>
+<source>tmtpost</source>
+</item>
+<item>
+<title>↩️ 黎曼猜想「AI 证明」被指空转，作者承认代码满是垃圾 在花 🎗️ 科技圈 : 黎曼猜想证明通过 Lean 验证 2026 年 11 月</title>
+<link>https://t.me/AI_News_CN/46189</link>
+<guid isPermaLink="true">https://t.me/AI_News_CN/46189</guid>
+<pubDate>Tue, 24 Nov 2026 01:37:02 +0000</pubDate>
+<description>↩️ 黎曼猜想「AI 证明」被指空转，作者承认代码满是垃圾 在花 🎗️ 科技圈 : 黎曼猜想证明通过 Lean 验证 2026 年 11 月 20 日，Levent Alpöge 发布黎曼猜想的 Lean 形式化证明，代码库约 1700 万行。11 月 21 日，Lean FRO 与 Mathlib Initiative 联合声明认证该命题与证明均正确：社区确认其命题与 Mathlib 的 RiemannHypothesis 一致、代码</description>
+<category>other</category>
+<source>telegram</source>
+</item>
+<item>
+<title>AI代理服务商 Sierra 获得17.5亿美元投资</title>
+<link>https://siliconangle.com/2026/11/23/ai-agent-provider-sierra-closes-1-75b-investment-amid-rapid-revenue-growth</link>
+<guid isPermaLink="true">https://siliconangle.com/2026/11/23/ai-agent-provider-sierra-closes-1-75b-investment-amid-rapid-revenue-growth</guid>
+<pubDate>Mon, 23 Nov 2026 23:49:50 +0000</pubDate>
+<description>人工智能初创公司 Sierra Technologies Inc. 在上轮融资六个月后宣布，已完成17.5亿美元后期投资。Greenoak</description>
+<category>other</category>
+<source>siliconangle</source>
+</item>
+<item>
+<title>问诊AI？一场死亡背后的追问</title>
+<link>https://www.tmtpost.com/8215116.html</link>
+<guid isPermaLink="true">https://www.tmtpost.com/8215116.html</guid>
+<pubDate>Tue, 24 Nov 2026 01:52:55 +0000</pubDate>
+<description>这场死亡背后，还有太多关于AI与医疗的边界值得追问。</description>
+<category>other</category>
+<source>tmtpost</source>
+</item>
+<item>
+<title>如何构建和维护智能体评估</title>
+<link>https://huggingface.co/blog/agentic-evals</link>
+<guid isPermaLink="true">https://huggingface.co/blog/agentic-evals</guid>
+<pubDate>Mon, 23 Nov 2026 00:00:00 +0000</pubDate>
+<description></description>
+<category>other</category>
+<source>hf_blog</source>
+</item>
+<item>
+<title>精选样式示例</title>
+<link>https://simonwillison.net/2026/Nov/22/select-styling</link>
+<guid isPermaLink="true">https://simonwillison.net/2026/Nov/22/select-styling</guid>
+<pubDate>Sun, 22 Nov 2026 19:45:06 +0000</pubDate>
+<description>工具：精选样式示例。作者对HTML &lt;select&gt;框在不同浏览器中的默认外观各异感到不满，并认为它们在Chrome中很难看，于是让Claude……</description>
+<category>other</category>
+<source>simonw</source>
+</item>
+<item>
+<title>特斯拉新版 FSD 的炫酷画面，由车机上的 1B 模型实时生成</title>
+<link>https://www.oschina.net/news/503757</link>
+<guid isPermaLink="true">https://www.oschina.net/news/503757</guid>
+<pubDate>Mon, 23 Nov 2026 10:56:06 +0000</pubDate>
+<description>马斯克在 X 上解释了特斯拉新版 FSD 那个看起来非常酷炫的显示效果是怎么做出来的：不是 3D 渲染，是一个 1B 的扩散模型在车机上实时生成视频。 他写得很直白： "We've had a ~pixel-perfect world model since last year, which is critical for synthetic data ge</description>
+<category>other</category>
+<source>oschina</source>
+</item>
+<item>
+<title>Amazon据报以75亿美元收购Decart核心资产</title>
+<link>https://siliconangle.com/2026/11/23/amazon-acquires-key-assets-of-ai-startup-decart-for-reported-7-5b</link>
+<guid isPermaLink="true">https://siliconangle.com/2026/11/23/amazon-acquires-key-assets-of-ai-startup-decart-for-reported-7-5b</guid>
+<pubDate>Tue, 24 Nov 2026 01:40:22 +0000</pubDate>
+<description>Amazon.com Inc.宣布计划聘用初创公司Decart.AI Inc.的技术员工并收购其核心技术。公司未披露交易条款。</description>
+<category>other</category>
+<source>siliconangle</source>
+</item>
+<item>
+<title>Anthropic推出Claude Ship，可让AI代理审查、修复并批准代码变更</title>
+<link>https://techcrunch.com/2026/11/23/anthropic-launches-claude-ship-letting-ai-agents-review-fix-and-approve-code-changes</link>
+<guid isPermaLink="true">https://techcrunch.com/2026/11/23/anthropic-launches-claude-ship-letting-ai-agents-review-fix-and-approve-code-changes</guid>
+<pubDate>Mon, 23 Nov 2026 22:05:50 +0000</pubDate>
+<description>随着AI生成的代码不断累积，Anthropic推出新的开发者工具，让代理处理常规审批，以消除另一项开发瓶颈。</description>
+<category>other</category>
+<source>techcrunch_ai</source>
+</item>
+<item>
+<title>Meta TLX 为 Triton 带来 GPU Warp 组控制</title>
+<link>https://www.marktechpost.com/2026/11/23/meta-tlx-triton-low-level-extensions</link>
+<guid isPermaLink="true">https://www.marktechpost.com/2026/11/23/meta-tlx-triton-low-level-extensions</guid>
+<pubDate>Mon, 23 Nov 2026 08:24:57 +0000</pubDate>
+<description>Meta 介绍了 Triton Low-Level Extensions（TLX），为 Python Triton 内核添加 warp 组、屏障、TMA 和集群控制，并用于 Meta 在 Hopper、Blackwell 和 AMD 平台上的广告及 LLM 工作负载。</description>
+<category>other</category>
+<source>marktechpost</source>
+</item>
+<item>
+<title>蚂蚁医疗健康AI五连发！开源、本地部署、望闻问切全安排上了</title>
+<link>https://www.qbitai.com/2026/11/512017.html</link>
+<guid isPermaLink="true">https://www.qbitai.com/2026/11/512017.html</guid>
+<pubDate>Mon, 23 Nov 2026 07:42:01 +0000</pubDate>
+<description>阿福大升级：让模型像医生一样思考</description>
+<category>other</category>
+<source>qbitai</source>
+</item>
+</channel>
+</rss>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>Z-Bit · research_paper</title>
+<link>http://10.4.2.231:8124/</link>
+<description>按结构化分类过滤：research_paper</description>
+<language>zh-CN</language>
+<lastBuildDate>Tue, 24 Nov 2026 03:05:52 +0000</lastBuildDate>
+<atom:link href="http://10.4.2.231:8124/feed/category/research_paper.xml" rel="self" type="application/rss+xml"/>
+<item>
+<title>STAT+：Kymera Therapeutics湿疹中期试验成功，挑战Dupixent（3 篇报道）</title>
+<link>https://www.statnews.com/2026/11/23/kymera-therapeutics-eczema-trial-success-potential-dupixent-rival</link>
+<guid isPermaLink="true">https://www.statnews.com/2026/11/23/kymera-therapeutics-eczema-trial-success-potential-dupixent-rival</guid>
+<pubDate>Mon, 23 Nov 2026 12:00:00 +0000</pubDate>
+<description>Kymera Therapeutics周一宣布，其试验性疗法能有效且安全地治疗湿疹患者皮肤瘙痒和炎症。</description>
+<category>research_paper</category>
+<source>stat</source>
+</item>
+<item>
+<title>仅基于拓扑的局部网络对齐（第二部分）：DijSLA——用于跨物种GO注释预测的随机贪心扩展</title>
+<link>https://arxiv.org/abs/2611.26926</link>
+<guid isPermaLink="true">https://arxiv.org/abs/2611.26926</guid>
+<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
+<description>序列相似性长期以来一直是蛋白质功能预测的重要信号，而网络拓扑的预测价值……</description>
+<category>research_paper</category>
+<source>arxiv_qbio</source>
+</item>
+<item>
+<title>人工智能辅助设计具有定制二级结构基序的肽</title>
+<link>https://pubmed.ncbi.nlm.nih.gov/43070950</link>
+<guid isPermaLink="true">https://pubmed.ncbi.nlm.nih.gov/43070950</guid>
+<pubDate>Mon, 23 Nov 2026 00:00:00 +0000</pubDate>
+<description>《化学信息与建模杂志》刊载。蛋白质的氨基酸序列决定其折叠结构及功能。研究探讨利用人工智能设计具有定制二级结构基序、且采用精简氨基酸字母表的肽。</description>
+<category>research_paper</category>
+<source>pubmed_jcim</source>
+</item>
+<item>
+<title>环糊精结合常数的三级噪声下限及其对描述符预测的意义</title>
+<link>https://pubmed.ncbi.nlm.nih.gov/43070958</link>
+<guid isPermaLink="true">https://pubmed.ncbi.nlm.nih.gov/43070958</guid>
+<pubDate>Mon, 23 Nov 2026 00:00:00 +0000</pubDate>
+<description>环糊精包合常数的回归和机器学习模型常报告接近0.9的交叉验证Q²，但训练数据汇编结果的可重复性尚未量化。研究对其进行三级噪声下限量化。</description>
+<category>research_paper</category>
+<source>pubmed_jcim</source>
+</item>
+<item>
+<title>Kymera的STAT6降解剂在特应性皮炎中期试验达标</title>
+<link>https://endpoints.news/kymeras-stat6-degrader-clears-mid-stage-test-in-atopic-dermatitis</link>
+<guid isPermaLink="true">https://endpoints.news/kymeras-stat6-degrader-clears-mid-stage-test-in-atopic-dermatitis</guid>
+<pubDate>Mon, 23 Nov 2026 12:00:56 +0000</pubDate>
+<description>Kymera Therapeutics计划明年开展口服湿疹药物的3期试验。该药在中期研究中的结果超过华尔街的成功预期。</description>
+<category>research_paper</category>
+<source>endpoints</source>
+</item>
+<item>
+<title>残基接触能统计分析揭示离子通道折叠决定因素</title>
+<link>https://journals.plos.org/ploscompbiol/article/asset?id=10.1371%2Fjournal.pcbi.1014990.XML</link>
+<guid isPermaLink="true">https://journals.plos.org/ploscompbiol/article/asset?id=10.1371%2Fjournal.pcbi.1014990.XML</guid>
+<pubDate>Mon, 23 Nov 2026 14:00:00 +0000</pubDate>
+<description>研究分析四聚体和假四聚体阳离子通道的残基接触能，探讨其折叠决定因素。这些通道是多种药物和毒素的靶点。</description>
+<category>research_paper</category>
+<source>plos_compbiol</source>
+</item>
+<item>
+<title>苯并氧硼杂环靶向CPSF3并通过SUMO依赖途径使其降解</title>
+<link>https://www.nature.com/articles/s41467-026-79400-0</link>
+<guid isPermaLink="true">https://www.nature.com/articles/s41467-026-79400-0</guid>
+<pubDate>Sun, 22 Nov 2026 00:00:00 +0000</pubDate>
+<description></description>
+<category>research_paper</category>
+<source>nature_drugdisc_aidd</source>
+</item>
+</channel>
+</rss>

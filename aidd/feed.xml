@@ -5,114 +5,141 @@
 <link>http://10.4.2.231:8124/</link>
 <description>每天一份 AI 情报日报：五轴评分、事件聚簇、规则编排。</description>
 <language>zh-CN</language>
-<lastBuildDate>Mon, 23 Nov 2026 08:55:50 +0000</lastBuildDate>
+<lastBuildDate>Tue, 24 Nov 2026 03:05:52 +0000</lastBuildDate>
 <atom:link href="http://10.4.2.231:8124/feed.xml" rel="self" type="application/rss+xml"/>
 <item>
-<title>Causal Event Networks: Entangled Tensor Graphs, Connectome Quotient Topology, and Subjective Experience as Geometric Dual</title>
-<link>https://arxiv.org/abs/2611.26646</link>
-<guid isPermaLink="true">https://arxiv.org/abs/2611.26646</guid>
+<title>STAT+：Kymera Therapeutics湿疹中期试验成功，挑战Dupixent（3 篇报道）</title>
+<link>https://www.statnews.com/2026/11/23/kymera-therapeutics-eczema-trial-success-potential-dupixent-rival</link>
+<guid isPermaLink="true">https://www.statnews.com/2026/11/23/kymera-therapeutics-eczema-trial-success-potential-dupixent-rival</guid>
+<pubDate>Mon, 23 Nov 2026 12:00:00 +0000</pubDate>
+<description>Kymera Therapeutics周一宣布，其试验性疗法能有效且安全地治疗湿疹患者皮肤瘙痒和炎症。</description>
+<category>research_paper</category>
+<source>stat</source>
+</item>
+<item>
+<title>仅基于拓扑的局部网络对齐（第二部分）：DijSLA——用于跨物种GO注释预测的随机贪心扩展</title>
+<link>https://arxiv.org/abs/2611.26926</link>
+<guid isPermaLink="true">https://arxiv.org/abs/2611.26926</guid>
 <pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
-<description>arXiv:2611.26646v1 Announce Type: new Abstract: We introduce a chromatically constrained tensor-product construction that generates sparse recurrent computational graphs whose colo</description>
-<category>other</category>
+<description>序列相似性长期以来一直是蛋白质功能预测的重要信号，而网络拓扑的预测价值……</description>
+<category>research_paper</category>
 <source>arxiv_qbio</source>
 </item>
 <item>
-<title>Integrated Stress Responses and ABCB11 Repression in Drug-Exposed Human Hepatocytes</title>
-<link>https://arxiv.org/abs/2611.26651</link>
-<guid isPermaLink="true">https://arxiv.org/abs/2611.26651</guid>
-<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
-<description>arXiv:2611.26651v1 Announce Type: new Abstract: Drug-safety information systems must distinguish direct bile salt export pump (BSEP) inhibition from transcriptional changes in hepa</description>
-<category>other</category>
-<source>arxiv_qbio</source>
-</item>
-<item>
-<title>AI-driven technique could help engineers design analog chips faster and with less expense</title>
-<link>https://news.mit.edu/2026/ai-driven-technique-could-help-engineers-design-analog-chips-faster-and-less-expensive-1123</link>
-<guid isPermaLink="true">https://news.mit.edu/2026/ai-driven-technique-could-help-engineers-design-analog-chips-faster-and-less-expensive-1123</guid>
-<pubDate>Mon, 23 Nov 2026 05:00:00 +0000</pubDate>
-<description>The “SLIC” training method enables a small LLM to compete with much more resource-intensive models in complex circuit design tasks.</description>
-<category>other</category>
-<source>mit_news_ai</source>
-</item>
-<item>
-<title>Unraveling the anti-inflammatory activities of Angelicae Sinensis Radix and Cyperi Rhizoma using network pharmacology, molecular docking, and in vitro experiments</title>
-<link>https://www.nature.com/articles/s41598-026-58960-7</link>
-<guid isPermaLink="true">https://www.nature.com/articles/s41598-026-58960-7</guid>
-<pubDate>Mon, 23 Nov 2026 00:00:00 +0000</pubDate>
-<description></description>
-<category>other</category>
-<source>nature_compbio</source>
-</item>
-<item>
-<title>Dataset-dependent patient-overlap bias in breast thermography deep learning</title>
-<link>https://www.nature.com/articles/s41598-026-64646-x</link>
-<guid isPermaLink="true">https://www.nature.com/articles/s41598-026-64646-x</guid>
-<pubDate>Mon, 23 Nov 2026 00:00:00 +0000</pubDate>
-<description></description>
-<category>other</category>
-<source>nature_compbio</source>
-</item>
-<item>
-<title>Piperine induces ROS-associated mitochondrial dysfunction with differential cytotoxic potential against oral cancer and non-malignant cells</title>
-<link>https://www.nature.com/articles/s41598-026-72741-2</link>
-<guid isPermaLink="true">https://www.nature.com/articles/s41598-026-72741-2</guid>
-<pubDate>Mon, 23 Nov 2026 00:00:00 +0000</pubDate>
-<description></description>
-<category>other</category>
-<source>nature_drugdisc_aidd</source>
-</item>
-<item>
-<title>StockWatch: Insmed Jumps on Report of Takeover Interest by Sanofi, as Analysts Conclude a Deal Would Make Sense</title>
-<link>https://www.genengnews.com/topics/translational-medicine/stockwatch-insmed-jumps-on-report-of-takeover-interest-by-sanofi-as-analysts-conclude-a-deal-would-make-sense</link>
-<guid isPermaLink="true">https://www.genengnews.com/topics/translational-medicine/stockwatch-insmed-jumps-on-report-of-takeover-interest-by-sanofi-as-analysts-conclude-a-deal-would-make-sense</guid>
-<pubDate>Sun, 22 Nov 2026 18:52:58 +0000</pubDate>
-<description>Bloomberg News cited unnamed sources in reporting that Sanofi (Euronext Paris: SAN and Nasdaq: SNY) was weighing whether to acquire Insmed, in a potential blockbuster deal that the</description>
-<category>other</category>
-<source>gen</source>
-</item>
-<item>
-<title>Capricor's Duchenne therapy is rejected again, as FDA cites significant issues with trial</title>
-<link>https://endpoints.news/capricors-duchenne-therapy-is-rejected-again-as-fda-cites-significant-issues-with-trial</link>
-<guid isPermaLink="true">https://endpoints.news/capricors-duchenne-therapy-is-rejected-again-as-fda-cites-significant-issues-with-trial</guid>
-<pubDate>Sat, 21 Nov 2026 01:11:10 +0000</pubDate>
-<description>Capricor Therapeutics’ deramiocel cell therapy was rejected for a second time by the FDA on Friday, despite the company's pivot to a narrower indication within Duchenne muscular dy</description>
-<category>other</category>
-<source>endpoints</source>
-</item>
-<item>
-<title>ECG foundation models for cardiovascular screening in a cohort of young competitive athletes</title>
-<link>https://www.nature.com/articles/s41746-026-03474-9</link>
-<guid isPermaLink="true">https://www.nature.com/articles/s41746-026-03474-9</guid>
-<pubDate>Sat, 21 Nov 2026 00:00:00 +0800</pubDate>
-<description></description>
-<category>other</category>
-<source>npj_digital_med</source>
-</item>
-<item>
-<title>Building the first single-cell transcriptome atlas for an adult vertebrate</title>
-<link>https://www.biotechniques.com/cell-and-tissue-biology/building-the-first-single-cell-transcriptome-atlas-for-an-adult-vertebrate</link>
-<guid isPermaLink="true">https://www.biotechniques.com/cell-and-tissue-biology/building-the-first-single-cell-transcriptome-atlas-for-an-adult-vertebrate</guid>
-<pubDate>Mon, 23 Nov 2026 08:10:18 +0000</pubDate>
-<description>Original story from the Massachusetts Institute of Technology (MIT; MA, USA). Researchers mapped gene activity across the entire body of a tiny fish, creating a resource for studyi</description>
-<category>other</category>
-<source>biotechniques</source>
-</item>
-<item>
-<title>Opinion: When should medical school start?</title>
-<link>https://www.statnews.com/2026/11/21/stat-letters-to-editor-medical-school-pediatric-emergency-care</link>
-<guid isPermaLink="true">https://www.statnews.com/2026/11/21/stat-letters-to-editor-medical-school-pediatric-emergency-care</guid>
-<pubDate>Sat, 21 Nov 2026 12:00:00 +0000</pubDate>
-<description>STAT readers weigh in on shortening medical school, fixing pediatric emergency care, and more.</description>
+<title>STAT+：新生物技术公司拟开发下一代多发性骨髓瘤CAR-T疗法</title>
+<link>https://www.statnews.com/2026/11/23/caronilex-dual-targeting-car-t-overcomes-myeloma-resistance</link>
+<guid isPermaLink="true">https://www.statnews.com/2026/11/23/caronilex-dual-targeting-car-t-overcomes-myeloma-resistance</guid>
+<pubDate>Mon, 23 Nov 2026 09:30:00 +0000</pubDate>
+<description>多发性骨髓瘤常会复发。一种新型CAR-T疗法计划增加一个靶点，以避开肿瘤。</description>
 <category>other</category>
 <source>stat</source>
 </item>
 <item>
-<title>It’s Over-ton; Thoughts on Isomorphic’s latest haul; and more</title>
-<link>https://endpoints.news/its-over-ton-thoughts-on-isomorphics-latest-haul-and-more</link>
-<guid isPermaLink="true">https://endpoints.news/its-over-ton-thoughts-on-isomorphics-latest-haul-and-more</guid>
-<pubDate>Sat, 21 Nov 2026 11:00:41 +0000</pubDate>
-<description>Welcome back to another edition of Endpoints Weekly! All the tech outages this week can’t stop us from bringing you the latest in biopharma news. The biggest news this week came fr</description>
+<title>人工智能辅助设计具有定制二级结构基序的肽</title>
+<link>https://pubmed.ncbi.nlm.nih.gov/43070950</link>
+<guid isPermaLink="true">https://pubmed.ncbi.nlm.nih.gov/43070950</guid>
+<pubDate>Mon, 23 Nov 2026 00:00:00 +0000</pubDate>
+<description>《化学信息与建模杂志》刊载。蛋白质的氨基酸序列决定其折叠结构及功能。研究探讨利用人工智能设计具有定制二级结构基序、且采用精简氨基酸字母表的肽。</description>
+<category>research_paper</category>
+<source>pubmed_jcim</source>
+</item>
+<item>
+<title>环糊精结合常数的三级噪声下限及其对描述符预测的意义</title>
+<link>https://pubmed.ncbi.nlm.nih.gov/43070958</link>
+<guid isPermaLink="true">https://pubmed.ncbi.nlm.nih.gov/43070958</guid>
+<pubDate>Mon, 23 Nov 2026 00:00:00 +0000</pubDate>
+<description>环糊精包合常数的回归和机器学习模型常报告接近0.9的交叉验证Q²，但训练数据汇编结果的可重复性尚未量化。研究对其进行三级噪声下限量化。</description>
+<category>research_paper</category>
+<source>pubmed_jcim</source>
+</item>
+<item>
+<title>礼来收购亨廷顿病初创公司LoQus23，金额最高7.25亿美元（3 篇报道）</title>
+<link>https://endpoints.news/lilly-buys-huntingtons-startup-loqus23-for-up-to-725m</link>
+<guid isPermaLink="true">https://endpoints.news/lilly-buys-huntingtons-startup-loqus23-for-up-to-725m</guid>
+<pubDate>Mon, 23 Nov 2026 09:37:17 +0000</pubDate>
+<description>礼来在感恩节前宣布扩展其2026年收购计划，收购一家总部位于英国、即将进入临床阶段的亨廷顿病生物技术公司。</description>
+<category>industry_event</category>
+<source>endpoints</source>
+</item>
+<item>
+<title>EU approves olezarsen for broader severe sHTG population</title>
+<link>https://pharmafile.com/news/eu-approves-olezarsen-for-broader-severe-shtg-population</link>
+<guid isPermaLink="true">https://pharmafile.com/news/eu-approves-olezarsen-for-broader-severe-shtg-population</guid>
+<pubDate>Mon, 23 Nov 2026 09:00:00 +0000</pubDate>
+<description>The European Commission has approved olezarsen (Tryngolza) as an adjunct to diet and other lipid-lowering therapies for adults with severe hypertriglyceridaemia (sHTG) and fasting</description>
+<category>industry_event</category>
+<source>pharmafile</source>
+</item>
+<item>
+<title>Kymera的STAT6降解剂在特应性皮炎中期试验达标</title>
+<link>https://endpoints.news/kymeras-stat6-degrader-clears-mid-stage-test-in-atopic-dermatitis</link>
+<guid isPermaLink="true">https://endpoints.news/kymeras-stat6-degrader-clears-mid-stage-test-in-atopic-dermatitis</guid>
+<pubDate>Mon, 23 Nov 2026 12:00:56 +0000</pubDate>
+<description>Kymera Therapeutics计划明年开展口服湿疹药物的3期试验。该药在中期研究中的结果超过华尔街的成功预期。</description>
+<category>research_paper</category>
+<source>endpoints</source>
+</item>
+<item>
+<title>Zolgensma肿瘤调查再引基因疗法安全关注</title>
+<link>https://www.pharmavoice.com/news/zolgensma-tumor-investigation-gene-therapy-safety/875539</link>
+<guid isPermaLink="true">https://www.pharmavoice.com/news/zolgensma-tumor-investigation-gene-therapy-safety/875539</guid>
+<pubDate>Mon, 23 Nov 2026 15:00:00 +0000</pubDate>
+<description>FDA调查Novartis的SMA重磅药物之际，药物研发者重新面对永久性基因药物的风险问题，尤其是常见疾病治疗。</description>
+<category>industry_event</category>
+<source>pharmavoice</source>
+</item>
+<item>
+<title>残基接触能统计分析揭示离子通道折叠决定因素</title>
+<link>https://journals.plos.org/ploscompbiol/article/asset?id=10.1371%2Fjournal.pcbi.1014990.XML</link>
+<guid isPermaLink="true">https://journals.plos.org/ploscompbiol/article/asset?id=10.1371%2Fjournal.pcbi.1014990.XML</guid>
+<pubDate>Mon, 23 Nov 2026 14:00:00 +0000</pubDate>
+<description>研究分析四聚体和假四聚体阳离子通道的残基接触能，探讨其折叠决定因素。这些通道是多种药物和毒素的靶点。</description>
+<category>research_paper</category>
+<source>plos_compbiol</source>
+</item>
+<item>
+<title>Why today’s leading drug developers are fine-tuning open models on their own data</title>
+<link>https://www.biopharmadive.com/spons/why-todays-leading-drug-developers-are-fine-tuning-open-models-on-their-ow/875153</link>
+<guid isPermaLink="true">https://www.biopharmadive.com/spons/why-todays-leading-drug-developers-are-fine-tuning-open-models-on-their-ow/875153</guid>
+<pubDate>Mon, 23 Nov 2026 10:00:00 +0000</pubDate>
+<description>Open or proprietary AI models? What drug developers should weigh before they fine-tune.</description>
+<category>tutorial_explainer</category>
+<source>biopharmadive</source>
+</item>
+<item>
+<title>苯并氧硼杂环靶向CPSF3并通过SUMO依赖途径使其降解</title>
+<link>https://www.nature.com/articles/s41467-026-79400-0</link>
+<guid isPermaLink="true">https://www.nature.com/articles/s41467-026-79400-0</guid>
+<pubDate>Sun, 22 Nov 2026 00:00:00 +0000</pubDate>
+<description></description>
+<category>research_paper</category>
+<source>nature_drugdisc_aidd</source>
+</item>
+<item>
+<title>STAT+：Medicare预计第三轮药价谈判可节省92亿美元（2 篇报道）</title>
+<link>https://www.statnews.com/2026/11/23/medicare-drug-price-negotiations-announcement-third-round</link>
+<guid isPermaLink="true">https://www.statnews.com/2026/11/23/medicare-drug-price-negotiations-announcement-third-round</guid>
+<pubDate>Tue, 24 Nov 2026 00:19:48 +0000</pubDate>
+<description>特朗普政府称，由于药价谈判，联邦政府明年通过Medicare采购药物预计可节省92亿美元。</description>
 <category>other</category>
+<source>stat</source>
+</item>
+<item>
+<title>Capricor称将就FDA拒批杜氏肌营养不良疗法提出申诉（4 篇报道）</title>
+<link>https://endpoints.news/capricor-says-it-will-challenge-fdas-rejection-of-duchenne-therapy</link>
+<guid isPermaLink="true">https://endpoints.news/capricor-says-it-will-challenge-fdas-rejection-of-duchenne-therapy</guid>
+<pubDate>Mon, 23 Nov 2026 19:50:42 +0000</pubDate>
+<description>Capricor Therapeutics首席执行官Linda Marbán周一表示，公司将对FDA周五拒批其杜氏肌营养不良细胞疗法的决定提出申诉。</description>
+<category>industry_event</category>
+<source>endpoints</source>
+</item>
+<item>
+<title>FDA批准BridgeBio治疗肌营养不良的罕见病药物（2 篇报道）</title>
+<link>https://endpoints.news/fda-approves-bridgebio-rare-disease-drug-for-muscular-dystrophy</link>
+<guid isPermaLink="true">https://endpoints.news/fda-approves-bridgebio-rare-disease-drug-for-muscular-dystrophy</guid>
+<pubDate>Mon, 23 Nov 2026 19:13:17 +0000</pubDate>
+<description>FDA批准了BridgeBio Pharma的一款罕见病新药，这是该公司预计推出的三款药物中的首款。监管机构周一批准BBP-418用于治疗患者。</description>
+<category>industry_event</category>
 <source>endpoints</source>
 </item>
 </channel>
